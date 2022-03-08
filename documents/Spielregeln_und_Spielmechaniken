@@ -1,0 +1,62 @@
+Spielregeln und Spielmechaniken.
+
+Das "Spielbrett" besteht aus einem vorher angebbaren Grid der Dimension n, m.
+Diese sind durch den Host bestimmbar, die normalgröße würde allerdings 15x30 sein.
+Davon ist die Reihe ganz links allerdings bereits vordefiniert als der Startpunkt aller Roboter. Das Ziel ist es nach einer vorher definierten Rundenzahl am meisten Erz zu haben. Auch die Rundenzahl wird vorher vom Host festgelegt, der Standard wert wäre 200 Runden.
+Es gibt mehrere Arten von "Erz". Darunter fallen:
+	Kupfer
+	Eisen
+	Gold
+	Platinum
+	Indium
+Die verschiedenen Arten von "Erz" haben jeweils andere Wertigkeiten.
+	Kupfer fügt dem Score "1" Hinzu.
+	Eisen fügt dem Score "2" Hinzu.
+	Gold fügt dem Score "4" Hinzu.
+	Platinum fügt dem Score "6" Hinzu.
+	Indium fügt dem Score "9" Hinzu.
+Die verschiedenen Erze sind je nach ihrer Scorewichtung veteilt. Je wertvoller ein "Erz" ist, desto weiter vom Startpunkt wird es tendenziell entfernt sein.
+Alle Erze werden in Adern generiert, sodass das selbe Erz nebeneinander erwartet werden kann.
+
+Es gibt Radare und Fallen. Radare erlauben es dem Spieler in einem Umfeld von Distanz 5 alle Felder 5 und dessen Erzanteil zu sehen, sowie gegnerische Roboter. Ebenso erlaubt es dem Spieler in einem Umfeld von Distanz 3 alle platzierten Ausrüstungsgegenstände zu sehen. Eigenplatzierte Fallen und Radare werden immer sichtbar sein. Wenn ein Ausrüstungsgegenstand auf einem Feld platziert wird wo bereits ein Ausrüstungsgegenstand ist, wird der vorher platzierte entfernt.
+Wenn in einem Umfeld von Distanz 1 um eine Falle gegraben wird, wird diese Falle ausgelöst und alle Roboter und Ausrüstungsgegenstände innerhalb von einer Distanz von 1 werden vernichtet. Wenn sich eine Falle in einer Distanz von 2 zu einer ausgelösten Falle befindet, wird diese auch ausgelöst. Zu jener gelten die selben Regeln wie zu normal ausgelösten Fallen.
+
+
+Ein Spieler besitzt, standardmäßig, 5 Roboter. Es gibt keine Ober und keine (theoretische) Untergrenze an Spielern. Jeder Spieler hat nacheinander einen Zug, diese Reihenfolge wird Zufällig beim Initialisieren des Spieles erstellt.
+Jede Runde besteht daraus, dass ein Spieler allen seiner 5 Robotern einen Befehl geben muss.
+Es gibt 4 Befehle:
+	- WAIT
+	- MOVE
+	- DIG
+	- REQUEST
+"WAIT" erlaubt es dem Spieler einem Roboter keinen Befehl zu geben.
+"MOVE" erlaubt es dem Spieler eine Distanz von maximal 4 Feldern zu bewältigen.
+	Jene Distanz wird mit der Funktion
+		/**
+     		* 
+     		* @param e
+     		* @param c
+     		* @return
+     		*/
+    		public static int distance(Vector origin, Vector destination) {
+			return Math.abs(origin.getX - destination.getX()) + Math.abs(origin.getY() - destination.getY());
+		}
+	ermittelt. Jene Funktion ist eine Globale Methode des Datentypen "Vector". 
+	Wenn jene Distanz > 4, wird die Funktion
+	/**
+         *
+         * @param destination
+         * @return
+         */
+        private Vector getNextVector(Vector destination) {
+            int xDifToClosest = pos.getX() - destination.getX();
+            int yDifToClosest = pos.getY() - destination.getY();
+            int xMovesMade = Math.min(MAX_MOVE_DISTANCE, xDifToClosest);
+            int maxYMoves = Math.min(MAX_MOVE_DISTANCE - xMovesMade, Math.min(MAX_MOVE_DISTANCE, yDifToClosest));
+            return new Vector(pos.getX() - xMovesMade, pos.getY() - maxYMoves);
+        }
+        verwendet. Jene Funktion ist eine klassenspezifische Funktion des Datentypen "Robot".
+"DIG" erlaubt es dem Spieler einem Roboter zu sagen, er solle in einer Distanz von "<=1" graben um Erz zu finden. Die Distanz ist wieder die selbe Funktion wie vorher oben beschrieben. Wenn eine Distanz > 1 benutzt wird, wird erneut die "getNextVector()" Methode aufgerufen mit dem Vector auf welchem der "DIG" befehl aufgerufen wurde.
+"REQUEST" erlaubt es dem ausgewähltem Roboter entweder eine "Falle", ein "Radar" oder ein "Bombenerkenngerät" anzufordern, dieser Gegenstand wird so lange getragen bis der Roboter einen "DIG" Befehl erhält. Wenn der Roboter ein "Bombenerkenngerät" trägt, werden alle Fallen mit einer Distanz von 1 aufgedeckt. 
+
+
