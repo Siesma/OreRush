@@ -1,7 +1,7 @@
 ## Anforderungsanalyse
-#Ziel
+# Ziel
 Das System ist ein Computerspiel mit Client/Server-Architektur. Es soll Spieler ermöglichen das Spiel «Crystal rush» durch eine GUI zu spielen. Regeln sind im Dokument Spielregeln_und_Spielmechaniken definiert.
-#Funktionale Anforderungen
+# Funktionale Anforderungen
 -	Das System muss den Benutzer die Möglichkeit bieten, sich mit dem Server zu verbinden.
 -	Das System muss den Benutzer die Möglichkeit bieten, offene Lobbys zu sehen.
 -	Das System muss den Benutzer die Möglichkeit bieten, eine Lobby zu erstellen.
@@ -24,7 +24,7 @@ Das System ist ein Computerspiel mit Client/Server-Architektur. Es soll Spieler 
 -	Das System muss fähig sein den Spielstand mit allen Spielern zu synchronisieren.
 -	Das System muss fähig sein den Gewinner zu bestimmen.
 -	Das System muss fähig sein die High-Score Liste zu aktualisieren.
-#Nichtfunktionale Anforderungen
+# Nichtfunktionale Anforderungen
 -	Das System muss den Benutzer die Möglichkeit bieten das Spiel durch eine GUI zu steuern.
 -	Das System soll das Spielbrett durch prozedurale Generierung erstellen.
 -	Das System muss mindestens drei Benutzer die Möglichkeit bieten das Spiel zusammen zu spielen.
