@@ -34,8 +34,8 @@ Es gibt 4 Befehle:
 	Jene Distanz wird mit der Funktion
 		/**
      		* 
-     		* @param e
-     		* @param c
+     		* @param origin
+     		* @param destination
      		* @return
      		*/
     		public static int distance(Vector origin, Vector destination) {
