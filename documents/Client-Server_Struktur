@@ -41,4 +41,12 @@ Das "Moves-Packet" besteht aus 2 teilen:
 	"Move-Packet" = {Player, Moves}
 	"player" ist ein Datentyp welcher aus "Namen" und "Resolve_ip" besteht. Dieser ist auch dem "key" beurkundet.
 	"Moves" sind die gesetzen Züge des Spielers für die jeweiligen Roboter.
-
+Während der Server und der Client verbunden sind hat der Client die möglichkeit ein "Chat-Request-Packet" zu senden. Dies besteht aus 2 teilen:
+	"Chat-Request-Packet" = {player, message}
+	"player" ist ein Datentyp welcher aus "Namen" und "Resolve_ip" besteht. Dieser ist auch dem "key" beurkundet.	
+	"message" ist ein String welcher die zu übertragende Nachricht beinhält. Diese besitzt spezielle Formate um die Nachricht anzuzeigen.
+		Darunter fallen 
+			"\$c{r, g, b}", mit "{r, g, b}" für die einzelnen Farbkanäle im RGB format. Diese reichen von 0 bis 255.
+			"\$i" steht für standard "Italic" Font effekt
+			"\$b" steht für den standard "Bold" Font effekt
+		(eine Liste von möglichen "Rich Text Formats" kann dauerhaft im chat eingesehen werden)
