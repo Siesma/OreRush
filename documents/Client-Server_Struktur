@@ -50,3 +50,10 @@ Während der Server und der Client verbunden sind hat der Client die möglichkei
 			"\$i" steht für standard "Italic" Font effekt
 			"\$b" steht für den standard "Bold" Font effekt
 		(eine Liste von möglichen "Rich Text Formats" kann dauerhaft im chat eingesehen werden)
+Jedes mal wenn der Host eine Änderung an einer Einstellung vornahm wird an jeden Nutzer ein "Settings-Packet" gesendet. Dies besteht aus 2 Teilen:
+	"Settings-Packet" = {server, settings}
+	"server" ist der Server zu welchem versucht wurde sich zu verbinden.
+	"settings" ist ein Datentyp welcher mehrere Basisinformationen bezüglich der Bretteinstellungen beinhält.
+Jeder Nutzer kann jederzeit ein "Leaderboard" Packet anfordern. Dies besteht aus einem Teil:
+	"Leaderboard-Packet" = {leader}
+	"leader" ist eine Reihung von dem Datentyp "PlayerAndScore" welcher aus "Name des Spielers" und "Score als zahl" besteht
