@@ -1,0 +1,59 @@
+Funktion Client-Server
+
+Es wird eine P2P (peer to peer) Verbindung aufgestellt indem der Server einen offenen Port bereit stellt. Der Client wird daraufhin zu diesem Server ein "Request-Packet" senden.
+Dieses besteht aus 3 teilen:
+	Request-Packet = {name, time, resolve_ip}
+	"name" ist der Name des anfragenden Spielers, dieser ist selber wählbar.
+	"time" ist der Zeitpunkt an dem die Anfrage gesendet wird.
+	"resolve_ip" ist die IP des Spielers zu welcher geantwortet werden soll.
+Wenn mehr als 10000ms vergangen sind, seitdem das "Request-Packet" gesendet wurde, wird ein "Request-Timeout-Packet" einmalig vom Server zurück gesendet und die Verbindung wird nicht hergestellt.
+Ein "Timeout-Packet" besteht aus 2 teilen:
+	Timeout-Packet= {server, TIMEOUT}
+	"server" ist der Server zu welchem versucht wurde sich zu verbinden.
+	"TIMEOUT" ist ein spezieller Datentyp welcher einen Timeout symbolisiert.
+Wenn weniger als 10000ms vergangen sind, sendet der Server ein "Success-Packet".
+Dieses besteht aus 2 teilen:
+	"Success-Packet" = {Key, Ongoing-Game-Information}
+	"key" ist ein einmaliger Key welcher der Spieler speichern muss, da nur mit diesem Spielzüge getätigt werden kann, dies gilt somit als authentizität.
+Alle 1000ms sendet der Server ein "Awake-Packet".
+Dieses besteht aus 2 teilen:
+	"Awake-Packet" = {time, player}
+	"time" ist die Zeit in der es gesendet wurde.
+	"player" ist ein Datentyp welcher aus "Namen" und "Resolve_ip" besteht. Dieser ist auch mit dem "key" beurkundet.
+Dieses gilt um die Verindung nur so lang wie notwendig aufrecht zu halten.
+Wenn ein Spieler mehr als 10000ms nach Initialisierung der Verbindung keine Antwort gibt, wird erneut ein "Timeout-Packet" gesendet.
+Wenn ein Spieler das Spiel schließt wird ein "Close-Packet" gesendet. Dies besteht aus zwei teilen:
+	"Close-Packet" = {player, time}
+	"player" ist ein Datentyp welcher aus "Namen" und "Resolve_ip" besteht. Dieser ist auch dem "key" beurkundet.	
+	"time" ist die Zeit in der es gesendet wurde.
+Das "Close-Packet" muss mit dem "key" beurkundigt werden damit kein anderer Spieler die Möglichkeit hat dieses auszunutzen. Wenn der Spieler den "key" nichtmehr hat, wird bei dem folgenden Awake-Packet der Spieler aussoriert.
+Nach jeder Runde bekommt jeder Spieler ein "Update-Packet"
+Dies besteht aus 5 teilen:
+	"Update-Packet": {VisibleMap, Equipmentcooldown, Robots, Playerscore, Enemyscore}
+	"VisibleMap" ist die für den Spieler sehbare Karte. 
+	"Equipmentcooldown" ist die Zeit (in Runden) die benötigt wird um die jeweiligen Ausrüstungsgegenstände neu anzufordern.
+	"Robots" sind die Roboter des Spielers, dessen position, dessen Ausrüstung, dessen Inhalt.
+	"Playerscore" ist der Score des Spielers.
+	"Enemyscore" sind die Scores der Gegner.
+Jede Runde endet damit, dass der jeweilige Spieler ein "Moves-Packet" senden muss.
+Wenn der jeweilige Spieler länger als 60000ms (dies kann allerdings auch vom Host bearbeitet und auch entfernt werden) braucht um sein "Moves-Packet" zu senden, wird jeder Roboter einfach "Warten".
+Das "Moves-Packet" besteht aus 2 teilen:
+	"Move-Packet" = {Player, Moves}
+	"player" ist ein Datentyp welcher aus "Namen" und "Resolve_ip" besteht. Dieser ist auch dem "key" beurkundet.
+	"Moves" sind die gesetzen Züge des Spielers für die jeweiligen Roboter.
+Während der Server und der Client verbunden sind hat der Client die möglichkeit ein "Chat-Request-Packet" zu senden. Dies besteht aus 2 teilen:
+	"Chat-Request-Packet" = {player, message}
+	"player" ist ein Datentyp welcher aus "Namen" und "Resolve_ip" besteht. Dieser ist auch dem "key" beurkundet.	
+	"message" ist ein String welcher die zu übertragende Nachricht beinhält. Diese besitzt spezielle Formate um die Nachricht anzuzeigen.
+		Darunter fallen 
+			"\$c{r, g, b}", mit "{r, g, b}" für die einzelnen Farbkanäle im RGB format. Diese reichen von 0 bis 255.
+			"\$i" steht für standard "Italic" Font effekt
+			"\$b" steht für den standard "Bold" Font effekt
+		(eine Liste von möglichen "Rich Text Formats" kann dauerhaft im chat eingesehen werden)
+Jedes mal wenn der Host eine Änderung an einer Einstellung vornahm wird an jeden Nutzer ein "Settings-Packet" gesendet. Dies besteht aus 2 Teilen:
+	"Settings-Packet" = {server, settings}
+	"server" ist der Server zu welchem versucht wurde sich zu verbinden.
+	"settings" ist ein Datentyp welcher mehrere Basisinformationen bezüglich der Bretteinstellungen beinhält.
+Jeder Nutzer kann jederzeit ein "Leaderboard" Packet anfordern. Dies besteht aus einem Teil:
+	"Leaderboard-Packet" = {leader}
+	"leader" ist eine Reihung von dem Datentyp "PlayerAndScore" welcher aus "Name des Spielers" und "Score als zahl" besteht
