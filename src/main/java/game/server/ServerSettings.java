@@ -1,6 +1,5 @@
 package game.server;
 
-import game.gameLogic.ore.OreType;
 
 import java.util.ArrayList;
 
@@ -13,7 +12,7 @@ public class ServerSettings {
   private int NumberOfRobots;
   private int MapWidth, MapHeight;
   private int NumberOfRounds;
-  private ArrayList<OreType> ores;
+  private ArrayList<Object> ores;
 
   /**
    *
@@ -33,7 +32,7 @@ public class ServerSettings {
    * @param ores
    * Default user settings initialization
    */
-  public ServerSettings(int numberOfRobots, int mapWidth, int mapHeight, int numberOfRounds, ArrayList<OreType> ores) {
+  public ServerSettings(int numberOfRobots, int mapWidth, int mapHeight, int numberOfRounds, ArrayList<Object> ores) {
     NumberOfRobots = numberOfRobots;
     MapWidth = mapWidth;
     MapHeight = mapHeight;
@@ -77,11 +76,11 @@ public class ServerSettings {
     return this;
   }
 
-  public ArrayList<OreType> getOres() {
+  public ArrayList<Object> getOres() {
     return ores;
   }
 
-  public ServerSettings setOres(ArrayList<OreType> ores) {
+  public ServerSettings setOres(ArrayList<Object> ores) {
     this.ores = ores;
     return this;
   }
