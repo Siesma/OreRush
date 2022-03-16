@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Client {
 
-  public static void main(String[] args) {
+  public void run(String[] args) {
     String host = "localhost";
     int port;
     if (args.length == 0) {
@@ -31,7 +31,7 @@ public class Client {
         line = conin.readLine();
         // TODO: Create a function that interptes the incoming "line" according to the packets own functions
         PacketType interpretedPacket = PacketType.close;
-        if(interpretedPacket == PacketType.close) {
+        if (interpretedPacket == PacketType.close) {
           break;
         }
 
@@ -76,11 +76,11 @@ public class Client {
 //    help.replaceAll("\\$NUM_ROBOTS", "4");
     System.out.println(help);
     String[] neededTypes = new String[help.split("\\$").length - 1];
-    for(int i = 0; i < neededTypes.length; i++) {
+    for (int i = 0; i < neededTypes.length; i++) {
       neededTypes[i] = sc.nextLine();
     }
     StringBuilder out = new StringBuilder();
-    for(String s : neededTypes) {
+    for (String s : neededTypes) {
       out.append(s).append((char) ServerConstants.DEFAULT_PACKET_SPACER);
     }
     return out.toString();

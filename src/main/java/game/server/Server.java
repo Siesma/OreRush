@@ -11,7 +11,7 @@ import java.net.Socket;
 
 public class Server {
 
-  public static void main(String[] args) {
+  public void run (String[] args) {
     int port;
     if (args.length == 0) {
       port = ServerConstants.DEFAULT_PORT;
