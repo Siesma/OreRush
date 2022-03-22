@@ -21,7 +21,7 @@ public class ContentThread implements Runnable {
         System.out.write(b, 0, len);
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      System.out.println("Server disconnected");
     }
   }
 }
