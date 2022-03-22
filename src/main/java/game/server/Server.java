@@ -11,13 +11,8 @@ import java.net.Socket;
 
 public class Server {
 
-  public void run (String[] args) {
-    int port;
-    if (args.length == 0) {
-      port = ServerConstants.DEFAULT_PORT;
-    } else {
-      port = Integer.parseInt(args[0]);
-    }
+  public void run (int port) {
+
     System.out.println("Now listening on port " + port);
 
     try {

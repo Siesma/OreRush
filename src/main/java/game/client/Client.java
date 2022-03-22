@@ -10,16 +10,9 @@ import java.util.Scanner;
 
 public class Client {
 
-  public void run(String[] args) {
-    String host = "localhost";
-    int port;
-    if (args.length == 0) {
-      port = ServerConstants.DEFAULT_PORT;
-    } else {
-      port = Integer.parseInt(args[0]);
-    }
+  public void run(String hostAddress, int port, String name) {
     try {
-      Socket sock = new Socket(host, port);
+      Socket sock = new Socket(hostAddress, port);
       InputStream in = sock.getInputStream();
       OutputStream out = sock.getOutputStream();
       ContentThread th = new ContentThread(in);
