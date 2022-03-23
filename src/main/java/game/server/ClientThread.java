@@ -54,25 +54,4 @@ public class ClientThread implements Runnable{
             }
         }
     }
-    private static String generateOutputFromInput(String input) {
-        PacketType packetType = interpretMessage(input);
-        /*
-        TODO: Replace default response with important information
-         */
-        return packetType.getResponse();
-    }
-
-    private static PacketType interpretMessage(String message) {
-        /*
-        TODO: Interpret message given the matching of packets
-         */
-        return PacketType.awake;
-    }
-
-    private static void pushMessage(String message) {
-        /*
-        TODO: Push the message to the user and the relevant parts of the program
-         */
-        System.out.println(message);
-    }
 }
