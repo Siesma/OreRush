@@ -10,30 +10,28 @@ import java.util.Scanner;
 
 public class Client {
 
-  public void run(String[] args) {
-    String host = "localhost";
-    int port;
-    if (args.length == 0) {
-      port = ServerConstants.DEFAULT_PORT;
-    } else {
-      port = Integer.parseInt(args[0]);
-    }
+  public void run(String hostAddress, int port, String name) {
     try {
-      Socket sock = new Socket(host, port);
+      Socket sock = new Socket(hostAddress, port);
       InputStream in = sock.getInputStream();
       OutputStream out = sock.getOutputStream();
       ContentThread th = new ContentThread(in);
       Thread iT = new Thread(th);
       iT.start();
       BufferedReader conin = new BufferedReader(new InputStreamReader(System.in));
-      String line = " ";
+      String line;
       while (true) {
         line = conin.readLine();
         // TODO: Create a function that interptes the incoming "line" according to the packets own functions
-        PacketType interpretedPacket = PacketType.close;
-        if (interpretedPacket == PacketType.close) {
+//        PacketType interpretedPacket = PacketType.close;
+//        if (interpretedPacket == PacketType.close) {
+//          break;
+//        }
+        // TODO: delete, testing as long as close packet not functionnal
+        if (line.equals("quit")) {
           break;
         }
+
 
         out.write(ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE);
         out.write(createPacketMessage().getBytes());
