@@ -12,12 +12,18 @@ import java.util.ArrayList;
 
 public class Server {
 
-  static ArrayList<ClientThread> clientThreads = new ArrayList<>();
+
+
+  private static ArrayList<ClientThread> clientThreads = new ArrayList<>();
 
   public void run(int port) throws IOException {
 
     ServerSocket serverSocket = new ServerSocket(port);
     System.out.println("Now listening on port " + port);
+
+    PingThread pT = new PingThread();
+    Thread pingThread = new Thread(pT);
+    pingThread.start();
 
     while (true) {
       try {
@@ -38,5 +44,9 @@ public class Server {
         System.exit(1);
       }
     }
+  }
+
+  public static ArrayList<ClientThread> getClientThreads() {
+    return clientThreads;
   }
 }
