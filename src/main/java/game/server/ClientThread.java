@@ -91,7 +91,7 @@ public class ClientThread implements Runnable{
      */
     public void setPlayerName(String playerName) {
         while (isPlayerNameUnique(playerName)) {
-            changeDuplicateName(playerName);
+            playerName = changeDuplicateName(playerName);
         }
         this.playerName = playerName;
     }
@@ -109,6 +109,12 @@ public class ClientThread implements Runnable{
         }
         return true;
     }
+
+    /**
+     * Changes a duplicate name by either adding a 1 at the end of the name or increasing the last digit by 1
+     * @param playerName name to be modified
+     * @return modified name
+     */
 
     public String changeDuplicateName(String playerName){
         if (Character.isDigit(playerName.charAt(playerName.length()-1))) {
