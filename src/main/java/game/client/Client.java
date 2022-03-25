@@ -48,9 +48,14 @@ public class Client {
     }
   }
 
+  public static String promptUserForInput()
+  {
+    Scanner sc = new Scanner(System.in);
+    return sc.nextLine();
+  }
+
 
   public static String createPacketMessage() {
-    Scanner sc = new Scanner(System.in);
     System.out.println("What kind of packet do you want to send?");
     System.out.println("Down follows a list of possible packets.");
 
@@ -65,7 +70,7 @@ public class Client {
     System.out.println("settings");
 
     while (true) {
-      String entered = sc.nextLine();
+      String entered = promptUserForInput();
       PacketType newPacket = new PacketType();
       try {
         System.out.println(generatePacket(entered));
@@ -75,8 +80,7 @@ public class Client {
       }
     }
     //System.out.println("Please enter the needed information to fulfill the " + selected.name() + "-Packet.");
-    StringBuilder out = new StringBuilder();
-    return out.toString();
+    return "Packet generated";
   }
 
   private static String generatePacket (String entered) throws Exception {
@@ -101,6 +105,24 @@ public class Client {
         return "settn";
       default:
         throw new Exception();
+    }
+  }
+  /*
+  This function asks the user to type their message and saves the player key and message to newChatPackage
+   */
+  private static void getChatPacketContent (PacketType newChatPackage) {
+    while (true) {
+
+      newChatPackage.content[0] = 1; //TODO: Make this use the player key
+
+      String entered = promptUserForInput();
+      newChatPackage.content[1] = entered;
+      try {
+        System.out.println(generatePacket(entered));
+        break;
+      } catch (Exception e) {
+        System.out.println("No packet exists thats named \"" + entered + "\", try again!");
+      }
     }
   }
 }

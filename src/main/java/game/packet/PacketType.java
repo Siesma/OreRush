@@ -6,9 +6,9 @@ public class PacketType {
      */
 
   //This identifies the type of the Package to make decoding easier
-  private String type;
+  public String type;
   //This contains all the data of the Package
-  private Object[] content = new Object[100]; //TODO: Figure out a resonable array size
+  public Object[] content = new Object[100]; //TODO: Figure out a resonable array size
 
   /*
   This function will turn this package into a Request-Package and fill it's content accodringly
