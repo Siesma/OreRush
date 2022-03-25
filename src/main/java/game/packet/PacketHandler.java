@@ -1,34 +1,37 @@
 package game.packet;
 
 public class PacketHandler {
-    private static String generateOutputFromInput(String input) {
-        PacketType packetType = interpretMessage(input);
-        /*
-        TODO: Replace default response with important information
-         */
-        return packetType.getResponse();
+
+    public static String generateOutputFromInput(String input) {
+        PacketType packetType = detectPacketType(input);
+
+        //TODO: Replace default response with important information
+
+        return "OutputGenerated";
     }
 
-    private static void detectPacketType(String input) {
-        PacketType packetType = interpretMessage(input);
-        /*
-        TODO: Replace default response with important information
-         */
-        return packetType.getResponse();
+    private static PacketType detectPacketType(String input) {
+        PacketType packetType = new PacketType();
+
+        //TODO: Replace default response with important information
+
+        return packetType;
     }
 
     private static String decode(String message) {
+        String decodedMessage = "";
         /*
         TODO: Interpret message given the matching of packets
          */
-        return PacketType.awake;
+        return decodedMessage;
     }
 
     private static String encode(String message) {
+        String encodedMessage = "";
         /*
         TODO: Push the message to the user and the relevant parts of the program
          */
-        System.out.println(message);
+        return (encodedMessage);
     }
 
     private static boolean isValidate(String message) {
@@ -36,5 +39,13 @@ public class PacketHandler {
         TODO: Check if the message is a valid command based on the protocol
          */
         System.out.println(message);
+        return false; //Todo make this actually check
+    }
+
+    public static void pushMessage(String encodedMessage) {
+        /*
+        TODO: Send the already encoded message
+         */
+        System.out.println(encodedMessage);
     }
 }

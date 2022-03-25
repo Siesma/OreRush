@@ -1,5 +1,6 @@
 package game.server;
 
+import game.packet.PacketHandler;
 import game.packet.PacketType;
 
 import java.io.IOException;
@@ -38,10 +39,10 @@ public class ClientThread implements Runnable{
             if (cur == ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE) {
                 startingToRecordMessage = false;
                 String message = builder.toString();
-                pushMessage(message);
+                PacketHandler.pushMessage(message);
                 builder.setLength(0);
                 try {
-                    outputStream.write(generateOutputFromInput(message).getBytes());
+                    outputStream.write(PacketHandler.generateOutputFromInput(message).getBytes());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

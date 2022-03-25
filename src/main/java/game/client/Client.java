@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 public class Client {
 
@@ -51,37 +52,55 @@ public class Client {
   public static String createPacketMessage() {
     Scanner sc = new Scanner(System.in);
     System.out.println("What kind of packet do you want to send?");
-    System.out.println("Down follows a list of possible packets. You can also write the corresponding number in front");
-    for (int i = 0; i < PacketType.values().length; i++) {
-      System.out.println("\t" + (i + 1) + ". ->" + PacketType.values()[i].name());
-    }
-    PacketType selected;
+    System.out.println("Down follows a list of possible packets.");
+
+    System.out.println("request");
+    System.out.println("timeout");
+    System.out.println("success");
+    System.out.println("awake");
+    System.out.println("close");
+    System.out.println("update");
+    System.out.println("move");
+    System.out.println("chat");
+    System.out.println("settings");
+
     while (true) {
       String entered = sc.nextLine();
+      PacketType newPacket = new PacketType();
       try {
-        if (entered.matches("^[1-9]+$")) {
-          selected = PacketType.values()[Integer.parseInt(entered) - 1];
-        } else {
-          selected = PacketType.valueOf(entered);
-        }
+        System.out.println(generatePacket(entered));
         break;
       } catch (Exception e) {
         System.out.println("No packet exists thats named \"" + entered + "\", try again!");
       }
     }
-    System.out.println("Please enter the needed information to fulfill the " + selected.name() + "-Packet.");
-    String help = selected.getHelp();
-//    help.replaceAll("\\$NUM_ROBOTS", "4");
-    System.out.println(help);
-    String[] neededTypes = new String[help.split("\\$").length - 1];
-    for (int i = 0; i < neededTypes.length; i++) {
-      neededTypes[i] = sc.nextLine();
-    }
+    //System.out.println("Please enter the needed information to fulfill the " + selected.name() + "-Packet.");
     StringBuilder out = new StringBuilder();
-    for (String s : neededTypes) {
-      out.append(s).append((char) ServerConstants.DEFAULT_PACKET_SPACER);
-    }
     return out.toString();
   }
 
+  private static String generatePacket (String entered) throws Exception {
+    switch (entered) {
+      case "request":
+        return "reqst";
+      case "timeout":
+        return "timeo";
+      case "success":
+        return "succs";
+      case "awake":
+        return "awake";
+      case "close":
+        return "close";
+      case "update":
+        return "updte";
+      case "move":
+        return "pmove";
+      case "chat":
+        return "pchat";
+      case "settings":
+        return "settn";
+      default:
+        throw new Exception();
+    }
+  }
 }
