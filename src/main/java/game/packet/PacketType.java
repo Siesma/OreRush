@@ -2,24 +2,37 @@ package game.packet;
 
 public enum PacketType {
 
+  // ping
+  ping("A ping to a server", new String[] {"^(?.)ping$", "The user pinged the server!"}),
+  // pong
+  pong("A pong from a server", new String[] {"^(?.)pong$", "The server pongs the player!"}),
+
+  // Name xx(x).xx(x).xx(x):xxx(xx)
   initialize("The init packet consists of one user input part. $\"Name\"", new String[]{
     ".*", //Name
-    "^([1-9]{2,3}.){3})([1-9]{3,5})$"  //Resolve IP
+    "^([1-9]{2,3}.){3}):([1-9]{3,5})$"  //Resolve IP
   }, "A default initialization response!"),
 
+  // Server_Name timeout
   timeout("the timeout packet consists of no user input parts.", new String[]{
-    "", // the server that is sending the timeout
+    ".*", // the server that is sending the timeout
     "^(?i)timeout$" // Timeout - case-insensitive
   }, "The user timed out!"),
+
+  // Server_Name random(0-255)
   success("the success packet consists of no user input parts.", new String[]{
     "PLACEHOLDER FOR THE SERVER", // the server that is sending the timeout
     "^[1-9]{0,255}$" // A randomly generated key which is a random number 0 < x < 255 - a simple XOR on each byte
   }, "The connection has been established!"),
+
+  // awake
   awake("the awake packet consists of no user input parts.", new String[]{
     "^(?i)awake$" // Awake - case-insensitive
   }, "Awake?"),
+
+  // close Name_Of_Player
   close("the close packet consists of no user input parts", new String[]{
-    "(?i)close", // Close - case-insensitive
+    "^(?i)close$", // Close - case-insensitive
     "PLACEHOLDER FOR THE PLAYER" // Player name + resolve IP
   }, "Closing the connection!"),
   /*
@@ -50,6 +63,8 @@ public enum PacketType {
     "^[1-9]+$",
     "^((([1-9]+:[1-9]+),)+)?([1-9]+:[1-9]+)$"
   }, "Updating the user about the board!"),
+
+  // Player_Name_That_Is_Sending Some_Message
   chat("", new String[]{
     "PLACEHOLDER FOR THE PLAYER", // Player name + resolve IP
     "^.*$"
@@ -61,6 +76,12 @@ public enum PacketType {
   String response;
   String help;
   // removing whitespaces to ease out the matching step: replaceAll("\\s+", "")
+
+  /**
+  * @param help is an instruction set on how to create the packet.
+  * @param partMatching[] the different parts on how to match that make up the packet.
+  * @param response a default response for a given packet to indicated a successfull transmission.
+  */
   PacketType(String help, String[] partMatching, String response) {
     this.help = help;
     this.partMatching = partMatching;
