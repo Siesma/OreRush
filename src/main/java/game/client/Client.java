@@ -1,5 +1,6 @@
 package game.client;
 
+import game.packet.PacketGenerator;
 import game.packet.PacketType;
 import game.server.ServerConstants;
 
@@ -35,7 +36,7 @@ public class Client {
 
 
         out.write(ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE);
-        out.write(createPacketMessage().getBytes());
+        out.write(PacketGenerator.createPacketMessage().getBytes());
         out.write(ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE);
 
       }
@@ -45,84 +46,6 @@ public class Client {
       sock.close();
     } catch (IOException e) {
       e.printStackTrace();
-    }
-  }
-
-  public static String promptUserForInput()
-  {
-    Scanner sc = new Scanner(System.in);
-    return sc.nextLine();
-  }
-
-
-  public static String createPacketMessage() {
-    System.out.println("What kind of packet do you want to send?");
-    System.out.println("Down follows a list of possible packets.");
-
-    System.out.println("request");
-    System.out.println("timeout");
-    System.out.println("success");
-    System.out.println("awake");
-    System.out.println("close");
-    System.out.println("update");
-    System.out.println("move");
-    System.out.println("chat");
-    System.out.println("settings");
-
-    while (true) {
-      String entered = promptUserForInput();
-      PacketType newPacket = new PacketType();
-      try {
-        System.out.println(generatePacket(entered));
-        break;
-      } catch (Exception e) {
-        System.out.println("No packet exists thats named \"" + entered + "\", try again!");
-      }
-    }
-    //System.out.println("Please enter the needed information to fulfill the " + selected.name() + "-Packet.");
-    return "Packet generated";
-  }
-
-  private static String generatePacket (String entered) throws Exception {
-    switch (entered) {
-      case "request":
-        return "reqst";
-      case "timeout":
-        return "timeo";
-      case "success":
-        return "succs";
-      case "awake":
-        return "awake";
-      case "close":
-        return "close";
-      case "update":
-        return "updte";
-      case "move":
-        return "pmove";
-      case "chat":
-        return "pchat";
-      case "settings":
-        return "settn";
-      default:
-        throw new Exception();
-    }
-  }
-  /*
-  This function asks the user to type their message and saves the player key and message to newChatPackage
-   */
-  private static void getChatPacketContent (PacketType newChatPackage) {
-    while (true) {
-
-      newChatPackage.content[0] = 1; //TODO: Make this use the player key
-
-      String entered = promptUserForInput();
-      newChatPackage.content[1] = entered;
-      try {
-        System.out.println(generatePacket(entered));
-        break;
-      } catch (Exception e) {
-        System.out.println("No packet exists thats named \"" + entered + "\", try again!");
-      }
     }
   }
 }

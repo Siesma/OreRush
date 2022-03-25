@@ -13,11 +13,10 @@ public class PacketType {
   /*
   This function will turn this package into a Request-Package and fill it's content accodringly
    */
-  public void generateRequestPackage (String clientName, long timeOfPacket, String ipOfClient) {
+  public void generateRequestPackage (long timeOfPacket, String ipOfClient) {
     this.type = "reqst";
-    this.content[0] = clientName;
-    this.content[1] = timeOfPacket;
-    this.content[2] = ipOfClient;
+    this.content[0] = timeOfPacket;
+    this.content[1] = ipOfClient;
   }
 
   /*
@@ -84,6 +83,15 @@ public class PacketType {
     this.type = "pchat";
     this.content[0] = clientKey;
     this.content[1] = message;
+  }
+
+  /*
+  This function will turn this package into a Nickname-Package and fill it's content accodringly
+   */
+  public void generateNicknamePackage(int clientKey, String nickname) {
+    this.type = "nickn";
+    this.content[0] = clientKey;
+    this.content[1] = nickname;
   }
 
   /*
