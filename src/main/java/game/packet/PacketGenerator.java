@@ -1,5 +1,7 @@
 package game.packet;
 
+import game.client.Client;
+
 import java.util.Scanner;
 /*
 This is a helper class to generate Packets.
@@ -25,7 +27,7 @@ public class PacketGenerator {
 
     This should eventually be replaced by a user interface event system.
      */
-    public static PacketType createPacketMessageByUserInput() {
+    public static PacketType createPacketMessageByUserInput(Client userClient) {
         PacketType newPacket;
         System.out.println("What kind of packet do you want to send?");
         System.out.println("Down follows a list of possible packets.");
@@ -52,6 +54,9 @@ public class PacketGenerator {
                 if (newPacket.type.equals("nickn")) {
                     System.out.println("Please type your new nickname here:");
                     newPacket.content[1] = promptUserForInput();
+                }
+                if (newPacket.type.equals("close")) {
+                    userClient.shutDownClient();
                 }
                 //newPacket.printPacketOnCommandLine();
 

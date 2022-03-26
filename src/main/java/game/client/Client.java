@@ -13,6 +13,8 @@ import java.util.concurrent.ExecutionException;
 
 public class Client {
 
+  private boolean isShuttingDown = false;
+
   public void run(String hostAddress, int port, String name) {
     try {
       Socket sock = new Socket(hostAddress, port);
@@ -31,20 +33,22 @@ public class Client {
 //        if (interpretedPacket == PacketType.close) {
 //          break;
 //        }
-        // TODO: delete, testing as long as close packet not functionnal
-        if (line.equals("quit")) {
+        PacketHandler.pushMessage(out, PacketGenerator.createPacketMessageByUserInput(this));
+        if (isShuttingDown) {
           break;
         }
-
-        PacketHandler.pushMessage(out, PacketGenerator.createPacketMessageByUserInput());
-
       }
       System.out.println("terminating ..");
       in.close();
       out.close();
       sock.close();
+
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public void shutDownClient() {
+    isShuttingDown = true;
   }
 }
