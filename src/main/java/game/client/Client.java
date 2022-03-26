@@ -36,7 +36,7 @@ public class Client {
 
 
         out.write(ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE);
-        out.write(PacketGenerator.createPacketMessage().getBytes());
+        out.write(PacketGenerator.createPacketMessageByUserInput().getBytes());
         out.write(ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE);
 
       }

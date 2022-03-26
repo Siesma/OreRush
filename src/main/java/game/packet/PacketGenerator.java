@@ -18,12 +18,12 @@ public class PacketGenerator {
     }
 
     /*
-    This function should only be called if the user is trying to generate a packet manually as it will promt the user for input.
+    This function should only be called if the user is trying to generate a packet manually as it will promt the user for input on the command line.
 
     Generates a packet based on input from the user.
     It first lists all the possible packets and then, based on what packet was chosen, prompts the User to input the content of the packet.
      */
-    public static String createPacketMessage() {
+    public static String createPacketMessageByUserInput() {
         System.out.println("What kind of packet do you want to send?");
         System.out.println("Down follows a list of possible packets.");
 
@@ -69,7 +69,7 @@ public class PacketGenerator {
     }
 
     /*
-    This function will generate a Packet based on the user input.
+    This function will generate a Packet.
     It will first figure out the type of packet and then call a function to fill it's content.
 
     The string "message" carries the string content of the "chat" and the "nickname" packet.
