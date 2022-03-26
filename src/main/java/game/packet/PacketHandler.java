@@ -49,12 +49,9 @@ public class PacketHandler {
     return packetType;
   }
 
-  private static String decode(String message) {
-    String decodedMessage = "";
-        /*
-        TODO: Interpret message given the matching of packets
-         */
-    return decodedMessage;
+  private static PacketType decode(String message) throws Exception {
+    PacketType type = PacketGenerator.generatePacket(message.substring(0, 5), message.substring(6));
+    return type;
   }
 
   private static String encode(Client client, Server server, PacketType message) throws Exception {
