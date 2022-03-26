@@ -27,6 +27,11 @@ public class ClientThread implements Runnable{
         this.connectedToServer = true;
     }
     public void run() {
+
+        PingThread pT = new PingThread();
+        Thread pingThread = new Thread(pT);
+        pingThread.start();
+
         boolean startingToRecordMessage = false;
         while (connectedToServer) {
 
