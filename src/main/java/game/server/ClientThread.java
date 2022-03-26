@@ -18,6 +18,9 @@ public class ClientThread implements Runnable{
 
     private String playerName;
 
+    PingThread pT = new PingThread();
+    Thread pingThread = new Thread(pT);
+
     StringBuilder builder = new StringBuilder();
 
     public ClientThread(Socket socket) throws IOException {
@@ -27,9 +30,6 @@ public class ClientThread implements Runnable{
         this.connectedToServer = true;
     }
     public void run() {
-
-        PingThread pT = new PingThread();
-        Thread pingThread = new Thread(pT);
         pingThread.start();
 
         boolean startingToRecordMessage = false;
@@ -117,6 +117,7 @@ public class ClientThread implements Runnable{
             case "timeo":
                 break;
             case "succs":
+                pT.isPingReceived = true;
                 break;
             case "awake":
                 break;

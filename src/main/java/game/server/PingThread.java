@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class PingThread implements Runnable {
     ArrayList<ClientThread> clientsWithNoResponse = new ArrayList<>();
+    protected boolean isPingReceived = false;
 
     public void run() {
         System.out.println("Ping thread started");
@@ -21,12 +22,13 @@ public class PingThread implements Runnable {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if (!isPingReceived()) {
+                if (!isPingReceived) {
                     System.out.println("No response from clientThread.");
                     clientsWithNoResponse.add(clientThread);
                     disconnectClient(clientThread);
                 } else {
-                    // System.out.println("Ping received");
+                    System.out.println("The Ping was received and confirmed");
+                    isPingReceived = false; //This resets the check for the next cycle.
                 }
             }
 
@@ -51,12 +53,6 @@ public class PingThread implements Runnable {
         catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private boolean isPingReceived() {
-        // TODO
-        boolean answer = true;
-        return answer;
     }
 
     private void disconnectClient(ClientThread clientThread) {
