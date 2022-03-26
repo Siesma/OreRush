@@ -24,15 +24,9 @@ public class Client {
       th.out = out;
       Thread iT = new Thread(th);
       iT.start();
-      BufferedReader conin = new BufferedReader(new InputStreamReader(System.in));
-      String line;
+
+      //This while loop will generate user-input on the commandline
       while (true) {
-        line = conin.readLine();
-        // TODO: Create a function that interptes the incoming "line" according to the packets own functions
-//        PacketType interpretedPacket = PacketType.close;
-//        if (interpretedPacket == PacketType.close) {
-//          break;
-//        }
         PacketHandler.pushMessage(out, PacketGenerator.createPacketMessageByUserInput(this));
         if (isShuttingDown) {
           break;
@@ -48,6 +42,9 @@ public class Client {
     }
   }
 
+  /*
+  This switches causes the thread to break out of the While(true) loop and shut itself down.
+   */
   public void shutDownClient() {
     isShuttingDown = true;
   }

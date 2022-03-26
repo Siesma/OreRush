@@ -55,7 +55,9 @@ public class PingThread implements Runnable {
         }
     }
 
-    private void disconnectClient(ClientThread clientThread) {
+    protected void disconnectClient(ClientThread clientThread) {
         clientThread.setConnectedToServer(false);
+        Server.getClientThreads().remove(clientThread);
+        System.out.println("Disconnected Client from Server");
     }
 }

@@ -122,6 +122,7 @@ public class ClientThread implements Runnable{
             case "awake":
                 break;
             case "close":
+                pT.disconnectClient(this);
                 break;
             case "updte":
                 break;
@@ -194,6 +195,10 @@ public class ClientThread implements Runnable{
         return playerName;
     }
 
+    /*
+    This should push the given (recieved) chat-Packet back to all the clients.
+    It also adds the authors player name
+     */
     private void pushChatMessageToAllClients(PacketType chatPacket)
     {
         chatPacket.content[1] = playerName + ": " + chatPacket.content[1];
