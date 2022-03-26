@@ -50,7 +50,7 @@ public class PacketHandler {
   }
 
   private static PacketType decode(String message) throws Exception {
-    PacketType type = PacketGenerator.generatePacket(message.substring(0, 5), message.substring(6));
+    PacketType type = PacketGenerator.generatePacket(message.substring(0, 5), PacketDecoder.decodePacketContent(message.substring(0, 5), message.substring(6)));
     return type;
   }
 
@@ -67,9 +67,7 @@ public class PacketHandler {
     }
     return out.toString();
   }
-  private static String[] splitMessageBySpacer(String message) {
-    return message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
-  }
+
 
   private static boolean isValidate(String message) {
         /*

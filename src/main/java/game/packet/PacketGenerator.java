@@ -22,6 +22,8 @@ public class PacketGenerator {
 
     Generates a packet based on input from the user.
     It first lists all the possible packets and then, based on what packet was chosen, prompts the User to input the content of the packet.
+
+    This should eventually be replaced by a user interface event system.
      */
     public static String createPacketMessageByUserInput() {
         System.out.println("What kind of packet do you want to send?");
@@ -69,53 +71,63 @@ public class PacketGenerator {
     }
 
     /*
+    This is a helper function that should be called when a brand-new packet is to be generated.
+     */
+    protected PacketType generateNewPacket (String type) throws Exception {
+        return generatePacket(type, null);
+    }
+    /*
     This function will generate a Packet.
     It will first figure out the type of packet and then call a function to fill it's content.
 
-    The string "message" carries the string content of the "chat" and the "nickname" packet.
+    > If the content is == null it will generate a brand-new packet and fill the packets content
+    with the appropriate infromation.
+
+    > If the content is != null, it will fill the packet with the information stored in "content".
+    This is the case if a packet is to be generated from a decoded message.
      */
-    private static PacketType generatePacket (String type, String message) throws Exception {
+    protected static PacketType generatePacket (String type, Object[] content) throws Exception {
         PacketType newPacket = new PacketType();
         switch (type) {
             case "request":
                 newPacket.type = "reqst";
-                getRequestPacketContent(newPacket);
+                getRequestPacketContent(newPacket, content);
                 return newPacket;
             case "timeout":
                 newPacket.type = "timeo";
-                getTimeoutPacketContent(newPacket);
+                getTimeoutPacketContent(newPacket, content);
                 return newPacket;
             case "success":
                 newPacket.type = "succs";
-                getSuccessPacketContent(newPacket);
+                getSuccessPacketContent(newPacket, content);
                 return newPacket;
             case "awake":
                 newPacket.type = "awake";
-                getAwakePacketContent(newPacket);
+                getAwakePacketContent(newPacket, content);
                 return newPacket;
             case "close":
                 newPacket.type = "close";
-                getClosePacketContent(newPacket);
+                getClosePacketContent(newPacket, content);
                 return newPacket;
             case "update":
                 newPacket.type = "updte";
-                getUpdatePacketContent(newPacket);
+                getUpdatePacketContent(newPacket, content);
                 return newPacket;
             case "move":
                 newPacket.type = "pmove";
-                getMovePacketContent(newPacket);
+                getMovePacketContent(newPacket, content);
                 return newPacket;
             case "chat":
                 newPacket.type = "pchat";
-                getChatPacketContent(newPacket, message);
+                getChatPacketContent(newPacket, content);
                 return newPacket;
             case "nickname":
                 newPacket.type = "nickn";
-                getNicknamePacketContent(newPacket, message);
+                getNicknamePacketContent(newPacket, content);
                 return newPacket;
             case "settings":
                 newPacket.type = "settn";
-                getSettingsPacketContent(newPacket);
+                getSettingsPacketContent(newPacket, content);
                 return newPacket;
             default:
                 throw new Exception();
@@ -125,79 +137,137 @@ public class PacketGenerator {
     /*
     This function is used to generate a Request-Packet
      */
-    private static void getRequestPacketContent (PacketType newChatPackage) {
-        newChatPackage.content[0] = System.currentTimeMillis();
-        newChatPackage.content[1] = 10; //TODO: Make this actually save the IP of the user
+    private static void getRequestPacketContent (PacketType newPackage, Object[] content) {
+        if (content == null) {
+            newPackage.content[0] = System.currentTimeMillis();
+            newPackage.content[1] = 10; //TODO: Make this actually save the IP of the user
+        }
+        else {
+            newPackage.content[0] = content[0];
+            newPackage.content[1] = content[1];
+        }
     }
 
     /*
     This function is used to generate a Timeout-Packet
      */
-    private static void getTimeoutPacketContent (PacketType newChatPackage) {
-        newChatPackage.content[0] = 20; //TODO: Make this actually save the IP of the server
+    private static void getTimeoutPacketContent (PacketType newPackage, Object[] content) {
+        if (content == null) {
+            newPackage.content[0] = 20; //TODO: Make this actually save the IP of the server
+        }
+        else {
+            newPackage.content[0] = content[0];
+        }
     }
 
     /*
     This function is used to generate a Timeout-Packet
      */
-    private static void getSuccessPacketContent (PacketType newChatPackage) {
-        newChatPackage.content[0] = 420; //TODO: Make this actually generate a unique client key
+    private static void getSuccessPacketContent (PacketType newPackage, Object[] content) {
+        if (content == null) {
+            newPackage.content[0] = 420; //TODO: Make this actually generate a unique client key
+        }
+        else {
+            newPackage.content[0] = content[0];
+        }
     }
 
     /*
     This function is used to generate a Awake-Packet
      */
-    private static void getAwakePacketContent (PacketType newChatPackage) {
-        newChatPackage.content[0] = System.currentTimeMillis();
+    private static void getAwakePacketContent (PacketType newPackage, Object[] content) {
+        if (content == null) {
+            newPackage.content[0] = System.currentTimeMillis();
+        }
+        else {
+            newPackage.content[0] = content[0];
+        }
     }
 
     /*
     This function is used to generate a Close-Packet
      */
-    private static void getClosePacketContent (PacketType newChatPackage) {
-        newChatPackage.content[0] = System.currentTimeMillis();
-        newChatPackage.content[1] = 1; //TODO: Make this use the player key
+    private static void getClosePacketContent (PacketType newPackage, Object[] content) {
+        if (content == null) {
+            newPackage.content[0] = System.currentTimeMillis();
+            newPackage.content[1] = 1; //TODO: Make this use the player key
+        }
+        else {
+            newPackage.content[0] = content[0];
+            newPackage.content[1] = content[1];
+        }
     }
 
     /*
     This function is used to generate a Update-Packet
      */
-    private static void getUpdatePacketContent (PacketType newChatPackage) {
-        newChatPackage.content[0] = "[[This is a map]]"; //TODO: Make this send the map data
-        newChatPackage.content[1] = new int[3]; //TODO: Make this use the actual equipmentCooldowns
-        newChatPackage.content[2] = "[[These are the robots]]"; //TODO: Make this send the robots
-        newChatPackage.content[3] = new float[10]; //TODO: Make this send the current score
+    private static void getUpdatePacketContent (PacketType newPackage, Object[] content) {
+        if (content == null) {
+            newPackage.content[0] = "[[This is a map]]"; //TODO: Make this send the map data
+            newPackage.content[1] = "[[These are the equipmentCooldowns]]"; //TODO: Make this use the equipment cooldowns
+            newPackage.content[2] = "[[These are the robots]]"; //TODO: Make this send the robots
+            newPackage.content[3] = "[[These are the highscores]]"; //TODO: Make this send the current score
+        }
+        else {
+            newPackage.content[0] = content[0];
+            newPackage.content[1] = content[1];
+            newPackage.content[2] = content[2];
+            newPackage.content[3] = content[3];
+        }
     }
 
     /*
     This function is used to generate a Move-Packet
      */
-    private static void getMovePacketContent (PacketType newChatPackage) {
-        newChatPackage.content[0] = 1; //TODO: Make this use the player key
-        newChatPackage.content[1] = "[[This is a move: (1/6)->(2/6)]]"; //TODO: Make this use actual moves
+    private static void getMovePacketContent (PacketType newPackage, Object[] content) {
+        if (content == null) {
+            newPackage.content[0] = 1; //TODO: Make this use the player key
+            newPackage.content[1] = "[[This is a move: (1/6)->(2/6)]]"; //TODO: Make this use actual moves
+        }
+        else {
+            newPackage.content[0] = content[0];
+            newPackage.content[1] = content[1];
+        }
     }
 
     /*
     This function is used to generate a Chat-Packet by asking the user to type
-    their message and saving the player key and message to newChatPackage
+    their message and saving the player key and message to newPackage
      */
-    private static void getChatPacketContent (PacketType newChatPackage, String message) {
-        newChatPackage.content[0] = 1; //TODO: Make this use the player key
-        newChatPackage.content[1] = message;
+    private static void getChatPacketContent (PacketType newPackage, Object[] content) {
+        if (content == null) {
+            newPackage.content[0] = 1; //TODO: Make this use the player key
+            newPackage.content[1] = null;
+        }
+        else {
+            newPackage.content[0] = content[0];
+            newPackage.content[1] = content[1];
+        }
     }
 
     /*
-    This function asks the user to type a new nickname and saves the player key and nickname to newChatPackage
+    This function asks the user to type a new nickname and saves the player key and nickname to newPackage
      */
-    private static void getNicknamePacketContent (PacketType newChatPackage, String nickname) {
-        newChatPackage.content[0] = 1; //TODO: Make this use the player key
-        newChatPackage.content[1] = nickname;
+    private static void getNicknamePacketContent (PacketType newPackage, Object[] content) {
+        if (content == null) {
+            newPackage.content[0] = 1; //TODO: Make this use the player key
+            newPackage.content[1] = null;
+        }
+        else {
+            newPackage.content[0] = content[0];
+            newPackage.content[1] = content[1];
+        }
     }
 
     /*
-    This function asks the user to type a new nickname and saves the player key and nickname to newChatPackage
+    This function is used to generate a Settings-Packet
      */
-    private static void getSettingsPacketContent (PacketType newChatPackage) {
-        newChatPackage.content[0] = "[[This is all the server settings]]"; //TODO: Make this use the server settings
+    private static void getSettingsPacketContent (PacketType newPackage, Object[] content) {
+        if (content == null) {
+            newPackage.content[0] = "[[This is all the server settings]]"; //TODO: Make this use the server settings
+        }
+        else {
+            newPackage.content[0] = content[0];
+        }
     }
 }
