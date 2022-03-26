@@ -1,6 +1,7 @@
 package game.client;
 
 import game.packet.PacketGenerator;
+import game.packet.PacketHandler;
 import game.packet.PacketType;
 import game.server.ServerConstants;
 
@@ -34,10 +35,7 @@ public class Client {
           break;
         }
 
-
-        out.write(ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE);
-        out.write(PacketGenerator.createPacketMessageByUserInput().getBytes());
-        out.write(ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE);
+        PacketHandler.pushMessage(out, PacketGenerator.createPacketMessageByUserInput());
 
       }
       System.out.println("terminating ..");

@@ -11,96 +11,17 @@ public class PacketType {
   public Object[] content = new Object[100]; //TODO: Figure out a resonable array size
 
   /*
-  This function will turn this package into a Request-Package and fill it's content accodringly
+  Prints out the full Packet to the console for debugging / validation
    */
-  public void generateRequestPackage (long timeOfPacket, String ipOfClient) {
-    this.type = "reqst";
-    this.content[0] = timeOfPacket;
-    this.content[1] = ipOfClient;
-  }
-
-  /*
-  This function will turn this package into a Timeout-Package and fill it's content accodringly
-   */
-  public void generateTimeoutPackage(String ipOfServer) {
-    this.type = "timeo";
-    this.content[0] = ipOfServer;
-  }
-
-  /*
-  This function will turn this package into a Success-Package and fill it's content accodringly
-   */
-  public void generateSuccessPackage(int clientKey) {
-    this.type = "succs";
-    this.content[0] = clientKey;
-  }
-
-  /*
-  This function will turn this package into a Awake-Package and fill it's content accodringly
-   */
-  public void generateAwakePackage(int timeOfPacket) {
-    this.type = "awake";
-    this.content[0] = timeOfPacket;
-  }
-
-  /*
-  This function will turn this package into a Close-Package and fill it's content accodringly
-   */
-  public void generateClosePackage(int timeOfPacket, int clientKey) {
-    this.type = "close";
-    this.content[0] = timeOfPacket;
-    this.content[1] = clientKey;
-  }
-
-  /*
-  This function will turn this package into a Awake-Package and fill it's content accodringly
-
-  TODO: Define classes for all parameters currently defined as "Object"
-   */
-  public void generateUpdatePackage(Object visibleMap, int[] equipmentCooldown, Object[] robots, float[] playerScores) {
-    this.type = "updte";
-    this.content[0] = visibleMap;
-    this.content[1] = equipmentCooldown;
-    this.content[2] = robots;
-    this.content[3] = playerScores;
-  }
-
-  /*
-  This function will turn this package into a Move-Package and fill it's content accodringly
-
-  TODO: Define classes for all parameters currently defined as "Object"
-   */
-  public void generateMovePackage(int clientKey, Object moves) {
-    this.type = "pmove";
-    this.content[0] = clientKey;
-    this.content[1] = moves;
-  }
-
-  /*
-  This function will turn this package into a Chat-Package and fill it's content accodringly
-   */
-  public void generateChatPackage(int clientKey, String message) {
-    this.type = "pchat";
-    this.content[0] = clientKey;
-    this.content[1] = message;
-  }
-
-  /*
-  This function will turn this package into a Nickname-Package and fill it's content accodringly
-   */
-  public void generateNicknamePackage(int clientKey, String nickname) {
-    this.type = "nickn";
-    this.content[0] = clientKey;
-    this.content[1] = nickname;
-  }
-
-  /*
-  This function will turn this package into a Settings-Package and fill it's content accodringly
-
-  TODO: Define classes for all parameters currently defined as "Object"
-   */
-  public void generateSettingsPackage(Object serverSettings) {
-    this.type = "settn";
-    this.content[0] = serverSettings;
+  public void printPacketOnCommandLine()
+  {
+    System.out.println("This packet contains the following information:");
+    System.out.println("Packet type: " + this.type);
+    System.out.println("Packet Content: ");
+    int i = 0;
+    while (this.content[i] != null){
+      System.out.println("> " + this.content[i]);
+      i++;
+    }
   }
 }

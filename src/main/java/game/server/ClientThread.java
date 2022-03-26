@@ -46,13 +46,31 @@ public class ClientThread implements Runnable{
             if (cur == ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE) {
                 startingToRecordMessage = false;
                 String message = builder.toString();
-                PacketHandler.pushMessage(message);
+                //PacketHandler.pushMessage(message);
                 builder.setLength(0);
+
+                System.out.println("I have received a packet: " + message);
                 try {
-                    outputStream.write(PacketHandler.generateOutputFromInput(message).getBytes());
-                } catch (IOException e) {
+                    PacketType receivedPacket = PacketHandler.decode(message);
+                    receivedPacket.printPacketOnCommandLine();
+                }
+                catch (Exception e) {
                     e.printStackTrace();
                 }
+
+
+                /*
+                try {
+                    PacketHandler.pushMessage(outputStream, PacketHandler.decode(message));
+                    System.out.println("I have recieved a message!");
+                    //outputStream.write(PacketHandler.generateOutputFromInput(message).getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                */
+
             }
             if (startingToRecordMessage) {
                 builder.append((char) cur);

@@ -4,6 +4,10 @@ import game.client.Client;
 import game.server.Server;
 import game.server.ServerConstants;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
+
 public class PacketHandler {
 
   public static String generateOutputFromInput(String input) {
@@ -49,12 +53,11 @@ public class PacketHandler {
     return packetType;
   }
 
-  private static PacketType decode(String message) throws Exception {
-    PacketType type = PacketGenerator.generatePacket(message.substring(0, 5), PacketDecoder.decodePacketContent(message.substring(0, 5), message.substring(6)));
-    return type;
+  public static PacketType decode(String message) throws Exception{
+    return PacketGenerator.generatePacket(message.substring(0, 5), PacketDecoder.decodePacketContent(message.substring(0, 5), message.substring(6)));
   }
 
-  private static String encode(Client client, Server server, PacketType message) throws Exception {
+  private static String encode(PacketType message){
     StringBuilder out = new StringBuilder();
     out.append(message.type);
     out.append((char) ServerConstants.DEFAULT_PACKET_SPACER);
@@ -77,10 +80,18 @@ public class PacketHandler {
     return false; //Todo make this actually check
   }
 
-  public static void pushMessage(String encodedMessage) {
-        /*
-        TODO: Send the already encoded message
-         */
-    System.out.println(encodedMessage);
+  public static void pushMessage(OutputStream out, PacketType packet) {
+    try{
+      String encodedMessage = encode(packet);
+
+      out.write(ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE);
+      out.write(encodedMessage.getBytes());
+      out.write(ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE);
+      System.out.println("This is the encoded message: " + encodedMessage);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }

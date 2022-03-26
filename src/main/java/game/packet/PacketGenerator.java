@@ -25,7 +25,8 @@ public class PacketGenerator {
 
     This should eventually be replaced by a user interface event system.
      */
-    public static String createPacketMessageByUserInput() {
+    public static PacketType createPacketMessageByUserInput() {
+        PacketType newPacket;
         System.out.println("What kind of packet do you want to send?");
         System.out.println("Down follows a list of possible packets.");
 
@@ -43,7 +44,7 @@ public class PacketGenerator {
         while (true) {
             String entered = promptUserForInput();
             try {
-                PacketType newPacket = generatePacket(entered, null);
+                 newPacket = generateNewPacket(entered);
                 if (newPacket.type.equals("pchat")) {
                     System.out.println("Please type your message here:");
                     newPacket.content[1] = promptUserForInput();
@@ -52,14 +53,7 @@ public class PacketGenerator {
                     System.out.println("Please type your new nickname here:");
                     newPacket.content[1] = promptUserForInput();
                 }
-
-                //Prints out the full Packet to the console for debugging / validation
-                System.out.println("The packet you're sending is");
-                int i = 0;
-                while (newPacket.content[i] != null){
-                    System.out.println(newPacket.content[i]);
-                    i++;
-                }
+                newPacket.printPacketOnCommandLine();
 
                 break;
             } catch (Exception e) {
@@ -67,13 +61,13 @@ public class PacketGenerator {
             }
         }
         //System.out.println("Please enter the needed information to fulfill the " + selected.name() + "-Packet.");
-        return "Packet generated";
+        return newPacket;
     }
 
     /*
     This is a helper function that should be called when a brand-new packet is to be generated.
      */
-    protected PacketType generateNewPacket (String type) throws Exception {
+    protected static PacketType generateNewPacket (String type) throws Exception {
         return generatePacket(type, null);
     }
     /*
@@ -90,14 +84,17 @@ public class PacketGenerator {
         PacketType newPacket = new PacketType();
         switch (type) {
             case "request":
+            case "reqst":
                 newPacket.type = "reqst";
                 getRequestPacketContent(newPacket, content);
                 return newPacket;
             case "timeout":
+            case "timeo":
                 newPacket.type = "timeo";
                 getTimeoutPacketContent(newPacket, content);
                 return newPacket;
             case "success":
+            case "succs":
                 newPacket.type = "succs";
                 getSuccessPacketContent(newPacket, content);
                 return newPacket;
@@ -110,22 +107,27 @@ public class PacketGenerator {
                 getClosePacketContent(newPacket, content);
                 return newPacket;
             case "update":
+            case "updte":
                 newPacket.type = "updte";
                 getUpdatePacketContent(newPacket, content);
                 return newPacket;
             case "move":
+            case "pmove":
                 newPacket.type = "pmove";
                 getMovePacketContent(newPacket, content);
                 return newPacket;
             case "chat":
+            case "pchat":
                 newPacket.type = "pchat";
                 getChatPacketContent(newPacket, content);
                 return newPacket;
             case "nickname":
+            case "nickn":
                 newPacket.type = "nickn";
                 getNicknamePacketContent(newPacket, content);
                 return newPacket;
             case "settings":
+            case "settn":
                 newPacket.type = "settn";
                 getSettingsPacketContent(newPacket, content);
                 return newPacket;
