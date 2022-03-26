@@ -25,6 +25,7 @@ public class PacketGenerator {
         System.out.println("update");
         System.out.println("move");
         System.out.println("chat");
+        System.out.println("nickname");
         System.out.println("settings");
 
         while (true) {
@@ -60,28 +61,40 @@ public class PacketGenerator {
                 return newPacket;
             case "timeout":
                 newPacket.type = "timeo";
+                getTimeoutPacketContent(newPacket);
                 return newPacket;
             case "success":
                 newPacket.type = "succs";
+                getSuccessPacketContent(newPacket);
                 return newPacket;
             case "awake":
                 newPacket.type = "awake";
+                getAwakePacketContent(newPacket);
                 return newPacket;
             case "close":
                 newPacket.type = "close";
+                getClosePacketContent(newPacket);
                 return newPacket;
             case "update":
                 newPacket.type = "updte";
+                getUpdatePacketContent(newPacket);
                 return newPacket;
             case "move":
                 newPacket.type = "pmove";
+                getMovePacketContent(newPacket);
                 return newPacket;
             case "chat":
                 newPacket.type = "pchat";
                 getChatPacketContent(newPacket);
                 return newPacket;
+            case "nickname":
+                newPacket.type = "nickn";
+                getNicknamePacketContent(newPacket);
+                return newPacket;
             case "settings":
                 newPacket.type = "settn";
+                getSettingsPacketContent(newPacket);
+                return newPacket;
             default:
                 throw new Exception();
         }
@@ -96,7 +109,55 @@ public class PacketGenerator {
     }
 
     /*
-    This function asks the user to type their message and saves the player key and message to newChatPackage
+    This function is used to generate a Timeout-Packet
+     */
+    private static void getTimeoutPacketContent (PacketType newChatPackage) {
+        newChatPackage.content[0] = 20; //TODO: Make this actually save the IP of the server
+    }
+
+    /*
+    This function is used to generate a Timeout-Packet
+     */
+    private static void getSuccessPacketContent (PacketType newChatPackage) {
+        newChatPackage.content[0] = 420; //TODO: Make this actually generate a unique client key
+    }
+
+    /*
+    This function is used to generate a Awake-Packet
+     */
+    private static void getAwakePacketContent (PacketType newChatPackage) {
+        newChatPackage.content[0] = System.currentTimeMillis();
+    }
+
+    /*
+    This function is used to generate a Close-Packet
+     */
+    private static void getClosePacketContent (PacketType newChatPackage) {
+        newChatPackage.content[0] = System.currentTimeMillis();
+        newChatPackage.content[1] = 1; //TODO: Make this use the player key
+    }
+
+    /*
+    This function is used to generate a Update-Packet
+     */
+    private static void getUpdatePacketContent (PacketType newChatPackage) {
+        newChatPackage.content[0] = "[[This is a map]]"; //TODO: Make this send the map data
+        newChatPackage.content[1] = new int[3]; //TODO: Make this use the actual equipmentCooldowns
+        newChatPackage.content[2] = "[[These are the robots]]"; //TODO: Make this send the robots
+        newChatPackage.content[3] = new float[10]; //TODO: Make this send the current score
+    }
+
+    /*
+    This function is used to generate a Move-Packet
+     */
+    private static void getMovePacketContent (PacketType newChatPackage) {
+        newChatPackage.content[0] = 1; //TODO: Make this use the player key
+        newChatPackage.content[1] = "[[This is a move: (1/6)->(2/6)]]"; //TODO: Make this use actual moves
+    }
+
+    /*
+    This function is used to generate a Chat-Packet by asking the user to type
+    their message and saving the player key and message to newChatPackage
      */
     private static void getChatPacketContent (PacketType newChatPackage) {
         newChatPackage.content[0] = 1; //TODO: Make this use the player key
@@ -104,6 +165,23 @@ public class PacketGenerator {
         System.out.println("Enter your chat message:");
         String entered = promptUserForInput();
         newChatPackage.content[1] = entered;
-        System.out.println("Message saved");
+    }
+
+    /*
+    This function asks the user to type a new nickname and saves the player key and nickname to newChatPackage
+     */
+    private static void getNicknamePacketContent (PacketType newChatPackage) {
+        newChatPackage.content[0] = 1; //TODO: Make this use the player key
+
+        System.out.println("Enter your new Nickname:");
+        String entered = promptUserForInput();
+        newChatPackage.content[1] = entered;
+    }
+
+    /*
+    This function asks the user to type a new nickname and saves the player key and nickname to newChatPackage
+     */
+    private static void getSettingsPacketContent (PacketType newChatPackage) {
+        newChatPackage.content[0] = "[[This is all the server settings]]"; //TODO: Make this use the server settings
     }
 }

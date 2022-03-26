@@ -57,7 +57,7 @@ public class PacketType {
 
   TODO: Define classes for all parameters currently defined as "Object"
    */
-  public void generateUpdatePackage(Object visibleMap, Object equipmentCooldown, Object robots, Object[] playerScores) {
+  public void generateUpdatePackage(Object visibleMap, int[] equipmentCooldown, Object[] robots, float[] playerScores) {
     this.type = "updte";
     this.content[0] = visibleMap;
     this.content[1] = equipmentCooldown;
