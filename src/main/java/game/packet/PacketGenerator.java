@@ -53,7 +53,7 @@ public class PacketGenerator {
                     System.out.println("Please type your new nickname here:");
                     newPacket.content[1] = promptUserForInput();
                 }
-                newPacket.printPacketOnCommandLine();
+                //newPacket.printPacketOnCommandLine();
 
                 break;
             } catch (Exception e) {
@@ -67,9 +67,10 @@ public class PacketGenerator {
     /*
     This is a helper function that should be called when a brand-new packet is to be generated.
      */
-    protected static PacketType generateNewPacket (String type) throws Exception {
+    public static PacketType generateNewPacket (String type) throws Exception {
         return generatePacket(type, null);
     }
+
     /*
     This function will generate a Packet.
     It will first figure out the type of packet and then call a function to fill it's content.
@@ -80,7 +81,7 @@ public class PacketGenerator {
     > If the content is != null, it will fill the packet with the information stored in "content".
     This is the case if a packet is to be generated from a decoded message.
      */
-    protected static PacketType generatePacket (String type, Object[] content) throws Exception {
+    public static PacketType generatePacket (String type, Object[] content) throws Exception {
         PacketType newPacket = new PacketType();
         switch (type) {
             case "request":

@@ -1,5 +1,6 @@
 package game.server;
 
+import game.packet.PacketGenerator;
 import game.packet.PacketHandler;
 import game.packet.PacketType;
 
@@ -57,10 +58,13 @@ public class ClientThread implements Runnable{
                 try {
                     PacketType receivedPacket = PacketHandler.decode(message);
                     receivedPacket.printPacketOnCommandLine();
+                    generateAppropriateReaction(receivedPacket);
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                 }
+
+
             }
             /*
             This will read the whole message into the builder.
@@ -98,16 +102,59 @@ public class ClientThread implements Runnable{
         return playerName;
     }
 
+    /*
+    This causes a reaction based on a received Packet.
+     */
+    private void generateAppropriateReaction(PacketType packet) {
+        switch (packet.type) {
+            case "reqst":
+                break;
+            case "timeo":
+                break;
+            case "succs":
+                break;
+            case "awake":
+                break;
+            case "close":
+                break;
+            case "updte":
+                break;
+            case "pmove":
+                break;
+            case "pchat":
+                pushChatMessageToAllClients(packet);
+                break;
+            case "nickn":
+                setPlayerName(packet);
+                break;
+            case "settn":
+                break;
+            default:
+        }
+    }
 
     /**
      * Changes the playername of the client. Verifies if the name is unique and changes it if necessary.
-     * @param playerName new name that the client wants to use.
+     * @param packet is the packet that contains the new name that the client wants to use.
      */
-    public void setPlayerName(String playerName) {
-        while (isPlayerNameUnique(playerName)) {
+    public void setPlayerName(PacketType packet) {
+        String playerName = (String) packet.content[1];
+        while (!isPlayerNameUnique(playerName)) {
             playerName = changeDuplicateName(playerName);
         }
         this.playerName = playerName;
+        System.out.println("New Player Name: " + playerName);
+
+        //This will generate a reply to the Client, informing them that the Nickname was successfully changed
+        Object[] content = new Object[100];
+        content[0] = 0;
+        content[1] = "(Successfully changed their nickname to: " + playerName + ")";
+        try {
+            pushChatMessageToAllClients(PacketGenerator.generatePacket("pchat", content));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -116,11 +163,13 @@ public class ClientThread implements Runnable{
      * @return boolean indicating uniqueness
      */
     public boolean isPlayerNameUnique(String newPlayerName) {
+        /*
         for (ClientThread clientThread:Server.getClientThreads()) {
             if (clientThread.getPlayerName().equals(newPlayerName)) {
                 return false;
             }
         }
+        */
         return true;
     }
 
@@ -137,5 +186,12 @@ public class ClientThread implements Runnable{
             playerName = playerName + "_1";
         }
         return playerName;
+    }
+
+    private void pushChatMessageToAllClients(PacketType chatPacket)
+    {
+        chatPacket.content[1] = playerName + ": " + chatPacket.content[1];
+        PacketHandler.pushMessage(getOutputStream(), chatPacket);
+        System.out.println("Pushed Chat Packet to Clients");
     }
 }

@@ -87,7 +87,7 @@ public class PacketHandler {
       out.write(ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE);
       out.write(encodedMessage.getBytes());
       out.write(ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE);
-      System.out.println("This is the encoded message: " + encodedMessage);
+      //System.out.println("This is the encoded message: " + encodedMessage);
     } catch (IOException e) {
       e.printStackTrace();
     } catch (Exception e) {

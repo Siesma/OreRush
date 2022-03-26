@@ -1,5 +1,8 @@
 package game.server;
 
+import game.packet.PacketGenerator;
+import game.packet.PacketHandler;
+
 import java.io.OutputStream;
 import java.util.ArrayList;
 
@@ -41,7 +44,13 @@ public class PingThread implements Runnable {
     }
 
     private void sendPing(OutputStream outputStream) {
-        // TODO outputStream.write();
+        try {
+            System.out.println("Send Ping to Client");
+            PacketHandler.pushMessage(outputStream, PacketGenerator.generateNewPacket("awake"));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean isPingReceived() {

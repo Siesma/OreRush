@@ -19,6 +19,7 @@ public class Client {
       InputStream in = sock.getInputStream();
       OutputStream out = sock.getOutputStream();
       ContentThread th = new ContentThread(in);
+      th.out = out;
       Thread iT = new Thread(th);
       iT.start();
       BufferedReader conin = new BufferedReader(new InputStreamReader(System.in));
