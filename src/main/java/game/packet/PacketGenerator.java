@@ -31,7 +31,17 @@ public class PacketGenerator {
         while (true) {
             String entered = promptUserForInput();
             try {
-                PacketType newPacket = generatePacket(entered);
+                PacketType newPacket = generatePacket(entered, null);
+                if (newPacket.type.equals("pchat")) {
+                    System.out.println("Please type your message here:");
+                    newPacket.content[1] = promptUserForInput();
+                }
+                if (newPacket.type.equals("nickn")) {
+                    System.out.println("Please type your new nickname here:");
+                    newPacket.content[1] = promptUserForInput();
+                }
+
+                //Prints out the full Packet to the console for debugging / validation
                 System.out.println("The packet you're sending is");
                 int i = 0;
                 while (newPacket.content[i] != null){
@@ -51,10 +61,12 @@ public class PacketGenerator {
     /*
     This function will generate a Packet based on the user input.
     It will first figure out the type of packet and then call a function to fill it's content.
+
+    The string "message" carries the string content of the "chat" and the "nickname" packet.
      */
-    private static PacketType generatePacket (String entered) throws Exception {
+    private static PacketType generatePacket (String type, String message) throws Exception {
         PacketType newPacket = new PacketType();
-        switch (entered) {
+        switch (type) {
             case "request":
                 newPacket.type = "reqst";
                 getRequestPacketContent(newPacket);
@@ -85,11 +97,11 @@ public class PacketGenerator {
                 return newPacket;
             case "chat":
                 newPacket.type = "pchat";
-                getChatPacketContent(newPacket);
+                getChatPacketContent(newPacket, message);
                 return newPacket;
             case "nickname":
                 newPacket.type = "nickn";
-                getNicknamePacketContent(newPacket);
+                getNicknamePacketContent(newPacket, message);
                 return newPacket;
             case "settings":
                 newPacket.type = "settn";
@@ -159,23 +171,17 @@ public class PacketGenerator {
     This function is used to generate a Chat-Packet by asking the user to type
     their message and saving the player key and message to newChatPackage
      */
-    private static void getChatPacketContent (PacketType newChatPackage) {
+    private static void getChatPacketContent (PacketType newChatPackage, String message) {
         newChatPackage.content[0] = 1; //TODO: Make this use the player key
-
-        System.out.println("Enter your chat message:");
-        String entered = promptUserForInput();
-        newChatPackage.content[1] = entered;
+        newChatPackage.content[1] = message;
     }
 
     /*
     This function asks the user to type a new nickname and saves the player key and nickname to newChatPackage
      */
-    private static void getNicknamePacketContent (PacketType newChatPackage) {
+    private static void getNicknamePacketContent (PacketType newChatPackage, String nickname) {
         newChatPackage.content[0] = 1; //TODO: Make this use the player key
-
-        System.out.println("Enter your new Nickname:");
-        String entered = promptUserForInput();
-        newChatPackage.content[1] = entered;
+        newChatPackage.content[1] = nickname;
     }
 
     /*
