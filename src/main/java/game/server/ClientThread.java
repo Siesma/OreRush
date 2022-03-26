@@ -43,12 +43,16 @@ public class ClientThread implements Runnable{
                 return;
             }
 
+            /*
+            This part is executed once the end of the message is reached.
+             */
             if (cur == ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE) {
                 startingToRecordMessage = false;
                 String message = builder.toString();
                 //PacketHandler.pushMessage(message);
                 builder.setLength(0);
 
+                //This part here prints out what the server received. This is here just for bug fixing and manual validation.
                 System.out.println("I have received a packet: " + message);
                 try {
                     PacketType receivedPacket = PacketHandler.decode(message);
@@ -57,24 +61,16 @@ public class ClientThread implements Runnable{
                 catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
-                /*
-                try {
-                    PacketHandler.pushMessage(outputStream, PacketHandler.decode(message));
-                    System.out.println("I have recieved a message!");
-                    //outputStream.write(PacketHandler.generateOutputFromInput(message).getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                */
-
             }
+            /*
+            This will read the whole message into the builder.
+             */
             if (startingToRecordMessage) {
                 builder.append((char) cur);
             }
+            /*
+            This is executed when the server detects the start of a message.
+             */
             if (cur == ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE) {
                 startingToRecordMessage = true;
             }
