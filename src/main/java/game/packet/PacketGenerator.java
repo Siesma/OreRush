@@ -1,8 +1,16 @@
 package game.packet;
 
 import java.util.Scanner;
+/*
+This is a helper class to generate Packets.
 
+Either by calling the "createPacketMessage" to promt the user for input to fill out the packet
+or by calling the "generatePacket" to generate packets from some information passed by another function.
+ */
 public class PacketGenerator {
+    /*
+    This is a helper function that fetches the users next command line input and returns it.
+     */
     public static String promptUserForInput()
     {
         Scanner sc = new Scanner(System.in);
@@ -10,6 +18,8 @@ public class PacketGenerator {
     }
 
     /*
+    This function should only be called if the user is trying to generate a packet manually as it will promt the user for input.
+
     Generates a packet based on input from the user.
     It first lists all the possible packets and then, based on what packet was chosen, prompts the User to input the content of the packet.
      */
