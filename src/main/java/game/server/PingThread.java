@@ -9,26 +9,32 @@ import java.util.ArrayList;
 
 public class PingThread implements Runnable {
     ArrayList<ClientThread> clientsWithNoResponse = new ArrayList<>();
-    protected boolean isPingReceived = false;
 
     public void run() {
         System.out.println("Ping thread started");
         while (true) {
-            for(ClientThread clientThread :Server.getClientThreads()) {
-                // System.out.println("Ping sent");
+            ArrayList<ClientThread> list = new ArrayList<>(Server.getClientThreads());
+
+            for(ClientThread clientThread:list) {
                 sendPing(clientThread.getOutputStream());
+                System.out.println("Ping sent to " + clientThread.getPlayerName());
                 try {
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if (!isPingReceived) {
-                    System.out.println("No response from clientThread.");
+                if (!clientThread.isPingReceived()) {
+                    System.out.println("No response from "
+                            + clientThread.getPlayerName()
+                            + " after 3 seconds.");
+                    System.out.println("The connection has been interrupted");
                     clientsWithNoResponse.add(clientThread);
-                    disconnectClient(clientThread);
+                    clientThread.setConnectedToServer(false);
                 } else {
-                    System.out.println("The Ping was received and confirmed");
-                    isPingReceived = false; //This resets the check for the next cycle.
+                    System.out.println("Ping received and confirmed by "
+                            + clientThread.getPlayerName()
+                            + ".");
+                    clientThread.setPingReceived(false); //This resets the check for the next cycle.
                 }
             }
 
@@ -47,17 +53,10 @@ public class PingThread implements Runnable {
 
     private void sendPing(OutputStream outputStream) {
         try {
-            System.out.println("Send Ping to Client");
             PacketHandler.pushMessage(outputStream, PacketGenerator.generateNewPacket("awake"));
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    protected void disconnectClient(ClientThread clientThread) {
-        clientThread.setConnectedToServer(false);
-        Server.getClientThreads().remove(clientThread);
-        System.out.println("Disconnected Client from Server");
     }
 }

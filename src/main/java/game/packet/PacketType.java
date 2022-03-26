@@ -8,7 +8,7 @@ public class PacketType {
   //This identifies the type of the Package to make decoding easier
   public String type;
   //This contains all the data of the Package
-  public Object[] content = new Object[100]; //TODO: Figure out a resonable array size
+  public Object[] content = new Object[100]; //TODO: Figure out a reasonable array size
 
   /*
   Prints out the full Packet to the console for debugging / validation

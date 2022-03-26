@@ -11,15 +11,14 @@ import java.net.Socket;
 
 public class ClientThread implements Runnable{
 
-    private boolean connectedToServer;
     private final Socket socket;
     private final InputStream inputStream;
     private final OutputStream outputStream;
 
-    private String playerName;
+    private boolean connectedToServer;
+    private boolean pingReceived;
 
-    PingThread pT = new PingThread();
-    Thread pingThread = new Thread(pT);
+    private String playerName;
 
     StringBuilder builder = new StringBuilder();
 
@@ -28,9 +27,9 @@ public class ClientThread implements Runnable{
         this.inputStream = socket.getInputStream();
         this.outputStream = socket.getOutputStream();
         this.connectedToServer = true;
+        playerName = "unknown";
     }
     public void run() {
-        pingThread.start();
 
         boolean startingToRecordMessage = false;
         while (connectedToServer) {
@@ -42,7 +41,15 @@ public class ClientThread implements Runnable{
                 Server.getClientThreads().remove(this);
 
                 System.out.println("Client disconnected." );
-                System.out.println(Server.getClientThreads().size() + " clients are connected to the server.");
+                if (Server.getClientThreads().size() == 0) {
+                    System.out.println("No clients are connected to the server.");
+                } else if (Server.getClientThreads().size() == 1) {
+                    System.out.println("1 client is connected to the server.");
+                } else {
+                    System.out.println(Server.getClientThreads().size()
+                            + " clients are connected to the server.");
+                }
+
                 cur = -1;
             }
             if (cur == -1) {
@@ -91,21 +98,7 @@ public class ClientThread implements Runnable{
             e.printStackTrace();
         }
     }
-    public void setConnectedToServer(boolean connectedToServer) {
-        this.connectedToServer = connectedToServer;
-    }
 
-    public InputStream getInputStream() {
-        return inputStream;
-    }
-
-    public OutputStream getOutputStream() {
-        return outputStream;
-    }
-
-    public String getPlayerName() {
-        return playerName;
-    }
 
     /*
     This causes a reaction based on a received Packet.
@@ -117,12 +110,14 @@ public class ClientThread implements Runnable{
             case "timeo":
                 break;
             case "succs":
-                pT.isPingReceived = true;
+                setPingReceived(true);
                 break;
             case "awake":
                 break;
             case "close":
-                pT.disconnectClient(this);
+                setConnectedToServer(false);
+                Server.getClientThreads().remove(this);
+                System.out.println(getPlayerName() + " was disconnected from the server.");
                 break;
             case "updte":
                 break;
@@ -132,7 +127,7 @@ public class ClientThread implements Runnable{
                 pushChatMessageToAllClients(packet);
                 break;
             case "nickn":
-                setPlayerName(packet);
+                changePlayerName((String) packet.content[1]);
                 break;
             case "settn":
                 break;
@@ -141,11 +136,10 @@ public class ClientThread implements Runnable{
     }
 
     /**
-     * Changes the playername of the client. Verifies if the name is unique and changes it if necessary.
-     * @param packet is the packet that contains the new name that the client wants to use.
+     * Changes the playerName of the client. Verifies if the name is unique and changes it if necessary.
+     * @param playerName is the new name that the client wants to use and needs to be checked.
      */
-    public void setPlayerName(PacketType packet) {
-        String playerName = (String) packet.content[1];
+    public void changePlayerName(String playerName) {
         while (!isPlayerNameUnique(playerName)) {
             playerName = changeDuplicateName(playerName);
         }
@@ -170,13 +164,11 @@ public class ClientThread implements Runnable{
      * @return boolean indicating uniqueness
      */
     public boolean isPlayerNameUnique(String newPlayerName) {
-        /*
         for (ClientThread clientThread:Server.getClientThreads()) {
             if (clientThread.getPlayerName().equals(newPlayerName)) {
                 return false;
             }
         }
-        */
         return true;
     }
 
@@ -196,7 +188,7 @@ public class ClientThread implements Runnable{
     }
 
     /*
-    This should push the given (recieved) chat-Packet back to all the clients.
+    This should push the given (received) chat-Packet back to all the clients.
     It also adds the authors player name
      */
     private void pushChatMessageToAllClients(PacketType chatPacket)
@@ -204,5 +196,27 @@ public class ClientThread implements Runnable{
         chatPacket.content[1] = playerName + ": " + chatPacket.content[1];
         PacketHandler.pushMessage(getOutputStream(), chatPacket);
         System.out.println("Pushed Chat Packet to Clients");
+    }
+
+    // getters and setters
+
+    public boolean isPingReceived() {
+        return pingReceived;
+    }
+
+    public void setPingReceived(boolean pingReceived) {
+        this.pingReceived = pingReceived;
+    }
+
+    public void setConnectedToServer(boolean connectedToServer) {
+        this.connectedToServer = connectedToServer;
+    }
+
+    public OutputStream getOutputStream() {
+        return outputStream;
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 }
