@@ -117,6 +117,7 @@ public class ClientThread implements Runnable{
                 setPingReceived(true);
                 break;
             case "awake":
+                confirmPong();
                 break;
             case "close":
                 setConnectedToServer(false);
@@ -202,6 +203,14 @@ public class ClientThread implements Runnable{
             PacketHandler.pushMessage(clientThread.getOutputStream(), chatPacket);
         }
         System.out.println("Pushed Chat Packet to Clients");
+    }
+
+    private void confirmPong() {
+        try {
+            PacketHandler.pushMessage(outputStream, PacketGenerator.generateNewPacket("succs"));
+        } catch (Exception e) {
+
+        }
     }
 
     // getters and setters

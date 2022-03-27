@@ -9,35 +9,39 @@ import java.net.Socket;
 
 public class Client {
 
-  private boolean isShuttingDown = false;
+  private Socket socket;
+  private InputStream inputStream;
+  private static OutputStream outputStream;
+
+  private boolean pongReceived = false;
+
 
   public void run(String hostAddress, int port, String name) {
     try {
-      Socket sock = new Socket(hostAddress, port);
-      InputStream in = sock.getInputStream();
-      OutputStream out = sock.getOutputStream();
-      ContentThread th = new ContentThread(in);
-      th.out = out;
+      socket = new Socket(hostAddress, port);
+      inputStream = socket.getInputStream();
+      outputStream = socket.getOutputStream();
+
+      ContentThread th = new ContentThread(this);
       Thread iT = new Thread(th);
       iT.start();
 
-
-
       PacketType namePacket = PacketGenerator.generateNewPacket("nickn");
       namePacket.content[1] = name;
-      PacketHandler.pushMessage(out, namePacket);
+      PacketHandler.pushMessage(outputStream, namePacket);
+
+      PongThread pT = new PongThread(this);
+      Thread pongThread = new Thread(pT);
+      pongThread.start();
 
       //This while loop will generate user-input on the commandline
-      do {
-        PacketHandler.pushMessage(out, PacketGenerator.createPacketMessageByUserInput(this));
-      } while (!isShuttingDown);
-      System.out.println("terminating ..");
-      in.close();
-      out.close();
-      sock.close();
+      while (true) {
 
-    } catch (IOException e) {
-      e.printStackTrace();
+        PacketHandler.pushMessage(outputStream, PacketGenerator.createPacketMessageByUserInput(this));
+
+      }
+
+
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -46,7 +50,34 @@ public class Client {
   /*
   This switches causes the thread to break out of the While(true) loop and shut itself down.
    */
-  public void shutDownClient() {
-    isShuttingDown = true;
+  public void shutDownClient(Client client) {
+    System.out.println("terminating ..");
+    try {
+      inputStream.close();
+      outputStream.close();
+      client.socket.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    System.out.println("EXITING");
+    System.exit(0);
+  }
+
+
+  public OutputStream getOutputStream() {
+    return outputStream;
+  }
+
+  public InputStream getInputStream() {
+    return inputStream;
+  }
+
+  public void setPongReceived(boolean pongReceived) {
+    this.pongReceived = pongReceived;
+  }
+
+  public boolean isPongReceived() {
+    return pongReceived;
   }
 }
