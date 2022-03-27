@@ -80,10 +80,10 @@ Once playing you will have control over multiple robots, these are controlled by
 
 ## Authors
 
-* [**Tom Rodewald**](https://git.scicore.unibas.ch/tom.rodewald)  - *Comp Sci Student*
-* [**Gian Moser**](https://git.scicore.unibas.ch/gian.moser)  - *Comp Sci Student*
-* [**Sebastien Muheim**](https://git.scicore.unibas.ch/gian.moser) - *Comp Sci Student*
-* [**Ali Evrim Cümen**](https://git.scicore.unibas.ch/ali.cuemen) - *Comp Sci Student*
+* [**Tom Rodewald**](https://git.scicore.unibas.ch/tom.rodewald)  - *Computer Science Student*
+* [**Gian Moser**](https://git.scicore.unibas.ch/gian.moser)  - *Computer Science Student*
+* [**Sebastien Muheim**](https://git.scicore.unibas.ch/gian.moser) - *Computational Science Student*
+* [**Ali Evrim Cümen**](https://git.scicore.unibas.ch/ali.cuemen) - *Computer Science Student*
 
 
 [The Roadmap](https://git.scicore.unibas.ch/cs108-fs22/Gruppe-12/-/blob/master/documents/gantchart.pdf)
