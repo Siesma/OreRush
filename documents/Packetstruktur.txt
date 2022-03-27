@@ -1,3 +1,8 @@
+Es wird vorausgesetzt, dass ein Server bereits auf dem Localhost auf dem port 1038 offen ist. Sofern dies gegeben ist, wird dieser darauf warten einzelne Clients zu bedienen. Diese werden immer mal wieder mit ping packeten gefragt ob diese noch existieren damit, für den fall, dass die clients geschlossen wurden, die Verbindung auch nicht aufrecht gehalten wird.
+Es wird dauerhaft eine Verbindung offen gehalten in welcher Packete gesendet werden, die Packete welche definiert sind folgt weiter unten.
+Jedes Packet wird auch beantwortet, sodass beide Seiten wissen ob das Packet richtig gesendet wurde.
+Die Packetdaten werden so gesendet, dass zuerst ein "Start-char" gesendet wird, welcher andeutet, dass ein neues Packet gesendet wird. Dann wird zuerst einmal der Packet-type gesendet, darauf folgen die einzelnen Informationen des Packets. Die einzelnen Informationen sind durch "Spacer-chars" getrennt, welche besondere Zeichen sind um anzudeuten, dass eine Information abgeschlossen ist. Und zum schluss wird ein "End-char" gesendet welcher andeutet, dass das Packet vollendet ist. Daraufhin wird das Packet validiert, und lediglich sofern die Nachricht richtig decodiert wird, wird die weiter verarbeitet.
+
 reqst (request)
 	- Long		Zeitstempel
 	- Int		Der jeweilige Server
