@@ -9,11 +9,16 @@ import java.io.OutputStream;
 
 public class PongThread implements Runnable{
 
+    private final OutputStream outputStream;
+
+    public PongThread(OutputStream outputStream) {
+        this.outputStream = outputStream;
+    }
 
     public void run() {
         System.out.println("Pong thread started");
         while(true){
-            sendPong(/* ClientThread.getOutputStream()*/);
+            sendPong();
 
             try {
                 Thread.sleep(3000);
@@ -31,10 +36,10 @@ public class PongThread implements Runnable{
         }
     }
 
-    private void sendPong(/*OutputStream outputStreamServer*/){
+    private void sendPong(){
         try {
             System.out.println("Send Pong to Server");
-          //  PacketHandler.pushMessage(outputStreamServer, PacketGenerator.generateNewPacket("awake"));
+            PacketHandler.pushMessage(outputStream, PacketGenerator.generateNewPacket("awake"));
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -42,7 +47,7 @@ public class PongThread implements Runnable{
 
     }
     private boolean isPongReceived(){
-        boolean answer=true;
+
         return answer;
     }
 }

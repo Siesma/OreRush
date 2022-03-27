@@ -10,31 +10,36 @@ import java.net.Socket;
 public class Client {
 
   private boolean isShuttingDown = false;
+  private InputStream inputStream;
+  private OutputStream outputStream;
+
 
   public void run(String hostAddress, int port, String name) {
     try {
-      Socket sock = new Socket(hostAddress, port);
-      InputStream in = sock.getInputStream();
-      OutputStream out = sock.getOutputStream();
-      ContentThread th = new ContentThread(in);
-      th.out = out;
+      Socket socket = new Socket(hostAddress, port);
+      inputStream = socket.getInputStream();
+      outputStream = socket.getOutputStream();
+      ContentThread th = new ContentThread(inputStream);
+      th.out = outputStream;
       Thread iT = new Thread(th);
       iT.start();
 
-
-
       PacketType namePacket = PacketGenerator.generateNewPacket("nickn");
       namePacket.content[1] = name;
-      PacketHandler.pushMessage(out, namePacket);
+      PacketHandler.pushMessage(outputStream, namePacket);
+
+      PongThread pT = new PongThread(outputStream);
+      Thread pongThread = new Thread(pT);
+      pongThread.start();
 
       //This while loop will generate user-input on the commandline
       do {
-        PacketHandler.pushMessage(out, PacketGenerator.createPacketMessageByUserInput(this));
+        PacketHandler.pushMessage(outputStream, PacketGenerator.createPacketMessageByUserInput(this));
       } while (!isShuttingDown);
       System.out.println("terminating ..");
-      in.close();
-      out.close();
-      sock.close();
+      inputStream.close();
+      outputStream.close();
+      socket.close();
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -49,4 +54,10 @@ public class Client {
   public void shutDownClient() {
     isShuttingDown = true;
   }
+
+
+  public OutputStream getOutputStream() {
+    return outputStream;
+  }
+
 }
