@@ -56,7 +56,7 @@ public class PacketGenerator {
                     newPacket.content[1] = promptUserForInput();
                 }
                 if (newPacket.type.equals("close")) {
-                    userClient.shutDownClient();
+                    userClient.shutDownClient();   // TODO: find better place than packet generator (wtf)
                 }
                 //newPacket.printPacketOnCommandLine();
 

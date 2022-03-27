@@ -25,12 +25,14 @@ public class PongThread implements Runnable{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if(!isPongReceived()){
-                System.out.print("No response");
-
+            if(!client.isPongReceived()){
+                System.out.println("No response from server.");
+                System.out.println("The client will shutdown shortly.");
+                client.shutDownClient(); // TODO: try and reconnect to server
 
             }else{
                 System.out.println("Pong is received and confirmed");
+                client.setPongReceived(false);
 
             }
         }
@@ -46,8 +48,5 @@ public class PongThread implements Runnable{
 
 
     }
-    private boolean isPongReceived(){
 
-        return answer;
-    }
 }

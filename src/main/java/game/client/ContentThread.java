@@ -10,11 +10,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class ContentThread implements Runnable {
-  InputStream in;
-  OutputStream out;
+  private final Client client;
+  private final InputStream in;
+  private final OutputStream out;
 
-  public ContentThread(InputStream in) {
-    this.in = in;
+
+
+  public ContentThread(Client client) {
+    this.client = client;
+    this.in = client.getInputStream();
+    this.out = client.getOutputStream();
   }
 
   public void run() {
@@ -82,6 +87,7 @@ public class ContentThread implements Runnable {
       case "timeo":
         break;
       case "succs":
+        confirmPongReceived();
         break;
       case "awake":
         confirmPingFromServer();
@@ -107,5 +113,9 @@ public class ContentThread implements Runnable {
     } catch (Exception e) {
 
     }
+  }
+
+  private void confirmPongReceived() {
+    client.setPongReceived(true);
   }
 }
