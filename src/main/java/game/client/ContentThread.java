@@ -3,7 +3,6 @@ package game.client;
 import game.packet.PacketGenerator;
 import game.packet.PacketHandler;
 import game.packet.PacketType;
-import game.server.Server;
 import game.server.ServerConstants;
 
 import java.io.IOException;
@@ -27,9 +26,9 @@ public class ContentThread implements Runnable {
       int cur;
       try {
         cur = in.read();
-        } catch (IOException e) {
-          cur = -1;
-        }
+      } catch (IOException e) {
+        cur = -1;
+      }
       if (cur == -1) {
         return;
       }
@@ -46,6 +45,10 @@ public class ContentThread implements Runnable {
         //This part here prints out what the server received. This is here just for bug fixing and manual validation.
         try {
           PacketType receivedPacket = PacketHandler.decode(message);
+          if (receivedPacket == null) {
+            System.out.println("The recieved packet contains garbage.");
+            break;
+          }
           //receivedPacket.printPacketOnCommandLine();
           generateAppropriateReaction(receivedPacket);
         } catch (Exception e) {
@@ -100,9 +103,8 @@ public class ContentThread implements Runnable {
 
   private void confirmPingFromServer() {
     try {
-      PacketHandler.pushMessage(out ,PacketGenerator.generateNewPacket("succs"));
-    }
-    catch (Exception e) {
+      PacketHandler.pushMessage(out, PacketGenerator.generateNewPacket("succs"));
+    } catch (Exception e) {
 
     }
   }

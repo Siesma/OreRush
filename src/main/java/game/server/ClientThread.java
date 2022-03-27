@@ -69,6 +69,10 @@ public class ClientThread implements Runnable{
                 System.out.println("I have received a packet: " + message);
                 try {
                     PacketType receivedPacket = PacketHandler.decode(message);
+                    if (receivedPacket == null) {
+                        System.out.println("The recieved packet contains garbage.");
+                        break;
+                    }
                     receivedPacket.printPacketOnCommandLine();
                     generateAppropriateReaction(receivedPacket);
                 }

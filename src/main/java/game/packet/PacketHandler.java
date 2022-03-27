@@ -1,12 +1,9 @@
 package game.packet;
 
-import game.client.Client;
-import game.server.Server;
 import game.server.ServerConstants;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.Socket;
 
 public class PacketHandler {
 
@@ -53,11 +50,15 @@ public class PacketHandler {
     return packetType;
   }
 
-  public static PacketType decode(String message) throws Exception{
-    return PacketGenerator.generatePacket(message.substring(0, 5), PacketDecoder.decodePacketContent(message.substring(0, 5), message.substring(6)));
+  public static PacketType decode(String message) throws Exception {
+    try {
+      return PacketGenerator.generatePacket(message.substring(0, 5), PacketDecoder.decodePacketContent(message.substring(0, 5), message.substring(6)));
+    } catch (Exception e) {
+      return null;
+    }
   }
 
-  private static String encode(PacketType message){
+  private static String encode(PacketType message) {
     StringBuilder out = new StringBuilder();
     out.append(message.type);
     out.append((char) ServerConstants.DEFAULT_PACKET_SPACER);
@@ -73,15 +74,12 @@ public class PacketHandler {
 
 
   private static boolean isValidate(String message) {
-        /*
-        TODO: Check if the message is a valid command based on the protocol
-         */
-    System.out.println(message);
-    return false; //Todo make this actually check
+    System.err.println(message);
+    return true; //Todo make this actually check
   }
 
   public static void pushMessage(OutputStream out, PacketType packet) {
-    try{
+    try {
       String encodedMessage = encode(packet);
 
       out.write(ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE);
