@@ -9,9 +9,7 @@ import java.net.Socket;
 
 public class Client {
 
-
-
-  private boolean isShuttingDown = false;
+  private Socket socket;
   private InputStream inputStream;
   private static OutputStream outputStream;
 
@@ -20,7 +18,7 @@ public class Client {
 
   public void run(String hostAddress, int port, String name) {
     try {
-      Socket socket = new Socket(hostAddress, port);
+      socket = new Socket(hostAddress, port);
       inputStream = socket.getInputStream();
       outputStream = socket.getOutputStream();
 
@@ -37,21 +35,13 @@ public class Client {
       pongThread.start();
 
       //This while loop will generate user-input on the commandline
-      while (!isShuttingDown) {
+      while (true) {
 
         PacketHandler.pushMessage(outputStream, PacketGenerator.createPacketMessageByUserInput(this));
 
       }
-      System.out.println("terminating ..");
-      inputStream.close();
-      outputStream.close();
-      socket.close();
-      System.out.println("EXITING");
 
-      System.exit(0);
 
-    } catch (IOException e) {
-      e.printStackTrace();
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -60,9 +50,18 @@ public class Client {
   /*
   This switches causes the thread to break out of the While(true) loop and shut itself down.
    */
-  public void shutDownClient() {
-    System.out.println("fadfadfaf");
-    setShuttingDown(true);
+  public void shutDownClient(Client client) {
+    System.out.println("terminating ..");
+    try {
+      inputStream.close();
+      outputStream.close();
+      client.socket.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    System.out.println("EXITING");
+    System.exit(0);
   }
 
 
@@ -80,8 +79,5 @@ public class Client {
 
   public boolean isPongReceived() {
     return pongReceived;
-  }
-  public void setShuttingDown(boolean shuttingDown) {
-    isShuttingDown = shuttingDown;
   }
 }
