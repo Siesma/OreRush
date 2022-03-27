@@ -3,13 +3,9 @@ package game.client;
 import game.packet.PacketGenerator;
 import game.packet.PacketHandler;
 import game.packet.PacketType;
-import game.server.ServerConstants;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Locale;
-import java.util.Scanner;
-import java.util.concurrent.ExecutionException;
 
 public class Client {
 
@@ -25,13 +21,16 @@ public class Client {
       Thread iT = new Thread(th);
       iT.start();
 
+      PacketType namePacket = new PacketType();
+      namePacket.type = "nickn";
+      namePacket.content[0] = 1;
+      namePacket.content[1] = name;
+      PacketHandler.pushMessage(out, namePacket);
+
       //This while loop will generate user-input on the commandline
-      while (true) {
+      do {
         PacketHandler.pushMessage(out, PacketGenerator.createPacketMessageByUserInput(this));
-        if (isShuttingDown) {
-          break;
-        }
-      }
+      } while (!isShuttingDown);
       System.out.println("terminating ..");
       in.close();
       out.close();
