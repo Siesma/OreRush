@@ -1,0 +1,28 @@
+reqst (request)
+	- Long		Zeitstempel
+	- Int		Der jeweilige Server
+timeo (timeout)
+	- String	"Timeout"
+succs (success)
+	- String	"Success"
+awake (awake)
+	- String	"Awake"
+close (close)
+	- Long		Zeitstempel
+	- Int		Der jeweilige Spieler
+updte (update)
+	- Object	Die Karte für den Spieler
+	- Object	Cooldown der einzelnen Ausrüstungsgegenstände
+	- Object	Die einzelnen Roboter, deren Position und deren Item
+	- Object	Die Punktestände der Spieler
+pmove (playerMove)
+	- Int		Spieler der die Nachricht sendet
+	- Object	Die einzelnen Züge der Spieler
+pchat (playerChat)
+	- Int		Die Spieler an welche die Nachricht gesendet werden soll
+	- String	Nachricht die gesendet werden soll
+nickn (nickname)
+	- Int		Der jeweilige Spieler
+	- String	Neuer Name des Spielers
+settn (settings)
+	- Object	Settingsobject
