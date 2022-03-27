@@ -78,6 +78,12 @@ public class PacketHandler {
     return true; //Todo make this actually check
   }
 
+  /**
+   * Sends packet to a outputStream enclosed by a default starting and ending message.
+   * @param out OutputStream which is used to send the packet.
+   * @param packet PacketType which is sent.
+   */
+
   public static void pushMessage(OutputStream out, PacketType packet) {
     try {
       String encodedMessage = encode(packet);
@@ -87,7 +93,7 @@ public class PacketHandler {
       out.write(ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE);
       //System.out.println("This is the encoded message: " + encodedMessage);
     } catch (IOException e) {
-      e.printStackTrace();
+
     } catch (Exception e) {
       e.printStackTrace();
     }

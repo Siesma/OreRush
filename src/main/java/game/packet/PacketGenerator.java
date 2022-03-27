@@ -27,7 +27,7 @@ public class PacketGenerator {
 
     This should eventually be replaced by a user interface event system.
      */
-    public static PacketType createPacketMessageByUserInput(Client userClient) {
+    public static PacketType createPacketMessageByUserInput(Client client) {
         PacketType newPacket;
         System.out.println("What kind of packet do you want to send?");
         System.out.println("Down follows a list of possible packets.");
@@ -56,13 +56,13 @@ public class PacketGenerator {
                     newPacket.content[1] = promptUserForInput();
                 }
                 if (newPacket.type.equals("close")) {
-                    userClient.shutDownClient();
+                    client.shutDownClient(client);   // TODO: find better place than packet generator (wtf)
                 }
                 //newPacket.printPacketOnCommandLine();
 
                 break;
             } catch (Exception e) {
-                System.out.println("No packet exists thats named \"" + entered + "\", try again!");
+                System.out.println("No packet exists that is named \"" + entered + "\", try again!");
             }
         }
         //System.out.println("Please enter the needed information to fulfill the " + selected.name() + "-Packet.");
