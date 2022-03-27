@@ -9,10 +9,10 @@ import java.io.OutputStream;
 
 public class PongThread implements Runnable{
 
-    private final OutputStream outputStream;
+    private final Client client;
 
-    public PongThread(OutputStream outputStream) {
-        this.outputStream = outputStream;
+    public PongThread(Client client) {
+        this.client = client;
     }
 
     public void run() {
@@ -39,7 +39,7 @@ public class PongThread implements Runnable{
     private void sendPong(){
         try {
             System.out.println("Send Pong to Server");
-            PacketHandler.pushMessage(outputStream, PacketGenerator.generateNewPacket("awake"));
+            PacketHandler.pushMessage(client.getOutputStream(), PacketGenerator.generateNewPacket("awake"));
         }catch(Exception e){
             e.printStackTrace();
         }

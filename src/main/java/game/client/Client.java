@@ -11,7 +11,7 @@ public class Client {
 
   private boolean isShuttingDown = false;
   private InputStream inputStream;
-  private OutputStream outputStream;
+  private static OutputStream outputStream;
 
 
   public void run(String hostAddress, int port, String name) {
@@ -28,7 +28,7 @@ public class Client {
       namePacket.content[1] = name;
       PacketHandler.pushMessage(outputStream, namePacket);
 
-      PongThread pT = new PongThread(outputStream);
+      PongThread pT = new PongThread(this);
       Thread pongThread = new Thread(pT);
       pongThread.start();
 
