@@ -198,7 +198,9 @@ public class ClientThread implements Runnable{
     private void pushChatMessageToAllClients(PacketType chatPacket)
     {
         chatPacket.content[1] = playerName + ": " + chatPacket.content[1];
-        PacketHandler.pushMessage(getOutputStream(), chatPacket);
+        for (ClientThread clientThread:Server.getClientThreads()) {
+            PacketHandler.pushMessage(clientThread.getOutputStream(), chatPacket);
+        }
         System.out.println("Pushed Chat Packet to Clients");
     }
 
