@@ -21,9 +21,9 @@ public class Client {
       Thread iT = new Thread(th);
       iT.start();
 
-      PacketType namePacket = new PacketType();
-      namePacket.type = "nickn";
-      namePacket.content[0] = 1;
+
+
+      PacketType namePacket = PacketGenerator.generateNewPacket("nickn");
       namePacket.content[1] = name;
       PacketHandler.pushMessage(out, namePacket);
 
@@ -37,6 +37,8 @@ public class Client {
       sock.close();
 
     } catch (IOException e) {
+      e.printStackTrace();
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
