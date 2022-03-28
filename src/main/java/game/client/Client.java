@@ -19,6 +19,12 @@ public class Client {
   public void run(String hostAddress, int port, String name) {
     try {
       socket = new Socket(hostAddress, port);
+    } catch (Exception e) {
+      System.out.println("The connection with the server failed.");
+      System.out.println("Please ensure the server is running with same port and try again.");
+      System.exit(0);
+    }
+    try {
       inputStream = socket.getInputStream();
       outputStream = socket.getOutputStream();
 
@@ -36,12 +42,8 @@ public class Client {
 
       //This while loop will generate user-input on the commandline
       while (true) {
-
         PacketHandler.pushMessage(outputStream, PacketGenerator.createPacketMessageByUserInput(this));
-
       }
-
-
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -59,7 +61,6 @@ public class Client {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
     System.out.println("EXITING");
     System.exit(0);
   }
