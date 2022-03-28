@@ -37,7 +37,7 @@ public class Main {
                 client.run(hostAddress, port, name);
             } else {
                 System.out.println("Error: Wrong first argument.");
-                System.out.println("The first argument is expected to be \"sever\" or \"client\"");
+                System.out.println("The first argument is expected to be \"server\" or \"client\"");
                 System.exit(1);
             }
         } catch (Exception e) {
