@@ -11,9 +11,6 @@ public class Server {
 
     private static final ArrayList<ClientThread> clientThreads = new ArrayList<>();
 
-    public static ArrayList<ClientThread> getClientThreads() {
-        return clientThreads;
-    }
 
     public void run(int port) throws IOException {
 
@@ -43,5 +40,9 @@ public class Server {
                 System.exit(1);
             }
         }
+    }
+
+    public static ArrayList<ClientThread> getClientThreads() {
+        return clientThreads;
     }
 }

@@ -80,11 +80,9 @@ public class PacketHandler {
 
     /**
      * Sends packet to a outputStream enclosed by a default starting and ending message.
-     *
-     * @param out    OutputStream which is used to send the packet.
+     * @param out OutputStream which is used to send the packet.
      * @param packet PacketType which is sent.
      */
-
     public static void pushMessage(OutputStream out, PacketType packet) {
         try {
             String encodedMessage = encode(packet);

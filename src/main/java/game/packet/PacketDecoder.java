@@ -8,9 +8,17 @@ This is a helper class to decode the string sent between clients and servers
 public class PacketDecoder {
 
     /*
-    This function will chop up the encoded string into its parts.
-    It will then, based on the packet type, pass the encoded information into the data types they represent
+
     and stores it in the "content" array which is returned.
+     */
+
+    /**
+     * This function will chop up the encoded string into its parts.
+     * It will then, based on the packet type, pass the encoded information into the data types they represent
+     * @param type of the packet
+     * @param encodedMessage contains arguments of the packet which needs to be split in an array
+     * @return content array containing arguments relevant to the packet type
+     * @throws Exception
      */
     protected static Object[] decodePacketContent(String type, String encodedMessage) throws Exception {
         Object[] content = new Object[100];
@@ -51,9 +59,9 @@ public class PacketDecoder {
         }
     }
 
-    /*
-    All the below function take the encoded message array and pass it based on what packet was sent.
-     */
+
+    // All the below function take the encoded message array and pass it based on what packet was sent.
+
     private static void decodeRequestPacketContent(Object[] content, String[] encodedMessageArray) {
         content[0] = Long.parseLong(encodedMessageArray[0]);
         content[1] = Integer.parseInt(encodedMessageArray[1]);

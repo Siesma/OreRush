@@ -26,20 +26,28 @@ public class PongThread implements Runnable {
             if (!client.isPongReceived()) {
                 System.out.println("No response from the server.");
                 System.out.println("The client will shutdown shortly.");
-                client.shutDownClient(client); // TODO: try and reconnect to server
+                client.shutDownClient(); // TODO: try and reconnect to server
             } else {
                 System.out.println("Pong is received and confirmed by the server");
                 client.setPongReceived(false);
             }
+            try {
+                Thread.sleep(20000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
+    /**
+     * Sends a awake packet to the server to ensure connection.
+     */
     private void sendPong() {
         try {
-            System.out.println("Sent pong to the server");
+            System.out.println("Pong sent to the server");
             PacketHandler.pushMessage(client.getOutputStream(), PacketGenerator.generateNewPacket("awake"));
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Client-server connection lost");
         }
     }
 }

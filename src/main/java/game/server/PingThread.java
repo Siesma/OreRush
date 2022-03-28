@@ -13,11 +13,13 @@ public class PingThread implements Runnable {
     public void run() {
         System.out.println("Ping thread started");
         while (true) {
+            // creates a copy of the connected clients to avoid ConcurrentModificationErrors (different solution?)
             ArrayList<ClientThread> list = new ArrayList<>(Server.getClientThreads());
 
             for (ClientThread clientThread : list) {
                 sendPing(clientThread.getOutputStream());
                 System.out.println("Ping sent to " + clientThread.getPlayerName());
+                // gives time to the client to respond
                 try {
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {
@@ -31,26 +33,29 @@ public class PingThread implements Runnable {
                     clientsWithNoResponse.add(clientThread);
                     clientThread.setConnectedToServer(false);
                 } else {
-                    System.out.println("Ping received and confirmed by "
+                    System.out.println("Ping was received and confirmed by "
                             + clientThread.getPlayerName()
                             + ".");
                     clientThread.setPingReceived(false); //This resets the check for the next cycle.
                 }
             }
 
+            // delete clients with no response
             for (ClientThread clientWithNoResponse : clientsWithNoResponse) {
                 Server.getClientThreads().remove(clientWithNoResponse);
             }
             try {
-                Thread.sleep(3000);
+                Thread.sleep(20000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            // System.out.println(Server.getClientThreads().size() +" client(s) got pinged");
         }
-
     }
 
+    /**
+     * Sends an awake-Packet to the client
+     * @param outputStream of the client thread(server) that is connected to the inputStream of the target client
+     */
     private void sendPing(OutputStream outputStream) {
         try {
             PacketHandler.pushMessage(outputStream, PacketGenerator.generateNewPacket("awake"));

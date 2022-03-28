@@ -33,6 +33,7 @@ public class Client {
             Thread iT = new Thread(th);
             iT.start();
 
+            //Sends packet to the server to set the name passed at launch.
             PacketType namePacket = PacketGenerator.generateNewPacket("nickn");
             namePacket.content[1] = name;
             PacketHandler.pushMessage(outputStream, namePacket);
@@ -50,15 +51,12 @@ public class Client {
         }
     }
 
-    /*
-    This switches causes the thread to break out of the While(true) loop and shut itself down.
-     */
-    public void shutDownClient(Client client) {
+    public void shutDownClient() {
         System.out.println("terminating ..");
         try {
             inputStream.close();
             outputStream.close();
-            client.socket.close();
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

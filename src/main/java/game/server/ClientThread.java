@@ -54,9 +54,8 @@ public class ClientThread implements Runnable {
                 return;
             }
 
-            /*
-            This part is executed once the end of the message is reached.
-             */
+
+            //This part is executed once the end of the message is reached.
             if (cur == ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE) {
                 startingToRecordMessage = false;
                 String message = builder.toString();
@@ -79,15 +78,13 @@ public class ClientThread implements Runnable {
 
 
             }
-            /*
-            This will read the whole message into the builder.
-             */
+
+            // This will read the whole message into the builder.
             if (startingToRecordMessage) {
                 builder.append((char) cur);
             }
-            /*
-            This is executed when the server detects the start of a message.
-             */
+
+            // This is executed when the server detects the start of a message.
             if (cur == ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE) {
                 startingToRecordMessage = true;
             }
@@ -102,7 +99,12 @@ public class ClientThread implements Runnable {
 
 
     /*
-    This causes a reaction based on a received Packet.
+
+     */
+
+    /**
+     * This causes a reaction based on a received Packet.
+     * @param packet containing the type of packet and its arguments
      */
     private void generateAppropriateReaction(PacketType packet) {
         switch (packet.type) {
@@ -139,7 +141,6 @@ public class ClientThread implements Runnable {
 
     /**
      * Changes the playerName of the client. Verifies if the name is unique and changes it if necessary.
-     *
      * @param playerName is the new name that the client wants to use and needs to be checked.
      */
     public void changePlayerName(String playerName) {
@@ -177,11 +178,9 @@ public class ClientThread implements Runnable {
 
     /**
      * Changes a duplicate name by either adding a 1 at the end of the name or increasing the last digit by 1
-     *
      * @param playerName name to be modified
      * @return modified name
      */
-
     public String changeDuplicateName(String playerName) {
         if (Character.isDigit(playerName.charAt(playerName.length() - 1))) {
             playerName = playerName.substring(0, playerName.length() - 1) + (Integer.parseInt(playerName.substring(playerName.length() - 1)) + 1);
@@ -191,9 +190,10 @@ public class ClientThread implements Runnable {
         return playerName;
     }
 
-    /*
-    This should push the given (received) chat-Packet back to all the clients.
-    It also adds the authors player name
+    /**
+     * Pushes the given (received) chat-Packet back to all the clients.
+     * It also adds the authors player name
+     * @param chatPacket packet containing message and delivery information (to modify)
      */
     private void pushChatMessageToAllClients(PacketType chatPacket) {
         chatPacket.content[1] = playerName + ": " + chatPacket.content[1];
@@ -203,11 +203,14 @@ public class ClientThread implements Runnable {
         System.out.println("Pushed Chat Packet to Clients");
     }
 
+    /**
+     * Sends a success packet to the appropriate client, to confirm a awake package was received
+     */
     private void confirmPong() {
         try {
             PacketHandler.pushMessage(outputStream, PacketGenerator.generateNewPacket("succs"));
         } catch (Exception e) {
-
+            System.out.println("Server-Client connection has been lost");
         }
     }
 

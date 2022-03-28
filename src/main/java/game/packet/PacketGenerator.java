@@ -11,21 +11,19 @@ Either by calling the "createPacketMessage" to promt the user for input to fill 
 or by calling the "generatePacket" to generate packets from some information passed by another function.
  */
 public class PacketGenerator {
-    /*
-    This is a helper function that fetches the users next command line input and returns it.
+    /**
+     * This is a helper function that fetches the users next command line input and returns it.
      */
     public static String promptUserForInput() {
         Scanner sc = new Scanner(System.in);
         return sc.nextLine();
     }
 
-    /*
-    This function should only be called if the user is trying to generate a packet manually as it will promt the user for input on the command line.
-
-    Generates a packet based on input from the user.
-    It first lists all the possible packets and then, based on what packet was chosen, prompts the User to input the content of the packet.
-
-    This should eventually be replaced by a user interface event system.
+    /**
+     *  This function should only be called if the user is trying to generate a packet manually as it will promt the user for input on the command line.
+     *     Generates a packet based on input from the user.
+     *     It first lists all the possible packets and then, based on what packet was chosen, prompts the User to input the content of the packet.
+     *     This should eventually be replaced by a user interface event system.
      */
     public static PacketType createPacketMessageByUserInput(Client client) {
         PacketType newPacket;
@@ -56,35 +54,44 @@ public class PacketGenerator {
                     newPacket.content[1] = promptUserForInput();
                 }
                 if (newPacket.type.equals("close")) {
-                    client.shutDownClient(client);   // TODO: find better place than packet generator (wtf)
+                    client.shutDownClient();   // TODO: find better place than packet generator (wtf)
                 }
-                //newPacket.printPacketOnCommandLine();
 
                 break;
             } catch (Exception e) {
                 System.out.println("No packet exists that is named \"" + entered + "\", try again!");
             }
         }
-        //System.out.println("Please enter the needed information to fulfill the " + selected.name() + "-Packet.");
         return newPacket;
     }
 
-    /*
-    This is a helper function that should be called when a brand-new packet is to be generated.
+    /**
+     * This is a helper function that should be called when a brand-new packet is to be generated.
+     * @param type of the packet
+     * @return a Packet with a type, with no content
+     * @throws Exception
      */
     public static PacketType generateNewPacket(String type) throws Exception {
         return generatePacket(type, null);
     }
 
     /*
-    This function will generate a Packet.
-    It will first figure out the type of packet and then call a function to fill it's content.
 
-    > If the content is == null it will generate a brand-new packet and fill the packets content
-    with the appropriate infromation.
+     */
 
-    > If the content is != null, it will fill the packet with the information stored in "content".
-    This is the case if a packet is to be generated from a decoded message.
+    /**
+     * This function will generate a Packet.
+     * It will first figure out the type of packet and then call a function to fill it's content.
+     *
+     * > If the content is == null it will generate a brand-new packet and fill the packets content
+     * with the appropriate infromation.
+     *
+     * > If the content is != null, it will fill the packet with the information stored in "content".
+     * This is the case if a packet is to be generated from a decoded message.
+     * @param type of the packet to be generated
+     * @param content arguments important to the packet type
+     * @return a packet
+     * @throws Exception
      */
     public static PacketType generatePacket(String type, Object[] content) throws Exception {
         PacketType newPacket = new PacketType();
