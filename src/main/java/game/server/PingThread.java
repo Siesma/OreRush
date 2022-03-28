@@ -15,7 +15,7 @@ public class PingThread implements Runnable {
         while (true) {
             ArrayList<ClientThread> list = new ArrayList<>(Server.getClientThreads());
 
-            for(ClientThread clientThread:list) {
+            for (ClientThread clientThread : list) {
                 sendPing(clientThread.getOutputStream());
                 System.out.println("Ping sent to " + clientThread.getPlayerName());
                 try {
@@ -38,7 +38,7 @@ public class PingThread implements Runnable {
                 }
             }
 
-            for (ClientThread clientWithNoResponse:clientsWithNoResponse) {
+            for (ClientThread clientWithNoResponse : clientsWithNoResponse) {
                 Server.getClientThreads().remove(clientWithNoResponse);
             }
             try {
@@ -54,8 +54,7 @@ public class PingThread implements Runnable {
     private void sendPing(OutputStream outputStream) {
         try {
             PacketHandler.pushMessage(outputStream, PacketGenerator.generateNewPacket("awake"));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

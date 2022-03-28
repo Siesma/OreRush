@@ -9,18 +9,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class ClientThread implements Runnable{
+public class ClientThread implements Runnable {
 
     private final Socket socket;
     private final InputStream inputStream;
     private final OutputStream outputStream;
-
+    StringBuilder builder = new StringBuilder();
     private boolean connectedToServer;
     private boolean pingReceived;
-
     private String playerName;
-
-    StringBuilder builder = new StringBuilder();
 
     public ClientThread(Socket socket) throws IOException {
         this.socket = socket;
@@ -29,6 +26,7 @@ public class ClientThread implements Runnable{
         this.connectedToServer = true;
         playerName = "unknown";
     }
+
     public void run() {
 
         boolean startingToRecordMessage = false;
@@ -40,7 +38,7 @@ public class ClientThread implements Runnable{
             } catch (IOException e) {
                 Server.getClientThreads().remove(this);
 
-                System.out.println("Client disconnected." );
+                System.out.println("Client disconnected.");
                 if (Server.getClientThreads().size() == 0) {
                     System.out.println("No clients are connected to the server.");
                 } else if (Server.getClientThreads().size() == 1) {
@@ -75,8 +73,7 @@ public class ClientThread implements Runnable{
                     }
                     receivedPacket.printPacketOnCommandLine();
                     generateAppropriateReaction(receivedPacket);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -142,6 +139,7 @@ public class ClientThread implements Runnable{
 
     /**
      * Changes the playerName of the client. Verifies if the name is unique and changes it if necessary.
+     *
      * @param playerName is the new name that the client wants to use and needs to be checked.
      */
     public void changePlayerName(String playerName) {
@@ -157,19 +155,19 @@ public class ClientThread implements Runnable{
         content[1] = "(Successfully changed their nickname to: " + playerName + ")";
         try {
             pushChatMessageToAllClients(PacketGenerator.generatePacket("pchat", content));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Goes through all client threads and checks if a name is already taken.
+     *
      * @param newPlayerName name that needs its uniqueness to be verified
      * @return boolean indicating uniqueness
      */
     public boolean isPlayerNameUnique(String newPlayerName) {
-        for (ClientThread clientThread:Server.getClientThreads()) {
+        for (ClientThread clientThread : Server.getClientThreads()) {
             if (clientThread.getPlayerName().equals(newPlayerName)) {
                 return false;
             }
@@ -179,13 +177,14 @@ public class ClientThread implements Runnable{
 
     /**
      * Changes a duplicate name by either adding a 1 at the end of the name or increasing the last digit by 1
+     *
      * @param playerName name to be modified
      * @return modified name
      */
 
-    public String changeDuplicateName(String playerName){
-        if (Character.isDigit(playerName.charAt(playerName.length()-1))) {
-            playerName = playerName.substring(0,playerName.length()-1)+ (Integer.parseInt(playerName.substring(playerName.length()-1))+1);
+    public String changeDuplicateName(String playerName) {
+        if (Character.isDigit(playerName.charAt(playerName.length() - 1))) {
+            playerName = playerName.substring(0, playerName.length() - 1) + (Integer.parseInt(playerName.substring(playerName.length() - 1)) + 1);
         } else {
             playerName = playerName + "_1";
         }
@@ -196,10 +195,9 @@ public class ClientThread implements Runnable{
     This should push the given (received) chat-Packet back to all the clients.
     It also adds the authors player name
      */
-    private void pushChatMessageToAllClients(PacketType chatPacket)
-    {
+    private void pushChatMessageToAllClients(PacketType chatPacket) {
         chatPacket.content[1] = playerName + ": " + chatPacket.content[1];
-        for (ClientThread clientThread:Server.getClientThreads()) {
+        for (ClientThread clientThread : Server.getClientThreads()) {
             PacketHandler.pushMessage(clientThread.getOutputStream(), chatPacket);
         }
         System.out.println("Pushed Chat Packet to Clients");

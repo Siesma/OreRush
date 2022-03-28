@@ -3,6 +3,7 @@ package game.packet;
 import game.client.Client;
 
 import java.util.Scanner;
+
 /*
 This is a helper class to generate Packets.
 
@@ -13,8 +14,7 @@ public class PacketGenerator {
     /*
     This is a helper function that fetches the users next command line input and returns it.
      */
-    public static String promptUserForInput()
-    {
+    public static String promptUserForInput() {
         Scanner sc = new Scanner(System.in);
         return sc.nextLine();
     }
@@ -46,7 +46,7 @@ public class PacketGenerator {
         while (true) {
             String entered = promptUserForInput();
             try {
-                 newPacket = generateNewPacket(entered);
+                newPacket = generateNewPacket(entered);
                 if (newPacket.type.equals("pchat")) {
                     System.out.println("Please type your message here:");
                     newPacket.content[1] = promptUserForInput();
@@ -72,7 +72,7 @@ public class PacketGenerator {
     /*
     This is a helper function that should be called when a brand-new packet is to be generated.
      */
-    public static PacketType generateNewPacket (String type) throws Exception {
+    public static PacketType generateNewPacket(String type) throws Exception {
         return generatePacket(type, null);
     }
 
@@ -86,7 +86,7 @@ public class PacketGenerator {
     > If the content is != null, it will fill the packet with the information stored in "content".
     This is the case if a packet is to be generated from a decoded message.
      */
-    public static PacketType generatePacket (String type, Object[] content) throws Exception {
+    public static PacketType generatePacket(String type, Object[] content) throws Exception {
         PacketType newPacket = new PacketType();
         switch (type) {
             case "request":
@@ -145,12 +145,11 @@ public class PacketGenerator {
     /*
     This function is used to generate a Request-Packet
      */
-    private static void getRequestPacketContent (PacketType newPackage, Object[] content) {
+    private static void getRequestPacketContent(PacketType newPackage, Object[] content) {
         if (content == null) {
             newPackage.content[0] = System.currentTimeMillis();
             newPackage.content[1] = 10; //TODO: Make this actually save the IP of the user
-        }
-        else {
+        } else {
             newPackage.content[0] = content[0];
             newPackage.content[1] = content[1];
         }
@@ -159,11 +158,10 @@ public class PacketGenerator {
     /*
     This function is used to generate a Timeout-Packet
      */
-    private static void getTimeoutPacketContent (PacketType newPackage, Object[] content) {
+    private static void getTimeoutPacketContent(PacketType newPackage, Object[] content) {
         if (content == null) {
             newPackage.content[0] = 20; //TODO: Make this actually save the IP of the server
-        }
-        else {
+        } else {
             newPackage.content[0] = content[0];
         }
     }
@@ -171,11 +169,10 @@ public class PacketGenerator {
     /*
     This function is used to generate a Timeout-Packet
      */
-    private static void getSuccessPacketContent (PacketType newPackage, Object[] content) {
+    private static void getSuccessPacketContent(PacketType newPackage, Object[] content) {
         if (content == null) {
             newPackage.content[0] = 420; //TODO: Make this actually generate a unique client key
-        }
-        else {
+        } else {
             newPackage.content[0] = content[0];
         }
     }
@@ -183,11 +180,10 @@ public class PacketGenerator {
     /*
     This function is used to generate a Awake-Packet
      */
-    private static void getAwakePacketContent (PacketType newPackage, Object[] content) {
+    private static void getAwakePacketContent(PacketType newPackage, Object[] content) {
         if (content == null) {
             newPackage.content[0] = System.currentTimeMillis();
-        }
-        else {
+        } else {
             newPackage.content[0] = content[0];
         }
     }
@@ -195,12 +191,11 @@ public class PacketGenerator {
     /*
     This function is used to generate a Close-Packet
      */
-    private static void getClosePacketContent (PacketType newPackage, Object[] content) {
+    private static void getClosePacketContent(PacketType newPackage, Object[] content) {
         if (content == null) {
             newPackage.content[0] = System.currentTimeMillis();
             newPackage.content[1] = 1; //TODO: Make this use the player key
-        }
-        else {
+        } else {
             newPackage.content[0] = content[0];
             newPackage.content[1] = content[1];
         }
@@ -209,14 +204,13 @@ public class PacketGenerator {
     /*
     This function is used to generate a Update-Packet
      */
-    private static void getUpdatePacketContent (PacketType newPackage, Object[] content) {
+    private static void getUpdatePacketContent(PacketType newPackage, Object[] content) {
         if (content == null) {
             newPackage.content[0] = "[[This is a map]]"; //TODO: Make this send the map data
             newPackage.content[1] = "[[These are the equipmentCooldowns]]"; //TODO: Make this use the equipment cooldowns
             newPackage.content[2] = "[[These are the robots]]"; //TODO: Make this send the robots
             newPackage.content[3] = "[[These are the highscores]]"; //TODO: Make this send the current score
-        }
-        else {
+        } else {
             newPackage.content[0] = content[0];
             newPackage.content[1] = content[1];
             newPackage.content[2] = content[2];
@@ -227,12 +221,11 @@ public class PacketGenerator {
     /*
     This function is used to generate a Move-Packet
      */
-    private static void getMovePacketContent (PacketType newPackage, Object[] content) {
+    private static void getMovePacketContent(PacketType newPackage, Object[] content) {
         if (content == null) {
             newPackage.content[0] = 1; //TODO: Make this use the player key
             newPackage.content[1] = "[[This is a move: (1/6)->(2/6)]]"; //TODO: Make this use actual moves
-        }
-        else {
+        } else {
             newPackage.content[0] = content[0];
             newPackage.content[1] = content[1];
         }
@@ -242,12 +235,11 @@ public class PacketGenerator {
     This function is used to generate a Chat-Packet by asking the user to type
     their message and saving the player key and message to newPackage
      */
-    private static void getChatPacketContent (PacketType newPackage, Object[] content) {
+    private static void getChatPacketContent(PacketType newPackage, Object[] content) {
         if (content == null) {
             newPackage.content[0] = 1; //TODO: Make this use the player key
             newPackage.content[1] = null;
-        }
-        else {
+        } else {
             newPackage.content[0] = content[0];
             newPackage.content[1] = content[1];
         }
@@ -256,12 +248,11 @@ public class PacketGenerator {
     /*
     This function asks the user to type a new nickname and saves the player key and nickname to newPackage
      */
-    private static void getNicknamePacketContent (PacketType newPackage, Object[] content) {
+    private static void getNicknamePacketContent(PacketType newPackage, Object[] content) {
         if (content == null) {
             newPackage.content[0] = 1; //TODO: Make this use the player key
             newPackage.content[1] = null;
-        }
-        else {
+        } else {
             newPackage.content[0] = content[0];
             newPackage.content[1] = content[1];
         }
@@ -270,11 +261,10 @@ public class PacketGenerator {
     /*
     This function is used to generate a Settings-Packet
      */
-    private static void getSettingsPacketContent (PacketType newPackage, Object[] content) {
+    private static void getSettingsPacketContent(PacketType newPackage, Object[] content) {
         if (content == null) {
             newPackage.content[0] = "[[This is all the server settings]]"; //TODO: Make this use the server settings
-        }
-        else {
+        } else {
             newPackage.content[0] = content[0];
         }
     }
