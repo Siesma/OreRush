@@ -1,8 +1,10 @@
 package game.client;
 
+import game.gui.GuiMain;
 import game.packet.PacketGenerator;
 import game.packet.PacketHandler;
 import game.packet.PacketType;
+import javafx.application.Application;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,12 +20,13 @@ public class Client {
 
 
     public void run(String hostAddress, int port, String name) {
+        Application.launch(GuiMain.class);
         try {
             socket = new Socket(hostAddress, port);
         } catch (Exception e) {
             System.out.println("The connection with the server failed.");
             System.out.println("Please ensure the server is running with same port and try again.");
-            System.exit(0);
+            //System.exit(0);
         }
         try {
             inputStream = socket.getInputStream();
