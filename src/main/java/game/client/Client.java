@@ -20,7 +20,7 @@ public class Client {
 
 
     public void run(String hostAddress, int port, String name) {
-        Application.launch(GuiMain.class);
+        // Application.launch(GuiMain.class); TODO: create new thread for GUI
         try {
             socket = new Socket(hostAddress, port);
         } catch (Exception e) {

@@ -1,5 +1,6 @@
 package game.gui;
 
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,13 +14,11 @@ public class GuiMain extends Application {
 
     @Override
     public void start(Stage stage) {
-       /* String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        */
+
+        stage.setTitle("Ore Rush");
+
         // create a button
         Button nicknameButton = new Button("change Name");
-        stage.setTitle("Ore Rush");
 
         // create a stack pane
         StackPane stackPane = new StackPane();

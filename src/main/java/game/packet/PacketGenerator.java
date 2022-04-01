@@ -75,10 +75,6 @@ public class PacketGenerator {
         return generatePacket(type, null);
     }
 
-    /*
-
-     */
-
     /**
      * This function will generate a Packet.
      * It will first figure out the type of packet and then call a function to fill it's content.
