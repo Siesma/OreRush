@@ -18,7 +18,6 @@ public class PingThread implements Runnable {
 
             for (ClientThread clientThread : list) {
                 sendPing(clientThread.getOutputStream());
-                System.out.println("Ping sent to " + clientThread.getPlayerName());
                 // gives time to the client to respond
                 try {
                     Thread.sleep(3000);
@@ -33,9 +32,6 @@ public class PingThread implements Runnable {
                     clientsWithNoResponse.add(clientThread);
                     clientThread.setConnectedToServer(false);
                 } else {
-                    System.out.println("Ping was received and confirmed by "
-                            + clientThread.getPlayerName()
-                            + ".");
                     clientThread.setPingReceived(false); //This resets the check for the next cycle.
                 }
             }

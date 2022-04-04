@@ -9,13 +9,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class ContentThread implements Runnable {
+public class InputStreamThread implements Runnable {
     private final Client client;
     private final InputStream in;
     private final OutputStream out;
 
 
-    public ContentThread(Client client) {
+    public InputStreamThread(Client client) {
         this.client = client;
         this.in = client.getInputStream();
         this.out = client.getOutputStream();

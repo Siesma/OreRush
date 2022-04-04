@@ -63,14 +63,15 @@ public class ClientThread implements Runnable {
                 builder.setLength(0);
 
                 //This part here prints out what the server received. This is here just for bug fixing and manual validation.
-                System.out.println("I have received a packet: " + message);
+                // System.out.println("I have received a packet: " + message);
+
                 try {
                     PacketType receivedPacket = PacketHandler.decode(message);
                     if (receivedPacket == null) {
                         System.out.println("The recieved packet contains garbage.");
                         break;
                     }
-                    receivedPacket.printPacketOnCommandLine();
+                    // receivedPacket.printPacketOnCommandLine();
                     generateAppropriateReaction(receivedPacket);
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -1,40 +1,41 @@
 package game.client;
 
-import game.gui.GuiMain;
 import game.packet.PacketGenerator;
 import game.packet.PacketHandler;
 import game.packet.PacketType;
-import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class Client {
+public class Client{
 
     private static OutputStream outputStream;
     private Socket socket;
     private InputStream inputStream;
     private boolean pongReceived = false;
 
+    private final StringProperty nickname;
 
-    public void run(String hostAddress, int port, String name) {
-        // Application.launch(GuiMain.class); TODO: create new thread for GUI
+    public Client(String hostAddress, int port, String name) {
+        this.nickname = new SimpleStringProperty(name);
+
         try {
             socket = new Socket(hostAddress, port);
         } catch (Exception e) {
-            System.out.println("The connection with the server failed.");
-            System.out.println("Please ensure the server is running with same port and try again.");
+            System.out.println("The connection with the server failed. \nPlease ensure the server is running with same port and try again. ");
             //System.exit(0);
         }
         try {
             inputStream = socket.getInputStream();
             outputStream = socket.getOutputStream();
 
-            ContentThread th = new ContentThread(this);
-            Thread iT = new Thread(th);
-            iT.start();
+            InputStreamThread iT = new InputStreamThread(this);
+            Thread inputStreamThread = new Thread(iT);
+            inputStreamThread.start();
 
             //Sends packet to the server to set the name passed at launch.
             PacketType namePacket = PacketGenerator.generateNewPacket("nickn");
@@ -45,10 +46,11 @@ public class Client {
             Thread pongThread = new Thread(pT);
             pongThread.start();
 
-            //This while loop will generate user-input on the commandline
-            while (true) {
-                PacketHandler.pushMessage(outputStream, PacketGenerator.createPacketMessageByUserInput(this));
-            }
+            CommandLineInputThread cT = new CommandLineInputThread(this);
+            Thread commandLineInputThread = new Thread(cT);
+            commandLineInputThread.start();
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,6 +69,12 @@ public class Client {
         System.exit(0);
     }
 
+    public void changeNickname(String newNickname) throws Exception { //TODO: modify with packet generator
+        nickname.setValue(newNickname);
+        PacketType namePacket = PacketGenerator.generateNewPacket("nickn");
+        namePacket.content[1] = newNickname;
+        PacketHandler.pushMessage(outputStream, namePacket);
+    }
 
     public OutputStream getOutputStream() {
         return outputStream;
@@ -82,5 +90,9 @@ public class Client {
 
     public void setPongReceived(boolean pongReceived) {
         this.pongReceived = pongReceived;
+    }
+
+    public StringProperty nicknameProperty() {
+        return nickname;
     }
 }

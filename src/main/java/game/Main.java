@@ -1,7 +1,9 @@
 package game;
 
 import game.client.Client;
+import game.gui.ClientApp;
 import game.server.Server;
+import javafx.application.Application;
 
 
 public class Main {
@@ -26,15 +28,15 @@ public class Main {
                 server.run(port);
             } else if (args[0].equals("client")) {
                 String hostAddress = args[1].split(":")[0];
-                int port = Integer.parseInt(args[1].split(":")[1]);
+                String port = args[1].split(":")[1];
                 String name;
                 if (args.length == 3) {
                     name = args[2];
                 } else {
                     name = System.getProperty("user.name");
                 }
-                Client client = new Client();
-                client.run(hostAddress, port, name);
+                Application.launch(ClientApp.class, hostAddress, port, name);
+
             } else {
                 System.out.println("Error: Wrong first argument.");
                 System.out.println("The first argument is expected to be \"server\" or \"client\"");
@@ -44,6 +46,7 @@ public class Main {
             System.out.println("Error: Wrong arguments.");
             System.out.println("To launch the program following command line parameters are expected:");
             System.out.println("client <hostAddress>:<port> [<username>] | server <port>");
+            e.printStackTrace();
         }
     }
 }

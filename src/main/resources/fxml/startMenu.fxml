@@ -1,14 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="game.gui.StartMenuController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox prefHeight="296.0" prefWidth="183.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#handleChangeNickname" text="Change Nickname" />
+                        <TextField fx:id="newNickname" promptText="new nickname" />
+                        <Button mnemonicParsing="false" text="Create Lobby" />
+                        <Button mnemonicParsing="false" text="Join Lobby" />
+                    </children>
+                </VBox>
+                <Pane prefHeight="200.0" prefWidth="200.0" />
+                <VBox prefHeight="296.0" prefWidth="261.0">
+                    <children>
+                        <TextFlow prefHeight="233.0" prefWidth="261.0" />
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <TextField fx:id="newMessageTextField" prefHeight="23.0" prefWidth="219.0" />
+                                <Button mnemonicParsing="false" onAction="#handleSendMessage" text="Send" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </center>
+    <left>
+        <Pane prefHeight="151.0" prefWidth="73.0" BorderPane.alignment="CENTER" />
+    </left>
+    <top>
+        <Pane prefHeight="55.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="nickname" layoutX="175.0" layoutY="19.0" prefHeight="17.0" prefWidth="55.0" text="fda" textFill="#6f0303">
+               <font>
+                  <Font size="23.0" />
+               </font></Label>
+         </children></Pane>
+    </top>
+    <right>
+        <Pane prefHeight="151.0" prefWidth="51.0" BorderPane.alignment="CENTER" />
+    </right>
+    <bottom>
+        <Pane prefHeight="49.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+    </bottom>
+</BorderPane>
