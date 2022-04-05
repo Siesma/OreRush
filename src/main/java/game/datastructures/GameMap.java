@@ -10,6 +10,8 @@ public class GameMap {
         this.gameMapSize[0] = sizeX;
         this.gameMapSize[1] = sizeY;
         this.oreMap = new int[sizeX][sizeY];
+        spawnOreInMap();
+        printOreMapToConsole();
         this.objectMap = new Object[sizeX][sizeY];
     }
 
@@ -41,6 +43,15 @@ public class GameMap {
                 int randomNumber = r.nextInt(maxRanNumBound);
                 objectMap[i][j] = Math.floor(randomNumber/intervalSize);
             }
+        }
+    }
+
+    public void printOreMapToConsole() {
+        for(int i = 0; i<gameMapSize[0]; i++) {
+            for(int j = 0; j<gameMapSize[1]; j++) {
+                System.out.print("["+objectMap[i][j]+"]");
+            }
+            System.out.println("");
         }
     }
 
