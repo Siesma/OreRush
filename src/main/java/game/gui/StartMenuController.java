@@ -1,7 +1,6 @@
 package game.gui;
 
 import game.client.Client;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -29,14 +28,14 @@ public class StartMenuController {
 
 
 
-    @FXML private void handleSendMessage(ActionEvent actionEvent) {
-
+    @FXML private void handleSendMessage(ActionEvent actionEvent) throws Exception {
+        if (newMessageTextField.getText() != null) {
+            client.sendChatMessage(newMessageTextField.getText());
+        }
 
     }
 
     @FXML private void handleChangeNickname(ActionEvent actionEvent) throws Exception {
-        System.out.println("yayaa");
-        System.out.println("text: "+ newNickname.getText());
         if (newNickname.getText() != null) {
             client.changeNickname(newNickname.getText());
         }

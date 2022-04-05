@@ -38,9 +38,7 @@ public class Client{
             inputStreamThread.start();
 
             //Sends packet to the server to set the name passed at launch.
-            PacketType namePacket = PacketGenerator.generateNewPacket("nickn");
-            namePacket.content[1] = name;
-            PacketHandler.pushMessage(outputStream, namePacket);
+            changeNickname(name);
 
             PongThread pT = new PongThread(this);
             Thread pongThread = new Thread(pT);
@@ -74,6 +72,12 @@ public class Client{
         PacketType namePacket = PacketGenerator.generateNewPacket("nickn");
         namePacket.content[1] = newNickname;
         PacketHandler.pushMessage(outputStream, namePacket);
+    }
+
+    public void sendChatMessage(String message) throws Exception { //TODO: modify with packet generator
+        PacketType chatPacket = PacketGenerator.generateNewPacket("pchat");
+        chatPacket.content[1] = message;
+        PacketHandler.pushMessage(outputStream, chatPacket);
     }
 
     public OutputStream getOutputStream() {
