@@ -1,5 +1,6 @@
 package game.server;
 
+import game.datastructures.GameMap;
 import game.packet.PacketGenerator;
 import game.packet.PacketHandler;
 import game.packet.PacketType;
@@ -110,7 +111,7 @@ public class ClientThread implements Runnable {
     private void generateAppropriateReaction(PacketType packet) {
         switch (packet.type) {
             case "reqst":
-                break;
+                GameMap newMap = new GameMap(15,5, 1f);
             case "timeo":
                 break;
             case "succs":
