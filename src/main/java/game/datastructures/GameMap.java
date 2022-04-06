@@ -45,8 +45,9 @@ public class GameMap {
         for(int i = 0; i < gameMapSize[0]; i++) {
             for(int j = 0; j < gameMapSize[1]; j++) {
                 if (r.nextInt(maxRanNumBound) < oreSpawnLikelyhood*maxRanNumBound){
-                    int randomNumber = r.nextInt(maxRanNumBound);
-                    oreMap[i][j] = randomNumber/intervalSize;
+                    //int randomNumber = r.nextInt(maxRanNumBound);
+                    //oreMap[i][j] = randomNumber/intervalSize;
+                    oreMap[i][j] = (int)Math.round(r.nextGaussian()+(((float)j/gameMapSize[1])*5));
                 }
                 else {
                     oreMap[i][j] = 0;
