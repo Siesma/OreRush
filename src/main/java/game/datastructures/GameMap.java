@@ -48,6 +48,12 @@ public class GameMap {
                     //int randomNumber = r.nextInt(maxRanNumBound);
                     //oreMap[i][j] = randomNumber/intervalSize;
                     oreMap[i][j] = (int)Math.round(r.nextGaussian()+(((float)j/gameMapSize[1])*5));
+                    if (oreMap[i][j] > 5) {
+                        oreMap[i][j] = 5;
+                    }
+                    if (oreMap[i][j] < 1) {
+                        oreMap[i][j] = 1;
+                    }
                 }
                 else {
                     oreMap[i][j] = 0;
