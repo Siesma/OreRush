@@ -55,6 +55,10 @@ public class GameMap {
         }
     }
 
+    public void placeObjectOnMap(Object object, int x, int y) {
+        objectMap[y][x] = object;
+    }
+
     public void printOreMapToConsole() {
         for(int i = 0; i<gameMapSize[0]; i++) {
             for(int j = 0; j<gameMapSize[1]; j++) {
