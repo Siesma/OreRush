@@ -18,9 +18,13 @@ public class Client{
     private InputStream inputStream;
     private boolean pongReceived = false;
 
-    private final StringProperty nickname;
+    private StringProperty nickname;
 
-    public Client(String hostAddress, int port, String name) {
+    public Client() {
+
+    }
+
+    public void connectToServer(String hostAddress, int port, String name){
         this.nickname = new SimpleStringProperty(name);
 
         try {

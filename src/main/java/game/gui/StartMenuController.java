@@ -5,24 +5,25 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.TextFlow;
 
 public class StartMenuController {
 
     Client client;
 
-    @FXML private Label nickname = new Label();
+    @FXML private Label nickname;
 
     @FXML private TextField newNickname;
     @FXML private TextField newMessageTextField;
 
-    public StartMenuController(Client client) {
+    @FXML private TextFlow chatTextFlow;
+
+    public void initialize() {
         //get model
-        this.client = client;
+        client = new Client();
 
-        //link model with view
-        nickname.textProperty().bind(client.nicknameProperty());
-        // TODO
-
+        //link model with view // TODO fix
+        //nickname.textProperty().bind(client.nicknameProperty());
 
     }
 
