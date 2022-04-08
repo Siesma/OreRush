@@ -5,24 +5,46 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.TextFlow;
 
-public class StartMenuController {
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class StartMenuController{
 
     Client client;
+    String hostname;
+    String port;
+    String name;
 
-    @FXML private Label nickname = new Label();
+    @FXML private Label nickname;
 
     @FXML private TextField newNickname;
     @FXML private TextField newMessageTextField;
 
-    public StartMenuController(Client client) {
+    @FXML private TextFlow chatTextFlow;
+
+
+    public void initialize() {
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(
+                    "clientInfo.txt"));
+            hostname = reader.readLine();
+            port = reader.readLine();
+            name = reader.readLine();
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         //get model
-        this.client = client;
+        this.client = new Client(hostname, Integer.parseInt(port),name);
 
         //link model with view
         nickname.textProperty().bind(client.nicknameProperty());
-        // TODO
-
 
     }
 

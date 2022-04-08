@@ -5,6 +5,9 @@ import game.gui.ClientApp;
 import game.server.Server;
 import javafx.application.Application;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
 
 public class Main {
 
@@ -35,6 +38,10 @@ public class Main {
                 } else {
                     name = System.getProperty("user.name");
                 }
+                String str = hostAddress+"\n"+port+"\n"+name;
+                BufferedWriter writer = new BufferedWriter(new FileWriter("clientInfo.txt"));
+                writer.write(str);
+                writer.close();
                 Application.launch(ClientApp.class, hostAddress, port, name);
 
             } else {
