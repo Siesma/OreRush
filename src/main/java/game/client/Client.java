@@ -19,6 +19,7 @@ public class Client{
     private boolean pongReceived = false;
 
     private StringProperty nickname;
+    private StringProperty lastChatMessage = new SimpleStringProperty();
 
     public Client(String hostAddress, int port, String name) {
         this.nickname = new SimpleStringProperty(name);
@@ -98,5 +99,11 @@ public class Client{
 
     public StringProperty nicknameProperty() {
         return nickname;
+    }
+
+    public StringProperty lastChatMessageProperty() { return lastChatMessage;}
+
+    public void setLastChatMessage(String message) {
+        lastChatMessage.setValue(message);
     }
 }

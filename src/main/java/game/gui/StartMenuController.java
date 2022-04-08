@@ -1,10 +1,13 @@
 package game.gui;
 
 import game.client.Client;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import java.io.BufferedReader;
@@ -45,6 +48,10 @@ public class StartMenuController{
 
         //link model with view
         nickname.textProperty().bind(client.nicknameProperty());
+        client.lastChatMessageProperty().addListener((observable, oldValue, newValue) -> {
+            Text newMessage = new Text(newValue);
+            chatTextFlow.getChildren().add(newMessage);
+        });
 
     }
 

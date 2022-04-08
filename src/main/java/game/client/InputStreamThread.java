@@ -4,6 +4,7 @@ import game.packet.PacketGenerator;
 import game.packet.PacketHandler;
 import game.packet.PacketType;
 import game.server.ServerConstants;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -87,12 +88,21 @@ public class InputStreamThread implements Runnable {
                 break;
             case "pchat":
                 printChatMessageToCommandLine(packet);
+                Platform.runLater(new Runnable(){
+                    @Override
+                    public void run() {
+                        client.setLastChatMessage(packet.content[1].toString() + "\n");
+                    }
+                });
+
                 break;
             case "settn":
                 break;
             default:
         }
     }
+
+
 
     private void printChatMessageToCommandLine(PacketType packet) {
         System.out.println(packet.content[1]);
