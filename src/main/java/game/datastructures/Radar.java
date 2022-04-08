@@ -6,5 +6,14 @@ package game.datastructures;
  * X, Y Coordinates
  * Player who placed the radar
  */
-public class Radar {
+public class Radar implements GameObject{
+
+    public String encodeToString(){
+        String s = "";
+        //TODO: Implementation
+        return s;
+    }
+    public void parseGameObjectFromString(String encodedGameObject){
+        //TODO: Implementation
+    }
 }

@@ -11,7 +11,7 @@ import java.util.Vector;
 public class Robot implements GameObject {
     private int xCoordinate;
     private int yCoordinate;
-    private Object inventory;
+    private GameObject inventory;
 
 
     /**
@@ -30,7 +30,7 @@ public class Robot implements GameObject {
      *
      * @param objectToLoad The object that should be loaded into the inventory of the robot
      */
-    public void loadInventory(Object objectToLoad) {
+    public void loadInventory(GameObject objectToLoad) {
         inventory = objectToLoad;
     }
 
@@ -47,7 +47,7 @@ public class Robot implements GameObject {
     /**
      * @return The object currently stored in the robots inventory
      */
-    public Object getInventory() {
+    public GameObject getInventory() {
         return inventory;
     }
 
@@ -57,7 +57,10 @@ public class Robot implements GameObject {
      */
     public String encodeToString()
     {
-        String encodedRobot = "robot:"+xCoordinate+":"+yCoordinate+":"+inventory.toString();
+        String encodedRobot = "robot:"+xCoordinate+":"+yCoordinate+":"+inventory.encodeToString();
         return encodedRobot;
+    }
+    public void parseGameObjectFromString(String encodedGameObject){
+        //TODO: Implementation
     }
 }

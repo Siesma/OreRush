@@ -6,5 +6,14 @@ package game.datastructures;
  * X, Y Coordinates
  * Player who laid the trap
  */
-public class Trap {
+public class Trap implements GameObject{
+
+    public String encodeToString(){
+        String s = "";
+        //TODO: Implementation
+        return s;
+    }
+    public void parseGameObjectFromString(String encodedGameObject){
+        //TODO: Implementation
+    }
 }
