@@ -8,7 +8,7 @@ import java.util.Vector;
  * X, Y Coordinates
  * Inventory
  */
-public class Robot {
+public class Robot implements GameObject {
     private int xCoordinate;
     private int yCoordinate;
     private Object inventory;
@@ -49,5 +49,15 @@ public class Robot {
      */
     public Object getInventory() {
         return inventory;
+    }
+
+    /**
+     *
+     * @return The encoded string that holds all the information of the robot
+     */
+    public String encodeToString()
+    {
+        String encodedRobot = "robot:"+xCoordinate+":"+yCoordinate+":"+inventory.toString();
+        return encodedRobot;
     }
 }
