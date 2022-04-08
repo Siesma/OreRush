@@ -20,11 +20,7 @@ public class Client{
 
     private StringProperty nickname;
 
-    public Client() {
-
-    }
-
-    public void connectToServer(String hostAddress, int port, String name){
+    public Client(String hostAddress, int port, String name) {
         this.nickname = new SimpleStringProperty(name);
 
         try {
