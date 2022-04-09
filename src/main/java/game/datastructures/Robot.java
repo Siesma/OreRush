@@ -1,5 +1,7 @@
 package game.datastructures;
 
+import game.server.ServerConstants;
+
 import java.util.Vector;
 
 /**
@@ -60,7 +62,42 @@ public class Robot implements GameObject {
         String encodedRobot = "robot:"+xCoordinate+":"+yCoordinate+":"+inventory.encodeToString();
         return encodedRobot;
     }
-    public void parseGameObjectFromString(String encodedGameObject){
-        //TODO: Implementation
+    public void parseGameObjectFromString(String encodedRobot){
+        String[] encodedRobotArray = encodedRobot.split(String.valueOf((char) ':'));
+        setPosition(Integer.parseInt(encodedRobotArray[1]), Integer.parseInt(encodedRobotArray[2]));
+        try {
+            String[] encodedGameObjectArray = new String[encodedRobotArray.length-3];
+            for (int i = 3; i<encodedRobotArray.length; i++){
+                encodedGameObjectArray[i] = encodedRobotArray[i];
+            }
+            GameObject inventoryObject = parseInventoryObjectFromString(encodedGameObjectArray);
+
+            loadInventory(inventoryObject);
+        }
+        catch (Exception e){
+           //TODO: Figure out what to do in this case
+        }
+    }
+    private GameObject parseInventoryObjectFromString(String[] encodedGameObjectArray) throws Exception{
+        GameObject gameObject;
+        switch (encodedGameObjectArray[0]) {
+            case "ore":
+                gameObject = new Ore();
+                break;
+            case "radar":
+                gameObject = new Radar();
+                break;
+            case "trap":
+                gameObject = new Trap();
+                break;
+            default:
+                throw new Exception();
+        }
+        String encodedGameObject = encodedGameObjectArray[0];
+        for (int i = 1; i<encodedGameObjectArray.length; i++){
+            encodedGameObject = encodedGameObject + ":" +encodedGameObjectArray[i];
+        }
+        gameObject.parseGameObjectFromString(encodedGameObject);
+        return gameObject;
     }
 }
