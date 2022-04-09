@@ -1,6 +1,5 @@
 package game.client;
 
-import game.packet.PacketGenerator;
 import game.packet.PacketHandler;
 
 import java.io.OutputStream;
@@ -18,7 +17,9 @@ public class CommandLineInputThread implements Runnable{
     @Override
     public void run() {
         while (true) {
-            PacketHandler.pushMessage(outputStream, PacketGenerator.createPacketMessageByUserInput(client));
+            PacketHandler packetHandler = new PacketHandler(this);
+            packetHandler.pushMessage(outputStream, packetHandler.createPacketMessage());
+//            (new PacketHandler(this)).pushMessage(outputStream, PacketGenerator.createPacketMessageByUserInput(client));
         }
     }
 }

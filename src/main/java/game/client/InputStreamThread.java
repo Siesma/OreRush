@@ -1,10 +1,9 @@
 package game.client;
 
-import game.packet.PacketGenerator;
+import game.packet.AbstractPacket;
 import game.packet.PacketHandler;
-import game.packet.PacketType;
+import game.packet.packets.Success;
 import game.server.ServerConstants;
-import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,12 +43,13 @@ public class InputStreamThread implements Runnable {
 
                 //This part here prints out what the server received. This is here just for bug fixing and manual validation.
                 try {
-                    PacketType receivedPacket = PacketHandler.decode(message);
+                    AbstractPacket receivedPacket = AbstractPacket.getPacketByMessage(message);
                     if (receivedPacket == null) {
                         System.out.println("The received packet contains garbage.");
                         break;
                     }
-                    generateAppropriateReaction(receivedPacket);
+//                    generateAppropriateReaction(receivedPacket);
+                    receivedPacket.decode(this, message);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -68,49 +68,13 @@ public class InputStreamThread implements Runnable {
         }
     }
 
-    /**
-     * This causes a reaction based on the received Packet.
-     * @param packet containing the type of packet and its arguments
-     */
-    private void generateAppropriateReaction(PacketType packet) {
-        switch (packet.type) {
-            case "reqst":
-                break;
-            case "timeo":
-                break;
-            case "succs":
-                client.setPongReceived(true);
-                break;
-            case "awake":
-                confirmPingFromServer();
-                break;
-            case "updte":
-                break;
-            case "pchat":
-                printChatMessageToCommandLine(packet);
-                Platform.runLater(new Runnable(){
-                    @Override
-                    public void run() {
-                        client.setLastChatMessage(packet.content[1].toString() + "\n");
-                    }
-                });
-
-                break;
-            case "settn":
-                break;
-            default:
-        }
-    }
-
-
-
-    private void printChatMessageToCommandLine(PacketType packet) {
-        System.out.println(packet.content[1]);
+    public Client getClient () {
+        return client;
     }
 
     private void confirmPingFromServer() {
         try {
-            PacketHandler.pushMessage(out, PacketGenerator.generateNewPacket("succs"));
+            (new PacketHandler(this)).pushMessage(out, (new Success()).encode());
         } catch (Exception e) {
             System.out.println("Client-server connection lost");
         }

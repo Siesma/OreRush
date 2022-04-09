@@ -1,10 +1,8 @@
 package game.client;
 
-import game.packet.PacketGenerator;
 import game.packet.PacketHandler;
-import game.packet.PacketType;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import game.packet.packets.Chat;
+import game.packet.packets.Nickname;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,17 +16,17 @@ public class Client{
     private InputStream inputStream;
     private boolean pongReceived = false;
 
-    private StringProperty nickname;
-    private StringProperty lastChatMessage = new SimpleStringProperty();
+    private String nickname;
+    private String lastChatMessage;
 
     public Client(String hostAddress, int port, String name) {
-        this.nickname = new SimpleStringProperty(name);
+        this.nickname = name;
 
         try {
             socket = new Socket(hostAddress, port);
         } catch (Exception e) {
             System.out.println("The connection with the server failed. \nPlease ensure the server is running with same port and try again. ");
-            //System.exit(0);
+            System.exit(0);
         }
         try {
             inputStream = socket.getInputStream();
@@ -68,17 +66,13 @@ public class Client{
         System.exit(0);
     }
 
-    public void changeNickname(String newNickname) throws Exception { //TODO: modify with packet generator
-        nickname.setValue(newNickname);
-        PacketType namePacket = PacketGenerator.generateNewPacket("nickn");
-        namePacket.content[1] = newNickname;
-        PacketHandler.pushMessage(outputStream, namePacket);
+    public void changeNickname(String newNickname) throws Exception {
+        nickname = (newNickname);
+        (new PacketHandler(this)).pushMessage(outputStream, (new Nickname()).encodeWithContent(newNickname));
     }
 
-    public void sendChatMessage(String message) throws Exception { //TODO: modify with packet generator
-        PacketType chatPacket = PacketGenerator.generateNewPacket("pchat");
-        chatPacket.content[1] = message;
-        PacketHandler.pushMessage(outputStream, chatPacket);
+    public void sendChatMessage(String message) throws Exception {
+        (new PacketHandler(this)).pushMessage(outputStream, (new Chat()).encodeWithContent(message));
     }
 
     public OutputStream getOutputStream() {
@@ -97,13 +91,13 @@ public class Client{
         this.pongReceived = pongReceived;
     }
 
-    public StringProperty nicknameProperty() {
+    public String nicknameProperty() {
         return nickname;
     }
 
-    public StringProperty lastChatMessageProperty() { return lastChatMessage;}
+    public String lastChatMessageProperty() { return lastChatMessage;}
 
     public void setLastChatMessage(String message) {
-        lastChatMessage.setValue(message);
+        lastChatMessage = (message);
     }
 }

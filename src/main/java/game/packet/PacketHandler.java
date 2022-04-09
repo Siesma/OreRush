@@ -1,100 +1,92 @@
 package game.packet;
 
-import game.server.ServerConstants;
+import game.client.Client;
 
-import java.io.IOException;
+import java.io.File;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class PacketHandler {
 
-    public static String generateOutputFromInput(String input) {
-        PacketType packetType = detectPacketType(input);
+  private Object parent;
 
-        //TODO: Replace default response with important information
+  public PacketHandler (Object parent) {
+    this.parent = parent;
+  }
 
-        return "OutputGenerated";
+  /**
+   *
+   * A function that prompts the user to specify which packet is meant to be sent next.
+   * All the possible packets are gathered using the files that are in the respective folder.
+   * This folder is "packet.packets"
+   */
+  public String createPacketMessage() {
+    System.out.println("Please tell which packet you want to send");
+    System.out.println("A list of possible packets are:");
+    for (String s : (Objects.requireNonNull(new File(System.getProperty("user.dir") + "/src/game/packet/packets").list()))) {
+      System.out.println("\t->" + s.split(".java")[0]);
     }
-
-    private static PacketType detectPacketType(String input) {
-        PacketType packetType = new PacketType();
-        switch (input.substring(0, 5)) {
-            case "reqst":
-                packetType.type = "request";
-                break;
-            case "timeo":
-                packetType.type = "timeout";
-                break;
-            case "succs":
-                packetType.type = "success";
-                break;
-            case "awake":
-                packetType.type = "awake";
-                break;
-            case "close":
-                packetType.type = "close";
-                break;
-            case "updte":
-                packetType.type = "update";
-                break;
-            case "pmove":
-                packetType.type = "move";
-                break;
-            case "pchat":
-                packetType.type = "chat";
-                break;
-            case "settn":
-                packetType.type = "settings";
-            default:
-                return null;
-        }
-        return packetType;
+    Scanner sc = new Scanner(System.in);
+    String entered = AbstractPacket.promptUserForInput(sc);
+    AbstractPacket packet;
+    try {
+      packet = AbstractPacket.getPacketByName(entered);
+    } catch (InstantiationException instantiationException) {
+      System.out.println("The packet expected some parameters that were not given!");
+      return null;
+    } catch (ClassNotFoundException classNotFoundException) {
+      System.out.println("The specified packet does not exist!");
+      return null;
+    } catch (IllegalAccessException illegalAccessException) {
+      System.out.println("You are not allowed to access the specified file!");
+      return null;
     }
+    return packet.encode();
+  }
 
-    public static PacketType decode(String message) throws Exception {
-        try {
-            return PacketGenerator.generatePacket(message.substring(0, 5), PacketDecoder.decodePacketContent(message.substring(0, 5), message.substring(6)));
-        } catch (Exception e) {
-            return null;
-        }
+
+  /**
+   *
+   * A function that pushes a given input string and its according values to the server or client.
+   * This function also handles calling the decoding of the given packet.
+   * If a packet is attempted to be created, but it is not succeeding it will return nothing.
+   */
+  public void pushMessage(OutputStream out, String message) {
+    System.out.println("Trying to push the message " + message);
+    AbstractPacket packet = null;
+    try {
+      packet = AbstractPacket.getPacketByName(AbstractPacket.splitMessageBySpacer(message)[0]);
+    } catch (InstantiationException instantiationException) {
+      System.out.println("The packet expected some parameters that were not given!");
+      return;
+    } catch (ClassNotFoundException classNotFoundException) {
+      System.out.println("The specified packet does not exist!");
+      return;
+    } catch (IllegalAccessException illegalAccessException) {
+      System.out.println("You are not allowed to access the specified file!");
+      return;
     }
-
-    private static String encode(PacketType message) {
-        StringBuilder out = new StringBuilder();
-        out.append(message.type);
-        out.append((char) ServerConstants.DEFAULT_PACKET_SPACER);
-        for (Object o : message.content) {
-            if (o == null) {
-                continue;
-            }
-            out.append(o);
-            out.append((char) ServerConstants.DEFAULT_PACKET_SPACER);
-        }
-        return out.toString();
+    if(!packet.validate(message)) {
+      System.out.println("The given packet contained garbage");
+      return;
     }
-
-
-    private static boolean isValidate(String message) {
-        System.err.println(message);
-        return true; //Todo make this actually check
+    packet.decode(parent, message);
+    try {
+      System.out.println(message);
+      out.write(message.getBytes());
+    } catch (Exception e) {
+      //
     }
+  }
 
-    /**
-     * Sends packet to a outputStream enclosed by a default starting and ending message.
-     * @param out OutputStream which is used to send the packet.
-     * @param packet PacketType which is sent.
-     */
-    public static void pushMessage(OutputStream out, PacketType packet) {
-        try {
-            String encodedMessage = encode(packet);
+  /**
+   *
+   * TODO: Create a function that creates a respective output from a given input.
+   */
+  public static String generateOutputFromInput(String input) {
+    return "Generic output given the input \"" + input + "\"!";
+  }
 
-            out.write(ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE);
-            out.write(encodedMessage.getBytes());
-            out.write(ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE);
-            //System.out.println("This is the encoded message: " + encodedMessage);
-        } catch (IOException e) {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

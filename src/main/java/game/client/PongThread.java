@@ -1,8 +1,10 @@
 package game.client;
 
 
-import game.packet.PacketGenerator;
 import game.packet.PacketHandler;
+import game.packet.packets.Awake;
+
+import java.io.OutputStream;
 
 
 public class PongThread implements Runnable {
@@ -43,7 +45,7 @@ public class PongThread implements Runnable {
      */
     private void sendPong() {
         try {
-            PacketHandler.pushMessage(client.getOutputStream(), PacketGenerator.generateNewPacket("awake"));
+            (new PacketHandler(this)).pushMessage(client.getOutputStream(), (new Awake().encode()));
         } catch (Exception e) {
             System.out.println("Client-server connection lost");
         }

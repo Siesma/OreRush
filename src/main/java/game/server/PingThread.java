@@ -1,7 +1,7 @@
 package game.server;
 
-import game.packet.PacketGenerator;
 import game.packet.PacketHandler;
+import game.packet.packets.Awake;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class PingThread implements Runnable {
      */
     private void sendPing(OutputStream outputStream) {
         try {
-            PacketHandler.pushMessage(outputStream, PacketGenerator.generateNewPacket("awake"));
+            (new PacketHandler(this)).pushMessage(outputStream, (new Awake().encode()));
         } catch (Exception e) {
             e.printStackTrace();
         }
