@@ -49,6 +49,7 @@ public class InputStreamThread implements Runnable {
                         break;
                     }
 //                    generateAppropriateReaction(receivedPacket);
+                    System.out.println("\t" + message);
                     receivedPacket.decode(this, message);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -72,7 +73,10 @@ public class InputStreamThread implements Runnable {
         return client;
     }
 
-    private void confirmPingFromServer() {
+    /**
+     * Confirms the ping from the server to not stop the connection.
+     */
+    public void confirmPingFromServer() {
         try {
             (new PacketHandler(this)).pushMessage(out, (new Success()).encode());
         } catch (Exception e) {

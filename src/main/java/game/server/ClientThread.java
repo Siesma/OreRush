@@ -47,7 +47,7 @@ public class ClientThread implements Runnable {
           System.out.println("1 client is connected to the server.");
         } else {
           System.out.println(Server.getClientThreads().size()
-                  + " clients are connected to the server.");
+            + " clients are connected to the server.");
         }
 
         cur = -1;
@@ -73,21 +73,15 @@ public class ClientThread implements Runnable {
             System.out.println("The recieved packet contains garbage.");
             break;
           }
-          // receivedPacket.printPacketOnCommandLine();
-//                    generateAppropriateReaction(receivedPacket);
           receivedPacket.decode(this, message);
         } catch (Exception e) {
           e.printStackTrace();
         }
-
-
       }
-
       // This will read the whole message into the builder.
       if (startingToRecordMessage) {
         builder.append((char) cur);
       }
-
       // This is executed when the server detects the start of a message.
       if (cur == ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE) {
         startingToRecordMessage = true;
@@ -130,7 +124,7 @@ public class ClientThread implements Runnable {
     try {
 //            pushChatMessageToAllClients(PacketGenerator.generatePacket("pchat", content));
       Chat p = new Chat();
-      pushChatMessageToAllClients(p.encodeWithContent((String) content[1]));
+      pushChatMessageToAllClients((String) content[1]);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -165,19 +159,6 @@ public class ClientThread implements Runnable {
     }
     return playerName;
   }
-
-//    /**
-//     * Pushes the given (received) chat-Packet back to all the clients.
-//     * It also adds the authors player name
-//     * @param chatPacket packet containing message and delivery information (to modify)
-//     */
-//    private void pushChatMessageToAllClients(PacketType chatPacket) {
-//        chatPacket.content[1] = playerName + ": " + chatPacket.content[1];
-//        for (ClientThread clientThread : Server.getClientThreads()) {
-//            PacketHandler.pushMessage(clientThread.getOutputStream(), chatPacket);
-//        }
-//        System.out.println("Pushed Chat Packet to Clients");
-//    }
 
   public void pushChatMessageToAllClients(String msg) {
     msg = playerName + ": " + msg;

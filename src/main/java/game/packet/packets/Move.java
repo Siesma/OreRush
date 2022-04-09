@@ -14,9 +14,12 @@ public class Move extends AbstractPacket {
   }
 
 
+  /**
+   * Placeholder in case the packet will have non-normal use cases.
+   */
   @Override
   public String encodeWithContent(String... content) {
-    return null;
+    return encode();
   }
 
 

@@ -53,6 +53,9 @@ public class Client{
         }
     }
 
+    /**
+     * Shuts down the client.
+     */
     public void shutDownClient() {
         System.out.println("terminating ..");
         try {
@@ -66,12 +69,18 @@ public class Client{
         System.exit(0);
     }
 
-    public void changeNickname(String newNickname) throws Exception {
+    /**
+     * Changes the nickname.
+     */
+    public void changeNickname(String newNickname) {
         nickname = (newNickname);
         (new PacketHandler(this)).pushMessage(outputStream, (new Nickname()).encodeWithContent(newNickname));
     }
 
-    public void sendChatMessage(String message) throws Exception {
+    /**
+     * Sends a new Chat-packet and encodes it with the predetermined content
+     */
+    public void sendChatMessage(String message) {
         (new PacketHandler(this)).pushMessage(outputStream, (new Chat()).encodeWithContent(message));
     }
 

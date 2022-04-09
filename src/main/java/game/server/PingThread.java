@@ -26,8 +26,8 @@ public class PingThread implements Runnable {
                 }
                 if (!clientThread.isPingReceived()) {
                     System.out.println("No response from "
-                            + clientThread.getPlayerName()
-                            + " after 3 seconds.");
+                      + clientThread.getPlayerName()
+                      + " after 3 seconds.");
                     System.out.println("The connection has been interrupted");
                     clientsWithNoResponse.add(clientThread);
                     clientThread.setConnectedToServer(false);

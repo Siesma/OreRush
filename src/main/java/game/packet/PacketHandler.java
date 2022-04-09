@@ -1,10 +1,7 @@
 package game.packet;
 
-import game.client.Client;
-
 import java.io.File;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -12,12 +9,11 @@ public class PacketHandler {
 
   private Object parent;
 
-  public PacketHandler (Object parent) {
+  public PacketHandler(Object parent) {
     this.parent = parent;
   }
 
   /**
-   *
    * A function that prompts the user to specify which packet is meant to be sent next.
    * All the possible packets are gathered using the files that are in the respective folder.
    * This folder is "packet.packets"
@@ -43,18 +39,22 @@ public class PacketHandler {
       System.out.println("You are not allowed to access the specified file!");
       return null;
     }
+    if (packet == null) {
+      return "";
+    }
     return packet.encode();
   }
 
 
   /**
-   *
    * A function that pushes a given input string and its according values to the server or client.
    * This function also handles calling the decoding of the given packet.
    * If a packet is attempted to be created, but it is not succeeding it will return nothing.
    */
   public void pushMessage(OutputStream out, String message) {
-    System.out.println("Trying to push the message " + message);
+    if (message.equals("")) {
+      return;
+    }
     AbstractPacket packet = null;
     try {
       packet = AbstractPacket.getPacketByName(AbstractPacket.splitMessageBySpacer(message)[0]);
@@ -68,7 +68,10 @@ public class PacketHandler {
       System.out.println("You are not allowed to access the specified file!");
       return;
     }
-    if(!packet.validate(message)) {
+    if (packet == null) {
+      return;
+    }
+    if (!packet.validate(message)) {
       System.out.println("The given packet contained garbage");
       return;
     }
@@ -82,7 +85,6 @@ public class PacketHandler {
   }
 
   /**
-   *
    * TODO: Create a function that creates a respective output from a given input.
    */
   public static String generateOutputFromInput(String input) {

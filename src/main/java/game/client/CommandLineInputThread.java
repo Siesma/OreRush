@@ -19,7 +19,6 @@ public class CommandLineInputThread implements Runnable{
         while (true) {
             PacketHandler packetHandler = new PacketHandler(this);
             packetHandler.pushMessage(outputStream, packetHandler.createPacketMessage());
-//            (new PacketHandler(this)).pushMessage(outputStream, PacketGenerator.createPacketMessageByUserInput(client));
         }
     }
 }

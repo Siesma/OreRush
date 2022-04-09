@@ -16,11 +16,19 @@ public class Awake extends AbstractPacket {
   }
 
 
+  /**
+   * Placeholder in case the packet will have non-normal use cases.
+   */
   @Override
   public String encodeWithContent(String... content) {
-    return null;
+    return encode();
   }
 
+  /**
+   * Creates the message that results in an Awake packet.
+   * This means "Start" Awake "End"
+   * where "Start" is the default start char and "End" is the default end char.
+   */
   @Override
   public String encode() {
     return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
@@ -30,23 +38,22 @@ public class Awake extends AbstractPacket {
       (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
   }
 
+  /**
+   * Decodes the packet.
+   * This will handle all the possible objects that call them and what the respective
+   * result should be.
+   */
   @Override
   public void decode(Object parent, String message) {
     if (parent instanceof InputStreamThread) {
       InputStreamThread obj = (InputStreamThread) parent;
-      try {
-        (new PacketHandler(obj)).pushMessage(obj.getClient().getOutputStream(), message);
-      } catch (Exception e) {
-        System.out.println("Client-server connection lost");
-      }
+      obj.confirmPingFromServer();
+      obj.getClient().setPongReceived(true);
     }
     if (parent instanceof ClientThread) {
       ClientThread obj = (ClientThread) parent;
       obj.confirmPong();
-    }
-    if (parent instanceof PongThread) {
-      PongThread obj = (PongThread) parent;
-
+      obj.setPingReceived(true);
     }
   }
 
