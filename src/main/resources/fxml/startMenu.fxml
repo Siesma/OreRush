@@ -4,12 +4,17 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:controller="game.gui.StartMenuController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.gui.StartMenuController">
     <center>
         <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
                 <VBox prefHeight="296.0" prefWidth="183.0">
                     <children>
+                  <Label fx:id="nickname" prefHeight="34.0" prefWidth="139.0" textFill="#6f0303">
+                     <font>
+                        <Font size="23.0" />
+                     </font>
+                  </Label>
                         <Button mnemonicParsing="false" onAction="#handleChangeNickname" text="Change Nickname" />
                         <TextField fx:id="newNickname" promptText="new nickname" />
                         <Button mnemonicParsing="false" text="Create Lobby" />
@@ -35,13 +40,7 @@
         <Pane prefHeight="151.0" prefWidth="73.0" BorderPane.alignment="CENTER" />
     </left>
     <top>
-        <Pane prefHeight="55.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="nickname" layoutX="175.0" layoutY="19.0" prefHeight="17.0" prefWidth="55.0" textFill="#6f0303">
-               <font>
-                  <Font size="23.0" />
-               </font></Label>
-         </children></Pane>
+        <Pane prefHeight="55.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
     </top>
     <right>
         <Pane prefHeight="151.0" prefWidth="51.0" BorderPane.alignment="CENTER" />
