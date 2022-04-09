@@ -3,6 +3,7 @@ package game.client;
 import game.packet.PacketHandler;
 import game.packet.packets.Chat;
 import game.packet.packets.Nickname;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -109,6 +110,7 @@ public class Client{
     public StringProperty lastChatMessageProperty() { return lastChatMessage;}
 
     public void setLastChatMessage(String message) {
-        lastChatMessage.setValue(message);
+        Platform.runLater(() -> lastChatMessage.setValue(message));
+        ;
     }
 }

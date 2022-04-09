@@ -1,5 +1,6 @@
 package game.packet.packets;
 
+import game.client.InputStreamThread;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
@@ -49,17 +50,26 @@ public class Chat extends AbstractPacket {
   }
 
   /**
-   * Decodes the message and will handle the message correctly by sending it to the server
+   * Decodes the message and will handle the message correctly by sending it to the server or clients
    */
   @Override
   public void decode(Object parent, String message) {
+    if (message.startsWith("Chat" + (char) ServerConstants.DEFAULT_PACKET_SPACER)) {
+      message = message.replace("Chat" + (char) ServerConstants.DEFAULT_PACKET_SPACER, "");
+    }
     if(parent instanceof ClientThread) {
       ClientThread obj = (ClientThread) parent;
       try {
-        obj.getOutputStream().write(message.getBytes());
+        // obj.getOutputStream().write(message.getBytes()); funktioniert nicht TODO: TOM check
+        obj.pushChatMessageToAllClients(message);
       } catch (Exception e) {
         e.printStackTrace();
       }
+    }
+    if(parent instanceof InputStreamThread) {
+      InputStreamThread obj = (InputStreamThread) parent;
+
+      obj.getClient().setLastChatMessage(message + "\n");
     }
   }
 }

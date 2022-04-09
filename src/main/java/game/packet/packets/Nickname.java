@@ -45,7 +45,6 @@ public class Nickname extends AbstractPacket {
    */
   @Override
   public void decode(Object parent, String message) {
-    System.out.println(message);
     if (parent instanceof ClientThread) {
       if (message.startsWith("Nickname" + (char) ServerConstants.DEFAULT_PACKET_SPACER)) {
         message = message.replace("Nickname" + (char) ServerConstants.DEFAULT_PACKET_SPACER, "");

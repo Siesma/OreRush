@@ -80,7 +80,7 @@ public class PacketHandler {
       System.out.println(message);
       out.write(message.getBytes());
     } catch (Exception e) {
-      //
+      e.printStackTrace();
     }
   }
 

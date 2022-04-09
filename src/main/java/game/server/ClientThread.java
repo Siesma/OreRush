@@ -100,11 +100,6 @@ public class ClientThread implements Runnable {
   }
 
 
-  /*
-
-   */
-
-
   /**
    * Changes the playerName of the client. Verifies if the name is unique and changes it if necessary.
    *
