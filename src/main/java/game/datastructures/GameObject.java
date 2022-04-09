@@ -1,6 +1,8 @@
 package game.datastructures;
 
-public interface GameObject {
+import game.server.ServerConstants;
+
+public abstract interface GameObject {
 
     /**
      * This function should encode all the information of a GameObject into a string to allow data
