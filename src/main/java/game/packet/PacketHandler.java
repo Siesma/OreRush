@@ -21,7 +21,7 @@ public class PacketHandler {
   public String createPacketMessage() {
     System.out.println("Please tell which packet you want to send");
     System.out.println("A list of possible packets are:");
-    for (String s : (Objects.requireNonNull(new File(System.getProperty("user.dir") + "/src/game/packet/packets").list()))) {
+    for (String s : (Objects.requireNonNull(new File(System.getProperty("user.dir") + "/src/main/java/game/packet/packets").list()))) {
       System.out.println("\t->" + s.split(".java")[0]);
     }
     Scanner sc = new Scanner(System.in);

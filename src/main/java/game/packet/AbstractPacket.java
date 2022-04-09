@@ -47,7 +47,7 @@ public abstract class AbstractPacket {
   protected boolean validate(String input) {
     input = replaceIndicatorChars(input);
     String[] parts = splitMessageBySpacer(input);
-    String[] possiblePackets = Objects.requireNonNull(new File(System.getProperty("user.dir") + "/src/game/packet/packets").list());
+    String[] possiblePackets = Objects.requireNonNull(new File(System.getProperty("user.dir") + "/src/main/java/game/packet/packets").list());
     StringBuilder appended = new StringBuilder();
     Arrays.asList(possiblePackets).forEach(e -> appended.append("|((?i)").append(e.split(".java")[0]).append(")"));
     String matching = appended.subSequence(1, appended.length()).toString();

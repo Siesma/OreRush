@@ -3,6 +3,8 @@ package game.client;
 import game.packet.PacketHandler;
 import game.packet.packets.Chat;
 import game.packet.packets.Nickname;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,11 +18,11 @@ public class Client{
     private InputStream inputStream;
     private boolean pongReceived = false;
 
-    private String nickname;
-    private String lastChatMessage;
+    private StringProperty nickname;
+    private StringProperty lastChatMessage = new SimpleStringProperty();
 
     public Client(String hostAddress, int port, String name) {
-        this.nickname = name;
+        this.nickname = new SimpleStringProperty(name);
 
         try {
             socket = new Socket(hostAddress, port);
@@ -73,7 +75,7 @@ public class Client{
      * Changes the nickname.
      */
     public void changeNickname(String newNickname) {
-        nickname = (newNickname);
+        nickname.setValue(newNickname);
         (new PacketHandler(this)).pushMessage(outputStream, (new Nickname()).encodeWithContent(newNickname));
     }
 
@@ -100,13 +102,13 @@ public class Client{
         this.pongReceived = pongReceived;
     }
 
-    public String nicknameProperty() {
+    public StringProperty nicknameProperty() {
         return nickname;
     }
 
-    public String lastChatMessageProperty() { return lastChatMessage;}
+    public StringProperty lastChatMessageProperty() { return lastChatMessage;}
 
     public void setLastChatMessage(String message) {
-        lastChatMessage = (message);
+        lastChatMessage.setValue(message);
     }
 }

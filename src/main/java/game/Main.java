@@ -2,7 +2,9 @@ package game;
 
 
 import game.client.Client;
+import game.gui.ClientApp;
 import game.server.Server;
+import javafx.application.Application;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -41,9 +43,8 @@ public class Main {
                 BufferedWriter writer = new BufferedWriter(new FileWriter("clientInfo.txt"));
                 writer.write(str);
                 writer.close();
-                Client client = new Client(hostAddress, Integer.parseInt(port), name);
 
-//                Application.launch(ClientApp.class, hostAddress, port, name);
+                Application.launch(ClientApp.class, hostAddress, port, name);
 
             } else {
                 System.out.println("Error: Wrong first argument.");
