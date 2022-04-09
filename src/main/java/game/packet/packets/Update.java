@@ -26,11 +26,17 @@ public class Update extends AbstractPacket {
   }
 
 
+  /**
+   * Placeholder for encoding the Update packet.
+   */
   @Override
   public String encode() {
     return "";
   }
 
+  /**
+   * Placeholder for decoding the Update packet.
+   */
   @Override
   public void decode(Object parent, String message) {
 

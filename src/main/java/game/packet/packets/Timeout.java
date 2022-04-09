@@ -23,7 +23,11 @@ public class Timeout extends AbstractPacket {
   public String encodeWithContent(String... content) {
     return encode();
   }
-
+  /**
+   * Creates the message that results in a Timeout packet.
+   * This means "Start" Timeout "End"
+   * where "Start" is the default start char and "End" is the default end char.
+   */
   @Override
   public String encode() {
     return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
@@ -33,6 +37,9 @@ public class Timeout extends AbstractPacket {
       (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
   }
 
+  /**
+   * Removes the client if it has timed out.
+   */
   @Override
   public void decode(Object parent, String message) {
     if (parent instanceof ClientThread) {
