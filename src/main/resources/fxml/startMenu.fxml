@@ -21,18 +21,18 @@
                         <Button mnemonicParsing="false" text="Join Lobby" />
                     </children>
                 </VBox>
-                <Pane prefHeight="200.0" prefWidth="200.0" />
                 <VBox prefHeight="296.0" prefWidth="261.0">
                     <children>
                         <TextFlow fx:id="chatTextFlow" prefHeight="233.0" prefWidth="261.0" />
                         <HBox prefHeight="100.0" prefWidth="200.0">
                             <children>
-                                <TextField fx:id="newMessageTextField" prefHeight="23.0" prefWidth="219.0" />
+                                <TextField fx:id="newMessageTextField" prefHeight="25.0" prefWidth="165.0" />
                                 <Button mnemonicParsing="false" onAction="#handleSendMessage" text="Send" />
                             </children>
                         </HBox>
                     </children>
                 </VBox>
+            <ListView fx:id="clientListView" prefHeight="296.0" prefWidth="185.0" />
             </children>
         </HBox>
     </center>

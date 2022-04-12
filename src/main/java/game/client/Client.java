@@ -3,20 +3,21 @@ package game.client;
 import game.datastructures.Robot;
 import game.packet.PacketHandler;
 import game.packet.packets.Chat;
-import game.packet.packets.Join;
+import game.packet.packets.Connect;
 import game.packet.packets.Nickname;
 import javafx.application.Platform;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Client{
 
@@ -27,7 +28,18 @@ public class Client{
 
     private final StringProperty nickname;
     private final StringProperty lastChatMessage = new SimpleStringProperty();
-    private final ListProperty connectedClients = new SimpleListProperty();
+
+
+    public ObservableList<String> getConnectedClients() {
+        return connectedClients.get();
+    }
+
+    public ListProperty<String> connectedClientsProperty() {
+        return connectedClients;
+    }
+    ObservableList<String> observableClientList = FXCollections.observableArrayList();
+    ListProperty<String> connectedClients = new SimpleListProperty<>(observableClientList);
+
     private ArrayList<Robot> robots = new ArrayList<>();
 
     public Client(String hostAddress, int port, String name) {
@@ -48,7 +60,7 @@ public class Client{
             inputStreamThread.start();
 
             //Sends packet to the server to set the name passed at launch.
-            (new PacketHandler(this)).pushMessage(outputStream, (new Join()).encodeWithContent(name));
+            (new PacketHandler(this)).pushMessage(outputStream, (new Connect()).encodeWithContent(name));
 
 
 //            PongThread pT = new PongThread(this);
@@ -96,6 +108,15 @@ public class Client{
         (new PacketHandler(this)).pushMessage(outputStream, (new Chat()).encodeWithContent(message));
     }
 
+    public void addClient(String clientName) {
+        Platform.runLater(() ->observableClientList.add(clientName));
+    }
+
+    // TODO (seb) disconnect packet
+    public void removeClient(String clientName) {
+        Platform.runLater(() ->observableClientList.remove(clientName));
+    }
+
     public OutputStream getOutputStream() {
         return outputStream;
     }
@@ -125,4 +146,6 @@ public class Client{
     public ArrayList<Robot> getRobots() {
         return this.robots;
     }
+
+
 }

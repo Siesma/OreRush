@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -25,10 +26,13 @@ public class StartMenuController{
     @FXML private Label nickname;
 
     @FXML private TextField newNickname;
-    @FXML private TextField newMessageTextField;
 
+    @FXML private TextField newMessageTextField;
     @FXML private TextFlow chatTextFlow;
 
+    @FXML private ListView<String> clientListView;
+
+    // TODO fix nicknames with underscore number
 
     public void initialize() {
         BufferedReader reader;
@@ -52,6 +56,7 @@ public class StartMenuController{
             Text newMessage = new Text(newValue);
             chatTextFlow.getChildren().add(newMessage);
         });
+        clientListView.itemsProperty().bind(client.connectedClientsProperty());
 
     }
 
