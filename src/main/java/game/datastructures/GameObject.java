@@ -17,6 +17,10 @@ public abstract interface GameObject {
         We then could just fetch incoming data and apply it to the object afterwards!
      */
 
+    /**
+     * This function will fill the GameObjects information based on a string from a packet
+     * @param encodedGameObject the received string corresponding to the GameObject
+     */
     public void parseGameObjectFromString(String encodedGameObject);
 
     public void fillGameObjectWithData (String... data);
