@@ -1,5 +1,6 @@
 package game.packet;
 
+import game.helper.FileHelper;
 import game.server.ServerConstants;
 
 import java.io.File;
@@ -27,13 +28,8 @@ public abstract class AbstractPacket {
    * This is used to not have to hardcode any allowed packets.
    */
   public static AbstractPacket getPacketByName(String name) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-    try {
-      Class<AbstractPacket> classes = (Class<AbstractPacket>) Class.forName("game.packet.packets." + replaceIndicatorChars(name));
-      return classes.newInstance();
-    } catch (Exception e) {
-      System.out.println("Some error occurred! Reverting to null");
-      return null;
-    }
+    Object obj = (new FileHelper()).createInstanceOfClass("game.packet.packets." + replaceIndicatorChars(name));
+    return obj == null ? null : obj instanceof AbstractPacket ? (AbstractPacket) obj : null;
   }
 
   public static AbstractPacket getPacketByMessage(String message) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
@@ -88,14 +84,14 @@ public abstract class AbstractPacket {
    * Splits a message in its components. Those components are seperated using DEFAULT_PACKET_SPACERs.
    * The DEFAULT_PACKET_SPACER is ASCII value 31.
    */
-  protected static String[] splitMessageBySpacer(String message) {
+  public static String[] splitMessageBySpacer(String message) {
     return message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
   }
 
   /**
    * Helperfunction that removes the first element of a given array and returns the remaining subset.
    */
-  protected static String[] removeFirstElement(String[] in) {
+  public static String[] removeFirstElement(String[] in) {
     String[] out = new String[in.length - 1];
     for (int i = 1; i < in.length; i++) {
       out[i - 1] = in[i];
