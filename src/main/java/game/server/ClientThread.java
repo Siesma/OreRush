@@ -62,6 +62,7 @@ public class ClientThread implements Runnable {
       if (cur == ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE) {
         startingToRecordMessage = false;
         String message = builder.toString();
+        System.out.println("server received: "+message);
         //PacketHandler.pushMessage(message);
         builder.setLength(0);
 
@@ -111,19 +112,6 @@ public class ClientThread implements Runnable {
       playerName = changeDuplicateName(playerName);
     }
     this.playerName = playerName;
-    System.out.println("New Player Name: " + playerName);
-
-    //This will generate a reply to the Client, informing them that the Nickname was successfully changed
-    Object[] content = new Object[100];
-    content[0] = 0;
-    content[1] = "(Successfully changed their nickname to: " + playerName + ")";
-    try {
-//            pushChatMessageToAllClients(PacketGenerator.generatePacket("pchat", content));
-      Chat p = new Chat();
-      pushChatMessageToAllClients((String) content[1]);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
   }
 
   /**
@@ -176,6 +164,17 @@ public class ClientThread implements Runnable {
    */
   public void pushChatMessageToAllClients(String msg) {
     msg = playerName + ": " + msg;
+    for(ClientThread clientThread : Server.getClientThreads()) {
+      (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Chat()).encodeWithContent(msg));
+    }
+  }
+
+  /**
+   * Sends Chat packet to a all clients
+   * @param msg message that is sent preceded by the name of the sender
+   */
+  public void pushServerMessageToAllClients(String msg) {
+    msg = "Server: " + msg;
     for(ClientThread clientThread : Server.getClientThreads()) {
       (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Chat()).encodeWithContent(msg));
     }

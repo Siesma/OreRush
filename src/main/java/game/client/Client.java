@@ -2,8 +2,11 @@ package game.client;
 
 import game.packet.PacketHandler;
 import game.packet.packets.Chat;
+import game.packet.packets.Join;
 import game.packet.packets.Nickname;
 import javafx.application.Platform;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -19,8 +22,9 @@ public class Client{
     private InputStream inputStream;
     private boolean pongReceived = false;
 
-    private StringProperty nickname;
-    private StringProperty lastChatMessage = new SimpleStringProperty();
+    private final StringProperty nickname;
+    private final StringProperty lastChatMessage = new SimpleStringProperty();
+    private final ListProperty connectedClients = new SimpleListProperty();
 
     public Client(String hostAddress, int port, String name) {
         this.nickname = new SimpleStringProperty(name);
@@ -40,7 +44,8 @@ public class Client{
             inputStreamThread.start();
 
             //Sends packet to the server to set the name passed at launch.
-            changeNickname(name);
+            (new PacketHandler(this)).pushMessage(outputStream, (new Join()).encodeWithContent(name));
+
 
 //            PongThread pT = new PongThread(this);
 //            Thread pongThread = new Thread(pT);
@@ -76,8 +81,8 @@ public class Client{
      * Changes the nickname.
      */
     public void changeNickname(String newNickname) {
+        (new PacketHandler(this)).pushMessage(outputStream, (new Nickname()).encodeWithContent(nickname.get(), newNickname));
         nickname.setValue(newNickname);
-        (new PacketHandler(this)).pushMessage(outputStream, (new Nickname()).encodeWithContent(newNickname));
     }
 
     /**
