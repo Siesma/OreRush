@@ -49,7 +49,6 @@ public class InputStreamThread implements Runnable {
                         break;
                     }
 //                    generateAppropriateReaction(receivedPacket);
-                    System.out.println("\t" + message);
                     receivedPacket.decode(this, message);
                 } catch (Exception e) {
                     e.printStackTrace();
