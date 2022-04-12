@@ -55,7 +55,7 @@ public class PacketHandler {
     if (message.equals("")) {
       return;
     }
-    AbstractPacket packet = null;
+    AbstractPacket packet;
     try {
       packet = AbstractPacket.getPacketByName(AbstractPacket.splitMessageBySpacer(message)[0]);
     } catch (InstantiationException instantiationException) {
@@ -72,6 +72,7 @@ public class PacketHandler {
       return;
     }
     if (!packet.validate(message)) {
+      System.out.println("Tried to send: "+ message);
       System.out.println("The given packet contained garbage");
       return;
     }

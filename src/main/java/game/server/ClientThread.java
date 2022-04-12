@@ -6,6 +6,7 @@ import game.packet.PacketHandler;
 import game.packet.packets.Awake;
 import game.packet.packets.Chat;
 import game.packet.packets.Success;
+import game.packet.packets.Whisper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,7 +71,7 @@ public class ClientThread implements Runnable {
         try {
           AbstractPacket receivedPacket = AbstractPacket.getPacketByMessage(message);
           if (receivedPacket == null) {
-            System.out.println("The recieved packet contains garbage.");
+            System.out.println("The received packet contains garbage.");
             break;
           }
           receivedPacket.decode(this, message);
@@ -155,6 +156,24 @@ public class ClientThread implements Runnable {
     return playerName;
   }
 
+  /**
+   * Sends Chat packet to a specific client
+   * @param receiverName name of the specific client that should receive the message
+   * @param msg message that is sent preceded by the name of the sender
+   */
+  public void pushWhisperToAClient(String receiverName, String msg) {
+
+    for(ClientThread clientThread : Server.getClientThreads()) {
+      if (clientThread.getPlayerName().equals(receiverName)) {
+        (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Whisper()).encodeWithContent(playerName, msg));
+      }
+    }
+  }
+
+  /**
+   * Sends Chat packet to a all clients
+   * @param msg message that is sent preceded by the name of the sender
+   */
   public void pushChatMessageToAllClients(String msg) {
     msg = playerName + ": " + msg;
     for(ClientThread clientThread : Server.getClientThreads()) {

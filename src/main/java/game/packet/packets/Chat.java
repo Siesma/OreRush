@@ -60,7 +60,6 @@ public class Chat extends AbstractPacket {
     if(parent instanceof ClientThread) {
       ClientThread obj = (ClientThread) parent;
       try {
-        // obj.getOutputStream().write(message.getBytes()); funktioniert nicht TODO: TOM check
         obj.pushChatMessageToAllClients(message);
       } catch (Exception e) {
         e.printStackTrace();

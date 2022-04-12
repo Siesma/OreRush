@@ -42,9 +42,9 @@ public class Client{
             //Sends packet to the server to set the name passed at launch.
             changeNickname(name);
 
-            PongThread pT = new PongThread(this);
-            Thread pongThread = new Thread(pT);
-            pongThread.start();
+//            PongThread pT = new PongThread(this);
+//            Thread pongThread = new Thread(pT);
+//            pongThread.start();
 
             CommandLineInputThread cT = new CommandLineInputThread(this);
             Thread commandLineInputThread = new Thread(cT);
@@ -111,6 +111,5 @@ public class Client{
 
     public void setLastChatMessage(String message) {
         Platform.runLater(() -> lastChatMessage.setValue(message));
-        ;
     }
 }
