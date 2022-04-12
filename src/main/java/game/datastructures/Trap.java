@@ -49,6 +49,7 @@ public class Trap implements GameObject {
     return playerID;
   }
 
+
   @Override
   public String encodeToString() {
     String s = "trap:" + xCoordinate + ":" + yCoordinate + ":" + playerID;
