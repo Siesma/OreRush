@@ -1,5 +1,6 @@
 package game.client;
 
+import game.datastructures.Robot;
 import game.packet.PacketHandler;
 import game.packet.packets.Chat;
 import game.packet.packets.Join;
@@ -14,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Client{
 
@@ -25,6 +28,7 @@ public class Client{
     private final StringProperty nickname;
     private final StringProperty lastChatMessage = new SimpleStringProperty();
     private final ListProperty connectedClients = new SimpleListProperty();
+    private ArrayList<Robot> robots = new ArrayList<>();
 
     public Client(String hostAddress, int port, String name) {
         this.nickname = new SimpleStringProperty(name);
@@ -116,5 +120,9 @@ public class Client{
 
     public void setLastChatMessage(String message) {
         Platform.runLater(() -> lastChatMessage.setValue(message));
+    }
+
+    public ArrayList<Robot> getRobots() {
+        return this.robots;
     }
 }
