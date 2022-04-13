@@ -62,6 +62,9 @@ public class GameMap {
         }
     }
 
+    public OreType determineOreType() {
+        // TODO: make it so that more valuable oretypes spawn futher on the right
+        return OreType.values()[(int) (Math.random() * OreType.values().length)];
     public void placeObjectOnMap(GameObject object, int x, int y) {
         objectMap[y][x] = object;
     }
