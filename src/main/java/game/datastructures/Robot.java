@@ -60,6 +60,7 @@ public class Robot implements GameObject {
     return encodedRobot;
   }
 
+  @Override
   public void parseGameObjectFromString(String encodedRobot) {
     String[] encodedRobotArray = encodedRobot.split(String.valueOf((char) ':'));
     setPosition(Integer.parseInt(encodedRobotArray[1]), Integer.parseInt(encodedRobotArray[2]));
