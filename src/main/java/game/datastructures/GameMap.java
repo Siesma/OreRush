@@ -84,4 +84,16 @@ public class GameMap {
     public Object[][] getObjectMap() {
         return objectMap;
     }
+
+    public String encodeGameMap () {
+        StringBuilder s = new StringBuilder();
+        for (int y = 0; y < getGameMapSize()[0]; y++) {
+            for (int x = 0; x < getGameMapSize()[1]; x++) {
+                if (objectMap[y][x] != null) {
+                    s.append(objectMap[y][x].encodeToString()); //TODO: Update this using the container system @Tom
+                }
+            }
+        }
+        return s.toString();
+    }
 }
