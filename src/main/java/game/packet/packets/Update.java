@@ -23,7 +23,7 @@ public class Update extends AbstractPacket {
    */
   @Override
   public String encodeWithContent(String... content) {
-    return encode();
+    return "";
   }
 
 
@@ -32,8 +32,9 @@ public class Update extends AbstractPacket {
    */
   @Override
   public String encode() {
-    return "";
+    return encodeWithContent();
   }
+
 
   /**
    * Placeholder for decoding the Update packet.

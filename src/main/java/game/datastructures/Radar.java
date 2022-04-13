@@ -56,14 +56,8 @@ public class Radar implements GameObject {
   }
 
   @Override
-  public void parseGameObjectFromString(String encodedGameObject) {
-    String[] encodedTrapArray = encodedGameObject.split(String.valueOf((char) ':'));
-    setPosition(Integer.parseInt(encodedTrapArray[1]), Integer.parseInt(encodedTrapArray[2]));
-    setPlayerID(Integer.parseInt(encodedTrapArray[3]));
-  }
-
-  @Override
   public void fillGameObjectWithData(String... data) {
-
+    setPosition(Integer.parseInt(data[1]), Integer.parseInt(data[2]));
+    setPlayerID(Integer.parseInt(data[3]));
   }
 }

@@ -2,6 +2,8 @@ package game.datastructures;
 
 public abstract interface GameObject {
 
+
+
     /**
      * This method sets the GameObject position based on a given x,y value.
      *
@@ -22,19 +24,9 @@ public abstract interface GameObject {
      */
     public String encodeToString();
 
-    /*
-        Maybe we should make a function that fills instead of creates, because we then can call
-        "(new FileHelper()).createInstanceOfClass(PathToClass)" to create a new object of a given class
-        for example:
-        "(new FileHelper()).createInstanceOfClass("game.datastructures.Radar")" would create a new Radar object.
-        We then could just fetch incoming data and apply it to the object afterwards!
-     */
-
     /**
      * This function will fill the GameObjects information based on a string from a packet
-     * @param encodedGameObject the received string corresponding to the GameObject
+     * @param data the received string corresponding to the GameObject
      */
-    public void parseGameObjectFromString(String encodedGameObject);
-
     public void fillGameObjectWithData (String... data);
 }
