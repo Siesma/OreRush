@@ -17,9 +17,9 @@ public class Server {
         ServerSocket serverSocket = new ServerSocket(port);
         System.out.println("Now listening on port " + port);
 
-        PingThread pT = new PingThread();
-        Thread pingThread = new Thread(pT);
-        pingThread.start();
+//        PingThread pT = new PingThread();
+//        Thread pingThread = new Thread(pT);
+//        pingThread.start();
 
         while (true) {
             try {

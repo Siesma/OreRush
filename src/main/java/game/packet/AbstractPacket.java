@@ -88,14 +88,14 @@ public abstract class AbstractPacket {
    * Splits a message in its components. Those components are seperated using DEFAULT_PACKET_SPACERs.
    * The DEFAULT_PACKET_SPACER is ASCII value 31.
    */
-  protected static String[] splitMessageBySpacer(String message) {
+  public static String[] splitMessageBySpacer(String message) {
     return message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
   }
 
   /**
    * Helperfunction that removes the first element of a given array and returns the remaining subset.
    */
-  protected static String[] removeFirstElement(String[] in) {
+  public static String[] removeFirstElement(String[] in) {
     String[] out = new String[in.length - 1];
     for (int i = 1; i < in.length; i++) {
       out[i - 1] = in[i];

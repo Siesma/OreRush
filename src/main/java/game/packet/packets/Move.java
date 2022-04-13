@@ -1,5 +1,6 @@
 package game.packet.packets;
 
+import game.client.InputStreamThread;
 import game.packet.AbstractPacket;
 
 public class Move extends AbstractPacket {
@@ -30,6 +31,18 @@ public class Move extends AbstractPacket {
 
   @Override
   public void decode(Object parent, String message) {
-
+    /*
+    Packet structure would be:
+    - Robot
+      - index_of_robot
+    - Position
+      - new_robot_position
+     */
+    if (parent instanceof InputStreamThread) {
+      InputStreamThread obj = (InputStreamThread) parent;
+      String[] data = AbstractPacket.splitMessageBySpacer(message); // Important: Position has to be cropped!
+      obj.getClient().getRobots().get(Integer.parseInt(data[1])).
+        setPosition(Integer.parseInt(data[1]), Integer.parseInt(data[1]));
+    }
   }
 }

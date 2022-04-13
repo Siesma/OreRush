@@ -8,7 +8,9 @@ import java.util.Scanner;
 
 public class Nickname extends AbstractPacket {
   public Nickname() {
-    super("", new String[]{"^.*$"}, "");
+    super("", new String[]{"^.*$", //old name
+            "^.*$" // new name
+    }, "");
   }
 
   /**
@@ -23,6 +25,8 @@ public class Nickname extends AbstractPacket {
       this.name +
       (char) ServerConstants.DEFAULT_PACKET_SPACER +
       content[0] +
+      (char) ServerConstants.DEFAULT_PACKET_SPACER +
+      content[1] +
       (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
   }
 
@@ -34,6 +38,8 @@ public class Nickname extends AbstractPacket {
     System.out.println("What do you want your new name to be?");
     return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
       this.name +
+      (char) ServerConstants.DEFAULT_PACKET_SPACER +
+      "old name" +
       (char) ServerConstants.DEFAULT_PACKET_SPACER +
       promptUserForInput(new Scanner(System.in)) +
       (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
@@ -50,8 +56,11 @@ public class Nickname extends AbstractPacket {
         message = message.replace("Nickname" + (char) ServerConstants.DEFAULT_PACKET_SPACER, "");
       }
       ClientThread obj = (ClientThread) parent;
+      String oldName = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0];
+      message = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[1];
       obj.changePlayerName(message);
-      System.out.println("Username is now: " + ((ClientThread) parent).getPlayerName());
+      obj.pushServerMessageToAllClients(oldName + " has changed their name to "
+      + message + ".");
     }
   }
 }

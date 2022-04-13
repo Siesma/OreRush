@@ -1,6 +1,7 @@
 package game.packet.packets;
 
 import game.packet.AbstractPacket;
+import game.server.ClientThread;
 
 public class Update extends AbstractPacket {
 
@@ -39,6 +40,18 @@ public class Update extends AbstractPacket {
    */
   @Override
   public void decode(Object parent, String message) {
+    /*
+    Packet structure would be:
+    - Cell
+      - x_position
+      - y_position
+    - ObjectsOnCell
+      - ObjectOnCell_1
+      - ObjectOnCell_2
+      ...
+     */
+    if(parent instanceof ClientThread) {
 
+    }
   }
 }

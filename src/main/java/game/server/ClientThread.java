@@ -6,6 +6,7 @@ import game.packet.PacketHandler;
 import game.packet.packets.Awake;
 import game.packet.packets.Chat;
 import game.packet.packets.Success;
+import game.packet.packets.Whisper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,6 +62,7 @@ public class ClientThread implements Runnable {
       if (cur == ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE) {
         startingToRecordMessage = false;
         String message = builder.toString();
+        System.out.println("server received: "+message);
         //PacketHandler.pushMessage(message);
         builder.setLength(0);
 
@@ -70,7 +72,7 @@ public class ClientThread implements Runnable {
         try {
           AbstractPacket receivedPacket = AbstractPacket.getPacketByMessage(message);
           if (receivedPacket == null) {
-            System.out.println("The recieved packet contains garbage.");
+            System.out.println("The received packet contains garbage.");
             break;
           }
           receivedPacket.decode(this, message);
@@ -110,19 +112,6 @@ public class ClientThread implements Runnable {
       playerName = changeDuplicateName(playerName);
     }
     this.playerName = playerName;
-    System.out.println("New Player Name: " + playerName);
-
-    //This will generate a reply to the Client, informing them that the Nickname was successfully changed
-    Object[] content = new Object[100];
-    content[0] = 0;
-    content[1] = "(Successfully changed their nickname to: " + playerName + ")";
-    try {
-//            pushChatMessageToAllClients(PacketGenerator.generatePacket("pchat", content));
-      Chat p = new Chat();
-      pushChatMessageToAllClients((String) content[1]);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
   }
 
   /**
@@ -155,8 +144,37 @@ public class ClientThread implements Runnable {
     return playerName;
   }
 
+  /**
+   * Sends Chat packet to a specific client
+   * @param receiverName name of the specific client that should receive the message
+   * @param msg message that is sent preceded by the name of the sender
+   */
+  public void pushWhisperToAClient(String receiverName, String msg) {
+
+    for(ClientThread clientThread : Server.getClientThreads()) {
+      if (clientThread.getPlayerName().equals(receiverName)) {
+        (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Whisper()).encodeWithContent(playerName, msg));
+      }
+    }
+  }
+
+  /**
+   * Sends Chat packet to a all clients
+   * @param msg message that is sent preceded by the name of the sender
+   */
   public void pushChatMessageToAllClients(String msg) {
     msg = playerName + ": " + msg;
+    for(ClientThread clientThread : Server.getClientThreads()) {
+      (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Chat()).encodeWithContent(msg));
+    }
+  }
+
+  /**
+   * Sends Chat packet to a all clients
+   * @param msg message that is sent preceded by the name of the sender
+   */
+  public void pushServerMessageToAllClients(String msg) {
+    msg = "Server: " + msg;
     for(ClientThread clientThread : Server.getClientThreads()) {
       (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Chat()).encodeWithContent(msg));
     }
