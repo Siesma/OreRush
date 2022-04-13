@@ -2,6 +2,7 @@ package game.packet.packets;
 
 import game.client.InputStreamThread;
 import game.packet.AbstractPacket;
+import game.server.ServerConstants;
 
 public class Move extends AbstractPacket {
 
@@ -40,7 +41,7 @@ public class Move extends AbstractPacket {
      */
     if (parent instanceof InputStreamThread) {
       InputStreamThread obj = (InputStreamThread) parent;
-      String[] data = AbstractPacket.splitMessageBySpacer(message); // Important: Position has to be cropped!
+      String[] data = AbstractPacket.splitMessageBySpacer(message, String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER)); // Important: Position has to be cropped!
       obj.getClient().getRobots().get(Integer.parseInt(data[1])).
         setPosition(Integer.parseInt(data[1]), Integer.parseInt(data[1]));
     }

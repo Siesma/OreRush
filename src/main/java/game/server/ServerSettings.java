@@ -9,9 +9,10 @@ public class ServerSettings {
     TODO: Make a new Datatype called "ServerSettings" which holds information about packet-replacement procedure,
      the setting and a way to default back to working values in case something gets messed up.
      */
-    private int NumberOfRobots;
-    private int MapWidth, MapHeight;
-    private int NumberOfRounds;
+    private int numberOfRobots;
+    private int mapWidth, mapHeight;
+    private int numberOfRounds;
+    private float oreDensity;
     private ArrayList<Object> ores;
 
     /**
@@ -29,46 +30,46 @@ public class ServerSettings {
      * @param ores           Default user settings initialization
      */
     public ServerSettings(int numberOfRobots, int mapWidth, int mapHeight, int numberOfRounds, ArrayList<Object> ores) {
-        NumberOfRobots = numberOfRobots;
-        MapWidth = mapWidth;
-        MapHeight = mapHeight;
-        NumberOfRounds = numberOfRounds;
+        numberOfRobots = numberOfRobots;
+        mapWidth = mapWidth;
+        mapHeight = mapHeight;
+        this.numberOfRounds = numberOfRounds;
         this.ores = ores;
     }
 
     public int getNumberOfRobots() {
-        return NumberOfRobots;
+        return numberOfRobots;
     }
 
     public ServerSettings setNumberOfRobots(int numberOfRobots) {
-        NumberOfRobots = numberOfRobots;
+        numberOfRobots = numberOfRobots;
         return this;
     }
 
     public int getMapWidth() {
-        return MapWidth;
+        return mapWidth;
     }
 
     public ServerSettings setMapWidth(int mapWidth) {
-        MapWidth = mapWidth;
+        mapWidth = mapWidth;
         return this;
     }
 
     public int getMapHeight() {
-        return MapHeight;
+        return mapHeight;
     }
 
     public ServerSettings setMapHeight(int mapHeight) {
-        MapHeight = mapHeight;
+        mapHeight = mapHeight;
         return this;
     }
 
     public int getNumberOfRounds() {
-        return NumberOfRounds;
+        return numberOfRounds;
     }
 
     public ServerSettings setNumberOfRounds(int numberOfRounds) {
-        NumberOfRounds = numberOfRounds;
+        this.numberOfRounds = numberOfRounds;
         return this;
     }
 
@@ -79,5 +80,9 @@ public class ServerSettings {
     public ServerSettings setOres(ArrayList<Object> ores) {
         this.ores = ores;
         return this;
+    }
+
+    public float getOreDensity() {
+        return oreDensity;
     }
 }

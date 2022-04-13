@@ -15,6 +15,7 @@ import java.net.Socket;
 
 public class ClientThread implements Runnable {
 
+  private final Server server;
   private final Socket socket;
   private final InputStream inputStream;
   private final OutputStream outputStream;
@@ -23,7 +24,8 @@ public class ClientThread implements Runnable {
   private boolean pingReceived;
   private String playerName;
 
-  public ClientThread(Socket socket) throws IOException {
+  public ClientThread(Server server, Socket socket) throws IOException {
+    this.server = server;
     this.socket = socket;
     this.inputStream = socket.getInputStream();
     this.outputStream = socket.getOutputStream();
@@ -211,5 +213,9 @@ public class ClientThread implements Runnable {
 
   public String getPlayerName() {
     return playerName;
+  }
+
+  public Server getServer() {
+    return server;
   }
 }

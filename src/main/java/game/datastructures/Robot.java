@@ -2,6 +2,7 @@ package game.datastructures;
 
 import game.helper.FileHelper;
 import game.packet.AbstractPacket;
+import game.server.ServerConstants;
 
 /**
  * This Class represents a robot.
@@ -60,34 +61,23 @@ public class Robot implements GameObject {
     return encodedRobot;
   }
 
-  public void parseGameObjectFromString(String encodedRobot) {
-    String[] encodedRobotArray = encodedRobot.split(String.valueOf((char) ':'));
-    setPosition(Integer.parseInt(encodedRobotArray[1]), Integer.parseInt(encodedRobotArray[2]));
-    try {
-      String[] encodedGameObjectArray = new String[encodedRobotArray.length - 3];
-      for (int i = 3; i < encodedRobotArray.length; i++) {
-        encodedGameObjectArray[i] = encodedRobotArray[i];
-      }
-      GameObject inventoryObject = parseInventoryObjectFromString(encodedGameObjectArray);
-
-      loadInventory(inventoryObject);
-    } catch (Exception e) {
-      //TODO: Figure out what to do in this case
-    }
-  }
-
     @Override
     public void fillGameObjectWithData(String... data) {
       if(data.length == 1) {
-        data = AbstractPacket.splitMessageBySpacer(data[0]);
+        data = AbstractPacket.splitMessageBySpacer(data[0], String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
       }
-      //TODO: Interpret incoming information
-      /*
-        Incoming data should be of the form:
-        - x_position -> data[0]
-        - y_position -> data[1]
-        - inventory  -> data[2]
-       */
+      setPosition(Integer.parseInt(data[1]), Integer.parseInt(data[2]));
+      try {
+        String[] encodedGameObjectArray = new String[data.length - 3];
+        for (int i = 3; i < data.length; i++) {
+          encodedGameObjectArray[i] = data[i];
+        }
+        GameObject inventoryObject = parseInventoryObjectFromString(encodedGameObjectArray);
+
+        loadInventory(inventoryObject);
+      } catch (Exception e) {
+        //TODO: Figure out what to do in this case
+      }
     }
 
     private GameObject parseInventoryObjectFromString(String[] encodedGameObjectArray) throws Exception {

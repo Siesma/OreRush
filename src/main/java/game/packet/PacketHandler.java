@@ -1,5 +1,7 @@
 package game.packet;
 
+import game.server.ServerConstants;
+
 import java.io.File;
 import java.io.OutputStream;
 import java.util.Objects;
@@ -48,7 +50,6 @@ public class PacketHandler {
 
   /**
    * A function that pushes a given input string and its according values to the server or client.
-   * This function also handles calling the decoding of the given packet. TODO: @Tom (seb) ich hab auf Zeile 79  packet.decode(parent, message); gelösht. Es hat doppelte messages gemacht etc, warum war es hier? Es scheint alles zu funktionnieren ohne.
    * If a packet is attempted to be created, but it is not succeeding it will return nothing.
    */
   public void pushMessage(OutputStream out, String message) {
@@ -57,7 +58,7 @@ public class PacketHandler {
     }
     AbstractPacket packet;
     try {
-      packet = AbstractPacket.getPacketByName(AbstractPacket.splitMessageBySpacer(message)[0]);
+      packet = AbstractPacket.getPacketByName(AbstractPacket.splitMessageBySpacer(message, String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0]);
     } catch (InstantiationException instantiationException) {
       System.out.println("The packet expected some parameters that were not given!");
       return;
