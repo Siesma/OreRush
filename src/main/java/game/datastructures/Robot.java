@@ -60,39 +60,36 @@ public class Robot implements GameObject {
     return encodedRobot;
   }
 
-  public void parseGameObjectFromString(String encodedRobot) {
 
+  @Override
+  public void fillGameObjectWithData(String... data) {
+    if (data.length == 1) {
+      data = AbstractPacket.splitMessageBySpacer(data[0], ":");
+    }
+    setPosition(Integer.parseInt(data[1]), Integer.parseInt(data[2]));
+    try {
+      String[] encodedGameObjectArray = new String[data.length - 3];
+      for (int i = 3; i < data.length; i++) {
+        encodedGameObjectArray[i] = data[i];
+      }
+      GameObject inventoryObject = parseInventoryObjectFromString(encodedGameObjectArray);
+
+      loadInventory(inventoryObject);
+    } catch (Exception e) {
+      //TODO: Figure out what to do in this case
+    }
   }
 
-    @Override
-    public void fillGameObjectWithData(String... data) {
-      if(data.length == 1) {
-        data = AbstractPacket.splitMessageBySpacer(data[0], ":");
-      }
-      setPosition(Integer.parseInt(data[1]), Integer.parseInt(data[2]));
-      try {
-        String[] encodedGameObjectArray = new String[data.length - 3];
-        for (int i = 3; i < data.length; i++) {
-          encodedGameObjectArray[i] = data[i];
-        }
-        GameObject inventoryObject = parseInventoryObjectFromString(encodedGameObjectArray);
-
-        loadInventory(inventoryObject);
-      } catch (Exception e) {
-        //TODO: Figure out what to do in this case
-      }
+  private GameObject parseInventoryObjectFromString(String[] encodedGameObjectArray) throws Exception {
+    // Same algorithm but having new possible items is just as easy as with the packets!
+    // it is also easier to maintain and less code in general
+    Object obj = (new FileHelper()).createInstanceOfClass("");
+    if(!(obj instanceof GameObject)) {
+      return null;
     }
-
-    private GameObject parseInventoryObjectFromString(String[] encodedGameObjectArray) throws Exception {
-      // Same algorithm but having new possible items is just as easy as with the packets!
-      // it is also easier to maintain and less code in general
-      Object obj = (new FileHelper()).createInstanceOfClass("");
-      if(!(obj instanceof GameObject)) {
-        return null;
-      }
-      GameObject gameObject = (GameObject) obj;
-      gameObject.fillGameObjectWithData(AbstractPacket.removeFirstElement(encodedGameObjectArray));
-      return gameObject;
+    GameObject gameObject = (GameObject) obj;
+    gameObject.fillGameObjectWithData(AbstractPacket.removeFirstElement(encodedGameObjectArray));
+    return gameObject;
   }
 }
 
