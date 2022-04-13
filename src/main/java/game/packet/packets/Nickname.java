@@ -6,6 +6,8 @@ import game.server.ServerConstants;
 
 import java.util.Scanner;
 
+//TODO fix nickanme in Client gui changes should be reflected in client list and in lobbylist
+
 public class Nickname extends AbstractPacket {
   public Nickname() {
     super("", new String[]{"^.*$", //old name
