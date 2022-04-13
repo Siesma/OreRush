@@ -33,14 +33,15 @@ public class Ore implements GameObject {
 
   @Override
   public String encodeToString() {
-    StringBuilder s = new StringBuilder();
-    return s.toString();
+    String s = "ore:" + oreType.name() + ":" + xCoordinate + ":" + yCoordinate + ":" + amount;
+    return s;
   }
 
   @Override
   public void fillGameObjectWithData(String... data) {
-
+    oreType = OreType.valueOf(data[1]);
+    xCoordinate = Integer.parseInt(data[2]);
+    yCoordinate = Integer.parseInt(data[3]);
+    amount = Integer.parseInt(data[4]);
   }
-
-
 }
