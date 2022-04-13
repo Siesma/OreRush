@@ -60,17 +60,14 @@ public class Robot implements GameObject {
     return encodedRobot;
   }
 
-
   @Override
-  public void fillGameObjectWithData(String... data) {
-    if (data.length == 1) {
-      data = AbstractPacket.splitMessageBySpacer(data[0], ":");
-    }
-    setPosition(Integer.parseInt(data[1]), Integer.parseInt(data[2]));
+  public void parseGameObjectFromString(String encodedRobot) {
+    String[] encodedRobotArray = encodedRobot.split(String.valueOf((char) ':'));
+    setPosition(Integer.parseInt(encodedRobotArray[1]), Integer.parseInt(encodedRobotArray[2]));
     try {
-      String[] encodedGameObjectArray = new String[data.length - 3];
-      for (int i = 3; i < data.length; i++) {
-        encodedGameObjectArray[i] = data[i];
+      String[] encodedGameObjectArray = new String[encodedRobotArray.length - 3];
+      for (int i = 3; i < encodedRobotArray.length; i++) {
+        encodedGameObjectArray[i] = encodedRobotArray[i];
       }
       GameObject inventoryObject = parseInventoryObjectFromString(encodedGameObjectArray);
 
@@ -80,16 +77,30 @@ public class Robot implements GameObject {
     }
   }
 
-  private GameObject parseInventoryObjectFromString(String[] encodedGameObjectArray) throws Exception {
-    // Same algorithm but having new possible items is just as easy as with the packets!
-    // it is also easier to maintain and less code in general
-    Object obj = (new FileHelper()).createInstanceOfClass("");
-    if(!(obj instanceof GameObject)) {
-      return null;
+    @Override
+    public void fillGameObjectWithData(String... data) {
+      if(data.length == 1) {
+        data = AbstractPacket.splitMessageBySpacer(data[0]);
+      }
+      //TODO: Interpret incoming information
+      /*
+        Incoming data should be of the form:
+        - x_position -> data[0]
+        - y_position -> data[1]
+        - inventory  -> data[2]
+       */
     }
-    GameObject gameObject = (GameObject) obj;
-    gameObject.fillGameObjectWithData(AbstractPacket.removeFirstElement(encodedGameObjectArray));
-    return gameObject;
+
+    private GameObject parseInventoryObjectFromString(String[] encodedGameObjectArray) throws Exception {
+      // Same algorithm but having new possible items is just as easy as with the packets!
+      // it is also easier to maintain and less code in general
+      Object obj = (new FileHelper()).createInstanceOfClass("");
+      if(!(obj instanceof GameObject)) {
+        return null;
+      }
+      GameObject gameObject = (GameObject) obj;
+      gameObject.fillGameObjectWithData(AbstractPacket.removeFirstElement(encodedGameObjectArray));
+      return gameObject;
   }
 }
 

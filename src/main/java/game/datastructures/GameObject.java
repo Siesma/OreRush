@@ -2,6 +2,8 @@ package game.datastructures;
 
 public abstract interface GameObject {
 
+
+
     /**
      * This method sets the GameObject position based on a given x,y value.
      *
@@ -32,7 +34,9 @@ public abstract interface GameObject {
 
     /**
      * This function will fill the GameObjects information based on a string from a packet
-     * @param data the received strings corresponding to the GameObject
+     * @param encodedGameObject the received string corresponding to the GameObject
      */
+    public void parseGameObjectFromString(String encodedGameObject);
+
     public void fillGameObjectWithData (String... data);
 }
