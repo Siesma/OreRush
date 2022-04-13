@@ -1,7 +1,5 @@
 package game.datastructures;
 
-import game.server.ServerConstants;
-
 public abstract interface GameObject {
 
     /**
@@ -11,5 +9,15 @@ public abstract interface GameObject {
      */
     public String encodeToString();
 
+    /*
+        Maybe we should make a function that fills instead of creates, because we then can call
+        "(new FileHelper()).createInstanceOfClass(PathToClass)" to create a new object of a given class
+        for example:
+        "(new FileHelper()).createInstanceOfClass("game.datastructures.Radar")" would create a new Radar object.
+        We then could just fetch incoming data and apply it to the object afterwards!
+     */
+
     public void parseGameObjectFromString(String encodedGameObject);
+
+    public void fillGameObjectWithData (String... data);
 }

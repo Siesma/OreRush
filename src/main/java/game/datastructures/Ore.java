@@ -6,14 +6,31 @@ package game.datastructures;
  * Type / Value
  * X, Y Coordinates
  */
-public class Ore implements GameObject{
+public class Ore implements GameObject {
 
-    public String encodeToString(){
-        String s = "";
-        //TODO: Implementation
-        return s;
-    }
-    public void parseGameObjectFromString(String encodedGameObject){
-        //TODO: Implementation
-    }
+  private OreType oreType;
+  private int amount;
+
+  public Ore (OreType oreType, int amount){
+    this.oreType = oreType;
+    this.amount = 1; //amount; Currently hardcoded!!
+  }
+
+  @Override
+  public String encodeToString() {
+    StringBuilder s = new StringBuilder();
+    return s.toString();
+  }
+
+  @Override
+  public void parseGameObjectFromString(String encodedGameObject) {
+
+  }
+
+  @Override
+  public void fillGameObjectWithData(String... data) {
+
+  }
+
+
 }
