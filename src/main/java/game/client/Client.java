@@ -4,6 +4,7 @@ import game.datastructures.Robot;
 import game.packet.PacketHandler;
 import game.packet.packets.Chat;
 import game.packet.packets.Connect;
+import game.packet.packets.CreateLobby;
 import game.packet.packets.Nickname;
 import javafx.application.Platform;
 import javafx.beans.property.ListProperty;
@@ -30,15 +31,12 @@ public class Client{
     private final StringProperty lastChatMessage = new SimpleStringProperty();
 
 
-    public ObservableList<String> getConnectedClients() {
-        return connectedClients.get();
-    }
 
-    public ListProperty<String> connectedClientsProperty() {
-        return connectedClients;
-    }
     ObservableList<String> observableClientList = FXCollections.observableArrayList();
-    ListProperty<String> connectedClients = new SimpleListProperty<>(observableClientList);
+    ListProperty<String> clientList = new SimpleListProperty<>(observableClientList);
+
+    ObservableList<String> observableLobbyList = FXCollections.observableArrayList();
+    ListProperty<String> lobbyList = new SimpleListProperty<>(observableLobbyList);
 
     private ArrayList<Robot> robots = new ArrayList<>();
 
@@ -108,6 +106,10 @@ public class Client{
         (new PacketHandler(this)).pushMessage(outputStream, (new Chat()).encodeWithContent(message));
     }
 
+    public void createLobby(String newLobbyName) {
+        (new PacketHandler(this)).pushMessage(outputStream, (new CreateLobby()).encodeWithContent(newLobbyName));
+    }
+
     public void addClient(String clientName) {
         Platform.runLater(() ->observableClientList.add(clientName));
     }
@@ -115,6 +117,9 @@ public class Client{
     // TODO (seb) disconnect packet
     public void removeClient(String clientName) {
         Platform.runLater(() ->observableClientList.remove(clientName));
+    }
+    public void addLobby(String lobbyName) {
+        Platform.runLater(() ->observableLobbyList.add(lobbyName));
     }
 
     public OutputStream getOutputStream() {
@@ -145,6 +150,12 @@ public class Client{
 
     public ArrayList<Robot> getRobots() {
         return this.robots;
+    }
+    public ListProperty<String> clientListProperty() {
+        return clientList;
+    }
+    public ListProperty<String> lobbyListProperty() {
+        return lobbyList;
     }
 
 

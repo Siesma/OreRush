@@ -10,6 +10,7 @@ public class Server {
 
 
     private static final ArrayList<ClientThread> clientThreads = new ArrayList<>();
+    private ArrayList<Lobby> lobbyArrayList = new ArrayList<>();
 
 
     public void run(int port) throws IOException {
@@ -27,7 +28,7 @@ public class Server {
                 System.out.println("Waiting for client connection... ");
 
                 Socket socket = serverSocket.accept();
-                ClientThread cT = new ClientThread(socket);
+                ClientThread cT = new ClientThread(this, socket);
                 clientThreads.add(cT);
                 Thread clientThread = new Thread(cT);
                 clientThread.start();
@@ -44,5 +45,18 @@ public class Server {
 
     public static ArrayList<ClientThread> getClientThreads() {
         return clientThreads;
+    }
+
+    public void addLobby(Lobby lobby) {
+        lobbyArrayList.add(lobby);
+    }
+
+    public void addClientToLobby(ClientThread clientThread, String lobbyName){
+        for(Lobby lobby:lobbyArrayList) {
+            if (lobby.getLobbyName().equals(lobbyName)) {
+                lobby.addClient(clientThread);
+            }
+        }
+
     }
 }

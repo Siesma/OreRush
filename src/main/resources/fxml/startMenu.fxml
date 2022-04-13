@@ -17,7 +17,8 @@
                   </Label>
                         <Button mnemonicParsing="false" onAction="#handleChangeNickname" text="Change Nickname" />
                         <TextField fx:id="newNickname" promptText="new nickname" />
-                        <Button mnemonicParsing="false" text="Create Lobby" />
+                        <Button mnemonicParsing="false" onAction="#handleCreateLobby" text="Create Lobby" />
+                        <TextField fx:id="newLobbyName" promptText="new lobby" />
                         <Button mnemonicParsing="false" text="Join Lobby" />
                     </children>
                 </VBox>
@@ -33,6 +34,7 @@
                     </children>
                 </VBox>
             <ListView fx:id="clientListView" prefHeight="296.0" prefWidth="185.0" />
+            <ListView fx:id="lobbyListView" prefHeight="296.0" prefWidth="185.0" />
             </children>
         </HBox>
     </center>
