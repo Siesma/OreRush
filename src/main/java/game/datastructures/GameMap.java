@@ -9,15 +9,13 @@ public class GameMap {
     public GameMap(int sizeX, int sizeY, float oreDensity) {
         this.gameMapSize[1] = sizeX;
         this.gameMapSize[0] = sizeY;
-        this.oreMap = new int[gameMapSize[0]][gameMapSize[1]];
         spawnOreInMap(oreDensity);
         printOreMapToConsole();
-        this.objectMap = new Object[gameMapSize[0]][gameMapSize[1]];
+        this.objectMap = new GameObject[gameMapSize[0]][gameMapSize[1]];
     }
 
     private int[] gameMapSize = new int[2];
-    private int[][] oreMap;
-    private Object[][] objectMap;
+    private GameObject[][] objectMap;
 
     /**
      * This function generates ores in the map.
@@ -39,6 +37,7 @@ public class GameMap {
      */
     //TODO: Make this spawn more valuable ores at higher X Values
     private void spawnOreInMap(float oreSpawnLikelyhood) {
+        /*
         Random r = new Random();
         int maxRanNumBound = 100; //Clamp the random number from 0-99
         int intervalSize = maxRanNumBound/5;
@@ -60,27 +59,28 @@ public class GameMap {
                 }
             }
         }
+         */
     }
 
     public void placeObjectOnMap(GameObject object, int x, int y) {
-        objectMap[y][x] = object;
+        object.setPosition(x, y);
     }
 
-    public void printOreMapToConsole() {
+    public void printOreMapToConsole() { //TODO: Fix this so it works with the new mapSystem Tom is going to commit
+        /*
         for(int i = 0; i<gameMapSize[0]; i++) {
             for(int j = 0; j<gameMapSize[1]; j++) {
                 System.out.print("["+oreMap[i][j]+"]");
             }
             System.out.println("");
         }
+         */
     }
 
     public int[] getGameMapSize() {
         return gameMapSize;
     }
-    public int[][] getOreMap() {
-        return oreMap;
-    }
+
     public Object[][] getObjectMap() {
         return objectMap;
     }
