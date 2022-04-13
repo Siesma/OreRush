@@ -19,6 +19,7 @@ import java.io.IOException;
 
 public class StartMenuController{
 
+
     Client client;
     String hostname;
     String port;
@@ -30,12 +31,13 @@ public class StartMenuController{
 
     @FXML private TextField newMessageTextField;
     @FXML private TextFlow chatTextFlow;
-
+    @FXML private TextFlow onlinePlayer;
     @FXML private ListView<String> clientListView;
 
     // TODO fix nicknames with underscore number
 
     public void initialize() {
+
 
         //get model
         this.client = new Client(Main.hostAddress, Integer.parseInt(Main.port),Main.name);
@@ -55,6 +57,7 @@ public class StartMenuController{
     @FXML private void handleSendMessage(ActionEvent actionEvent) throws Exception {
         if (newMessageTextField.getText() != null) {
             client.sendChatMessage(newMessageTextField.getText());
+            newMessageTextField.clear();
         }
 
     }
@@ -62,6 +65,7 @@ public class StartMenuController{
     @FXML private void handleChangeNickname(ActionEvent actionEvent) throws Exception {
         if (newNickname.getText() != null) {
             client.changeNickname(newNickname.getText());
+            newNickname.clear();
         }
         actionEvent.consume();
     }
