@@ -70,4 +70,8 @@ public class StartMenuController{
         }
         actionEvent.consume();
     }
+
+    public void handleJoinLobby(ActionEvent actionEvent) {
+
+    }
 }

@@ -4,14 +4,14 @@ import game.client.InputStreamThread;
 import game.packet.AbstractPacket;
 import game.packet.PacketHandler;
 import game.server.ClientThread;
-import game.server.Lobby;
 import game.server.Server;
 import game.server.ServerConstants;
 
-public class CreateLobby extends AbstractPacket {
+public class JoinLobby extends AbstractPacket {
 
-    public CreateLobby() {
-        super("", new String[]{"^.*$"} // new lobby name
+    public JoinLobby() {
+        super("", new String[]{"^.*$", // lobby name
+                        "^.*$"} // player name
                 , "");
     }
 
@@ -20,11 +20,14 @@ public class CreateLobby extends AbstractPacket {
         if (content.length == 0) {
             encode();
         }
-        String msg = content[0];
+        String lobbyName = content[0];
+        String playerName = content[1];
         return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
                 this.name +
                 (char) ServerConstants.DEFAULT_PACKET_SPACER +
-                msg +
+                lobbyName +
+                (char) ServerConstants.DEFAULT_PACKET_SPACER +
+                playerName +
                 (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
     }
 
@@ -35,25 +38,22 @@ public class CreateLobby extends AbstractPacket {
 
     @Override
     public void decode(Object parent, String message) {
-        if (message.startsWith("CreateLobby" + (char) ServerConstants.DEFAULT_PACKET_SPACER)) {
-            message = message.replace("CreateLobby" + (char) ServerConstants.DEFAULT_PACKET_SPACER, "");
+        if (message.startsWith("JoinLobby" + (char) ServerConstants.DEFAULT_PACKET_SPACER)) {
+            message = message.replace("JoinLobby" + (char) ServerConstants.DEFAULT_PACKET_SPACER, "");
         }
+        String lobbyName = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0];
+        String clientName = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[1];
         if(parent instanceof ClientThread) {
             ClientThread obj = (ClientThread) parent;
-            obj.getServer().addLobby(new Lobby(message,obj));
+            obj.getServer().addClientToLobby(obj,lobbyName);
             for(ClientThread clientThread : Server.getClientThreads()) {
-                (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new CreateLobby()).encodeWithContent(message));
-            }
-            obj.getServer().addClientToLobby(obj,message);
-            for(ClientThread clientThread : Server.getClientThreads()) {
-                (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new JoinLobby()).encodeWithContent(message, obj.getPlayerName()));
+                (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new JoinLobby()).encodeWithContent(lobbyName, clientName));
             }
 
         }
         if(parent instanceof InputStreamThread) {
             InputStreamThread obj = (InputStreamThread) parent;
-            obj.getClient().addLobby(message);
-            obj.getClient().addLobbyInLobbyInClientsArrayList(message);
+            obj.getClient().addClientToLobby(clientName, lobbyName);
         }
     }
 }

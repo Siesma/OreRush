@@ -39,6 +39,7 @@ public class InputStreamThread implements Runnable {
             if (cur == ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE) {
                 startingToRecordMessage = false;
                 String message = builder.toString();
+                System.out.println("client received: " + message);
                 builder.setLength(0);
 
                 //This part here prints out what the server received. This is here just for bug fixing and manual validation.

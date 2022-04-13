@@ -30,7 +30,7 @@ public class Client{
     private final StringProperty nickname;
     private final StringProperty lastChatMessage = new SimpleStringProperty();
 
-
+    private final ArrayList<LobbyInClient> lobbyInClientArrayList = new ArrayList<>();
 
     ObservableList<String> observableClientList = FXCollections.observableArrayList();
     ListProperty<String> clientList = new SimpleListProperty<>(observableClientList);
@@ -114,12 +114,24 @@ public class Client{
         Platform.runLater(() ->observableClientList.add(clientName));
     }
 
+    public void addClientToLobby(String clientName, String lobbyName) {
+        for (LobbyInClient lobbyInClient:lobbyInClientArrayList) {
+            if (lobbyInClient.getName().equals(lobbyName)) {
+                lobbyInClient.addPlayer(clientName);
+            }
+        }
+    }
+
     // TODO (seb) disconnect packet
     public void removeClient(String clientName) {
         Platform.runLater(() ->observableClientList.remove(clientName));
     }
     public void addLobby(String lobbyName) {
         Platform.runLater(() ->observableLobbyList.add(lobbyName));
+    }
+
+    public void addLobbyInLobbyInClientsArrayList(String lobbyName) {
+        lobbyInClientArrayList.add(new LobbyInClient(lobbyName));
     }
 
     public OutputStream getOutputStream() {
