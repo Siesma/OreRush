@@ -48,7 +48,6 @@ public class PacketHandler {
 
   /**
    * A function that pushes a given input string and its according values to the server or client.
-   * This function also handles calling the decoding of the given packet. TODO: @Tom (seb) ich hab auf Zeile 79  packet.decode(parent, message); gelösht. Es hat doppelte messages gemacht etc, warum war es hier? Es scheint alles zu funktionnieren ohne.
    * If a packet is attempted to be created, but it is not succeeding it will return nothing.
    */
   public void pushMessage(OutputStream out, String message) {

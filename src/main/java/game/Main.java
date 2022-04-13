@@ -11,6 +11,9 @@ import java.io.FileWriter;
 
 
 public class Main {
+    public static String hostAddress;
+    public static String port;
+    public static String name;
 
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -31,20 +34,15 @@ public class Main {
                 Server server = new Server();
                 server.run(port);
             } else if (args[0].equals("client")) {
-                String hostAddress = args[1].split(":")[0];
-                String port = args[1].split(":")[1];
-                String name;
+                hostAddress = args[1].split(":")[0];
+                port = args[1].split(":")[1];
                 if (args.length == 3) {
                     name = args[2];
                 } else {
                     name = System.getProperty("user.name");
                 }
-                String str = hostAddress+"\n"+port+"\n"+name;
-                BufferedWriter writer = new BufferedWriter(new FileWriter("clientInfo.txt"));
-                writer.write(str);
-                writer.close();
 
-                Application.launch(ClientApp.class, hostAddress, port, name);
+                Application.launch(ClientApp.class);
 
             } else {
                 System.out.println("Error: Wrong first argument.");

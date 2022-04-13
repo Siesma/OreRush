@@ -1,5 +1,6 @@
 package game.gui;
 
+import game.Main;
 import game.client.Client;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -35,20 +36,9 @@ public class StartMenuController{
     // TODO fix nicknames with underscore number
 
     public void initialize() {
-        BufferedReader reader;
-        try {
-            reader = new BufferedReader(new FileReader(
-                    "clientInfo.txt"));
-            hostname = reader.readLine();
-            port = reader.readLine();
-            name = reader.readLine();
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         //get model
-        this.client = new Client(hostname, Integer.parseInt(port),name);
+        this.client = new Client(Main.hostAddress, Integer.parseInt(Main.port),Main.name);
 
         //link model with view
         nickname.textProperty().bind(client.nicknameProperty());
