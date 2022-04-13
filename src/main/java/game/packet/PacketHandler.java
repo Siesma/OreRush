@@ -1,5 +1,7 @@
 package game.packet;
 
+import game.server.ServerConstants;
+
 import java.io.File;
 import java.io.OutputStream;
 import java.util.Objects;
@@ -57,7 +59,7 @@ public class PacketHandler {
     }
     AbstractPacket packet;
     try {
-      packet = AbstractPacket.getPacketByName(AbstractPacket.splitMessageBySpacer(message)[0]);
+      packet = AbstractPacket.getPacketByName(AbstractPacket.splitMessageBySpacer(message, String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0]);
     } catch (InstantiationException instantiationException) {
       System.out.println("The packet expected some parameters that were not given!");
       return;

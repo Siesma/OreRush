@@ -62,7 +62,7 @@ public class GameMap {
         }
     }
 
-    public void placeObjectOnMap(Object object, int x, int y) {
+    public void placeObjectOnMap(GameObject object, int x, int y) {
         objectMap[y][x] = object;
     }
 

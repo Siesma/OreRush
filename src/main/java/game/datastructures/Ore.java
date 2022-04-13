@@ -38,11 +38,6 @@ public class Ore implements GameObject {
   }
 
   @Override
-  public void parseGameObjectFromString(String encodedGameObject) {
-
-  }
-
-  @Override
   public void fillGameObjectWithData(String... data) {
 
   }

@@ -32,9 +32,7 @@ public abstract interface GameObject {
 
     /**
      * This function will fill the GameObjects information based on a string from a packet
-     * @param encodedGameObject the received string corresponding to the GameObject
+     * @param data the received strings corresponding to the GameObject
      */
-    public void parseGameObjectFromString(String encodedGameObject);
-
     public void fillGameObjectWithData (String... data);
 }
