@@ -4,11 +4,18 @@ import game.Main;
 import game.client.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.Objects;
 
 public class StartMenuController{
 
@@ -72,6 +79,16 @@ public class StartMenuController{
     }
 
     public void handleJoinLobby(ActionEvent actionEvent) {
+        changeToLobbyScene();
+    }
 
+    public void changeToLobbyScene() {
+        try {
+            Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/lobby.fxml")));
+            Stage stage = (Stage) nickname.getScene().getWindow();
+            stage.setScene(new Scene(parent));
+        }catch (IOException io){
+            io.printStackTrace();
+        }
     }
 }
