@@ -1,6 +1,9 @@
 package game.server;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,7 +11,7 @@ import java.util.ArrayList;
 
 public class Server {
 
-
+    public static final Logger LOGGER = LogManager.getLogger(Server.class);
     private static final ArrayList<ClientThread> clientThreads = new ArrayList<>();
     private ArrayList<Lobby> lobbyArrayList = new ArrayList<>();
 
@@ -17,6 +20,7 @@ public class Server {
 
         ServerSocket serverSocket = new ServerSocket(port);
         System.out.println("Now listening on port " + port);
+        LOGGER.info("Now listening on port " + port);
 
 //        PingThread pT = new PingThread();
 //        Thread pingThread = new Thread(pT);
