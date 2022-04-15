@@ -1,29 +1,41 @@
 package game.packet.packets;
 
+import game.datastructures.GameMap;
+import game.datastructures.GameObject;
+import game.datastructures.Ore;
+import game.datastructures.Robot;
+import game.helper.FileHelper;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
+import game.server.ServerConstants;
 
 public class Update extends AbstractPacket {
 
 
   public Update() {
     super("", new String[]{
-      "^.*$", // Player name + resolve IP
-      "^([1-9]+(->((\\{(?i)robot\\([1-9]+\\)\\})?)((\\{(?i)ore\\([1-9]+,[1-9]+\\)\\})?)((\\{(?i)trap\\([1-9]+\\)\\})?)((\\{(?i)radar\\([1-9]+\\)\\})?))?)$", // Sending coordinate in the format (x+y*width) and occupying Objects
-      "^([1-9]+),([1-9]+),([1-9]+)$",
-      "^(((?i)robot\\(([1-9]+,\\([1-9]+,[1-9]+\\))((,(?i)trap|(?i)radar|(?i)detector)?)((,(?i)ore:\\([1-9]+,[1-9]+\\))?)\\)),)+?((?i)robot\\(([1-9]+,\\([1-9]+,[1-9]+\\))((,(?i)trap|(?i)radar|(?i)detector)?)((,(?i)ore:\\([1-9]+,[1-9]+\\))?)\\))$",
-      "^[1-9]+$",
-      "^((([1-9]+:[1-9]+),)+)?([1-9]+:[1-9]+)$"
+      ""
     }, "Updating the user about the board!");
   }
 
 
   /**
-   * Placeholder in case the packet will have non-normal use cases.
+   * Will encode incoming data >as is<.
+   * Normal behaviour should create something like this:
+   * "CellX","CellY" "SPACER" "ObjectOnCell_1:InformationForObject_1:..."SPACER"ObjectOnCell_2:InformationForObject_2:..." + "SPACER" -> repeat
    */
   @Override
   public String encodeWithContent(String... content) {
-    return "";
+    StringBuilder out = new StringBuilder();
+    out.append((char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE);
+    out.append(this.name);
+    out.append((char) ServerConstants.DEFAULT_PACKET_SPACER);
+    for (String s : content) {
+      out.append(s);
+      out.append((char) ServerConstants.DEFAULT_PACKET_SPACER);
+    }
+    out.append((char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE);
+    return out.toString();
   }
 
 
@@ -50,9 +62,68 @@ public class Update extends AbstractPacket {
       - ObjectOnCell_1
       - ObjectOnCell_2
       ...
-     */
-    if(parent instanceof ClientThread) {
 
+
+      @OjectsOnCell ->
+      Robot(team_id:inventory) // inventory is the same definition as @ObjectsOnCell!
+      Radar(team_id)
+      Trap(team_id)
+      Ore(oreType:oreAmount)
+     */
+    if (message.startsWith("Update" + (char) ServerConstants.DEFAULT_PACKET_SPACER)) {
+      message = message.replace("Update" + (char) ServerConstants.DEFAULT_PACKET_SPACER, "");
+    }
+    if (parent instanceof ClientThread) {
+      ClientThread obj = (ClientThread) parent;
+      String[] information = AbstractPacket.splitMessageBySpacer(message, String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
+      GameMap newMap = new GameMap(obj.getConnectedLobby().getServerSettings().getMapWidth(), obj.getConnectedLobby().getServerSettings().getMapHeight(), obj.getConnectedLobby().getServerSettings().getOreDensity());
+      int cellX = -1, cellY = -1;
+      for (String s : information) {
+        if (s.matches("^[1-9]+,[1-9]+$")) {
+          cellX = Integer.parseInt(s.split(",")[0]);
+          cellY = Integer.parseInt(s.split(",")[1]);
+        } else {
+          if (cellX == -1 || cellY == -1) {
+            System.out.println("Somehow the cellID was not updated");
+            continue; // should not be possible if the packet is valid, will be included just in case!
+          }
+          Object object;
+          try {
+            object = (new FileHelper()).createInstanceOfClass("src/main/java/game/datastructures/" + s.split(":")[0]);
+          } catch (Exception e) {
+            System.out.println("An unidentified object!");
+            System.out.println("Ignoring this element!");
+            continue;
+          }
+          if (!(object instanceof GameObject)) {
+            System.out.println("Somehow the initial object trying to be passed is not a GameObject");
+            continue;  // should not be possible if the packet is valid, will be included just in case!
+          }
+          GameObject gameObject = (GameObject) object;
+          gameObject.setID(Integer.parseInt(s.split(":")[1]));
+          if (gameObject instanceof Robot) {
+
+            Object inv;
+            try {
+              inv = (new FileHelper()).createInstanceOfClass("src/main/java/game/datastructures/" + s.split(":")[2]);
+            } catch (Exception e) {
+              System.out.println("An unidentified object!");
+              System.out.println("Ignoring this element!");
+              continue;
+            }
+            if (!(inv instanceof GameObject)) {
+              System.out.println("Somehow the inventory of the Robot is not a GameObject");
+              continue;  // should not be possible if the packet is valid, will be included just in case!
+            }
+
+            GameObject inventory = (GameObject) inv;
+            inventory.setID(Integer.parseInt(s.split(":")[3]));
+            ((Robot) gameObject).loadInventory(inventory);
+          }
+
+          newMap.placeObjectOnMap(gameObject, cellX, cellY);
+        }
+      }
     }
   }
 }
