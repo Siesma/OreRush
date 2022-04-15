@@ -49,6 +49,7 @@ public class Connect extends AbstractPacket {
       obj.changePlayerName(message);
 
       //TODO (seb) send package with other clients to update connectedClient list
+      //TODO already existing lobbys
 
       // inform clients
       for(ClientThread clientThread : Server.getClientThreads()) {

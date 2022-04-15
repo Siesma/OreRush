@@ -22,6 +22,8 @@ import java.util.ArrayList;
 
 public class Client{
 
+    private static Client client;
+
     private static OutputStream outputStream;
     private Socket socket;
     private InputStream inputStream;
@@ -41,6 +43,7 @@ public class Client{
     private ArrayList<Robot> robots = new ArrayList<>();
 
     public Client(String hostAddress, int port, String name) {
+        client = this;
         this.nickname = new SimpleStringProperty(name);
 
         try {
@@ -74,6 +77,11 @@ public class Client{
             e.printStackTrace();
         }
     }
+
+    public static Client getClient() {
+        return client;
+    }
+
 
     /**
      * Shuts down the client.
