@@ -93,9 +93,20 @@ public abstract class AbstractPacket {
   }
 
   /**
+   * Splits the message into pieces, based on a given spacerCharacter.
+   *
+   * @param message the string that should be split up
+   * @param spacerCharacter the character that indicates where the message should be split at.
+   * @return the array, containing the pieces of the split message.
+   */
+  public static String[] splitMessageBySpacer(String message, String spacerCharacter) {
+    return message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
+  }
+
+  /**
    * Helperfunction that removes the first element of a given array and returns the remaining subset.
    */
-  protected static String[] removeFirstElement(String[] in) {
+  public static String[] removeFirstElement(String[] in) {
     String[] out = new String[in.length - 1];
     for (int i = 1; i < in.length; i++) {
       out[i - 1] = in[i];
