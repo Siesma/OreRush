@@ -34,4 +34,7 @@ public class Lobby {
         return lobbyName;
     }
 
+    public ServerSettings getServerSettings() {
+        return serverSettings;
+    }
 }

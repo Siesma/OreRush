@@ -24,6 +24,8 @@ public class ClientThread implements Runnable {
   private boolean pingReceived;
   private String playerName;
 
+  private Lobby connectedLobby;
+
   public ClientThread(Server server, Socket socket) throws IOException {
     this.server = server;
     this.socket = socket;
@@ -217,5 +219,9 @@ public class ClientThread implements Runnable {
 
   public Server getServer() {
     return server;
+  }
+
+  public Lobby getConnectedLobby() {
+    return connectedLobby;
   }
 }

@@ -11,6 +11,11 @@ public class Radar implements GameObject {
   private int yCoordinate;
   private int playerID;
 
+  @Override
+  public void setID(int id) {
+    this.playerID = id;
+  }
+
   /**
    * This method sets the radar position based on a given x,y value.
    * This should only be used when a radar is first placed

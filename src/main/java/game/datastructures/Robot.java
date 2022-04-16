@@ -15,6 +15,11 @@ public class Robot implements GameObject {
   private int yCoordinate;
   private GameObject inventory;
 
+  private int playerID;
+  @Override
+  public void setID(int id) {
+    this.playerID = id;
+  }
 
   /**
    * This method sets the robots position based on a given x,y value.

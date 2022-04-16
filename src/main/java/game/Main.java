@@ -2,7 +2,11 @@ package game;
 
 
 import game.client.Client;
+import game.datastructures.GameMap;
+import game.datastructures.Nothing;
+import game.datastructures.Trap;
 import game.gui.ClientApp;
+import game.packet.packets.Update;
 import game.server.Server;
 import javafx.application.Application;
 
@@ -16,6 +20,8 @@ public class Main {
     public static String name;
 
     public static void main(String[] args) {
+
+
         if (args.length == 0) {
             System.out.println("Error: Missing arguments.");
             System.out.println("To launch the program following command line parameters are expected:");
