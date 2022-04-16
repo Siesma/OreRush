@@ -56,7 +56,7 @@ public class Radar implements GameObject {
 
   @Override
   public String encodeToString() {
-    String s = "radar:" + xCoordinate + ":" + yCoordinate + ":" + playerID;
+    String s = "Radar:" + playerID;
     return s;
   }
 

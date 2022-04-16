@@ -9,6 +9,10 @@ import java.util.Random;
  * This class stores the information of the game-board, it's size and the objects on it.
  */
 public class GameMap {
+  private int[] gameMapSize = new int[2];
+  private int[][] oreMap;
+  private Cell[][] cellArray;
+
   public GameMap(int sizeX, int sizeY, float oreDensity) {
     this.gameMapSize[1] = sizeX;
     this.gameMapSize[0] = sizeY;
@@ -16,11 +20,17 @@ public class GameMap {
     spawnOreInMap(oreDensity, 0.75f);
     printOreMapToConsole();
     this.cellArray = new Cell[gameMapSize[0]][gameMapSize[1]];
+    for (int i = 0; i < sizeX; i++) {
+      for (int j = 0; j < sizeY; j++) {
+        cellArray[i][j] = new Cell(i, j);
+        Nothing nothing = new Nothing();
+        nothing.setID(1);
+        nothing.setPosition(i, j);
+        cellArray[i][j].place(nothing);
+      }
+    }
   }
 
-  private int[] gameMapSize = new int[2];
-  private int[][] oreMap;
-  private Cell[][] cellArray;
 
   /**
    * This function generates ores in the map.
@@ -149,8 +159,10 @@ public class GameMap {
         out.append("(").append(i).append(",").append(j).append(")");
         for (GameObject objectOnCell : this.getCellArray()[i][j].getPlacedObjects()) {
           out.append(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
-          out.append(objectOnCell.toString());
+          out.append(objectOnCell.encodeToString());
         }
+//        out.append(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
+        strings.add(out.toString());
       }
     }
     String[] out = new String[strings.size()];

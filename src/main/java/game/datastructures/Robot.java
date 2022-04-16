@@ -62,7 +62,7 @@ public class Robot implements GameObject {
    * @return The encoded string that holds all the information of the robot
    */
   public String encodeToString() {
-    String encodedRobot = "robot:" + xCoordinate + ":" + yCoordinate + ":" + inventory.encodeToString();
+    String encodedRobot = "robot:" + this.playerID + ":" + inventory.encodeToString();
     return encodedRobot;
   }
 

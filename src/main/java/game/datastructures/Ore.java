@@ -37,7 +37,7 @@ public class Ore implements GameObject {
 
   @Override
   public String encodeToString() {
-    String s = "ore:" + oreType.name() + ":" + xCoordinate + ":" + yCoordinate + ":" + amount;
+    String s = "ore:" + this.oreType.ordinal();
     return s;
   }
 
