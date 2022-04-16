@@ -26,7 +26,7 @@ public class GameMap {
         Nothing nothing = new Nothing();
         nothing.setID(1);
         nothing.setPosition(i, j);
-        cellArray[i][j].place(nothing);
+//        cellArray[i][j].place(nothing);
       }
     }
   }
@@ -51,7 +51,7 @@ public class GameMap {
    * @param oreSpawnLikelyhood a value from 0 to 1. The higher the number is, the more ores spawn
    */
   //TODO: Make this spawn more valuable ores at higher X Values
-  private void spawnOreInMap(float oreSpawnLikelyhood, float threshold) {
+  public void spawnOreInMap(float oreSpawnLikelyhood, float threshold) {
     int w = gameMapSize[1];
     int h = gameMapSize[0];
     for (int i = 0; i < w; i++) {
@@ -63,6 +63,9 @@ public class GameMap {
               int ni, nj;
               ni = i + xo;
               nj = j + yo;
+//              if(cellArray[ni][nj].getPlacedObjects().size() != 0) {
+//                continue;
+//              }
               if (isInBounds(ni, nj, 0, w, 0, h)) {
                 double max = oreSpawnLikelyhood * 2;
                 cellArray[ni][nj].

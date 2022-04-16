@@ -124,6 +124,7 @@ public class Update extends AbstractPacket {
           newMap.placeObjectOnMap(gameObject, cellX, cellY);
         }
       }
+      obj.setCurrentGameMap(newMap);
     }
   }
 }

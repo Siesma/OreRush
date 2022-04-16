@@ -23,9 +23,9 @@ public class ClientThread implements Runnable {
   private boolean connectedToServer;
   private boolean pingReceived;
   private String playerName;
-
   private Lobby connectedLobby;
 
+  private GameMap currentGameMap;
   public ClientThread(Server server, Socket socket) throws IOException {
     this.server = server;
     this.socket = socket;
@@ -33,6 +33,7 @@ public class ClientThread implements Runnable {
     this.outputStream = socket.getOutputStream();
     this.connectedToServer = true;
     playerName = "unknown";
+    this.currentGameMap = new GameMap(0, 0, 0);
   }
 
   public void run() {
@@ -223,5 +224,13 @@ public class ClientThread implements Runnable {
 
   public Lobby getConnectedLobby() {
     return connectedLobby;
+  }
+
+  public GameMap getCurrentGameMap() {
+    return currentGameMap;
+  }
+
+  public void setCurrentGameMap(GameMap currentGameMap) {
+    this.currentGameMap = currentGameMap;
   }
 }
