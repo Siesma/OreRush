@@ -1,33 +1,15 @@
-Es wird vorausgesetzt, dass ein Server bereits auf dem Localhost auf dem port 1038 offen ist. Sofern dies gegeben ist, wird dieser darauf warten einzelne Clients zu bedienen. Diese werden immer mal wieder mit ping packeten gefragt ob diese noch existieren damit, für den fall, dass die clients geschlossen wurden, die Verbindung auch nicht aufrecht gehalten wird.
-Es wird dauerhaft eine Verbindung offen gehalten in welcher Packete gesendet werden, die Packete welche definiert sind folgt weiter unten.
-Jedes Packet wird auch beantwortet, sodass beide Seiten wissen ob das Packet richtig gesendet wurde.
-Die Packetdaten werden so gesendet, dass zuerst ein "Start-char" gesendet wird, welcher andeutet, dass ein neues Packet gesendet wird. Dann wird zuerst einmal der Packet-type gesendet, darauf folgen die einzelnen Informationen des Packets. Die einzelnen Informationen sind durch "Spacer-chars" getrennt, welche besondere Zeichen sind um anzudeuten, dass eine Information abgeschlossen ist. Und zum schluss wird ein "End-char" gesendet welcher andeutet, dass das Packet vollendet ist. Daraufhin wird das Packet validiert, und lediglich sofern die Nachricht richtig decodiert wird, wird die weiter verarbeitet.
+Es wird vorausgesetzt, dass ein Server bereits auf der jeweiligen IP offen ist. Der Client muss sich auf dem selben Port versuchen zu verbinden wie der Server gehosted ist.
+Sobald eine Verbindung enstanden ist wird ein Connect packet gesendet welches dem Server signalisiert, dass der jeweilige Client sich verbinden wollen würde.
+Die Packet strutkur aller Packets hat die folgende Eigenschaft:
+"BEGIN_CHAR"Packet-Name"SPACER"Information1"SPACER"Information2"SPACER"..."END_CHAR"
+Das "BEGIN_CHAR" ist ein besonderer ASCII Zeichen, nämlich ASCII Zeichen "2", welcher ausgeschrieben "Start of text" heißt.
+Dieser signalisiert dem Server, dass die darauf folgenden Bytes als Nachricht zu interpretieren sind.
+Der "SPACER" ist ebenso ein besonderes ASCII Zeichen, nämlich ASCII Zeichen "31", welcher ausgeschrieben "Unit Seperator" heißt.
+Dieser signalisiert dem Server, dass eine Information abgeschlossen wurde und die nächste interpretiert werden soll.
+Dies wird dazu genutzt mehrere Parameter sinnvoll getrennt zu haben und nicht eine festgelegte Länge an Bytes für die einzelnen Packets zu haben.
+Und der "END_CHAR" ist ASCII Zeichen "3" welcher ausgeschrieben "End of text" heißt.
+Dieser signalisiert dem Server, dass die Übermittlung des Packets abgeschlossen wurde und die letze Information vollendet ist.
 
-reqst (request)
-	- Long		Zeitstempel
-	- Int		Der jeweilige Server
-timeo (timeout)
-	- String	"Timeout"
-succs (success)
-	- String	"Success"
-awake (awake)
-	- String	"Awake"
-close (close)
-	- Long		Zeitstempel
-	- Int		Der jeweilige Spieler
-updte (update)
-	- Object	Die Karte für den Spieler
-	- Object	Cooldown der einzelnen Ausrüstungsgegenstände
-	- Object	Die einzelnen Roboter, deren Position und deren Item
-	- Object	Die Punktestände der Spieler
-pmove (playerMove)
-	- Int		Spieler der die Nachricht sendet
-	- Object	Die einzelnen Züge der Spieler
-pchat (playerChat)
-	- Int		Die Spieler an welche die Nachricht gesendet werden soll
-	- String	Nachricht die gesendet werden soll
-nickn (nickname)
-	- Int		Der jeweilige Spieler
-	- String	Neuer Name des Spielers
-settn (settings)
-	- Object	Settingsobject
+Ein Beispiel dazu wäre, wo "BEGIN_CHAR", "SPACER" und "END_CHAR" für diese besondere Zeichen stehen:
+"BEGIN_CHAR"Move"SPACER"Robot_ID:X_Coordinate:Y_Coordinate:OptionalInventoryAdjust"END_CHAR" - der Parameter "OptionalInventoryAdjust" ist wie der Name vermuten lässt optional und wird genutzt sofern sich das Inventar eines Roboters ändern soll.
+"BEGIN_CHAR"Chat"SPACER"(Irgendeine Nachricht)"END_CHAR" - Sendet die Nachricht "(Irgendeine Nachricht)" an den Server sofern die Designation richtig mittels dem Outputstream gesetzt ist.
