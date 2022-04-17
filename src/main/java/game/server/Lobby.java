@@ -78,7 +78,7 @@ public class Lobby {
     public void spawnRobots() {
         for (int i = 0; i < listOfClients.size(); i++) {
             for (int j = 0; j < serverSettings.getNumberOfRobots(); j++) {
-
+                listOfClients.get(i).addRobot();
             }
         }
     }
