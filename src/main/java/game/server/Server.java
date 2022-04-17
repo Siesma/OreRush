@@ -56,13 +56,21 @@ public class Server {
         lobbyArrayList.add(lobby);
     }
 
-    public void addClientToLobby(ClientThread clientThread, String lobbyName){
-        for(Lobby lobby:lobbyArrayList) {
+    public void addClientToLobby(ClientThread clientThread, String lobbyName) {
+        Lobby lobby = getLobbyByName(lobbyName);
+        if (lobby == null) {
+            return;
+        }
+        lobby.addClient(clientThread);
+    }
+
+    public Lobby getLobbyByName(String lobbyName) {
+        for (Lobby lobby : lobbyArrayList) {
             if (lobby.getLobbyName().equals(lobbyName)) {
-                lobby.addClient(clientThread);
+                return lobby;
             }
         }
-
+        return null;
     }
 
     public ArrayList<Lobby> getLobbyArrayList() {

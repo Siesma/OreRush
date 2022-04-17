@@ -1,6 +1,7 @@
 package game.client;
 
 import game.datastructures.Robot;
+import game.gui.LobbyController;
 import game.packet.PacketHandler;
 import game.packet.packets.*;
 import javafx.application.Platform;
@@ -102,6 +103,10 @@ public class Client{
     public void changeNickname(String newNickname) {
         (new PacketHandler(this)).pushMessage(outputStream, (new Nickname()).encodeWithContent(nickname.get(), newNickname));
         nickname.setValue(newNickname);
+    }
+
+    public void makeMove(LobbyController lobbyController) {
+        (new PacketHandler(this)).pushMessage(outputStream, (new Move()).encodeWithContent(lobbyController.currentRobotMovesList.getItems().toArray(new String[0])));
     }
 
     /**

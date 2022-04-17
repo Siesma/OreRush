@@ -1,8 +1,6 @@
 package game.server;
 
-import game.client.Client;
 import game.datastructures.GameMap;
-import game.datastructures.GameObject;
 import game.datastructures.Robot;
 
 import java.util.ArrayList;
@@ -17,6 +15,8 @@ public class Lobby {
 
     public Lobby(String lobbyName, ClientThread clientThread) {
         this.lobbyName = lobbyName;
+        this.serverSettings = new ServerSettings("");
+        this.gameMap = new GameMap(0, 0, serverSettings);
     }
 
     public ClientThread getHost() {
@@ -28,36 +28,34 @@ public class Lobby {
     }
 
     /**
-     *
      * Returns the amount of single cell moves that would have to be done to reach a destination
      */
-    public int distanceFromPosition (int[] now, int[] then) {
+    public int distanceFromPosition(int[] now, int[] then) {
         return Math.abs(now[0] - then[0]) + Math.abs(now[1] - then[1]);
     }
 
     /**
-     *
      * Returns the position the robot is allowed to move to relative to the maximum allowed moves.
      * X-Coordinate will be prioritised if the wanted destination is not a valid move.
-     *
+     * <p>
      * This function can be used to not have to validate moves as every invalid move will automatically will be
      * cropped down.
      */
-    public int[] getNextMove (Robot r, int[] destination) {
+    public int[] getNextMove(Robot r, int[] destination) {
         int xDif = Math.abs(r.getPosition()[0] - destination[0]);
         int yDif = Math.abs(r.getPosition()[1] - destination[1]);
         int xMoves = Math.min(serverSettings.getMaxAllowedMoves(), xDif);
         int yMoves = Math.min(serverSettings.getMaxAllowedMoves() - xMoves, yDif);
-        return new int[] {r.getPosition()[0] + xMoves, r.getPosition()[1] + yMoves};
+        return new int[] { r.getPosition()[0] + xMoves, r.getPosition()[1] + yMoves };
     }
 
     /**
-     *
      * Returns the players ID of whoms turn it is
      */
-    public int turnOfPlayer () {
+    public int turnOfPlayer() {
         return turnCounter % listOfClients.size();
     }
+
     public void addClient(ClientThread clientThread) {
         listOfClients.add(clientThread);
     }

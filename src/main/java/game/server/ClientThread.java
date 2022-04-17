@@ -37,7 +37,6 @@ public class ClientThread implements Runnable {
     this.outputStream = socket.getOutputStream();
     this.connectedToServer = true;
     playerName = "unknown";
-    this.currentGameMap = new GameMap(0, 0, connectedLobby.serverSettings);
     this.robots = new ArrayList<>();
   }
 
@@ -213,6 +212,10 @@ public class ClientThread implements Runnable {
 
   public void setConnectedToServer(boolean connectedToServer) {
     this.connectedToServer = connectedToServer;
+  }
+
+  public void setConnectedLobby (Lobby lobby) {
+    this.connectedLobby = lobby;
   }
 
   public OutputStream getOutputStream() {

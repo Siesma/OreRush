@@ -77,7 +77,6 @@ public class PacketHandler {
       System.out.println("The given packet contained garbage");
       return;
     }
-
     try {
       out.write(message.getBytes());
     } catch (Exception e) {
