@@ -24,7 +24,7 @@ public class Lobby {
     }
 
     private void generateGameMap() {
-        gameMap = new GameMap(serverSettings.getMapWidth(), serverSettings.getMapHeight(), serverSettings.getOreDensity());
+        gameMap = new GameMap(serverSettings.getMapWidth(), serverSettings.getMapHeight(), serverSettings);
     }
 
     /**
