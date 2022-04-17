@@ -2,10 +2,7 @@ package game.client;
 
 import game.datastructures.Robot;
 import game.packet.PacketHandler;
-import game.packet.packets.Chat;
-import game.packet.packets.Connect;
-import game.packet.packets.CreateLobby;
-import game.packet.packets.Nickname;
+import game.packet.packets.*;
 import javafx.application.Platform;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -31,6 +28,8 @@ public class Client{
     private final StringProperty nickname;
     private final StringProperty lastChatMessage = new SimpleStringProperty();
     private final ArrayList<LobbyInClient> lobbyInClientArrayList = new ArrayList<>();
+
+    private LobbyInClient lobbyInClient;
 
     ObservableList<String> observableClientList = FXCollections.observableArrayList();
     ListProperty<String> clientList = new SimpleListProperty<>(observableClientList);
@@ -114,6 +113,14 @@ public class Client{
         (new PacketHandler(this)).pushMessage(outputStream, (new CreateLobby()).encodeWithContent(newLobbyName));
     }
 
+    public void joinLobby(String lobbyName) {
+        for (LobbyInClient lobby:lobbyInClientArrayList) {
+            if (lobby.getName().equals(lobbyName)) {
+                lobbyInClient = lobby;
+            }
+        }
+        (new PacketHandler(this)).pushMessage(outputStream, (new JoinLobby()).encodeWithContent(lobbyName, nickname.getValue()));
+    }
     public void addClient(String clientName) {
         Platform.runLater(() ->observableClientList.add(clientName));
     }
@@ -172,6 +179,9 @@ public class Client{
     }
     public void changeNicknameOfOtherClient(String oldNickname, String newNickname) {
         Platform.runLater(() -> observableClientList.set(observableClientList.indexOf(oldNickname),newNickname));
+    }
+    public ArrayList<LobbyInClient> getLobbyInClientArrayList() {
+        return lobbyInClientArrayList;
     }
 
 }

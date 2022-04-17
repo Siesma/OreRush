@@ -44,10 +44,6 @@ public class CreateLobby extends AbstractPacket {
             for(ClientThread clientThread : Server.getClientThreads()) {
                 (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new CreateLobby()).encodeWithContent(message));
             }
-            obj.getServer().addClientToLobby(obj,message);
-            for(ClientThread clientThread : Server.getClientThreads()) {
-                (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new JoinLobby()).encodeWithContent(message, obj.getPlayerName()));
-            }
 
         }
         if(parent instanceof InputStreamThread) {
