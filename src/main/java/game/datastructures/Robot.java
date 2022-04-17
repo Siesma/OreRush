@@ -35,16 +35,17 @@ public class Robot implements GameObject {
 
   public void setAction(RobotAction robotAction, int x, int y, Object optionalInventoryChange) {
     setPosition(x, y);
-    if(optionalInventoryChange == null) {
+    if (optionalInventoryChange == null) {
+      return;
+    }
+    if (!(optionalInventoryChange instanceof GameObject)) {
       return;
     }
     switch (robotAction) {
-      case Dig, Request -> {
-        if (!(optionalInventoryChange instanceof GameObject)) {
-          return;
-        }
+      case Dig:
+      case Request:
         loadInventory((GameObject) optionalInventoryChange);
-      }
+        break;
     }
   }
 
