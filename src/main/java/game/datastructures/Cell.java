@@ -77,4 +77,8 @@ public class Cell {
     }
     return this.x + ":" + this.y + ":" + out.toString();
   }
+
+  public void remove(GameObject gameObject) {
+    this.placedObjects.remove(gameObject);
+  }
 }

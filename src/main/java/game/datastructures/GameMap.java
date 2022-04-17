@@ -137,9 +137,13 @@ public class GameMap {
     cellArray[x][y].place(object);
   }
 
+  public void removeObjectFromMap(GameObject gameObject, int x, int y) {
+    cellArray[x][y].remove(gameObject);
+  }
+
   public void printOreMapToConsole() {
-    for (int i = 0; i < gameMapSize[0]; i++) {
-      for (int j = 0; j < gameMapSize[1]; j++) {
+    for (int j = 0; j < gameMapSize[1]; j++) {
+      for (int i = 0; i < gameMapSize[0]; i++) {
 //        System.out.print("[" + oreMap[i][j] + "]");
         Cell cell = cellArray[i][j];
         boolean trap = cell.trapOnCell() != null;

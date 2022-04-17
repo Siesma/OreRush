@@ -12,8 +12,8 @@ public class ServerSettings {
     private int numberOfRobots;
     private int mapWidth = 10, mapHeight = 10;
     private int numberOfRounds = 100;
-    private float oreDensity = 0.75f;
-    private int maxAllowedMoves;
+    private float oreDensity = 1f;
+    private int maxAllowedMoves = 4;
     private ArrayList<Object> ores;
 
     private int maxClusterSize = 2;
