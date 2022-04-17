@@ -25,9 +25,11 @@ public class Client{
     private Socket socket;
     private InputStream inputStream;
     private boolean pongReceived = false;
+
     private final StringProperty nickname;
     private final StringProperty lastChatMessage = new SimpleStringProperty();
     private final ArrayList<LobbyInClient> lobbyInClientArrayList = new ArrayList<>();
+
 
     private LobbyInClient lobbyInClient;
 
@@ -126,6 +128,14 @@ public class Client{
     }
 
     public void addClientToLobby(String clientName, String lobbyName) {
+        if(clientName.equals(getNickname())) {
+            for (LobbyInClient lobby:lobbyInClientArrayList) {
+                if (lobby.getName().equals(lobbyName)) {
+                    lobbyInClient = lobby;
+                }
+            }
+        }
+
         for (LobbyInClient lobbyInClient:lobbyInClientArrayList) {
             if (lobbyInClient.getName().equals(lobbyName)) {
                 lobbyInClient.addPlayer(clientName);
@@ -182,6 +192,19 @@ public class Client{
     }
     public ArrayList<LobbyInClient> getLobbyInClientArrayList() {
         return lobbyInClientArrayList;
+    }
+
+    public LobbyInClient getLobbyInClient() {
+        return lobbyInClient;
+    }
+
+
+    public String getNickname() {
+        return nickname.get();
+    }
+
+    public void setLobbyInClient(LobbyInClient lobbyInClient) {
+        this.lobbyInClient = lobbyInClient;
     }
 
 }

@@ -1,12 +1,17 @@
 package game.client;
 
-import java.util.ArrayList;
+import game.gui.Player;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class LobbyInClient {
 
 
     private final String name;
-    private final ArrayList<String> playerArrayList = new ArrayList<>();
+
+
+    private final ObservableList<Player> observablePlayerList = FXCollections.observableArrayList();
+
 
 
     public LobbyInClient(String name) {
@@ -18,6 +23,14 @@ public class LobbyInClient {
     }
 
     public void addPlayer(String clientName) {
-        playerArrayList.add(clientName);
+        observablePlayerList.add(new Player(clientName));
+    }
+
+    /**
+     * Returns the data as an observable list of Persons.
+     * @return
+     */
+    public ObservableList<Player> getPlayerData() {
+        return observablePlayerList;
     }
 }
