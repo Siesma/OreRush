@@ -12,7 +12,10 @@ public class Ore implements GameObject {
   private  int xCoordinate;
   private int yCoordinate;
   private int amount;
-
+  @Override
+  public void setID(int id) {
+    this.oreType = OreType.values()[id % OreType.values().length];
+  }
   public Ore (OreType oreType, int amount){
     this.oreType = oreType;
     this.amount = 1; //amount; Currently hardcoded!!
@@ -34,7 +37,7 @@ public class Ore implements GameObject {
 
   @Override
   public String encodeToString() {
-    String s = "ore:" + oreType.name() + ":" + xCoordinate + ":" + yCoordinate + ":" + amount;
+    String s = "ore:" + this.oreType.ordinal();
     return s;
   }
 

@@ -13,6 +13,7 @@ public class ServerSettings {
     private int mapWidth, mapHeight;
     private int numberOfRounds;
     private float oreDensity;
+    private int maxAllowedMoves;
     private ArrayList<Object> ores;
 
     /**
@@ -80,6 +81,10 @@ public class ServerSettings {
     public ServerSettings setOres(ArrayList<Object> ores) {
         this.ores = ores;
         return this;
+    }
+
+    public int getMaxAllowedMoves() {
+        return maxAllowedMoves;
     }
 
     public float getOreDensity() {

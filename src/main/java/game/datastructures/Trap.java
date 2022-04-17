@@ -11,6 +11,10 @@ public class Trap implements GameObject {
   private int yCoordinate;
   private int playerID;
 
+  @Override
+  public void setID(int id) {
+    this.playerID = id;
+  }
   /**
    * This method sets the traps position based on a given x,y value.
    * This should only be used when a trap is first placed
@@ -52,7 +56,7 @@ public class Trap implements GameObject {
 
   @Override
   public String encodeToString() {
-    String s = "trap:" + xCoordinate + ":" + yCoordinate + ":" + playerID;
+    String s = "Trap:" + playerID;
     return s;
   }
 
