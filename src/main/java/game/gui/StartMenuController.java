@@ -2,6 +2,8 @@ package game.gui;
 
 import game.Main;
 import game.client.Client;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,6 +52,14 @@ public class StartMenuController{
         clientListView.itemsProperty().bind(client.clientListProperty());
         lobbyListView.itemsProperty().bind(client.lobbyListProperty());
 
+
+        lobbyListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            }
+
+        });
+
     }
 
 
@@ -73,13 +83,20 @@ public class StartMenuController{
     public void handleCreateLobby(ActionEvent actionEvent) {
         if (!newLobbyName.getText().equals("")){
             client.createLobby(newLobbyName.getText());
+            client.joinLobby(newLobbyName.getText());
             newLobbyName.setText("");
+
+            changeToLobbyScene();
         }
         actionEvent.consume();
     }
 
     public void handleJoinLobby(ActionEvent actionEvent) {
-        changeToLobbyScene();
+        if (lobbyListView.getSelectionModel().getSelectedItem() != null) {
+            client.joinLobby(lobbyListView.getSelectionModel().getSelectedItem());
+            changeToLobbyScene();
+        }
+
     }
 
     public void changeToLobbyScene() {
@@ -91,4 +108,6 @@ public class StartMenuController{
             io.printStackTrace();
         }
     }
+
+
 }
