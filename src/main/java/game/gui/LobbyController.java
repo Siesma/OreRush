@@ -2,14 +2,12 @@ package game.gui;
 
 import game.client.Client;
 import game.client.LobbyInClient;
+import game.datastructures.RobotAction;
+import game.packet.packets.Move;
+import game.server.ServerSettings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-import java.util.Objects;
+import javafx.scene.control.*;
 
 public class LobbyController {
 
@@ -22,6 +20,18 @@ public class LobbyController {
     private TableColumn<Player, String> nicknameColumn;
     @FXML
     private TableColumn<Player, String> scoreColumn;
+
+    public ChoiceBox<String> playerRobotActionList;
+
+    public ListView<String> playerRobotList;
+    public ListView<String> currentRobotMovesList;
+
+    public Button addPossibleMovesList;
+
+    public TextField textFieldXCoord;
+    public TextField textFieldYCoord;
+
+    public Button buttonMakeMove;
 
     /**
      * Initializes the controller class. This method is automatically called
@@ -36,8 +46,50 @@ public class LobbyController {
         // Initialize the person table with the two columns.
         nicknameColumn.setCellValueFactory(cellData -> cellData.getValue().nicknameProperty());
         scoreColumn.setCellValueFactory(cellData -> cellData.getValue().scoreProperty());
+        for (int i = 0; i < (new ServerSettings("")).getNumberOfRobots(); i++) {
+            this.playerRobotList.getItems().add("Robot " + i);
+            this.currentRobotMovesList.getItems().add(i + ":Wait:0:0");
+        }
+        for (RobotAction robotAction : RobotAction.values()) {
+            this.playerRobotActionList.getItems().add(robotAction.name());
+        }
     }
 
+    public void onActionRobotMoveTypes(ActionEvent actionEvent) {
+
+    }
+
+    public void onActionAddPossibleMovesList(ActionEvent actionEvent) {
+
+    }
+
+    public void onActionButtonMakeMove(ActionEvent actionEvent) {
+        String defaultTextMessage = "";
+        if (textFieldXCoord.getText().equals(defaultTextMessage) || textFieldYCoord.getText().equals(defaultTextMessage)) {
+            return;
+        }
+        if (playerRobotActionList.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+        if (playerRobotList.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+        int index = playerRobotList.getSelectionModel().getSelectedIndex();
+        String addition = "";
+        if (playerRobotActionList.getSelectionModel().getSelectedItem().matches("^Request.*$")) {
+            addition = ":" + playerRobotActionList.getSelectionModel().getSelectedItem().split("Request")[1];
+        }
+        this.currentRobotMovesList.getItems().set(index,
+                index + ":" + playerRobotActionList.getSelectionModel().getSelectedItem().replace("Request", "Request_").split("_")[0] + ":" + textFieldXCoord.getText() + ":" + textFieldYCoord.getText() + addition);
+
+    }
+
+    public void onActionEndTurnButton(ActionEvent actionEvent) {
+        Move move = new Move();
+        String[] content = currentRobotMovesList.getItems().toArray(new String[0]);
+        System.out.println(move.validate(move.encodeWithContent(content)));
+
+    }
 
 
     public void handleStartGame(ActionEvent actionEvent) {

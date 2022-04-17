@@ -48,7 +48,8 @@ public class Robot implements GameObject {
     }
     switch (robotAction) {
       case Dig:
-      case Request:
+      case RequestTrap:
+      case RequestRadar:
         loadInventory((GameObject) optionalInventoryChange);
         break;
     }

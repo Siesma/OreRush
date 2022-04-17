@@ -75,7 +75,7 @@ public class Move extends AbstractPacket {
         if(obj.getConnectedLobby().distanceFromPosition(rob.getPosition(), result) > 1) {
           action = RobotAction.Move;
         }
-        if(action == RobotAction.Request) {
+        if(action == RobotAction.RequestRadar || action == RobotAction.RequestTrap) {
           if(trueX != 0) {
             action = RobotAction.Move;
           }

@@ -9,7 +9,7 @@ public class ServerSettings {
     TODO: Make a new Datatype called "ServerSettings" which holds information about packet-replacement procedure,
      the setting and a way to default back to working values in case something gets messed up.
      */
-    private int numberOfRobots;
+    private int numberOfRobots = 4;
     private int mapWidth = 10, mapHeight = 10;
     private int numberOfRounds = 100;
     private float oreDensity = 1f;

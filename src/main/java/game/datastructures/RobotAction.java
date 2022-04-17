@@ -1,7 +1,7 @@
 package game.datastructures;
 
 public enum RobotAction {
-  Move(), Dig(), Wait(), Request();
+  Move(), Dig(), Wait(), RequestRadar(), RequestTrap();
 
   RobotAction() {
 
