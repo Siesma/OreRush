@@ -1,6 +1,7 @@
 package game.datastructures;
 
 import game.server.ServerConstants;
+import game.server.ServerSettings;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -13,20 +14,16 @@ public class GameMap {
   private int[][] oreMap;
   private Cell[][] cellArray;
 
-  public GameMap(int sizeX, int sizeY, float oreDensity) {
-    this.gameMapSize[1] = sizeX;
-    this.gameMapSize[0] = sizeY;
+  public GameMap(int sizeX, int sizeY, ServerSettings serverSettings) {
+    this.gameMapSize[0] = sizeX;
+    this.gameMapSize[1] = sizeY;
     this.oreMap = new int[gameMapSize[0]][gameMapSize[1]];
-    spawnOreInMap(oreDensity, 0.75f);
+    spawnOreInMap(serverSettings.getOreDensity(), serverSettings.getOreThreshold());
     printOreMapToConsole();
     this.cellArray = new Cell[gameMapSize[0]][gameMapSize[1]];
     for (int i = 0; i < sizeX; i++) {
       for (int j = 0; j < sizeY; j++) {
         cellArray[i][j] = new Cell(i, j);
-        Nothing nothing = new Nothing();
-        nothing.setID(1);
-        nothing.setPosition(i, j);
-//        cellArray[i][j].place(nothing);
       }
     }
   }
@@ -52,8 +49,8 @@ public class GameMap {
    */
   //TODO: Make this spawn more valuable ores at higher X Values
   public void spawnOreInMap(float oreSpawnLikelyhood, float threshold) {
-    int w = gameMapSize[1];
-    int h = gameMapSize[0];
+    int w = gameMapSize[0];
+    int h = gameMapSize[1];
     for (int i = 0; i < w; i++) {
       for (int j = 0; j < h; j++) {
         OreType curOreType = determineOreType();
