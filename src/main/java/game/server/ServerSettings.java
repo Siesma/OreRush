@@ -16,6 +16,8 @@ public class ServerSettings {
     private int maxAllowedMoves;
     private ArrayList<Object> ores;
 
+    private float oreThreshold;
+
     /**
      * @param pathToFile Used  to import settings from a ".ore_game_settings" file
      */
@@ -89,5 +91,9 @@ public class ServerSettings {
 
     public float getOreDensity() {
         return oreDensity;
+    }
+
+    public float getOreThreshold() {
+        return oreThreshold;
     }
 }

@@ -5,6 +5,7 @@ import game.datastructures.GameObject;
 import game.datastructures.RobotAction;
 import game.helper.FileHelper;
 import game.packet.AbstractPacket;
+import game.server.ClientThread;
 import game.server.ServerConstants;
 
 public class Move extends AbstractPacket {
@@ -45,8 +46,8 @@ public class Move extends AbstractPacket {
     if (message.startsWith(this.name + (char) ServerConstants.DEFAULT_PACKET_SPACER)) {
       message = message.replace(this.name + (char) ServerConstants.DEFAULT_PACKET_SPACER, "");
     }
-    if (parent instanceof InputStreamThread) {
-      InputStreamThread obj = (InputStreamThread) parent;
+    if (parent instanceof ClientThread) {
+      ClientThread obj = (ClientThread) parent;
       String[] data = splitMessageBySpacer(message);
       for (String s : data) {
         String[] split = s.split(":");
@@ -66,7 +67,7 @@ public class Move extends AbstractPacket {
           object = null;
         }
         GameObject gameObject = (GameObject) object;
-        obj.getClient().getRobots().get(id).setAction(action, x, y, gameObject);
+        obj.getRobots().get(id).setAction(action, x, y, gameObject);
       }
     }
   }

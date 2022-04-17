@@ -24,7 +24,7 @@ public class Lobby {
     }
 
     private void generateGameMap() {
-        gameMap = new GameMap(serverSettings.getMapWidth(), serverSettings.getMapHeight(), serverSettings.getOreDensity());
+        gameMap = new GameMap(serverSettings.getMapWidth(), serverSettings.getMapHeight(), serverSettings);
     }
 
     /**
@@ -72,5 +72,18 @@ public class Lobby {
 
     public ArrayList<ClientThread> getListOfClients() {
         return listOfClients;
+    }
+
+    public void startGame() {
+        generateGameMap();
+        spawnRobots();
+    }
+
+    public void spawnRobots() {
+        for (int i = 0; i < listOfClients.size(); i++) {
+            for (int j = 0; j < serverSettings.getNumberOfRobots(); j++) {
+                listOfClients.get(i).addRobot();
+            }
+        }
     }
 }
