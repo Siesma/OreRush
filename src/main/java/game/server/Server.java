@@ -64,4 +64,9 @@ public class Server {
         }
 
     }
+
+    public ArrayList<Lobby> getLobbyArrayList() {
+        return lobbyArrayList;
+    }
+
 }

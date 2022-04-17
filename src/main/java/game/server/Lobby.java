@@ -69,4 +69,8 @@ public class Lobby {
     public ServerSettings getServerSettings() {
         return serverSettings;
     }
+
+    public ArrayList<ClientThread> getListOfClients() {
+        return listOfClients;
+    }
 }
