@@ -1,9 +1,13 @@
 package game.packet.packets;
 
+import game.client.InputStreamThread;
 import game.packet.AbstractPacket;
+import game.packet.PacketHandler;
 import game.server.ClientThread;
+import game.server.Server;
 import game.server.ServerConstants;
 
+import java.io.InputStream;
 import java.util.Scanner;
 
 //TODO fix nickanme in Client gui changes should be reflected in client list and in lobbylist
@@ -53,16 +57,25 @@ public class Nickname extends AbstractPacket {
    */
   @Override
   public void decode(Object parent, String message) {
-    if (parent instanceof ClientThread) {
-      if (message.startsWith("Nickname" + (char) ServerConstants.DEFAULT_PACKET_SPACER)) {
-        message = message.replace("Nickname" + (char) ServerConstants.DEFAULT_PACKET_SPACER, "");
-      }
+
+    message = message.replace("Nickname" + (char) ServerConstants.DEFAULT_PACKET_SPACER, "");
+    String oldName = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0];
+    message = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[1];
+
+    if (parent instanceof ClientThread ) {
       ClientThread obj = (ClientThread) parent;
-      String oldName = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0];
-      message = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[1];
       obj.changePlayerName(message);
-      obj.pushServerMessageToAllClients(oldName + " has changed their name to "
-      + message + ".");
+      for (ClientThread client: Server.getClientThreads()) {
+        (new PacketHandler(this)).pushMessage(client.getOutputStream(), (new Nickname()).encodeWithContent(oldName,message));
+      }
+
+    }
+    if (parent instanceof InputStreamThread) {
+      InputStreamThread obj = (InputStreamThread) parent;
+      obj.getClient().changeNicknameOfOtherClient(oldName,message);
+
+      obj.getClient().setLastChatMessage("Server: " + oldName + " has changed their name to "
+              + message + ".\n");
     }
   }
 }

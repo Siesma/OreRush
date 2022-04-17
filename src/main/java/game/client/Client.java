@@ -170,5 +170,8 @@ public class Client{
     public ListProperty<String> lobbyListProperty() {
         return lobbyList;
     }
+    public void changeNicknameOfOtherClient(String oldNickname, String newNickname) {
+        Platform.runLater(() -> observableClientList.set(observableClientList.indexOf(oldNickname),newNickname));
+    }
 
 }
