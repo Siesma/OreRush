@@ -1,6 +1,9 @@
 package game.packet.packets;
 
 import game.client.InputStreamThread;
+import game.datastructures.GameObject;
+import game.datastructures.RobotAction;
+import game.helper.FileHelper;
 import game.packet.AbstractPacket;
 import game.server.ServerConstants;
 
@@ -8,42 +11,63 @@ public class Move extends AbstractPacket {
 
 
   public Move() {
-    super("the move packet consists of one user input part that is repeated $NUM_ROBOTS times. $\"Robot_Move\"", new String[]{
-      "^.*$", // Player name + resolve IP
-      "^((([1-9]+)->(MOVE\\{[1-9]+,[1-9]+\\}|DIG\\{[1-9]+,[1-9]+\\}|REQUEST\\{[1-3]\\}),)+)?" +
-        "(([1-9]+)->(MOVE\\{[1-9]+,[1-9]+\\}|DIG\\{[1-9]+,[1-9]+\\}|REQUEST\\{[1-3]\\}))$" // Zug für jeden Roboter
+    super("", new String[]{
+            "^[0-9]+:(Move|Dig|Request|Wait):[0-9]+:[0-9]+((:(Ore|Trap|Radar))?)$"
     }, "Making a move!");
   }
 
 
   /**
-   * Placeholder in case the packet will have non-normal use cases.
+   * The content is supposed to be:
+   * Robot_ID:MOVE:X:Y:OptionalInventoryChange
    */
   @Override
   public String encodeWithContent(String... content) {
-    return encode();
+    StringBuilder out = new StringBuilder();
+    out.append((char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE);
+    out.append(this.name);
+    for (String s : content) {
+      out.append((char) ServerConstants.DEFAULT_PACKET_SPACER);
+      out.append(s);
+    }
+    out.append((char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE);
+    return out.toString();
   }
 
 
   @Override
   public String encode() {
-    return "";
+    return encodeWithContent();
   }
 
   @Override
   public void decode(Object parent, String message) {
-    /*
-    Packet structure would be:
-    - Robot
-      - index_of_robot
-    - Position
-      - new_robot_position
-     */
+    if (message.startsWith(this.name + (char) ServerConstants.DEFAULT_PACKET_SPACER)) {
+      message = message.replace(this.name + (char) ServerConstants.DEFAULT_PACKET_SPACER, "");
+    }
     if (parent instanceof InputStreamThread) {
       InputStreamThread obj = (InputStreamThread) parent;
-      String[] data = AbstractPacket.splitMessageBySpacer(message, String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER)); // Important: Position has to be cropped!
-      obj.getClient().getRobots().get(Integer.parseInt(data[1])).
-        setPosition(Integer.parseInt(data[1]), Integer.parseInt(data[1]));
+      String[] data = splitMessageBySpacer(message);
+      for (String s : data) {
+        String[] split = s.split(":");
+        int id = Integer.parseInt(split[0]);
+        RobotAction action = RobotAction.valueOf(split[1]);
+        int x = Integer.parseInt(split[2]);
+        int y = Integer.parseInt(split[3]);
+        Object object;
+        try {
+          object = (new FileHelper()).createInstanceOfClass("src/main/java/game/datastructures/" + split[4]);
+        } catch (Exception e) {
+          System.out.println("An unidentified object!");
+          System.out.println("Ignoring this element!");
+          continue;
+        }
+        if(!(object instanceof GameObject)) {
+          object = null;
+        }
+        GameObject gameObject = (GameObject) object;
+        obj.getClient().getRobots().get(id).setAction(action, x, y, gameObject);
+      }
     }
   }
 }

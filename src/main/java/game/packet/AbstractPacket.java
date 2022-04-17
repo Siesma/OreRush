@@ -44,7 +44,7 @@ public abstract class AbstractPacket {
    * Validates a given input by matching it against the packet parts.
    * The parts are a predefined blueprint in how to produce a message for a given packet.
    */
-  protected boolean validate(String input) {
+  public boolean validate(String input) {
     input = replaceIndicatorChars(input);
     String[] parts = splitMessageBySpacer(input);
     String[] possiblePackets = Objects.requireNonNull(new File(System.getProperty("user.dir") + "/src/main/java/game/packet/packets").list());
@@ -54,11 +54,11 @@ public abstract class AbstractPacket {
     if (parts[0].matches("^" + matching + "$")) {
       parts = removeFirstElement(parts);
     }
-    if (parts.length != this.getParts().length) {
-      return false;
-    }
+//    if (parts.length != this.getParts().length) {
+//      return false;
+//    }
     for (int i = 0; i < parts.length; i++) {
-      if (!parts[i].matches(this.getParts()[i])) {
+      if (!parts[i].matches(this.getParts()[i % this.getParts().length])) {
         return false;
       }
     }
@@ -100,7 +100,7 @@ public abstract class AbstractPacket {
    * @return the array, containing the pieces of the split message.
    */
   public static String[] splitMessageBySpacer(String message, String spacerCharacter) {
-    return message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
+    return message.split(spacerCharacter);
   }
 
   /**

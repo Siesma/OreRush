@@ -159,9 +159,10 @@ public class GameMap {
     for (int i = 0; i < gameMapSize[0]; i++) {
       for (int j = 0; j < gameMapSize[1]; j++) {
         StringBuilder out = new StringBuilder();
-        out.append("(").append(i).append(",").append(j).append(")");
+        out.append("").append(i).append(",").append(j).append("");
         for (GameObject objectOnCell : this.getCellArray()[i][j].getPlacedObjects()) {
-          out.append(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
+//          out.append(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
+          out.append("_");
           out.append(objectOnCell.encodeToString());
         }
 //        out.append(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));

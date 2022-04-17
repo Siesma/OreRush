@@ -12,9 +12,12 @@ import game.server.ServerConstants;
 public class Update extends AbstractPacket {
 
 
+
+  private final String match = "\\([1-9]+,[1-9]+\\)";
+
   public Update() {
     super("", new String[]{
-      ""
+      "^[0-9]+,[0-9]+" + "_" + "(Nothing|Robot|Trap|Radar|Ore):[0-9]+(:(Trap|Radar|Ore):[0-9]+)?$"
     }, "Updating the user about the board!");
   }
 
@@ -29,10 +32,9 @@ public class Update extends AbstractPacket {
     StringBuilder out = new StringBuilder();
     out.append((char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE);
     out.append(this.name);
-    out.append((char) ServerConstants.DEFAULT_PACKET_SPACER);
     for (String s : content) {
-      out.append(s);
       out.append((char) ServerConstants.DEFAULT_PACKET_SPACER);
+      out.append(s);
     }
     out.append((char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE);
     return out.toString();
@@ -75,11 +77,11 @@ public class Update extends AbstractPacket {
     }
     if (parent instanceof ClientThread) {
       ClientThread obj = (ClientThread) parent;
-      String[] information = AbstractPacket.splitMessageBySpacer(message, String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
+      String[] information = AbstractPacket.splitMessageBySpacer(message, "_");
       GameMap newMap = new GameMap(obj.getConnectedLobby().getServerSettings().getMapWidth(), obj.getConnectedLobby().getServerSettings().getMapHeight(), obj.getConnectedLobby().getServerSettings().getOreDensity());
       int cellX = -1, cellY = -1;
       for (String s : information) {
-        if (s.matches("^[1-9]+,[1-9]+$")) {
+        if (s.matches("^[0-9]+,[0-9]+$")) {
           cellX = Integer.parseInt(s.split(",")[0]);
           cellY = Integer.parseInt(s.split(",")[1]);
         } else {
