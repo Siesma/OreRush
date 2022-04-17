@@ -44,11 +44,11 @@ public class Lobby {
      * cropped down.
      */
     public int[] getNextMove (Robot r, int[] destination) {
-        int xDif = (r.getPosition()[0] - destination[0]);
-        int yDif = (r.getPosition()[1] - destination[1]);
-        int xMovesMade = Math.min(serverSettings.getMaxAllowedMoves(), xDif);
-        int maxYMoves = Math.min(serverSettings.getMaxAllowedMoves() - xMovesMade, Math.min(serverSettings.getMaxAllowedMoves(), yDif));
-        return new int[] {r.getPosition()[0] - xMovesMade, r.getPosition()[1] - maxYMoves};
+        int xDif = Math.abs(r.getPosition()[0] - destination[0]);
+        int yDif = Math.abs(r.getPosition()[1] - destination[1]);
+        int xMoves = Math.min(serverSettings.getMaxAllowedMoves(), xDif);
+        int yMoves = Math.min(serverSettings.getMaxAllowedMoves() - xMoves, yDif);
+        return new int[] {r.getPosition()[0] + xMoves, r.getPosition()[1] + yMoves};
     }
 
     /**

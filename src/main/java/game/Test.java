@@ -26,7 +26,6 @@ public class Test {
       }
     }
     map.spawnOreInMap();
-
     Robot r = new Robot();
     r.setPosition(0, 5);
     r.setID(1);
