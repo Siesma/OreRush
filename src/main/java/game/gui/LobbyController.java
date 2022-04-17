@@ -61,4 +61,23 @@ public class LobbyController {
         }
         actionEvent.consume();
     }
+    public void handleWhisperMessage(ActionEvent actionEvent) {
+        try {
+            if (!newLobbyMessageTextField.getText().equals("")) {
+                client.sendWhisper(nicknameColumn.getCellObservableValue(playerTableView.getItems().get(playerTableView.getSelectionModel().getSelectedCells().get(0).getRow())).toString(), newLobbyMessageTextField.getText());
+                newLobbyMessageTextField.setText("");
+            }
+        } catch (Exception ignored) {}
+
+        actionEvent.consume();
+    }
+
+
+    public void handleBroadcastMessage(ActionEvent actionEvent) {
+        if (!newLobbyMessageTextField.getText().equals("")) {
+            client.sendBroadcast(newLobbyMessageTextField.getText());
+            newLobbyMessageTextField.setText("");
+        }
+        actionEvent.consume();
+    }
 }

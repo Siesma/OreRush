@@ -53,11 +53,10 @@ public class StartMenuController{
         lobbyListView.itemsProperty().bind(client.lobbyListProperty());
 
 
-        lobbyListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-            }
+        lobbyListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        });
 
+        clientListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
         });
 
     }
@@ -96,7 +95,7 @@ public class StartMenuController{
             client.joinLobby(lobbyListView.getSelectionModel().getSelectedItem());
             changeToLobbyScene();
         }
-
+        actionEvent.consume();
     }
 
     public void changeToLobbyScene() {
@@ -110,4 +109,21 @@ public class StartMenuController{
     }
 
 
+    public void handleWhisperMessage(ActionEvent actionEvent) {
+        if (clientListView.getSelectionModel().getSelectedItem() != null &&
+                !newMessageTextField.getText().equals("")) {
+            client.sendWhisper(clientListView.getSelectionModel().getSelectedItem(), newMessageTextField.getText());
+            newMessageTextField.setText("");
+        }
+        actionEvent.consume();
+    }
+
+
+    public void handleBroadcastMessage(ActionEvent actionEvent) {
+        if (!newMessageTextField.getText().equals("")) {
+            client.sendBroadcast(newMessageTextField.getText());
+            newMessageTextField.setText("");
+        }
+        actionEvent.consume();
+    }
 }

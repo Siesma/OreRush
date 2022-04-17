@@ -63,8 +63,10 @@ public class Whisper extends AbstractPacket{
         }
         if(parent instanceof InputStreamThread) {
             InputStreamThread obj = (InputStreamThread) parent;
-            // TODO make specific chat ui for whisper messages
-            obj.getClient().setLastChatMessage(name + ": " + message + "\n");
+            if (obj.getClient().getLobbyInClient() != null) {
+                obj.getClient().getLobbyInClient().setLastChatMessage(name + " (whisper): " + message + "\n");
+            }
+            obj.getClient().setLastChatMessage(name + " (whisper): " + message + "\n");
         }
     }
 }

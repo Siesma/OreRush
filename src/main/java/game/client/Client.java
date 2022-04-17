@@ -115,6 +115,14 @@ public class Client{
         (new PacketHandler(this)).pushMessage(outputStream, (new ChatLobby()).encodeWithContent(lobbyName,message));
     }
 
+    public void sendWhisper(String receiverName,String message) {
+        (new PacketHandler(this)).pushMessage(outputStream, (new Whisper()).encodeWithContent(receiverName,message));
+    }
+
+    public void sendBroadcast(String message) {
+        (new PacketHandler(this)).pushMessage(outputStream, (new Broadcast()).encodeWithContent(message));
+    }
+
     public void createLobby(String newLobbyName) {
         (new PacketHandler(this)).pushMessage(outputStream, (new CreateLobby()).encodeWithContent(newLobbyName));
     }
