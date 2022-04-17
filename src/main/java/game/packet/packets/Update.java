@@ -11,8 +11,6 @@ import game.server.ServerConstants;
 
 public class Update extends AbstractPacket {
 
-
-
   private final String match = "\\([1-9]+,[1-9]+\\)";
 
   public Update() {
@@ -78,7 +76,7 @@ public class Update extends AbstractPacket {
     if (parent instanceof ClientThread) {
       ClientThread obj = (ClientThread) parent;
       String[] information = AbstractPacket.splitMessageBySpacer(message, "_");
-      GameMap newMap = new GameMap(obj.getConnectedLobby().getServerSettings().getMapWidth(), obj.getConnectedLobby().getServerSettings().getMapHeight(), obj.getConnectedLobby().getServerSettings().getOreDensity());
+      GameMap newMap = new GameMap(obj.getConnectedLobby().getServerSettings().getMapWidth(), obj.getConnectedLobby().getServerSettings().getMapHeight(), obj.getConnectedLobby().getServerSettings());
       int cellX = -1, cellY = -1;
       for (String s : information) {
         if (s.matches("^[0-9]+,[0-9]+$")) {

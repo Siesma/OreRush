@@ -28,10 +28,8 @@ public class Client{
     private Socket socket;
     private InputStream inputStream;
     private boolean pongReceived = false;
-
     private final StringProperty nickname;
     private final StringProperty lastChatMessage = new SimpleStringProperty();
-
     private final ArrayList<LobbyInClient> lobbyInClientArrayList = new ArrayList<>();
 
     ObservableList<String> observableClientList = FXCollections.observableArrayList();
@@ -39,8 +37,6 @@ public class Client{
 
     ObservableList<String> observableLobbyList = FXCollections.observableArrayList();
     ListProperty<String> lobbyList = new SimpleListProperty<>(observableLobbyList);
-
-    private ArrayList<Robot> robots = new ArrayList<>();
 
     public Client(String hostAddress, int port, String name) {
         client = this;
@@ -168,15 +164,11 @@ public class Client{
         Platform.runLater(() -> lastChatMessage.setValue(message));
     }
 
-    public ArrayList<Robot> getRobots() {
-        return this.robots;
-    }
     public ListProperty<String> clientListProperty() {
         return clientList;
     }
     public ListProperty<String> lobbyListProperty() {
         return lobbyList;
     }
-
 
 }
