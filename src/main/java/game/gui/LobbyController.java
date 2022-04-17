@@ -6,10 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-import java.util.Objects;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 public class LobbyController {
 
@@ -22,6 +22,9 @@ public class LobbyController {
     private TableColumn<Player, String> nicknameColumn;
     @FXML
     private TableColumn<Player, String> scoreColumn;
+
+    @FXML private TextFlow chatLobbyTextFlow;
+    @FXML private TextField newLobbyMessageTextField;
 
     /**
      * Initializes the controller class. This method is automatically called
@@ -36,6 +39,10 @@ public class LobbyController {
         // Initialize the person table with the two columns.
         nicknameColumn.setCellValueFactory(cellData -> cellData.getValue().nicknameProperty());
         scoreColumn.setCellValueFactory(cellData -> cellData.getValue().scoreProperty());
+        lobby.lastChatMessageProperty().addListener((observable, oldValue, newValue) -> {
+            Text newMessage = new Text(newValue);
+            chatLobbyTextFlow.getChildren().add(newMessage);
+        });
     }
 
 
@@ -48,5 +55,10 @@ public class LobbyController {
     }
 
     public void handleSendMessage(ActionEvent actionEvent) {
+        if (!newLobbyMessageTextField.getText().equals("")) {
+            client.sendChatMessageToLobby(lobby.getName(), newLobbyMessageTextField.getText());
+            newLobbyMessageTextField.setText("");
+        }
+        actionEvent.consume();
     }
 }

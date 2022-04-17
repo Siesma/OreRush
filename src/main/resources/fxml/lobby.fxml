@@ -27,10 +27,10 @@
                </image></ImageView>
             <VBox prefHeight="296.0" prefWidth="261.0">
                <children>
-                  <TextFlow fx:id="chatTextFlow" prefHeight="233.0" prefWidth="261.0" />
+                  <TextFlow fx:id="chatLobbyTextFlow" prefHeight="233.0" prefWidth="261.0" />
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="newMessageTextField" prefHeight="25.0" prefWidth="165.0" />
+                        <TextField fx:id="newLobbyMessageTextField" prefHeight="25.0" prefWidth="165.0" />
                         <Button mnemonicParsing="false" onAction="#handleSendMessage" text="Send" />
                      </children>
                   </HBox>

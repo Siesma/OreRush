@@ -111,6 +111,10 @@ public class Client{
         (new PacketHandler(this)).pushMessage(outputStream, (new Chat()).encodeWithContent(message));
     }
 
+    public void sendChatMessageToLobby(String lobbyName,String message) {
+        (new PacketHandler(this)).pushMessage(outputStream, (new ChatLobby()).encodeWithContent(lobbyName,message));
+    }
+
     public void createLobby(String newLobbyName) {
         (new PacketHandler(this)).pushMessage(outputStream, (new CreateLobby()).encodeWithContent(newLobbyName));
     }
