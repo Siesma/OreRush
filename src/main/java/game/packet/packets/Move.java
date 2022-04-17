@@ -2,6 +2,7 @@ package game.packet.packets;
 
 import game.client.InputStreamThread;
 import game.datastructures.GameObject;
+import game.datastructures.Robot;
 import game.datastructures.RobotAction;
 import game.helper.FileHelper;
 import game.packet.AbstractPacket;
@@ -67,7 +68,19 @@ public class Move extends AbstractPacket {
           object = null;
         }
         GameObject gameObject = (GameObject) object;
-        obj.getRobots().get(id).setAction(action, x, y, gameObject);
+        Robot rob = obj.getRobots().get(id);
+        int[] result = obj.getConnectedLobby().getNextMove(rob, new int[] {x, y});
+        int trueX = result[0];
+        int trueY = result[1];
+        if(obj.getConnectedLobby().distanceFromPosition(rob.getPosition(), result) > 1) {
+          action = RobotAction.Move;
+        }
+        if(action == RobotAction.Request) {
+          if(trueX != 0) {
+            action = RobotAction.Move;
+          }
+        }
+        obj.getRobots().get(id).setAction(action, trueX, trueY, gameObject);
       }
     }
   }

@@ -33,6 +33,11 @@ public class Robot implements GameObject {
     yCoordinate = y;
   }
 
+  /**
+   *
+   * This function applies the new information.
+   * This function implies that the wanted Action is valid.
+   */
   public void setAction(RobotAction robotAction, int x, int y, Object optionalInventoryChange) {
     setPosition(x, y);
     if (optionalInventoryChange == null) {
@@ -82,6 +87,7 @@ public class Robot implements GameObject {
     String encodedRobot = "robot:" + this.playerID + ":" + inventory.encodeToString();
     return encodedRobot;
   }
+
 
   @Override
   public void fillGameObjectWithData(String... data) {

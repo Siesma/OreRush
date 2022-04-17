@@ -31,7 +31,7 @@ public class Lobby {
      *
      * Returns the amount of single cell moves that would have to be done to reach a destination
      */
-    private int distanceFromPosition (int[] now, int[] then) {
+    public int distanceFromPosition (int[] now, int[] then) {
         return Math.abs(now[0] - then[0]) + Math.abs(now[1] - then[1]);
     }
 
