@@ -70,6 +70,10 @@ public class Lobby {
         return serverSettings;
     }
 
+    public ArrayList<ClientThread> getListOfClients() {
+        return listOfClients;
+    }
+
     public void startGame() {
         generateGameMap();
         spawnRobots();

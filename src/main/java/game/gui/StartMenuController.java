@@ -55,7 +55,7 @@ public class StartMenuController{
 
 
     @FXML private void handleSendMessage(ActionEvent actionEvent) throws Exception {
-        if (newMessageTextField.getText() != null) {
+        if (!newMessageTextField.getText().equals("")) {
             client.sendChatMessage(newMessageTextField.getText());
             newMessageTextField.setText("");
         }
@@ -63,7 +63,7 @@ public class StartMenuController{
     }
 
     @FXML private void handleChangeNickname(ActionEvent actionEvent) throws Exception {
-        if (newNickname.getText() != null) {
+        if (!newNickname.getText().equals("")) {
             client.changeNickname(newNickname.getText());
             newNickname.setText("");
         }
@@ -71,7 +71,7 @@ public class StartMenuController{
     }
 
     public void handleCreateLobby(ActionEvent actionEvent) {
-        if (newLobbyName.getText() != null){
+        if (!newLobbyName.getText().equals("")){
             client.createLobby(newLobbyName.getText());
             newLobbyName.setText("");
         }

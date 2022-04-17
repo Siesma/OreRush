@@ -4,6 +4,7 @@ import game.client.InputStreamThread;
 import game.packet.AbstractPacket;
 import game.packet.PacketHandler;
 import game.server.ClientThread;
+import game.server.Lobby;
 import game.server.Server;
 import game.server.ServerConstants;
 
@@ -51,7 +52,23 @@ public class Connect extends AbstractPacket {
       //TODO (seb) send package with other clients to update connectedClient list
       //TODO already existing lobbys
 
-      // inform clients
+      // informs player of already existing players
+      for (ClientThread clientThread:Server.getClientThreads()) {
+        if (clientThread != obj) {
+          (new PacketHandler(this)).pushMessage(obj.getOutputStream(), (new Connect()).encodeWithContent(clientThread.getPlayerName()));
+        }
+      }
+
+      // informs of already created lobbys and clients in those lobbys
+      for (Lobby lobby:obj.getServer().getLobbyArrayList()) {
+        (new PacketHandler(this)).pushMessage(obj.getOutputStream(), (new CreateLobby()).encodeWithContent(lobby.getLobbyName()));
+        for (ClientThread clientThread: lobby.getListOfClients()){
+          (new PacketHandler(this)).pushMessage(obj.getOutputStream(), (new JoinLobby()).encodeWithContent(lobby.getLobbyName(), clientThread.getPlayerName()));
+        }
+      }
+
+
+      // inform clients of new player
       for(ClientThread clientThread : Server.getClientThreads()) {
         (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Connect()).encodeWithContent(message));
       }
