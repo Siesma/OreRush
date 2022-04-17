@@ -10,13 +10,13 @@ public class Lobby {
     private final String lobbyName;
     protected ArrayList<ClientThread> listOfClients = new ArrayList<>();
     protected GameMap gameMap;
-    protected ServerSettings serverSettings; //No functionality yet
+    protected ServerSettings serverSettings; // just basic functionality to set constants, not modifiable yet.
     protected int turnCounter;
 
     public Lobby(String lobbyName, ClientThread clientThread) {
         this.lobbyName = lobbyName;
         this.serverSettings = new ServerSettings("");
-        this.gameMap = new GameMap(0, 0, serverSettings);
+        startGame();
     }
 
     public ClientThread getHost() {
@@ -25,6 +25,7 @@ public class Lobby {
 
     private void generateGameMap() {
         gameMap = new GameMap(serverSettings.getMapWidth(), serverSettings.getMapHeight(), serverSettings);
+        gameMap.spawnOreInMap();
     }
 
     /**
@@ -54,6 +55,12 @@ public class Lobby {
      */
     public int turnOfPlayer() {
         return turnCounter % listOfClients.size();
+    }
+
+    public void updateMove () {
+        turnCounter++;
+        System.out.println("Trying to print the map");
+        gameMap.printMapToConsole();
     }
 
     public void addClient(ClientThread clientThread) {

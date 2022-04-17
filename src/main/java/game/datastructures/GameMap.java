@@ -141,7 +141,7 @@ public class GameMap {
     cellArray[x][y].remove(gameObject);
   }
 
-  public void printOreMapToConsole() {
+  public void printMapToConsole() {
     for (int j = 0; j < gameMapSize[1]; j++) {
       for (int i = 0; i < gameMapSize[0]; i++) {
 //        System.out.print("[" + oreMap[i][j] + "]");
@@ -177,6 +177,10 @@ public class GameMap {
     }
   }
 
+  /**
+   *
+   * Returns an array of Strings that is used to make the update packet.
+   */
   public String[] cellStrings() {
     ArrayList<String> strings = new ArrayList<>();
     for (int i = 0; i < gameMapSize[0]; i++) {
@@ -201,7 +205,10 @@ public class GameMap {
     return gameMapSize;
   }
 
-  public void fillCellArray() {
+  /**
+   * Creates for each column and row a new Cell object so NullPointerExceptions are being lessened if the map is improperly handled
+   */
+  private void fillCellArray() {
     for (int i = 0; i < cellArray.length; i++) {
       for (int j = 0; j < cellArray[i].length; j++) {
         cellArray[i][j] = new Cell(i, j);

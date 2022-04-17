@@ -31,14 +31,14 @@ public class Test {
     r.setID(1);
 
     map.placeObjectOnMap(r, r.getPosition()[0], r.getPosition()[1]);
-    map.printOreMapToConsole();
+    map.printMapToConsole();
     System.out.println("---");
     map.removeObjectFromMap(r, r.getPosition()[0], r.getPosition()[1]);
     int[] wantedDestination = {4, 9};
     int[] receivedDestination = getNextMove(r, wantedDestination, new ServerSettings(""));
     r.setAction(RobotAction.Move, receivedDestination[0], receivedDestination[1], null);
     map.placeObjectOnMap(r, r.getPosition()[0], r.getPosition()[1]);
-    map.printOreMapToConsole();
+    map.printMapToConsole();
     System.out.println(r.getPosition()[0]);
     System.out.println(r.getPosition()[1]);
   }

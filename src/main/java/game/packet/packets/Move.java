@@ -82,6 +82,7 @@ public class Move extends AbstractPacket {
                 }
                 obj.getRobots().get(id).setAction(action, trueX, trueY, gameObject);
             }
+            obj.getConnectedLobby().updateMove();
         }
     }
 }
