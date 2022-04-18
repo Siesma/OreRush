@@ -20,7 +20,7 @@ Es gibt 5 Befehle.
 - RequestTrap
 - Wait
 
-"Move" bewegt den Roboter.
+"Move" versucht es den Roboter an das bestimmte Feld zu bewegen wird aber probleme dabei haben da der Nutzer höchstwahrscheinlich nicht die maximale Bewegdistanz beachtet.
 "Dig" gräbt an dem definierten Feld. Wenn das Feld ausserhalb der Reichweite von einem Feld ist, wird der Zug zu einer "Move" Aktion umgeändert um zuerst zu dem Feld zu kommen. Daraufhin kann im Folgezug der "Dig" befehl ohne Veränderung an der Roboteraktion ausgeführt werden. Wenn der Roboter ein Ausrüstungsgegenstand in seinem Inventar hat wird dieses bei dem Ausführen des "Dig" befehls dort abgelegt. Wenn in dem Feld ein "Erz" vorhanden ist, wird dieses von der Karte entfernt und in das Inventar des Roboters hinzugefügt.
 "RequestRadar" lädt das Inventar mit einem Radar sofern dieser Roboter sich in dem Startbereich befindet. Dieser Startbereich ist der Bereich in dem die X-Koordinate auf "0" ist. Wenn sich der Roboter nicht in dem Startbereich befindet wird der "RequestRadar" befehl zu einem "Move" Befehl verändert um sich erst zu dem Startbereich zu bewegen.
 "RequestTrap" ist das selbe wie "RequestRadar" nur, dass das Inventar mit einer Falle bestückt wird anstelle von einem Radar. Die Falle sorgt dafür, dass wenn ein anderer Roboter auf einem Feld gräbt wo sich eine Falle befindet wird dieser zerstört und für "Tot" erklärt.
