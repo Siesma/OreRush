@@ -45,8 +45,10 @@ public class Lobby {
      * cropped down.
      */
     public int[] getNextMove(Robot r, int[] destination) {
-        int xDif = Math.abs(r.getPosition()[0] - destination[0]);
-        int yDif = Math.abs(r.getPosition()[1] - destination[1]);
+        System.out.println("Trying to get the new position for the robot");
+        System.out.println("From: " + r.getPosition()[0] + " " + r.getPosition()[1] + "; to: " + destination[0] + " " + destination[1] );
+        int xDif = (destination[0] - r.getPosition()[0]);
+        int yDif = (destination[1] - r.getPosition()[1]);
         int xMoves = Math.min(serverSettings.getMaxAllowedMoves(), xDif);
         int yMoves = Math.min(serverSettings.getMaxAllowedMoves() - xMoves, yDif);
         return new int[] { r.getPosition()[0] + xMoves, r.getPosition()[1] + yMoves };
@@ -61,11 +63,9 @@ public class Lobby {
 
     public void updateMove () {
         turnCounter++;
-        System.out.println("Trying to print the map");
-        for(ClientThread clientThread : listOfClients) {
-            (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Update()).encodeWithContent(gameMap.cellStrings()));
-        }
-//        gameMap.printMapToConsole();
+        System.out.println("---");
+        this.gameMap.printMapToConsole();
+        System.out.println("---");
     }
 
     public void addClient(ClientThread clientThread) {
@@ -78,6 +78,10 @@ public class Lobby {
 
     public ServerSettings getServerSettings() {
         return serverSettings;
+    }
+
+    public GameMap getGameMap() {
+        return gameMap;
     }
 
     public ArrayList<ClientThread> getListOfClients() {

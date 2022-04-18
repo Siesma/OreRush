@@ -4,6 +4,7 @@ import game.helper.FileHelper;
 import game.packet.AbstractPacket;
 import game.server.ServerSettings;
 
+import javax.swing.plaf.basic.BasicBorders;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -134,6 +135,10 @@ public class GameMap {
     return x > min_x && x < max_x && y > min_y && y < max_y;
   }
 
+  public boolean isInBounds(int[] xy, int[] minxy, int[] maxxy) {
+    return isInBounds(xy[0], xy[1], minxy[0], minxy[1], maxxy[0], maxxy[1]);
+  }
+
   public OreType determineOreType() {
     // TODO: make it so that more valuable oretypes spawn futher on the right
     return OreType.values()[(int) (Math.random() * OreType.values().length)];
@@ -158,7 +163,6 @@ public class GameMap {
   public void printMapToConsole() {
     for (int j = 0; j < gameMapSize[1]; j++) {
       for (int i = 0; i < gameMapSize[0]; i++) {
-//        System.out.print("[" + oreMap[i][j] + "]");
         Cell cell = cellArray[i][j];
         boolean trap = cell.trapOnCell() != null;
         boolean radar = cell.radarOnCell() != null;
@@ -212,6 +216,40 @@ public class GameMap {
       out[i] = strings.get(i);
     }
     return out;
+  }
+
+  /**
+   * Repositions an already existing object
+   */
+  public void replaceObject(GameObject object, int[] newPosition) {
+//    System.out.println("Trying to modify the position of the object: " + object.getPosition()[0] + " " + object.getPosition()[1]);
+//    printMapToConsole();
+    int[] curPosition = object.getPosition();
+    if (curPosition == null) {
+      return;
+    }
+    if (!isInBounds(curPosition, new int[] {0, 0}, gameMapSize)) {
+      curPosition = new int[] {
+              clamp(curPosition[0], 0,gameMapSize[0] - 1),
+              clamp(curPosition[1], 0,gameMapSize[1] - 1)
+      };
+    }
+    ArrayList<GameObject> placedObjects = cellArray[curPosition[0]][curPosition[1]].getPlacedObjects();
+    if(!placedObjects.contains(object)) {
+      System.out.println("The placed object was not on the original position");
+      return;
+    }
+    if (!isInBounds(newPosition, new int[] {0, 0}, gameMapSize)) {
+      newPosition = new int[] {
+              clamp(newPosition[0], 0,gameMapSize[0] - 1),
+              clamp(newPosition[1], 0,gameMapSize[1] - 1)
+      };
+    }
+    removeObjectFromMap(object, curPosition);
+    placeObjectOnMap(object, newPosition);
+  }
+  private int clamp(int val, int min, int max) {
+    return Math.max(Math.min(max, val), min);
   }
 
   public int[] getGameMapSize() {
@@ -268,15 +306,15 @@ public class GameMap {
             System.out.println("Ignoring this element!");
             continue;
           }
-          if(!(object instanceof GameObject)) {
-            System.out.println(object + " \"" +objectType + "\"");
+          if (!(object instanceof GameObject)) {
+            System.out.println(object + " \"" + objectType + "\"");
             System.out.println("Somehow the object is no gameobject");
             continue;
           }
           GameObject finalGameObject = (GameObject) object;
           finalGameObject.setID(objectID);
-          if(objectData.length > 2) {
-            if(finalGameObject instanceof Robot) {
+          if (objectData.length > 2) {
+            if (finalGameObject instanceof Robot) {
               Object inv;
               try {
                 inv = (new FileHelper()).createInstanceOfClass("game.datastructures." + s.split(":")[2]);

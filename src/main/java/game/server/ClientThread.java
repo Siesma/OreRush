@@ -282,7 +282,7 @@ public class ClientThread implements Runnable {
 
     public void setCurrentGameMap(GameMap currentGameMap) {
         this.currentGameMap = currentGameMap;
-        currentGameMap.printMapToConsole();
+//        currentGameMap.printMapToConsole();
     }
 
     public ArrayList<Robot> getRobots() {

@@ -85,6 +85,7 @@ public class LobbyController {
             return;
         }
         int index = playerRobotList.getSelectionModel().getSelectedIndex();
+        System.out.println(index);
         String addition = "";
         if (playerRobotActionList.getSelectionModel().getSelectedItem().matches("^Request.*$")) {
             addition = ":" + playerRobotActionList.getSelectionModel().getSelectedItem().split("Request")[1];

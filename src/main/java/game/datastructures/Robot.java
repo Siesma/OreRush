@@ -1,5 +1,6 @@
 package game.datastructures;
 
+import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import game.helper.FileHelper;
 import game.packet.AbstractPacket;
 import game.server.ServerConstants;
@@ -39,6 +40,7 @@ public class Robot implements GameObject {
    * This function implies that the wanted Action is valid.
    */
   public void setAction(RobotAction robotAction, int x, int y, Object optionalInventoryChange) {
+//    System.out.println(this.playerID + " just tried to make a " + robotAction.name() + " move to " + x + ", " + y);
     setPosition(x, y);
     if (optionalInventoryChange == null) {
       return;

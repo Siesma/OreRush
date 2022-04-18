@@ -70,17 +70,17 @@ public class Move extends AbstractPacket {
                 GameObject gameObject = (GameObject) object;
                 Robot rob = obj.getRobots().get(id);
                 int[] result = obj.getConnectedLobby().getNextMove(rob, new int[] { x, y });
-                int trueX = result[0];
-                int trueY = result[1];
                 if (obj.getConnectedLobby().distanceFromPosition(rob.getPosition(), result) > 1) {
                     action = RobotAction.Move;
                 }
                 if (action == RobotAction.RequestRadar || action == RobotAction.RequestTrap) {
-                    if (trueX != 0) {
+                    if (result[0] != 0) {
                         action = RobotAction.Move;
                     }
                 }
-                obj.getRobots().get(id).setAction(action, trueX, trueY, gameObject);
+                obj.getRobots().get(id).setID(id);
+                obj.getConnectedLobby().getGameMap().replaceObject(obj.getRobots().get(id), result);
+                obj.getRobots().get(id).setAction(action, result, gameObject);
             }
             obj.getConnectedLobby().updateMove();
         }

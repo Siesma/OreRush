@@ -49,7 +49,7 @@ public class ServerSettings {
   }
 
   private void setDefaultValues() {
-    this.numberOfRobots = 4;
+    this.numberOfRobots = 1;
     this.mapWidth = 10;
     this.mapHeight = 10;
     this.numberOfRounds = 100;
