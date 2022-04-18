@@ -37,8 +37,6 @@ public class Server {
         Thread clientThread = new Thread(cT);
         clientThread.start();
         logger.info("New client connected.");
-
-
       } catch (IOException e) {
         logger.error(e.getMessage());
         e.printStackTrace();

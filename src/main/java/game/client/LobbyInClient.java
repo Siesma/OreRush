@@ -15,8 +15,6 @@ public class LobbyInClient {
     private final StringProperty lastChatMessage = new SimpleStringProperty();
     private final ObservableList<Player> observablePlayerList = FXCollections.observableArrayList();
 
-
-
     public LobbyInClient(String lobbyName) {
         this.lobbyName = new SimpleStringProperty(lobbyName);
         this.status = new SimpleStringProperty("open");

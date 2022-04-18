@@ -28,12 +28,12 @@ public class Nickname extends AbstractPacket {
       encode();
     }
     return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
-      this.name +
-      (char) ServerConstants.DEFAULT_PACKET_SPACER +
-      content[0] +
-      (char) ServerConstants.DEFAULT_PACKET_SPACER +
-      content[1] +
-      (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
+            this.name +
+            (char) ServerConstants.DEFAULT_PACKET_SPACER +
+            content[0] +
+            (char) ServerConstants.DEFAULT_PACKET_SPACER +
+            content[1] +
+            (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
   }
 
   /**
@@ -43,12 +43,12 @@ public class Nickname extends AbstractPacket {
   public String encode() {
     //System.out.println("What do you want your new name to be?");
     return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
-      this.name +
-      (char) ServerConstants.DEFAULT_PACKET_SPACER +
-      "old name" +
-      (char) ServerConstants.DEFAULT_PACKET_SPACER +
-      promptUserForInput(new Scanner(System.in)) +
-      (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
+            this.name +
+            (char) ServerConstants.DEFAULT_PACKET_SPACER +
+            "old name" +
+            (char) ServerConstants.DEFAULT_PACKET_SPACER +
+            promptUserForInput(new Scanner(System.in)) +
+            (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
   }
 
   /**
@@ -62,20 +62,19 @@ public class Nickname extends AbstractPacket {
     String oldName = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0];
     message = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[1];
 
-    if (parent instanceof ClientThread ) {
+    if (parent instanceof ClientThread) {
       ClientThread obj = (ClientThread) parent;
       obj.changePlayerName(message);
-      for (ClientThread client: Server.getClientThreads()) {
-        (new PacketHandler(this)).pushMessage(client.getOutputStream(), (new Nickname()).encodeWithContent(oldName,message));
+      for (ClientThread client : Server.getClientThreads()) {
+        (new PacketHandler(this)).pushMessage(client.getOutputStream(), (new Nickname()).encodeWithContent(oldName, obj.getPlayerName()));
       }
 
     }
     if (parent instanceof InputStreamThread) {
       InputStreamThread obj = (InputStreamThread) parent;
-      obj.getClient().changeNicknameOfOtherClient(oldName,message);
-
+      obj.getClient().changeNicknameOfOtherClient(oldName, message);
       obj.getClient().setLastChatMessage("Server: " + oldName + " has changed their name to "
-              + message + ".\n");
+              + obj.getClient().getNickname() + ".\n");
     }
   }
 }

@@ -27,7 +27,6 @@ public class ClientThread implements Runnable {
   private boolean pingReceived;
   private String playerName;
   private Lobby connectedLobby;
-
   private int playerScore;
   private int playerID;
   private ArrayList<Robot> robots;
