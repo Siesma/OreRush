@@ -15,6 +15,12 @@ public class JoinLobby extends AbstractPacket {
                 , "");
     }
 
+    /**
+     * Creates a JoinLobby packet with
+     * @param content the lobbyname and the player name
+     * @return the new packet
+     */
+
     @Override
     public String encodeWithContent(String... content) {
         if (content.length == 0) {
@@ -35,6 +41,14 @@ public class JoinLobby extends AbstractPacket {
     public String encode() {
         return null;
     }
+
+    /**
+     * Decodes the packet
+     * @param parent server or client
+     *               if server receives the packet the updates the lobby with the new client
+     *               if client receives the packet, the GUI is updated
+     * @param message contains the lobbyname and clientname
+     */
 
     @Override
     public void decode(Object parent, String message) {

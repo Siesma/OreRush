@@ -18,7 +18,7 @@ public class ChatLobby extends AbstractPacket {
 
 
     /**
-     * This function will create a chat message where the input is already predetermined.
+     * This function will create a chat message and lobby where the input is already predetermined.
      */
     @Override
     public String encodeWithContent(String... content) {
@@ -38,9 +38,10 @@ public class ChatLobby extends AbstractPacket {
 
 
     /**
-     * Creates the message that results in an Awake packet.
-     * This means "Start" MESSAGE "End"
+     * Creates the message package with CLI input.
+     * This means "Start" LOBBYNAME MESSAGE "End"
      * where "Start" is the default start char and "End" is the default end char.
+     * LOBBYNAME stands for the lobby that should receive the message.
      * MESSAGE stands for the message that the user has typed in
      */
     @Override
@@ -56,7 +57,8 @@ public class ChatLobby extends AbstractPacket {
     }
 
     /**
-     * Decodes the message and will handle the message correctly by sending it to the server or clients
+     * Decodes the message and will handle the message correctly by sending it to the clients of a lobby if the server receives the packet
+     * or adds the message in the lobby GUI if the client receives the packet.
      */
     @Override
     public void decode(Object parent, String message) {

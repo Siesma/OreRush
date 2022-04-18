@@ -17,7 +17,7 @@ public class Connect extends AbstractPacket {
   }
 
   /**
-   * Placeholder in case the packet will have non-normal use cases.
+   * Creates the Connect packet with the name of the client that is connecting.
    */
   @Override
   public String encodeWithContent(String... content) {
@@ -29,8 +29,7 @@ public class Connect extends AbstractPacket {
   }
 
   /**
-   * Encodes the unfinished Join packet.
-   * Does not work properly and may not be used, so far at least.
+   * Placeholder in case the packet will have non-normal use cases.
    */
   @Override
   public String encode() {
@@ -38,7 +37,9 @@ public class Connect extends AbstractPacket {
   }
 
   /**
-   * Placeholder for if the join packet has to be decoded.
+   * If the packet is received by the server, the connecting client is informed of the existing lobbys and players;
+   * and the other players are informed of the newly connected client by sending them a Connect packet.
+   * If a client receives a connect packet, the new client is added to the observable client list.
    */
   @Override
   public void decode(Object parent, String message) {
@@ -49,8 +50,6 @@ public class Connect extends AbstractPacket {
       ClientThread obj = (ClientThread) parent;
       obj.changePlayerName(message);
 
-      //TODO (seb) send package with other clients to update connectedClient list
-      //TODO already existing lobbys
 
       // informs player of already existing players
       for (ClientThread clientThread:Server.getClientThreads()) {

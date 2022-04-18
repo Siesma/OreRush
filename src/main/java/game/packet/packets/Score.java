@@ -18,7 +18,10 @@ public class Score extends AbstractPacket {
     }
 
     /**
-     * This function will create a score packet where the input is already predetermined.
+     * Creates the score packet
+     * @param content contains the playerName which score has changed,
+     *                and the new score the player
+     * @return
      */
     @Override
     public String encodeWithContent(String... content) {
@@ -37,12 +40,13 @@ public class Score extends AbstractPacket {
 
     @Override
     public String encode() {
-
         return null;
     }
 
     /**
      * Informs clients that a player has changed score.
+     * @param parent client
+     * @param message contains the new score
      */
     @Override
     public void decode(Object parent, String message) {

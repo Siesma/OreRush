@@ -15,6 +15,11 @@ public class CreateLobby extends AbstractPacket {
                 , "");
     }
 
+    /**
+     * creates the createLobby packet with
+     * @param content the new lobby name
+     * @return the properly formatted packet
+     */
     @Override
     public String encodeWithContent(String... content) {
         if (content.length == 0) {
@@ -32,6 +37,14 @@ public class CreateLobby extends AbstractPacket {
     public String encode() {
         return null;
     }
+
+    /**
+     * Decodes the packet depending on the parent
+     * @param parent can be server or client
+     *               the server creates a new lobby and informs the other clients of the lobby by sending a createLobby packet.
+     *               the client updates the GUI with a new lobby
+     * @param message name of the new lobby
+     */
 
     @Override
     public void decode(Object parent, String message) {

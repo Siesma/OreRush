@@ -20,7 +20,9 @@ public class Nickname extends AbstractPacket {
   }
 
   /**
-   * This function will create a Nickname where the input is already predetermined.
+   * This function will create a Nickname packet
+   * @param content the old name and the new name
+   * @return the formatted Nickname packet
    */
   @Override
   public String encodeWithContent(String... content) {
@@ -37,7 +39,7 @@ public class Nickname extends AbstractPacket {
   }
 
   /**
-   * This function will create a Nickname where the input is not predetermined.
+   * This function will create a Nickname with CLI input
    */
   @Override
   public String encode() {
@@ -52,8 +54,12 @@ public class Nickname extends AbstractPacket {
   }
 
   /**
-   * Informs the server and the client about the incoming nickname change.
-   * Will remove redundant packet-declaration stuff.
+   * Decodes the packet
+   * @param parent server or client
+   *               if server receives the packet the updates the client nickname and
+   *               informs the other clients by sending a Nickname packet
+   *               if client receives the packet, the GUI is updated
+   * @param message contains the lobbyname and clientname
    */
   @Override
   public void decode(Object parent, String message) {

@@ -17,6 +17,9 @@ public class Whisper extends AbstractPacket{
 
     /**
      * This function will create a whisper message where the input is already predetermined.
+     * @param content contains the name of the client that should receive the message
+     *                and the message that is sent.
+     * @return the formatted whisper packet
      */
     @Override
     public String encodeWithContent(String... content) {
@@ -34,6 +37,9 @@ public class Whisper extends AbstractPacket{
                 (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
     }
 
+    /**
+     * This function will create a whisper message where the input is given on th CLI.
+     */
     @Override
     public String encode() {
         System.out.println("whisper-message:");
@@ -46,6 +52,13 @@ public class Whisper extends AbstractPacket{
                 (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
     }
 
+    /**
+     * decodes the packet
+     * @param parent server or client
+     *               if the server receives the packet the sender and receiver are sent a whisper packet
+     *               if a client receives the packet, the contained message is added to the GUI
+     * @param message that is sent
+     */
     @Override
     public void decode(Object parent, String message) {
         message = message.replace("Whisper" + (char) ServerConstants.DEFAULT_PACKET_SPACER, "");

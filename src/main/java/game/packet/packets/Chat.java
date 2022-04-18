@@ -34,7 +34,7 @@ public class Chat extends AbstractPacket {
 
 
   /**
-   * Creates the message that results in an Awake packet.
+   * Creates the packet with a message.
    * This means "Start" MESSAGE "End"
    * where "Start" is the default start char and "End" is the default end char.
    * MESSAGE stands for the message that the user has typed in
@@ -50,7 +50,8 @@ public class Chat extends AbstractPacket {
   }
 
   /**
-   * Decodes the message and will handle the message correctly by sending it to the server or clients
+   * Decodes the message and will handle the message correctly by sending it to the other clients if the server receives the packet
+   * or adds the message in the lobby chat GUI if a client receives it.
    */
   @Override
   public void decode(Object parent, String message) {

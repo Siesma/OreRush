@@ -17,6 +17,11 @@ public class LeaveLobby extends AbstractPacket {
             , "");
   }
 
+  /**
+   * Creates a Leavelobby packet with
+   * @param content the lobbyname and the player name
+   * @return the new packet
+   */
   @Override
   public String encodeWithContent(String... content) {
     if (content.length == 0) {
@@ -38,6 +43,13 @@ public class LeaveLobby extends AbstractPacket {
     return null;
   }
 
+  /**
+   * Decodes the packet
+   * @param parent server or client
+   *               if server receives the packet the removes the client of the lobby
+   *               if client receives the packet, the GUI is updated
+   * @param message contains the lobbyname and clientname
+   */
   @Override
   public void decode(Object parent, String message) {
     if (message.startsWith("LeaveLobby" + (char) ServerConstants.DEFAULT_PACKET_SPACER)) {
