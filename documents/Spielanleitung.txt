@@ -27,10 +27,11 @@ Es gibt 5 Befehle.
 "Wait" lässt den Roboter auf seinem derzeitigen Feld warten.
 
 Nach jedem Zug eines Spielers wird die Karte für alle Spieler in der Konsole ausgegeben. Diese hat die Form "[_____]". Jeder Unterstrich repräsentiert ein Objekt auf dem Feld.
-Eine vollständige Zelle würde "[THORO]", "[THORH]" oder "[THORT]" sein.
+Eine vollständige Zelle würde "[THO_R_]" sein, wo die Unterstriche für mehrere Informationen stehen können.
 Die einzelnen Zeichen besagen das folgende:
 "T" steht dafür, dass sich auf dem Feld eine Falle befindet.
 "H" steht dafür, dass sich auf dem Feld ein Radar befindet.
 "O" steht dafür, dass sich auf dem Feld Erz befindet.
+"_" steht dafür, um welches Erz es sich auf dem Feld handelt. "C" steht für Copper, "F" für Iron, "G" für Gold, "P" für Platinum und "I" für Indium.
 "R" steht dafür, dass sich auf dem Feld ein Roboter befindet.
-"T"/"H"/"O" steht dafür, dass der Roboter auf diesem Feld ein gefülltes Inventar mit entweder einer Falle, einem Radar oder Erz hat.
+"_" steht dafür, dass der Roboter auf diesem Feld ein gefülltes Inventar mit entweder einer Falle, einem Radar oder Erz haben kann, wo eine Falle für ein "T", ein Radar für ein "H" und ein Erz für ein "O" steht.
