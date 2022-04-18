@@ -16,11 +16,17 @@ public class Robot implements GameObject {
   private int yCoordinate;
   private GameObject inventory;
 
+  private RobotAction robotAction = RobotAction.Wait;
+
   private int playerID;
 
   @Override
   public void setID(int id) {
     this.playerID = id;
+  }
+
+  public void setRobotAction(RobotAction robotAction) {
+    this.robotAction = robotAction;
   }
 
   /**
@@ -32,6 +38,10 @@ public class Robot implements GameObject {
   public void setPosition(int x, int y) {
     xCoordinate = x;
     yCoordinate = y;
+  }
+
+  public RobotAction getRobotAction() {
+    return robotAction;
   }
 
   /**
@@ -49,7 +59,6 @@ public class Robot implements GameObject {
       return;
     }
     switch (robotAction) {
-      case Dig:
       case RequestTrap:
       case RequestRadar:
         loadInventory((GameObject) optionalInventoryChange);

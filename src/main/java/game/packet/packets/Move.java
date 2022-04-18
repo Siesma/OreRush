@@ -79,8 +79,16 @@ public class Move extends AbstractPacket {
                     }
                 }
                 obj.getRobots().get(id).setID(id);
+                obj.getRobots().get(id).setRobotAction(action);
                 obj.getConnectedLobby().getGameMap().replaceObject(obj.getRobots().get(id), result);
                 obj.getRobots().get(id).setAction(action, result, gameObject);
+                if(action == RobotAction.Dig || action == RobotAction.RequestRadar || action == RobotAction.RequestTrap) {
+                    System.out.println("The robot tries to update their inventory.");
+                    System.out.println(obj.getRobots().get(id).getInventory().toString());
+                }
+                if(obj.getRobots().get(id).getPosition()[0] == 0) {
+                    //TODO: Increase score!
+                }
             }
             obj.getConnectedLobby().updateMove();
         }

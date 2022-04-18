@@ -247,6 +247,21 @@ public class GameMap {
     }
     removeObjectFromMap(object, curPosition);
     placeObjectOnMap(object, newPosition);
+    if(object instanceof Robot) {
+      Robot robotObject = (Robot) object;
+      if(robotObject.getRobotAction() != RobotAction.Dig) {
+        return;
+      }
+      ArrayList<Ore> ore = getCellArray()[newPosition[0]][newPosition[1]].oreOnCell();
+      if(ore == null) {
+        return;
+      }
+      if(ore.size() > 0) {
+        robotObject.loadInventory(ore.get(0));
+//        ore.remove(0);
+        getCellArray()[newPosition[0]][newPosition[1]].remove(getCellArray()[newPosition[0]][newPosition[1]].oreOnCell().get(0));
+      }
+    }
   }
   private int clamp(int val, int min, int max) {
     return Math.max(Math.min(max, val), min);
