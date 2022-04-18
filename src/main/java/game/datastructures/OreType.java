@@ -9,7 +9,7 @@ public enum OreType {
     this.value = value;
   }
 
-  int getValue () {
+  public int getValue () {
     return this.value;
   }
 

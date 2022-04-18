@@ -257,8 +257,6 @@ public class GameMap {
    * Repositions an already existing object
    */
   public void replaceObject(GameObject object, int[] newPosition) {
-//    System.out.println("Trying to modify the position of the object: " + object.getPosition()[0] + " " + object.getPosition()[1]);
-//    printMapToConsole();
     int[] curPosition = object.getPosition();
     if (curPosition == null) {
       return;
@@ -347,56 +345,76 @@ public class GameMap {
   }
 
   public static GameMap getMapFromString(String message) {
+    // splits the incoming singular information into an array.
     String[] individualCell = AbstractPacket.splitMessageBySpacer(message);
+    // defines new serverSettings to be used here to obtain needed informations.
     ServerSettings serverSettings = new ServerSettings();
     GameMap newMap = new GameMap(serverSettings.getMapWidth(), serverSettings.getMapHeight(), serverSettings);
+    // sets default values so that they can be compared to.
     int cellX = -1, cellY = -1;
     for (String impliedCell : individualCell) {
+      // splits the impliedCell structure to the two parts.
+      // the positional information and the object information.
       String[] type = impliedCell.split("_");
       for (String s : type) {
+        // checks if the positional information is from the form "Number, Number" so it can be parsed as an integer.
         if (s.matches("^[0-9]+,[0-9]+$")) {
           cellX = Integer.parseInt(s.split(",")[0]);
           cellY = Integer.parseInt(s.split(",")[1]);
         } else {
+          // it was not possible to parse the position as an integer, something went wrong and should not be happening.
           if (cellX == -1 || cellY == -1) {
             logger.error("Somehow the cell index was not updated");
             continue;
           }
+          // splits the object information to its parts.
+          // -> type:id:optionalInventory
           String[] objectData = s.split(":");
           String objectType = objectData[0];
           int objectID = Integer.parseInt(objectData[1]);
           Object object;
+          // the type will be tried to make a new instance of it.
           try {
             object = (new FileHelper()).createInstanceOfClass("game.datastructures." + objectType);
           } catch (Exception e) {
+            // this should never happen as this means that the object is valid but the file for it does not exist.
             logger.error("An unidentified object!");
             logger.error("Ignoring this element!");
             continue;
           }
+          // this basically means that the file is corrupt (because it implies
+          // that a valid object is no GameObject which should not be possible) or that there was no optionalInventory.
           if (!(object instanceof GameObject)) {
             logger.debug(object + " \"" + objectType + "\"");
             logger.debug("Somehow the object is no gameobject");
             continue;
           }
+          // creates a final game object and sets its id.
           GameObject finalGameObject = (GameObject) object;
           finalGameObject.setID(objectID);
+          // if there is an optionalInventory it will be tried to make a new instance of it.
           if (objectData.length > 2) {
             if (finalGameObject instanceof Robot) {
               Object inv;
               try {
                 inv = (new FileHelper()).createInstanceOfClass("game.datastructures." + s.split(":")[2]);
               } catch (Exception e) {
+                // this should never happen as this means that the object is valid but the file for it does not exist.
                 logger.error("An unidentified object!");
                 logger.error("Ignoring this element!");
                 continue;
               }
+              // this basically means that the file is corrupt (because it implies
+              // that a valid object is no GameObject which should not be possible) or that there was no optionalInventory.
               if (!(inv instanceof GameObject)) {
                 logger.debug("Somehow the inventory of the Robot is not a GameObject");
                 continue;  // should not be possible if the packet is valid, will be included just in case!
               }
+              // sets the inventory of the robot to the optionalInventory
               ((Robot) finalGameObject).loadInventory((GameObject) inv);
             }
           }
+          // places the new gameObject on the map
           newMap.getCellArray()[cellX][cellY].place(finalGameObject);
         }
       }
