@@ -61,6 +61,9 @@ public class Lobby {
     public void addClient(ClientThread clientThread) {
         listOfClients.add(clientThread);
     }
+    public void removeClient(ClientThread clientThread) {
+        listOfClients.remove(clientThread);
+    }
 
     public String getLobbyName() {
         return lobbyName;

@@ -115,8 +115,13 @@ public class StartMenuController{
             }
 
             Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/lobby.fxml")));
-            Stage stage = (Stage) nickname.getScene().getWindow();
+            Stage stage = new Stage();
             stage.setScene(new Scene(parent));
+            stage.setOnCloseRequest(event -> {
+                client.leaveLobby(client.getLobbyInClient().getLobbyName());
+                client.setLobbyInClient(null);
+            });
+            stage.show();
         }catch (IOException io) {
             io.printStackTrace();
         } catch (InterruptedException e) {

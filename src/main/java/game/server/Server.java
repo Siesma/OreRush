@@ -65,6 +65,14 @@ public class Server {
 
     }
 
+    public void removeClientFromLobby(ClientThread clientThread, String lobbyName) {
+        for (Lobby lobby : lobbyArrayList) {
+            if (lobby.getLobbyName().equals(lobbyName)) {
+                lobby.removeClient(clientThread);
+            }
+        }
+    }
+
     public ArrayList<Lobby> getLobbyArrayList() {
         return lobbyArrayList;
     }

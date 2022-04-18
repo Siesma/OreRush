@@ -27,8 +27,6 @@ public class Client{
 
     private final StringProperty nickname;
     private final StringProperty lastChatMessage = new SimpleStringProperty();
-    private final ArrayList<LobbyInClient> lobbyInClientArrayList = new ArrayList<>();
-
 
     private LobbyInClient lobbyInClient;
 
@@ -151,6 +149,10 @@ public class Client{
         }
     }
 
+    public void leaveLobby(String lobbyName) {
+        (new PacketHandler(this)).pushMessage(outputStream, (new LeaveLobby()).encodeWithContent(lobbyName,getNickname()));
+    }
+
     // TODO (seb) disconnect packet
     public void removeClient(String clientName) {
         Platform.runLater(() ->observableClientList.remove(clientName));
@@ -197,9 +199,6 @@ public class Client{
     }
     public void changeNicknameOfOtherClient(String oldNickname, String newNickname) {
         Platform.runLater(() -> observableClientList.set(observableClientList.indexOf(oldNickname),newNickname));
-    }
-    public ArrayList<LobbyInClient> getLobbyInClientArrayList() {
-        return lobbyInClientArrayList;
     }
 
     public LobbyInClient getLobbyInClient() {

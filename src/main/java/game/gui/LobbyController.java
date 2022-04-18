@@ -45,10 +45,12 @@ public class LobbyController {
 
 
     public void handleStartGame(ActionEvent actionEvent) {
+        lobby.setStatus("in game");
     }
 
     public void handleWinGame(ActionEvent actionEvent) {
-        client.sendChatMessage("i won lul");
+        client.sendChatMessage(client.getNickname() + "won in lobby " + lobby.getLobbyName());
+        lobby.setStatus("finished");
     }
 
     public void handleSendMessage(ActionEvent actionEvent) {
