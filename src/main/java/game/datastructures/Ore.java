@@ -41,6 +41,10 @@ public class Ore implements GameObject {
     return s;
   }
 
+  public OreType getOreType () {
+    return this.oreType;
+  }
+
   @Override
   public void fillGameObjectWithData(String... data) {
     oreType = OreType.valueOf(data[1]);
