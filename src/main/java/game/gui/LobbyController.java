@@ -104,6 +104,10 @@ public class LobbyController {
 
     }
 
+    /**
+     *
+     *
+     */
     public void onActionEndTurnButton(ActionEvent actionEvent) {
         if (client == null) {
             return;
@@ -111,16 +115,27 @@ public class LobbyController {
         client.makeMove(this);
     }
 
-
+    /**
+     *
+     *
+     */
     public void handleStartGame(ActionEvent actionEvent) {
         lobby.setStatus("in game");
     }
 
+    /**
+     * get the winner and ends the Lobby
+     *
+     */
     public void handleWinGame(ActionEvent actionEvent) {
         client.sendChatMessage(client.getNickname() + "won in lobby " + lobby.getLobbyName());
         lobby.setStatus("finished");
     }
 
+    /**
+     * sends the message from the textfield to the Lobby Chat
+     *
+     */
     public void handleSendMessage(ActionEvent actionEvent) {
         if (!newLobbyMessageTextField.getText().equals("")) {
             client.sendChatMessageToLobby(lobby.getLobbyName(), newLobbyMessageTextField.getText());
@@ -130,6 +145,11 @@ public class LobbyController {
     }
 
     // TODO fix whisper only works on first person
+
+    /**
+     * sends a Whisper Message
+     *
+     */
     public void handleWhisperMessage(ActionEvent actionEvent) {
         try {
             if (!newLobbyMessageTextField.getText().equals("")) {
@@ -141,7 +161,10 @@ public class LobbyController {
         actionEvent.consume();
     }
 
-
+    /**
+     * sends a Broadcast Message
+     *
+     */
     public void handleBroadcastMessage(ActionEvent actionEvent) {
         if (!newLobbyMessageTextField.getText().equals("")) {
             client.sendBroadcast(newLobbyMessageTextField.getText());

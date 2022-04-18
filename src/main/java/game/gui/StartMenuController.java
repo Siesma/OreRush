@@ -17,6 +17,10 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class StartMenuController{
+    /**
+     * Controller Class for the GUI
+     * handles On Action methods
+     */
 
     private Client client;
 
@@ -68,7 +72,11 @@ public class StartMenuController{
     }
 
 
-
+    /**
+     * tests if the textfield is empty  sends the message to the CLients and clears the Textfield
+     *
+     *
+     */
     @FXML private void handleSendMessage(ActionEvent actionEvent) throws Exception {
         if (!newMessageTextField.getText().equals("")) {
             client.sendChatMessage(newMessageTextField.getText());
@@ -77,6 +85,11 @@ public class StartMenuController{
         actionEvent.consume();
     }
 
+    /**
+     * checks if the textfield is empty changes the nickname and clears the textfield
+     *
+     *
+     */
     @FXML private void handleChangeNickname(ActionEvent actionEvent) throws Exception {
         if (!newNickname.getText().equals("")) {
             client.changeNickname(newNickname.getText());
@@ -85,6 +98,10 @@ public class StartMenuController{
         actionEvent.consume();
     }
 
+    /**
+     * checks if the Textfield is empty creates a Lobby joins the Lobby and clear the textfield
+     *
+     */
     public void handleCreateLobby(ActionEvent actionEvent) {
         if (!newLobbyName.getText().equals("")){
             client.createLobby(newLobbyName.getText());
@@ -96,6 +113,10 @@ public class StartMenuController{
         actionEvent.consume();
     }
 
+    /**
+     * Joins the Lobby
+     *
+     */
     public void handleJoinLobby(ActionEvent actionEvent) {
         try {
             client.joinLobby(lobbyNameColumn.getCellObservableValue(lobbyTableView.getItems().get(lobbyTableView.getSelectionModel().getSelectedCells().get(0).getRow())).getValue());
@@ -107,6 +128,9 @@ public class StartMenuController{
         actionEvent.consume();
     }
 
+    /**
+     * starts the Gui of the Lobby with the lobby fxml file
+     */
     public void changeToLobbyScene() {
         try {
             while (client.getLobbyInClient() == null) {
@@ -129,7 +153,10 @@ public class StartMenuController{
         }
     }
 
-
+    /**
+     * checks if the whisper message can be sent and send it
+     *
+     */
     public void handleWhisperMessage(ActionEvent actionEvent) {
         if (clientListView.getSelectionModel().getSelectedItem() != null &&
                 !newMessageTextField.getText().equals("")) {
@@ -139,7 +166,10 @@ public class StartMenuController{
         actionEvent.consume();
     }
 
-
+    /**
+     *checks if the textfield is empty and send the message as broadcast
+     *
+     */
     public void handleBroadcastMessage(ActionEvent actionEvent) {
         if (!newMessageTextField.getText().equals("")) {
             client.sendBroadcast(newMessageTextField.getText());

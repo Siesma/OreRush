@@ -81,7 +81,9 @@ public class LobbyInClient {
     public void setPlayers(String players) {
         this.players.set(players);
     }
-
+    /**
+    *removes Player from observablePlayerList
+     */
     public void removePlayer(Player playerToDel) {
         players.setValue(players.getValue().replace(playerToDel.getNickname(),""));
         observablePlayerList.remove(playerToDel);

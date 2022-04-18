@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class ClientApp extends Application {
+    /**
+     * This class gets the Javafx fxml file and starts the GUI
+     *
+     */
 
 
     @Override
