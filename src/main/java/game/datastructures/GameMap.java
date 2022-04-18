@@ -190,8 +190,22 @@ public class GameMap {
         }
         if (robot) {
           out.append("R");
+          if(!(cell.robotsOnCell().get(0).getInventory() instanceof Nothing)) {
+            GameObject inv = cell.robotsOnCell().get(0).getInventory();
+            if(inv instanceof Ore) {
+              out.append("O");
+            } else if (inv instanceof Radar) {
+              out.append("H");
+            } else if (inv instanceof Trap) {
+              out.append("T");
+            } else {
+              out.append("_");
+            }
+          } else {
+            out.append("_");
+          }
         } else {
-          out.append("_");
+          out.append("__");
         }
         System.out.print("[" + out.toString() + "]");
       }
@@ -256,13 +270,20 @@ public class GameMap {
       if(robotObject.getRobotAction() != RobotAction.Dig) {
         return;
       }
+      if(getCellArray()[newPosition[0]][newPosition[1]].trapOnCell() != null) {
+        robotObject.setDead(true);
+        getCellArray()[newPosition[0]][newPosition[1]].remove(getCellArray()[newPosition[0]][newPosition[1]].trapOnCell());
+      }
+      if(!(robotObject.getInventory() instanceof Nothing)) {
+        getCellArray()[newPosition[0]][newPosition[1]].place(robotObject.getInventory());
+        robotObject.loadInventory(new Nothing());
+      }
       ArrayList<Ore> ore = getCellArray()[newPosition[0]][newPosition[1]].oreOnCell();
       if(ore == null) {
         return;
       }
       if(ore.size() > 0) {
         robotObject.loadInventory(ore.get(0));
-//        ore.remove(0);
         getCellArray()[newPosition[0]][newPosition[1]].remove(getCellArray()[newPosition[0]][newPosition[1]].oreOnCell().get(0));
       }
     }
@@ -309,7 +330,6 @@ public class GameMap {
           cellX = Integer.parseInt(s.split(",")[0]);
           cellY = Integer.parseInt(s.split(",")[1]);
         } else {
-
           if (cellX == -1 || cellY == -1) {
             logger.error("Somehow the cell index was not updated");
             continue;

@@ -61,7 +61,7 @@ public class Move extends AbstractPacket {
                 Object object = null;
                 if (split.length > 4) {
                     try {
-                        object = (new FileHelper()).createInstanceOfClass("game.datastructures" + split[4]);
+                        object = (new FileHelper()).createInstanceOfClass("game.datastructures." + split[4]);
                     } catch (Exception e) {
                         logger.error("An unidentified object!");
                         logger.error("Ignoring this element!");
@@ -82,13 +82,19 @@ public class Move extends AbstractPacket {
                     }
                 }
                 obj.getRobots().get(id).setID(id);
+                if(obj.getRobots().get(id).isDead()) {
+                    continue;
+                }
                 obj.getRobots().get(id).setRobotAction(action);
+                if(obj.getRobots().get(id).getInventory() == null) {
+                    obj.getRobots().get(id).loadInventory(new Nothing());
+                }
                 obj.getConnectedLobby().getGameMap().replaceObject(obj.getRobots().get(id), result);
-                obj.getRobots().get(id).setAction(action, result, gameObject);
                 if(action == RobotAction.Dig || action == RobotAction.RequestRadar || action == RobotAction.RequestTrap) {
                     logger.debug("The robot tries to update their inventory.");
                     logger.debug(obj.getRobots().get(id).getInventory().toString());
                 }
+                obj.getRobots().get(id).setAction(action, result, gameObject);
                 if(obj.getRobots().get(id).getInventory() instanceof Ore) {
                     if(obj.getRobots().get(id).getPosition()[0] == 0) {
                         obj.setPlayerScore(obj.getPlayerScore() + 1);

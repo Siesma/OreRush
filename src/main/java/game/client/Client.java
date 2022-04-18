@@ -220,6 +220,9 @@ public class Client {
   }
 
   public void changeNicknameOfOtherClient(String oldNickname, String newNickname) {
+//    for(String s : observableClientList) {
+//      System.out.println("Nickname: \t" + s);
+//    }
     Platform.runLater(() -> observableClientList.set(observableClientList.indexOf(oldNickname), newNickname));
   }
 
