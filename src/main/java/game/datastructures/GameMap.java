@@ -1,6 +1,6 @@
 package game.datastructures;
 
-import game.server.ServerConstants;
+import game.server.ServerSettings;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,25 +10,18 @@ import java.util.Random;
  */
 public class GameMap {
   private int[] gameMapSize = new int[2];
-  private int[][] oreMap;
   private Cell[][] cellArray;
 
-  public GameMap(int sizeX, int sizeY, float oreDensity) {
-    this.gameMapSize[1] = sizeX;
-    this.gameMapSize[0] = sizeY;
-    this.oreMap = new int[gameMapSize[0]][gameMapSize[1]];
-    spawnOreInMap(oreDensity, 0.75f);
-    printOreMapToConsole();
-    this.cellArray = new Cell[gameMapSize[0]][gameMapSize[1]];
-    for (int i = 0; i < sizeX; i++) {
-      for (int j = 0; j < sizeY; j++) {
-        cellArray[i][j] = new Cell(i, j);
-        Nothing nothing = new Nothing();
-        nothing.setID(1);
-        nothing.setPosition(i, j);
-//        cellArray[i][j].place(nothing);
-      }
-    }
+  private ServerSettings serverSettings;
+
+  public GameMap(int sizeX, int sizeY, ServerSettings serverSettings) {
+    this.gameMapSize[0] = sizeX;
+    this.gameMapSize[1] = sizeY;
+    this.cellArray = new Cell[sizeX][sizeY];
+    this.serverSettings = serverSettings;
+    fillCellArray();
+//    spawnOreInMap();
+//    printOreMapToConsole();
   }
 
 
@@ -47,31 +40,30 @@ public class GameMap {
    * <p>
    * It decides what ore to place in a field based on the following calculation:
    * OreInt = RandomNumber / IntervalSize
-   *
-   * @param oreSpawnLikelyhood a value from 0 to 1. The higher the number is, the more ores spawn
+   * <p>
+   * oreSpawnLikelyhood a value from 0 to 1. The higher the number is, the more ores spawn
    */
   //TODO: Make this spawn more valuable ores at higher X Values
-  public void spawnOreInMap(float oreSpawnLikelyhood, float threshold) {
-    int w = gameMapSize[1];
-    int h = gameMapSize[0];
+  public void spawnOreInMap() {
+    float oreSpawnLikelyhood = serverSettings.getOreDensity();
+    float threshold = serverSettings.getOreThreshold();
+    int w = gameMapSize[0];
+    int h = gameMapSize[1];
     for (int i = 0; i < w; i++) {
       for (int j = 0; j < h; j++) {
-        OreType curOreType = determineOreType();
         if (createCluster(i, j, threshold)) {
-          for (int xo = (int) -(1 + getRandomNumber() * oreSpawnLikelyhood); xo < (int) (1 + getRandomNumber() * oreSpawnLikelyhood); xo++) {
-            for (int yo = (int) (1 + getRandomNumber() * oreSpawnLikelyhood); yo < (int) (1 + getRandomNumber() * oreSpawnLikelyhood); yo++) {
+          double clusterSize = Math.sqrt(serverSettings.getMaxClusterSize());
+          OreType curOreType = determineOreType();
+          for (int xo = (int) -(1 + getRandomNumber() * clusterSize); xo < (int) (1 + getRandomNumber() * clusterSize); xo++) {
+            for (int yo = (int) (1 + getRandomNumber() * clusterSize); yo < (int) (1 + getRandomNumber() * clusterSize); yo++) {
               int ni, nj;
               ni = i + xo;
               nj = j + yo;
-//              if(cellArray[ni][nj].getPlacedObjects().size() != 0) {
-//                continue;
-//              }
               if (isInBounds(ni, nj, 0, w, 0, h)) {
                 double max = oreSpawnLikelyhood * 2;
-                cellArray[ni][nj].
-                        place(
-                                new Ore(curOreType,
-                                        getAmountOfOre(max, 0.84d, oreSpawnLikelyhood, ni, nj, i, j, 0, 0)));
+                Cell c = cellArray[ni][nj];
+                int amount = (int) getAmountOfOre(max, 0.84d, oreSpawnLikelyhood, ni, nj, i, j, 0, 0);
+                c.place(new Ore(curOreType, amount));
               }
             }
           }
@@ -85,8 +77,8 @@ public class GameMap {
    * However, this function is more or less useless as the amount of ore is set to 1, but because we may change it
    * the function is already implemented.
    */
-  public int getAmountOfOre(double max, double exp, float oreSpawnLikelyhood, int ni, int nj, int i, int j, int shift_a, int shift_b) {
-    return (int) Math.round(lessen(max, exp, lessen(1, 0.5, getRandomNumber(), oreSpawnLikelyhood, shift_a) - (oreSpawnLikelyhood * max - oreSpawnLikelyhood), dist(ni, nj, i, j), shift_b));
+  public double getAmountOfOre(double max, double exp, float oreSpawnLikelyhood, int ni, int nj, int i, int j, int shift_a, int shift_b) {
+    return Math.round(lessen(max, exp, lessen(1, 0.5, getRandomNumber(), oreSpawnLikelyhood, shift_a) - (oreSpawnLikelyhood * max - oreSpawnLikelyhood), dist(ni, nj, i, j), shift_b));
   }
 
   /**
@@ -129,7 +121,7 @@ public class GameMap {
     int h = gameMapSize[1];
     int ni = i - (w / 10);
     int nj = j - (h / 2);
-    return lessen(1d, 0.4, Math.max(ni, 0) * getRandomNumber() - Math.abs(nj), 0.5, 2) > threshold;
+    return lessen(1d, 0.4, Math.max(ni, 0) * getRandomNumber() - Math.abs(nj), 0.5, 2) > 0.75;
   }
 
   public boolean isInBounds(int x, int y, int min_x, int max_x, int min_y, int max_y) {
@@ -142,13 +134,44 @@ public class GameMap {
   }
 
   public void placeObjectOnMap(GameObject object, int x, int y) {
-    cellArray[y][x].place(object);
+    cellArray[x][y].place(object);
+  }
+
+  public void removeObjectFromMap(GameObject gameObject, int x, int y) {
+    cellArray[x][y].remove(gameObject);
   }
 
   public void printOreMapToConsole() {
-    for (int i = 0; i < gameMapSize[0]; i++) {
-      for (int j = 0; j < gameMapSize[1]; j++) {
-        System.out.print("[" + oreMap[i][j] + "]");
+    for (int j = 0; j < gameMapSize[1]; j++) {
+      for (int i = 0; i < gameMapSize[0]; i++) {
+//        System.out.print("[" + oreMap[i][j] + "]");
+        Cell cell = cellArray[i][j];
+        boolean trap = cell.trapOnCell() != null;
+        boolean radar = cell.radarOnCell() != null;
+        boolean ore = cell.oreOnCell() != null;
+        boolean robot = cell.robotsOnCell() != null;
+        StringBuilder out = new StringBuilder();
+        if (trap) {
+          out.append("T");
+        } else {
+          out.append("_");
+        }
+        if (radar) {
+          out.append("H");
+        } else {
+          out.append("_");
+        }
+        if (ore) {
+          out.append("O");
+        } else {
+          out.append("_");
+        }
+        if (robot) {
+          out.append("R");
+        } else {
+          out.append("_");
+        }
+        System.out.print("[" + out.toString() + "]");
       }
       System.out.println("");
     }
@@ -161,11 +184,9 @@ public class GameMap {
         StringBuilder out = new StringBuilder();
         out.append("").append(i).append(",").append(j).append("");
         for (GameObject objectOnCell : this.getCellArray()[i][j].getPlacedObjects()) {
-//          out.append(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
           out.append("_");
           out.append(objectOnCell.encodeToString());
         }
-//        out.append(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
         strings.add(out.toString());
       }
     }
@@ -180,8 +201,16 @@ public class GameMap {
     return gameMapSize;
   }
 
-  public int[][] getOreMap() {
-    return oreMap;
+  public void fillCellArray() {
+    for (int i = 0; i < cellArray.length; i++) {
+      for (int j = 0; j < cellArray[i].length; j++) {
+        cellArray[i][j] = new Cell(i, j);
+      }
+    }
+  }
+
+  public void setCellArray(Cell[][] array) {
+    this.cellArray = array;
   }
 
   public Cell[][] getCellArray() {

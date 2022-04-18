@@ -1,33 +1,32 @@
-Es wird vorausgesetzt, dass ein Server bereits auf dem Localhost auf dem port 1038 offen ist. Sofern dies gegeben ist, wird dieser darauf warten einzelne Clients zu bedienen. Diese werden immer mal wieder mit ping packeten gefragt ob diese noch existieren damit, für den fall, dass die clients geschlossen wurden, die Verbindung auch nicht aufrecht gehalten wird.
-Es wird dauerhaft eine Verbindung offen gehalten in welcher Packete gesendet werden, die Packete welche definiert sind folgt weiter unten.
-Jedes Packet wird auch beantwortet, sodass beide Seiten wissen ob das Packet richtig gesendet wurde.
-Die Packetdaten werden so gesendet, dass zuerst ein "Start-char" gesendet wird, welcher andeutet, dass ein neues Packet gesendet wird. Dann wird zuerst einmal der Packet-type gesendet, darauf folgen die einzelnen Informationen des Packets. Die einzelnen Informationen sind durch "Spacer-chars" getrennt, welche besondere Zeichen sind um anzudeuten, dass eine Information abgeschlossen ist. Und zum schluss wird ein "End-char" gesendet welcher andeutet, dass das Packet vollendet ist. Daraufhin wird das Packet validiert, und lediglich sofern die Nachricht richtig decodiert wird, wird die weiter verarbeitet.
+Es wird vorausgesetzt, dass ein Server bereits auf der jeweiligen IP offen ist. Der Client muss sich auf dem selben Port versuchen zu verbinden wie der Server gehosted ist.
+Sobald eine Verbindung enstanden ist wird ein Connect packet gesendet welches dem Server signalisiert, dass der jeweilige Client sich verbinden wollen würde.
+Die Packet strutkur aller Packets hat die folgende Eigenschaft:
+"BEGIN_CHAR"Packet-Name"SPACER"Information1"SPACER"Information2"SPACER"..."END_CHAR"
+Das "BEGIN_CHAR" ist ein besonderer ASCII Zeichen, nämlich ASCII Zeichen "2", welcher ausgeschrieben "Start of text" heißt.
+Dieser signalisiert dem Server, dass die darauf folgenden Bytes als Nachricht zu interpretieren sind.
+Der "SPACER" ist ebenso ein besonderes ASCII Zeichen, nämlich ASCII Zeichen "31", welcher ausgeschrieben "Unit Seperator" heißt.
+Dieser signalisiert dem Server, dass eine Information abgeschlossen wurde und die nächste interpretiert werden soll.
+Dies wird dazu genutzt mehrere Parameter sinnvoll getrennt zu haben und nicht eine festgelegte Länge an Bytes für die einzelnen Packets zu haben.
+Und der "END_CHAR" ist ASCII Zeichen "3" welcher ausgeschrieben "End of text" heißt.
+Dieser signalisiert dem Server, dass die Übermittlung des Packets abgeschlossen wurde und die letze Information vollendet ist.
 
-reqst (request)
-	- Long		Zeitstempel
-	- Int		Der jeweilige Server
-timeo (timeout)
-	- String	"Timeout"
-succs (success)
-	- String	"Success"
-awake (awake)
-	- String	"Awake"
-close (close)
-	- Long		Zeitstempel
-	- Int		Der jeweilige Spieler
-updte (update)
-	- Object	Die Karte für den Spieler
-	- Object	Cooldown der einzelnen Ausrüstungsgegenstände
-	- Object	Die einzelnen Roboter, deren Position und deren Item
-	- Object	Die Punktestände der Spieler
-pmove (playerMove)
-	- Int		Spieler der die Nachricht sendet
-	- Object	Die einzelnen Züge der Spieler
-pchat (playerChat)
-	- Int		Die Spieler an welche die Nachricht gesendet werden soll
-	- String	Nachricht die gesendet werden soll
-nickn (nickname)
-	- Int		Der jeweilige Spieler
-	- String	Neuer Name des Spielers
-settn (settings)
-	- Object	Settingsobject
+Ein Beispiel dazu wäre, wo "BEGIN_CHAR", "SPACER" und "END_CHAR" für diese besondere Zeichen stehen:
+"BEGIN_CHAR"Move"SPACER"Robot_ID:X_Coordinate:Y_Coordinate:OptionalInventoryAdjust"END_CHAR" - der Parameter "OptionalInventoryAdjust" ist wie der Name vermuten lässt optional und wird genutzt sofern sich das Inventar eines Roboters ändern soll.
+"BEGIN_CHAR"Chat"SPACER"(Irgendeine Nachricht)"END_CHAR" - Sendet die Nachricht "(Irgendeine Nachricht)" an den Server sofern die Designation richtig mittels dem Outputstream gesetzt ist.
+
+Um ein neues Packet zu definieren muss lediglich in dem Ordner "game/packet/packets" eine neue Datei erstellt werden welche von dem Datentypen "AbstractPacket" extended.
+Daraufhin müssen die einzelnen abstrakten Funktionen implementiert werden und der Super des Konstruktors muss angepasst werden.
+Es gibt drei Parameter für den Konstruktor:
+- String	help
+- String[]	parts
+- String	response
+
+"help" ist ein bis zu dem jetzigen Stand ungenutzter Parameter welcher später noch hinzugefügt wird. Dieser soll für Funktionalität des Packets aushilfe geben.
+"parts" ist ein String array welches aus Regex-Patterns besteht. Diese geben an wie das Packet validiert werden muss.
+Diese müssen jede einzelne Einzelinformation beinhalten. Ebenso sollten die einzelnen Regex-Pattern Strings mit einem "^" anfangen und einem "$" aufhören da dies bedeutet, dass der String exakt dem Format entsprechen muss. Dies ist deshalb notwendig für den Fall, dass wenn einzelne Informationen ansich zu viel Inhalt haben, wo allerdings der Anfang des Inhalts ansich stimmen würde, diese nicht falsch interpretiert werden und fehler verursachen.
+"response" ist ein bis zu dem jetzigen Stand ungenutzter Parameter welcher später noch benutzt wird um den ganzen Packet-Log verständlich zu machen damit gesehen wird welcher Client welches Packet richtig empfangen hat.
+
+Die encode funktion muss lediglichdie besondere Packetstruktur besitzten und sofern das Regex-Pattern dann stimmt sollte dies funktionieren.
+
+Die decode funktion bekommt zwei Parameter übergeben. Der eine ist das Object selber welches die jeweilige Decode funktion aufgerufen hat. Dies wird dafür genutzt, dass eine bidirektionalität von Packets möglich ist, da dort dann angegeben werden kann welche Teile der einezlenen Parent-Klassen verändert werden sollen.
+Der andere Parameter ist lediglich ein String welcher den Inhalt des erhaltenden Packets darstellt. Dieser wird dafür genutzt, dass die Inhalte richtig an das Parent-Objekt übermittelt und verarbeitet werden.

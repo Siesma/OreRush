@@ -20,8 +20,6 @@ public class Main {
     public static String name;
 
     public static void main(String[] args) {
-
-
         if (args.length == 0) {
             System.out.println("Error: Missing arguments.");
             System.out.println("To launch the program following command line parameters are expected:");

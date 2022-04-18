@@ -48,6 +48,19 @@ public class Cell {
     return out;
   }
 
+  public ArrayList<Ore> oreOnCell () {
+    ArrayList<Ore> ores = new ArrayList<>();
+    for (GameObject gameObject : placedObjects) {
+      if (gameObject instanceof Ore) {
+        ores.add((Ore) gameObject);
+      }
+    }
+    if(ores.size() == 0) {
+      return null;
+    }
+    return ores;
+  }
+
   public void place(GameObject object) {
     placedObjects.add(object);
   }
@@ -63,5 +76,9 @@ public class Cell {
       out.append(gameObject.toString());
     }
     return this.x + ":" + this.y + ":" + out.toString();
+  }
+
+  public void remove(GameObject gameObject) {
+    this.placedObjects.remove(gameObject);
   }
 }

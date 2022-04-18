@@ -1,17 +1,16 @@
 package game.server;
 
 import game.datastructures.GameMap;
+import game.datastructures.Robot;
 import game.packet.AbstractPacket;
 import game.packet.PacketHandler;
-import game.packet.packets.Awake;
-import game.packet.packets.Chat;
-import game.packet.packets.Success;
-import game.packet.packets.Whisper;
+import game.packet.packets.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class ClientThread implements Runnable {
 
@@ -25,6 +24,8 @@ public class ClientThread implements Runnable {
   private String playerName;
   private Lobby connectedLobby;
 
+  private int playerID;
+  private ArrayList<Robot> robots;
   private GameMap currentGameMap;
   public ClientThread(Server server, Socket socket) throws IOException {
     this.server = server;
@@ -33,7 +34,8 @@ public class ClientThread implements Runnable {
     this.outputStream = socket.getOutputStream();
     this.connectedToServer = true;
     playerName = "unknown";
-    this.currentGameMap = new GameMap(0, 0, 0);
+ //   this.currentGameMap = new GameMap(0, 0, connectedLobby.serverSettings);
+    this.robots = new ArrayList<>();
   }
 
   public void run() {
@@ -178,11 +180,16 @@ public class ClientThread implements Runnable {
    * Sends Chat packet to a all clients
    * @param msg message that is sent preceded by the name of the sender
    */
-  public void pushServerMessageToAllClients(String msg) {
-    msg = "Server: " + msg;
-    for(ClientThread clientThread : Server.getClientThreads()) {
-      (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Chat()).encodeWithContent(msg));
+  public void pushChatMessageToALobby(String lobbyName,String msg) {
+    msg = playerName + ": " + msg;
+    for (Lobby lobby:server.getLobbyArrayList()) {
+      if (lobby.getLobbyName().equals(lobbyName)) {
+        for(ClientThread clientThread : lobby.listOfClients) {
+          (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new ChatLobby()).encodeWithContent(lobbyName,msg));
+        }
+      }
     }
+
   }
 
   /**
@@ -233,4 +240,16 @@ public class ClientThread implements Runnable {
   public void setCurrentGameMap(GameMap currentGameMap) {
     this.currentGameMap = currentGameMap;
   }
+
+  public ArrayList<Robot> getRobots() {
+    return robots;
+  }
+  public void addRobot () {
+    Robot robot = new Robot();
+    robot.setID(this.playerID);
+    int height = connectedLobby.gameMap.getGameMapSize()[1];
+    robot.setPosition(0, (int) (Math.random() * height));
+    this.getRobots().add(robot);
+  }
+
 }

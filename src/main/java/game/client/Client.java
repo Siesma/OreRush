@@ -1,11 +1,7 @@
 package game.client;
 
-import game.datastructures.Robot;
 import game.packet.PacketHandler;
-import game.packet.packets.Chat;
-import game.packet.packets.Connect;
-import game.packet.packets.CreateLobby;
-import game.packet.packets.Nickname;
+import game.packet.packets.*;
 import javafx.application.Platform;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -32,15 +28,15 @@ public class Client{
     private final StringProperty nickname;
     private final StringProperty lastChatMessage = new SimpleStringProperty();
 
-    private final ArrayList<LobbyInClient> lobbyInClientArrayList = new ArrayList<>();
+    private LobbyInClient lobbyInClient;
+
+    private final ObservableList<LobbyInClient> lobbyInClientObservableList = FXCollections.observableArrayList();
 
     ObservableList<String> observableClientList = FXCollections.observableArrayList();
     ListProperty<String> clientList = new SimpleListProperty<>(observableClientList);
 
     ObservableList<String> observableLobbyList = FXCollections.observableArrayList();
     ListProperty<String> lobbyList = new SimpleListProperty<>(observableLobbyList);
-
-    private ArrayList<Robot> robots = new ArrayList<>();
 
     public Client(String hostAddress, int port, String name) {
         client = this;
@@ -114,20 +110,47 @@ public class Client{
         (new PacketHandler(this)).pushMessage(outputStream, (new Chat()).encodeWithContent(message));
     }
 
+    public void sendChatMessageToLobby(String lobbyName,String message) {
+        (new PacketHandler(this)).pushMessage(outputStream, (new ChatLobby()).encodeWithContent(lobbyName,message));
+    }
+
+    public void sendWhisper(String receiverName,String message) {
+        (new PacketHandler(this)).pushMessage(outputStream, (new Whisper()).encodeWithContent(receiverName,message));
+    }
+
+    public void sendBroadcast(String message) {
+        (new PacketHandler(this)).pushMessage(outputStream, (new Broadcast()).encodeWithContent(message));
+    }
+
     public void createLobby(String newLobbyName) {
         (new PacketHandler(this)).pushMessage(outputStream, (new CreateLobby()).encodeWithContent(newLobbyName));
     }
 
+    public void joinLobby(String lobbyName) {
+        (new PacketHandler(this)).pushMessage(outputStream, (new JoinLobby()).encodeWithContent(lobbyName, nickname.getValue()));
+    }
     public void addClient(String clientName) {
         Platform.runLater(() ->observableClientList.add(clientName));
     }
 
     public void addClientToLobby(String clientName, String lobbyName) {
-        for (LobbyInClient lobbyInClient:lobbyInClientArrayList) {
-            if (lobbyInClient.getName().equals(lobbyName)) {
+        if(clientName.equals(getNickname())) {
+            for (LobbyInClient lobby:lobbyInClientObservableList) {
+                if (lobby.getLobbyName().equals(lobbyName)) {
+                    this.lobbyInClient = lobby;
+                }
+            }
+        }
+
+        for (LobbyInClient lobbyInClient:lobbyInClientObservableList) {
+            if (lobbyInClient.getLobbyName().equals(lobbyName)) {
                 lobbyInClient.addPlayer(clientName);
             }
         }
+    }
+
+    public void leaveLobby(String lobbyName) {
+        (new PacketHandler(this)).pushMessage(outputStream, (new LeaveLobby()).encodeWithContent(lobbyName,getNickname()));
     }
 
     // TODO (seb) disconnect packet
@@ -138,8 +161,8 @@ public class Client{
         Platform.runLater(() ->observableLobbyList.add(lobbyName));
     }
 
-    public void addLobbyInLobbyInClientsArrayList(String lobbyName) {
-        lobbyInClientArrayList.add(new LobbyInClient(lobbyName));
+    public void addLobbyInClient(String lobbyName) {
+        lobbyInClientObservableList.add(new LobbyInClient(lobbyName));
     }
 
     public OutputStream getOutputStream() {
@@ -168,15 +191,31 @@ public class Client{
         Platform.runLater(() -> lastChatMessage.setValue(message));
     }
 
-    public ArrayList<Robot> getRobots() {
-        return this.robots;
-    }
     public ListProperty<String> clientListProperty() {
         return clientList;
     }
     public ListProperty<String> lobbyListProperty() {
         return lobbyList;
     }
+    public void changeNicknameOfOtherClient(String oldNickname, String newNickname) {
+        Platform.runLater(() -> observableClientList.set(observableClientList.indexOf(oldNickname),newNickname));
+    }
 
+    public LobbyInClient getLobbyInClient() {
+        return lobbyInClient;
+    }
+
+
+    public String getNickname() {
+        return nickname.get();
+    }
+
+    public void setLobbyInClient(LobbyInClient lobbyInClient) {
+        this.lobbyInClient = lobbyInClient;
+    }
+
+    public ObservableList<LobbyInClient> getLobbyData() {
+        return lobbyInClientObservableList;
+    }
 
 }

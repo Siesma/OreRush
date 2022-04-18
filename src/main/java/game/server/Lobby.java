@@ -24,14 +24,14 @@ public class Lobby {
     }
 
     private void generateGameMap() {
-        gameMap = new GameMap(serverSettings.getMapWidth(), serverSettings.getMapHeight(), serverSettings.getOreDensity());
+        gameMap = new GameMap(serverSettings.getMapWidth(), serverSettings.getMapHeight(), serverSettings);
     }
 
     /**
      *
      * Returns the amount of single cell moves that would have to be done to reach a destination
      */
-    private int distanceFromPosition (int[] now, int[] then) {
+    public int distanceFromPosition (int[] now, int[] then) {
         return Math.abs(now[0] - then[0]) + Math.abs(now[1] - then[1]);
     }
 
@@ -44,11 +44,11 @@ public class Lobby {
      * cropped down.
      */
     public int[] getNextMove (Robot r, int[] destination) {
-        int xDif = (r.getPosition()[0] - destination[0]);
-        int yDif = (r.getPosition()[1] - destination[1]);
-        int xMovesMade = Math.min(serverSettings.getMaxAllowedMoves(), xDif);
-        int maxYMoves = Math.min(serverSettings.getMaxAllowedMoves() - xMovesMade, Math.min(serverSettings.getMaxAllowedMoves(), yDif));
-        return new int[] {r.getPosition()[0] - xMovesMade, r.getPosition()[1] - maxYMoves};
+        int xDif = Math.abs(r.getPosition()[0] - destination[0]);
+        int yDif = Math.abs(r.getPosition()[1] - destination[1]);
+        int xMoves = Math.min(serverSettings.getMaxAllowedMoves(), xDif);
+        int yMoves = Math.min(serverSettings.getMaxAllowedMoves() - xMoves, yDif);
+        return new int[] {r.getPosition()[0] + xMoves, r.getPosition()[1] + yMoves};
     }
 
     /**
@@ -61,6 +61,9 @@ public class Lobby {
     public void addClient(ClientThread clientThread) {
         listOfClients.add(clientThread);
     }
+    public void removeClient(ClientThread clientThread) {
+        listOfClients.remove(clientThread);
+    }
 
     public String getLobbyName() {
         return lobbyName;
@@ -68,5 +71,22 @@ public class Lobby {
 
     public ServerSettings getServerSettings() {
         return serverSettings;
+    }
+
+    public ArrayList<ClientThread> getListOfClients() {
+        return listOfClients;
+    }
+
+    public void startGame() {
+        generateGameMap();
+        spawnRobots();
+    }
+
+    public void spawnRobots() {
+        for (int i = 0; i < listOfClients.size(); i++) {
+            for (int j = 0; j < serverSettings.getNumberOfRobots(); j++) {
+                listOfClients.get(i).addRobot();
+            }
+        }
     }
 }

@@ -7,36 +7,45 @@ import game.server.ServerConstants;
 
 import java.util.Scanner;
 
-public class Whisper extends AbstractPacket{
+public class ChatLobby extends AbstractPacket {
 
-    public Whisper() {
-        super("", new String[]{"^.*$", //receiver name
-                "^.*$"// message
-        }, "");
+
+    public ChatLobby() {
+        super("", new String[]{"^.*$", // lobbyName
+                        "^.*$"} // message
+                , "");
     }
 
+
     /**
-     * This function will create a whisper message where the input is already predetermined.
+     * This function will create a chat message where the input is already predetermined.
      */
     @Override
     public String encodeWithContent(String... content) {
-        if (content.length < 1) {
+        if (content.length == 0) {
             encode();
         }
-        String name = content[0];
+        String lobbyName = content[0];
         String msg = content[1];
         return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
                 this.name +
                 (char) ServerConstants.DEFAULT_PACKET_SPACER +
-                name +
+                lobbyName +
                 (char) ServerConstants.DEFAULT_PACKET_SPACER +
                 msg +
                 (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
     }
 
+
+    /**
+     * Creates the message that results in an Awake packet.
+     * This means "Start" MESSAGE "End"
+     * where "Start" is the default start char and "End" is the default end char.
+     * MESSAGE stands for the message that the user has typed in
+     */
     @Override
     public String encode() {
-        System.out.println("whisper-message:");
+        System.out.println("Chat-lobby-message:");
         return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
                 this.name +
                 (char) ServerConstants.DEFAULT_PACKET_SPACER +
@@ -46,27 +55,28 @@ public class Whisper extends AbstractPacket{
                 (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
     }
 
+    /**
+     * Decodes the message and will handle the message correctly by sending it to the server or clients
+     */
     @Override
     public void decode(Object parent, String message) {
-        message = message.replace("Whisper" + (char) ServerConstants.DEFAULT_PACKET_SPACER, "");
-        String name = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0];
-        message = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[1];
 
+        message = message.replace("ChatLobby" + (char) ServerConstants.DEFAULT_PACKET_SPACER, "");
+        String lobbyName = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0];
+        message = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[1];
         if(parent instanceof ClientThread) {
             ClientThread obj = (ClientThread) parent;
             try {
-                obj.pushWhisperToAClient(obj.getPlayerName(), message);
-                obj.pushWhisperToAClient(name, message);
+                obj.pushChatMessageToALobby(lobbyName,message);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         if(parent instanceof InputStreamThread) {
             InputStreamThread obj = (InputStreamThread) parent;
-            if (obj.getClient().getLobbyInClient() != null) {
-                obj.getClient().getLobbyInClient().setLastChatMessage(name + " (whisper): " + message + "\n");
-            }
-            obj.getClient().setLastChatMessage(name + " (whisper): " + message + "\n");
+
+            obj.getClient().getLobbyInClient().
+                    setLastChatMessage(message + "\n");
         }
     }
 }

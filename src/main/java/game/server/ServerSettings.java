@@ -10,11 +10,14 @@ public class ServerSettings {
      the setting and a way to default back to working values in case something gets messed up.
      */
     private int numberOfRobots;
-    private int mapWidth, mapHeight;
-    private int numberOfRounds;
-    private float oreDensity;
-    private int maxAllowedMoves;
+    private int mapWidth = 10, mapHeight = 10;
+    private int numberOfRounds = 100;
+    private float oreDensity = 1f;
+    private int maxAllowedMoves = 4;
     private ArrayList<Object> ores;
+
+    private int maxClusterSize = 2;
+    private float oreThreshold;
 
     /**
      * @param pathToFile Used  to import settings from a ".ore_game_settings" file
@@ -89,5 +92,13 @@ public class ServerSettings {
 
     public float getOreDensity() {
         return oreDensity;
+    }
+
+    public float getOreThreshold() {
+        return oreThreshold;
+    }
+
+    public int getMaxClusterSize() {
+        return maxClusterSize;
     }
 }

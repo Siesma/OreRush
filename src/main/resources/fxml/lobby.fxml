@@ -4,6 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.text.TextFlow?>
 <AnchorPane prefHeight="728.0" prefWidth="1031.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.gui.LobbyController">
    <children>
       <HBox prefHeight="728.0" prefWidth="1031.0">
@@ -12,10 +13,10 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#handleStartGame" prefHeight="25.0" prefWidth="148.0" text="Start Game" />
                   <Button mnemonicParsing="false" onAction="#handleWinGame" prefHeight="25.0" prefWidth="150.0" text="Win game" />
-                  <TableView prefHeight="200.0" prefWidth="200.0">
+                  <TableView fx:id="playerTableView" prefHeight="200.0" prefWidth="200.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn fx:id="nicknameColumn" prefWidth="75.0" text="Player" />
+                      <TableColumn fx:id="scoreColumn" prefWidth="75.0" text="Score" />
                     </columns>
                   </TableView>
                </children>
@@ -24,6 +25,19 @@
                <image>
                   <Image url="@../image/wip.jpg" />
                </image></ImageView>
+            <VBox prefHeight="296.0" prefWidth="261.0">
+               <children>
+                  <TextFlow fx:id="chatLobbyTextFlow" prefHeight="233.0" prefWidth="261.0" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="newLobbyMessageTextField" prefHeight="25.0" prefWidth="165.0" />
+                        <Button mnemonicParsing="false" onAction="#handleSendMessage" text="Send" />
+                        <Button mnemonicParsing="false" onAction="#handleWhisperMessage" text="Whisper" />
+                        <Button mnemonicParsing="false" onAction="#handleBroadcastMessage" text="Broadcast" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
          </children>
       </HBox>
    </children>
