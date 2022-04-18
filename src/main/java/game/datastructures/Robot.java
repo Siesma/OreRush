@@ -113,6 +113,9 @@ public class Robot implements GameObject {
 
 
   @Override
+  /**
+   *
+   */
   public void fillGameObjectWithData(String... data) {
     if (data.length == 1) {
       data = AbstractPacket.splitMessageBySpacer(data[0], String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
