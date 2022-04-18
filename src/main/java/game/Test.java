@@ -4,12 +4,12 @@ import game.datastructures.*;
 import game.packet.packets.Update;
 import game.server.ServerSettings;
 
-public class Test {
+public class  Test {
 
   public static void main(String[] args) {
     Update update = new Update();
     int x, y;
-    x = 20;
+    x = 10;
     y = 10;
     GameMap map = new GameMap(x, y, (new ServerSettings("")));
     for (int i = 0; i < x; i++) {
@@ -30,17 +30,37 @@ public class Test {
     r.setPosition(0, 5);
     r.setID(1);
 
-    map.placeObjectOnMap(r, r.getPosition()[0], r.getPosition()[1]);
-    map.printOreMapToConsole();
+    map.placeObjectOnMap(r, r.getPosition());
+    map.printMapToConsole();
     System.out.println("---");
-    map.removeObjectFromMap(r, r.getPosition()[0], r.getPosition()[1]);
+    map.removeObjectFromMap(r, r.getPosition());
     int[] wantedDestination = {4, 9};
     int[] receivedDestination = getNextMove(r, wantedDestination, new ServerSettings(""));
-    r.setAction(RobotAction.Move, receivedDestination[0], receivedDestination[1], null);
-    map.placeObjectOnMap(r, r.getPosition()[0], r.getPosition()[1]);
-    map.printOreMapToConsole();
+    r.setAction(RobotAction.Move, receivedDestination, null);
+    map.placeObjectOnMap(r, r.getPosition());
+//    map.printMapToConsole();
+    System.out.println(update.validate(update.encodeWithContent(map.cellStrings())));
+    System.out.println(update.encodeWithContent(map.cellStrings()));
     System.out.println(r.getPosition()[0]);
     System.out.println(r.getPosition()[1]);
+    Object ob;
+    try {
+      Class<GameObject> classes = (Class<GameObject>) Class.forName("game.datastructures.Ore");
+      ob = classes.newInstance();
+    } catch (Exception e) {
+      System.out.println("Some error occurred! Reverting to null");
+      ob = null;
+    }
+
+    System.out.println(ob);
+    System.out.println(ob instanceof GameObject);
+
+//    for(String ss : map.cellStrings()) {
+//      if(!update.validate(ss)) {
+//        System.out.println(update.validate(ss) + "\t" + ss);
+//      }
+//    }
+
   }
   public static int[] getNextMove (Robot r, int[] destination, ServerSettings serverSettings) {
     int xDif = Math.abs(r.getPosition()[0] - destination[0]);

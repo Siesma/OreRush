@@ -10,8 +10,8 @@ import game.server.ServerConstants;
 public class JoinLobby extends AbstractPacket {
 
     public JoinLobby() {
-        super("", new String[]{"^.*$", // lobby name
-                        "^.*$"} // player name
+        super("", new String[] { "^.*$", // lobby name
+                        "^.*$" } // player name
                 , "");
     }
 
@@ -43,15 +43,18 @@ public class JoinLobby extends AbstractPacket {
         }
         String lobbyName = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0];
         String clientName = message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[1];
-        if(parent instanceof ClientThread) {
+        if (parent instanceof ClientThread) {
             ClientThread obj = (ClientThread) parent;
-            obj.getServer().addClientToLobby(obj,lobbyName);
-            for(ClientThread clientThread : Server.getClientThreads()) {
+            obj.getServer().addClientToLobby(obj, lobbyName);
+            for (ClientThread clientThread : Server.getClientThreads()) {
                 (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new JoinLobby()).encodeWithContent(lobbyName, clientName));
             }
-
+            obj.setConnectedLobby(obj.getServer().getLobbyByName(lobbyName));
+            for (int i = 0; i < obj.getConnectedLobby().getServerSettings().getNumberOfRobots(); i++) {
+                obj.addRobot();
+            }
         }
-        if(parent instanceof InputStreamThread) {
+        if (parent instanceof InputStreamThread) {
             InputStreamThread obj = (InputStreamThread) parent;
             obj.getClient().addClientToLobby(clientName, lobbyName);
         }

@@ -1,7 +1,10 @@
 package game.datastructures;
 
+import game.helper.FileHelper;
+import game.packet.AbstractPacket;
 import game.server.ServerSettings;
 
+import javax.swing.plaf.basic.BasicBorders;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -20,6 +23,7 @@ public class GameMap {
     this.cellArray = new Cell[sizeX][sizeY];
     this.serverSettings = serverSettings;
     fillCellArray();
+    fillCellArrayWithNothing();
 //    spawnOreInMap();
 //    printOreMapToConsole();
   }
@@ -63,7 +67,10 @@ public class GameMap {
                 double max = oreSpawnLikelyhood * 2;
                 Cell c = cellArray[ni][nj];
                 int amount = (int) getAmountOfOre(max, 0.84d, oreSpawnLikelyhood, ni, nj, i, j, 0, 0);
-                c.place(new Ore(curOreType, amount));
+                Ore ore = new Ore();
+                ore.setAmount(amount);
+                ore.setID(1);
+                c.place(ore);
               }
             }
           }
@@ -128,6 +135,10 @@ public class GameMap {
     return x > min_x && x < max_x && y > min_y && y < max_y;
   }
 
+  public boolean isInBounds(int[] xy, int[] minxy, int[] maxxy) {
+    return isInBounds(xy[0], xy[1], minxy[0], minxy[1], maxxy[0], maxxy[1]);
+  }
+
   public OreType determineOreType() {
     // TODO: make it so that more valuable oretypes spawn futher on the right
     return OreType.values()[(int) (Math.random() * OreType.values().length)];
@@ -137,14 +148,21 @@ public class GameMap {
     cellArray[x][y].place(object);
   }
 
+  public void placeObjectOnMap(GameObject gameObject, int[] xy) {
+    this.placeObjectOnMap(gameObject, xy[0], xy[1]);
+  }
+
   public void removeObjectFromMap(GameObject gameObject, int x, int y) {
     cellArray[x][y].remove(gameObject);
   }
 
-  public void printOreMapToConsole() {
+  public void removeObjectFromMap(GameObject gameObject, int[] xy) {
+    this.removeObjectFromMap(gameObject, xy[0], xy[1]);
+  }
+
+  public void printMapToConsole() {
     for (int j = 0; j < gameMapSize[1]; j++) {
       for (int i = 0; i < gameMapSize[0]; i++) {
-//        System.out.print("[" + oreMap[i][j] + "]");
         Cell cell = cellArray[i][j];
         boolean trap = cell.trapOnCell() != null;
         boolean radar = cell.radarOnCell() != null;
@@ -177,17 +195,20 @@ public class GameMap {
     }
   }
 
+  /**
+   * Returns an array of Strings that is used to make the update packet.
+   */
   public String[] cellStrings() {
     ArrayList<String> strings = new ArrayList<>();
     for (int i = 0; i < gameMapSize[0]; i++) {
       for (int j = 0; j < gameMapSize[1]; j++) {
-        StringBuilder out = new StringBuilder();
-        out.append("").append(i).append(",").append(j).append("");
         for (GameObject objectOnCell : this.getCellArray()[i][j].getPlacedObjects()) {
+          StringBuilder out = new StringBuilder();
+          out.append("").append(i).append(",").append(j).append("");
           out.append("_");
           out.append(objectOnCell.encodeToString());
+          strings.add(out.toString());
         }
-        strings.add(out.toString());
       }
     }
     String[] out = new String[strings.size()];
@@ -197,16 +218,139 @@ public class GameMap {
     return out;
   }
 
+  /**
+   * Repositions an already existing object
+   */
+  public void replaceObject(GameObject object, int[] newPosition) {
+//    System.out.println("Trying to modify the position of the object: " + object.getPosition()[0] + " " + object.getPosition()[1]);
+//    printMapToConsole();
+    int[] curPosition = object.getPosition();
+    if (curPosition == null) {
+      return;
+    }
+    if (!isInBounds(curPosition, new int[] {0, 0}, gameMapSize)) {
+      curPosition = new int[] {
+              clamp(curPosition[0], 0,gameMapSize[0] - 1),
+              clamp(curPosition[1], 0,gameMapSize[1] - 1)
+      };
+    }
+    ArrayList<GameObject> placedObjects = cellArray[curPosition[0]][curPosition[1]].getPlacedObjects();
+    if(!placedObjects.contains(object)) {
+      System.out.println("The placed object was not on the original position");
+      return;
+    }
+    if (!isInBounds(newPosition, new int[] {0, 0}, gameMapSize)) {
+      newPosition = new int[] {
+              clamp(newPosition[0], 0,gameMapSize[0] - 1),
+              clamp(newPosition[1], 0,gameMapSize[1] - 1)
+      };
+    }
+    removeObjectFromMap(object, curPosition);
+    placeObjectOnMap(object, newPosition);
+    if(object instanceof Robot) {
+      Robot robotObject = (Robot) object;
+      if(robotObject.getRobotAction() != RobotAction.Dig) {
+        return;
+      }
+      ArrayList<Ore> ore = getCellArray()[newPosition[0]][newPosition[1]].oreOnCell();
+      if(ore == null) {
+        return;
+      }
+      if(ore.size() > 0) {
+        robotObject.loadInventory(ore.get(0));
+//        ore.remove(0);
+        getCellArray()[newPosition[0]][newPosition[1]].remove(getCellArray()[newPosition[0]][newPosition[1]].oreOnCell().get(0));
+      }
+    }
+  }
+  private int clamp(int val, int min, int max) {
+    return Math.max(Math.min(max, val), min);
+  }
+
   public int[] getGameMapSize() {
     return gameMapSize;
   }
 
-  public void fillCellArray() {
+  /**
+   * Creates for each column and row a new Cell object so NullPointerExceptions are being lessened if the map is improperly handled
+   */
+  private void fillCellArray() {
     for (int i = 0; i < cellArray.length; i++) {
       for (int j = 0; j < cellArray[i].length; j++) {
         cellArray[i][j] = new Cell(i, j);
       }
     }
+  }
+
+  private void fillCellArrayWithNothing() {
+    for (int i = 0; i < cellArray.length; i++) {
+      for (int j = 0; j < cellArray[i].length; j++) {
+        Nothing nothing = new Nothing();
+        nothing.setPosition(i, j);
+        nothing.setID(0);
+        cellArray[i][j].place(nothing);
+      }
+    }
+  }
+
+  public static GameMap getMapFromString(String message) {
+    String[] individualCell = AbstractPacket.splitMessageBySpacer(message);
+    ServerSettings serverSettings = new ServerSettings();
+    GameMap newMap = new GameMap(serverSettings.getMapWidth(), serverSettings.getMapHeight(), serverSettings);
+    int cellX = -1, cellY = -1;
+    for (String impliedCell : individualCell) {
+      String[] type = impliedCell.split("_");
+      for (String s : type) {
+        if (s.matches("^[0-9]+,[0-9]+$")) {
+          cellX = Integer.parseInt(s.split(",")[0]);
+          cellY = Integer.parseInt(s.split(",")[1]);
+        } else {
+
+          if (cellX == -1 || cellY == -1) {
+            System.out.println("Somehow the cell index was not updated");
+            continue;
+          }
+          String[] objectData = s.split(":");
+          String objectType = objectData[0];
+          int objectID = Integer.parseInt(objectData[1]);
+          Object object;
+          try {
+            object = (new FileHelper()).createInstanceOfClass("game.datastructures." + objectType);
+          } catch (Exception e) {
+            System.out.println("An unidentified object!");
+            System.out.println("Ignoring this element!");
+            continue;
+          }
+          if (!(object instanceof GameObject)) {
+            System.out.println(object + " \"" + objectType + "\"");
+            System.out.println("Somehow the object is no gameobject");
+            continue;
+          }
+          GameObject finalGameObject = (GameObject) object;
+          finalGameObject.setID(objectID);
+          if (objectData.length > 2) {
+            if (finalGameObject instanceof Robot) {
+              Object inv;
+              try {
+                inv = (new FileHelper()).createInstanceOfClass("game.datastructures." + s.split(":")[2]);
+              } catch (Exception e) {
+                System.out.println("An unidentified object!");
+                System.out.println("Ignoring this element!");
+                continue;
+              }
+              if (!(inv instanceof GameObject)) {
+                System.out.println("Somehow the inventory of the Robot is not a GameObject");
+                continue;  // should not be possible if the packet is valid, will be included just in case!
+              }
+              ((Robot) finalGameObject).loadInventory((GameObject) inv);
+            }
+          }
+          newMap.getCellArray()[cellX][cellY].place(finalGameObject);
+        }
+      }
+    }
+
+    return newMap;
   }
 
   public void setCellArray(Cell[][] array) {

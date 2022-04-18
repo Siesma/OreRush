@@ -19,6 +19,8 @@ public class ClientApp extends Application {
 
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
-
+        primaryStage.setOnCloseRequest(e -> {
+            System.exit(1);
+        });
     }
 }

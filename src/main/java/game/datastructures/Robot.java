@@ -1,5 +1,6 @@
 package game.datastructures;
 
+import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import game.helper.FileHelper;
 import game.packet.AbstractPacket;
 import game.server.ServerConstants;
@@ -15,11 +16,17 @@ public class Robot implements GameObject {
   private int yCoordinate;
   private GameObject inventory;
 
+  private RobotAction robotAction = RobotAction.Wait;
+
   private int playerID;
 
   @Override
   public void setID(int id) {
     this.playerID = id;
+  }
+
+  public void setRobotAction(RobotAction robotAction) {
+    this.robotAction = robotAction;
   }
 
   /**
@@ -33,12 +40,17 @@ public class Robot implements GameObject {
     yCoordinate = y;
   }
 
+  public RobotAction getRobotAction() {
+    return robotAction;
+  }
+
   /**
    *
    * This function applies the new information.
    * This function implies that the wanted Action is valid.
    */
   public void setAction(RobotAction robotAction, int x, int y, Object optionalInventoryChange) {
+//    System.out.println(this.playerID + " just tried to make a " + robotAction.name() + " move to " + x + ", " + y);
     setPosition(x, y);
     if (optionalInventoryChange == null) {
       return;
@@ -47,11 +59,15 @@ public class Robot implements GameObject {
       return;
     }
     switch (robotAction) {
-      case Dig:
-      case Request:
+      case RequestTrap:
+      case RequestRadar:
         loadInventory((GameObject) optionalInventoryChange);
         break;
     }
+  }
+
+  public void setAction (RobotAction robotAction, int[] xy, Object optionalInventoryChange) {
+    this.setAction(robotAction, xy[0], xy[1], optionalInventoryChange);
   }
 
   /**
@@ -84,6 +100,9 @@ public class Robot implements GameObject {
    * @return The encoded string that holds all the information of the robot
    */
   public String encodeToString() {
+    if(this.inventory == null) {
+      return "Robot:" + this.playerID;
+    }
     String encodedRobot = "robot:" + this.playerID + ":" + inventory.encodeToString();
     return encodedRobot;
   }
