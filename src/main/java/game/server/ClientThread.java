@@ -209,7 +209,6 @@ public class ClientThread implements Runnable {
    * Sends an Update packet to all the Clients informing them about the new Map
    */
   public void updatePlayersAboutMapChanges() {
-//      for (ClientThread clientThread : Server.getClientThreads()) {
     for (ClientThread clientThread : this.connectedLobby.getListOfClients()) {
       (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Update()).encodeWithContent(clientThread.getConnectedLobby().gameMap.cellStrings()));
     }

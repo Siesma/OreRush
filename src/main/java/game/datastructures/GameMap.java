@@ -256,6 +256,14 @@ public class GameMap {
       if(robotObject.getRobotAction() != RobotAction.Dig) {
         return;
       }
+      if(getCellArray()[newPosition[0]][newPosition[1]].trapOnCell() != null) {
+        robotObject.setDead(true);
+        getCellArray()[newPosition[0]][newPosition[1]].remove(getCellArray()[newPosition[0]][newPosition[1]].trapOnCell());
+      }
+      if(!(robotObject.getInventory() instanceof Nothing)) {
+        getCellArray()[newPosition[0]][newPosition[1]].place(robotObject.getInventory());
+        robotObject.loadInventory(new Nothing());
+      }
       ArrayList<Ore> ore = getCellArray()[newPosition[0]][newPosition[1]].oreOnCell();
       if(ore == null) {
         return;
@@ -309,7 +317,6 @@ public class GameMap {
           cellX = Integer.parseInt(s.split(",")[0]);
           cellY = Integer.parseInt(s.split(",")[1]);
         } else {
-
           if (cellX == -1 || cellY == -1) {
             logger.error("Somehow the cell index was not updated");
             continue;

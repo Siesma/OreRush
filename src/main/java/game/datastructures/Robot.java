@@ -16,6 +16,8 @@ public class Robot implements GameObject {
   private int yCoordinate;
   private GameObject inventory;
 
+  private boolean isDead = false;
+
   private RobotAction robotAction = RobotAction.Wait;
 
   private int playerID;
@@ -50,6 +52,9 @@ public class Robot implements GameObject {
    * This function implies that the wanted Action is valid.
    */
   public void setAction(RobotAction robotAction, int x, int y, Object optionalInventoryChange) {
+    if(isDead) {
+      return;
+    }
     setPosition(x, y);
     if (optionalInventoryChange == null) {
       return;
@@ -136,5 +141,13 @@ public class Robot implements GameObject {
     GameObject gameObject = (GameObject) obj;
     gameObject.fillGameObjectWithData(AbstractPacket.removeFirstElement(encodedGameObjectArray));
     return gameObject;
+  }
+
+  public boolean isDead() {
+    return isDead;
+  }
+
+  public void setDead(boolean isDead) {
+    this.isDead = isDead;
   }
 }
