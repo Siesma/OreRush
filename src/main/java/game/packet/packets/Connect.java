@@ -70,7 +70,7 @@ public class Connect extends AbstractPacket {
 
       // inform clients of new player
       for(ClientThread clientThread : Server.getClientThreads()) {
-        (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Connect()).encodeWithContent(message));
+        (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Connect()).encodeWithContent(obj.getPlayerName()));
       }
     }
     if (parent instanceof InputStreamThread) {

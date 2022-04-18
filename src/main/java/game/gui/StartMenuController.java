@@ -60,8 +60,6 @@ public class StartMenuController{
         lobbyNameColumn.setCellValueFactory(cellData -> cellData.getValue().lobbyNameProperty());
         statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
         playerColumn.setCellValueFactory(cellData -> cellData.getValue().playersProperty());
-
-
         clientListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
         });
 
@@ -90,7 +88,6 @@ public class StartMenuController{
             client.createLobby(newLobbyName.getText());
             client.joinLobby(newLobbyName.getText());
             newLobbyName.setText("");
-
             changeToLobbyScene();
         }
         actionEvent.consume();
@@ -103,7 +100,6 @@ public class StartMenuController{
         } catch (Exception ignored) {
 
         }
-
         actionEvent.consume();
     }
 

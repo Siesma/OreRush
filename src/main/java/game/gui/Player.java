@@ -5,8 +5,6 @@ import javafx.beans.property.StringProperty;
 
 public class Player {
 
-
-
     private final StringProperty nickname;
     private StringProperty score = new SimpleStringProperty("0");
 
