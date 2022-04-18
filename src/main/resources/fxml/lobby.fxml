@@ -3,8 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.text.TextFlow?>
 <AnchorPane prefHeight="728.0" prefWidth="1031.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.gui.LobbyController">
    <children>
       <HBox prefHeight="728.0" prefWidth="1031.0">
@@ -12,20 +12,11 @@
             <VBox prefHeight="728.0" prefWidth="232.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#handleStartGame" prefHeight="25.0" prefWidth="148.0" text="Start Game" />
-                  <Button mnemonicParsing="false" onAction="#handleWinGame" prefHeight="25.0" prefWidth="150.0" text="Win game" />
                   <TableView fx:id="playerTableView" prefHeight="200.0" prefWidth="200.0">
                     <columns>
                       <TableColumn fx:id="nicknameColumn" prefWidth="75.0" text="Player" />
                       <TableColumn fx:id="scoreColumn" prefWidth="75.0" text="Score" />
                     </columns>
-                  </TableView>
-                  <Button mnemonicParsing="false" onAction="#handleStartGame" prefHeight="25.0" prefWidth="148.0" text="Start Game" />
-                  <Button mnemonicParsing="false" onAction="#handleWinGame" prefHeight="25.0" prefWidth="150.0" text="Win game" />
-                  <TableView prefHeight="200.0" prefWidth="200.0">
-                     <columns>
-                        <TableColumn prefWidth="75.0" text="C1" />
-                        <TableColumn prefWidth="75.0" text="C2" />
-                     </columns>
                   </TableView>
                   <HBox prefHeight="178.0" prefWidth="412.0">
                      <children>
@@ -53,21 +44,26 @@
                   <ChoiceBox fx:id="playerRobotActionList" prefWidth="150.0" />
                   <Button fx:id="buttonMakeMove" mnemonicParsing="false" onAction="#onActionButtonMakeMove" text="Set individual Move!" />
                   <Button fx:id="endTurnButton" mnemonicParsing="false" onAction="#onActionEndTurnButton" text="End Turn" />
+                  <Button mnemonicParsing="false" onAction="#handleWinGame" prefHeight="25.0" prefWidth="150.0" text="Win game" />
                </children>
             </VBox>
-            <ImageView fx:id="underConstruction" fitHeight="494.0" fitWidth="697.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="underConstruction" fitHeight="494.0" fitWidth="425.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../image/wip.jpg" />
                </image></ImageView>
-            <VBox prefHeight="296.0" prefWidth="261.0">
+            <VBox prefHeight="728.0" prefWidth="225.0">
                <children>
                   <TextFlow fx:id="chatLobbyTextFlow" prefHeight="233.0" prefWidth="261.0" />
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="newLobbyMessageTextField" prefHeight="25.0" prefWidth="165.0" />
-                        <Button mnemonicParsing="false" onAction="#handleSendMessage" text="Send" />
-                        <Button mnemonicParsing="false" onAction="#handleWhisperMessage" text="Whisper" />
-                        <Button mnemonicParsing="false" onAction="#handleBroadcastMessage" text="Broadcast" />
+                        <TextField fx:id="newLobbyMessageTextField" prefHeight="25.0" prefWidth="177.0" />
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#handleSendMessage" text="Send" />
+                              <Button mnemonicParsing="false" onAction="#handleWhisperMessage" text="Whisper" />
+                              <Button mnemonicParsing="false" onAction="#handleBroadcastMessage" text="Broadcast" />
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
                </children>

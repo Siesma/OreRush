@@ -4,11 +4,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.gui.StartMenuController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="954.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.gui.StartMenuController">
     <center>
         <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <VBox prefHeight="296.0" prefWidth="183.0">
+                <VBox prefHeight="296.0" prefWidth="114.0">
                     <children>
                   <Label fx:id="nickname" prefHeight="34.0" prefWidth="139.0" textFill="#6f0303">
                      <font>
@@ -22,21 +22,25 @@
                         <Button mnemonicParsing="false" onAction="#handleJoinLobby" text="Join Lobby" />
                     </children>
                 </VBox>
-                <VBox prefHeight="296.0" prefWidth="261.0">
+                <VBox prefHeight="296.0" prefWidth="238.0">
                     <children>
-                        <TextFlow fx:id="chatTextFlow" prefHeight="233.0" prefWidth="261.0" />
+                        <TextFlow fx:id="chatTextFlow" prefHeight="206.0" prefWidth="228.0" />
                         <HBox prefHeight="100.0" prefWidth="200.0">
                             <children>
                                 <TextField fx:id="newMessageTextField" prefHeight="25.0" prefWidth="165.0" />
-                                <Button mnemonicParsing="false" onAction="#handleSendMessage" text="Send" />
-                                <Button mnemonicParsing="false" onAction="#handleWhisperMessage" text="Whisper" />
-                                <Button mnemonicParsing="false" onAction="#handleBroadcastMessage" text="Broadcast" />
+                        <VBox prefHeight="91.0" prefWidth="72.0">
+                           <children>
+                                      <Button mnemonicParsing="false" onAction="#handleSendMessage" text="Send" />
+                                      <Button mnemonicParsing="false" onAction="#handleWhisperMessage" text="Whisper" />
+                                      <Button mnemonicParsing="false" onAction="#handleBroadcastMessage" text="Broadcast" />
+                           </children>
+                        </VBox>
                             </children>
                         </HBox>
                     </children>
                 </VBox>
                 <ListView fx:id="clientListView" prefHeight="296.0" prefWidth="185.0" />
-                <TableView fx:id="lobbyTableView" prefHeight="200.0" prefWidth="200.0">
+                <TableView fx:id="lobbyTableView" prefHeight="296.0" prefWidth="226.0">
                     <columns>
                         <TableColumn fx:id="lobbyNameColumn" prefWidth="75.0" text="Lobby" />
                         <TableColumn fx:id="statusColumn" prefWidth="75.0" text="Status" />
@@ -53,7 +57,7 @@
         <Pane prefHeight="55.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
     </top>
     <right>
-        <Pane prefHeight="151.0" prefWidth="51.0" BorderPane.alignment="CENTER" />
+        <Pane prefHeight="296.0" prefWidth="43.0" BorderPane.alignment="CENTER" />
     </right>
     <bottom>
         <Pane prefHeight="49.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
