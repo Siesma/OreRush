@@ -233,7 +233,8 @@ public class ClientThread implements Runnable {
     Robot robot = new Robot();
     robot.setID(this.playerID);
     int height = connectedLobby.gameMap.getGameMapSize()[1];
-    robot.setPosition(0, (int) (Math.random() * height));
+//    robot.setPosition(0, (int) (Math.random() * height));
+    robot.setPosition(0, 0);
     this.getRobots().add(robot);
     this.getConnectedLobby().gameMap.getCellArray()[robot.getPosition()[0]][robot.getPosition()[1]].place(robot);
   }
@@ -275,6 +276,7 @@ public class ClientThread implements Runnable {
 
   public void setConnectedLobby(Lobby lobby) {
     this.connectedLobby = lobby;
+    connectedLobby.printMapForEveryone();
   }
 
   public OutputStream getOutputStream() {

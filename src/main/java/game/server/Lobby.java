@@ -2,8 +2,6 @@ package game.server;
 
 import game.datastructures.GameMap;
 import game.datastructures.Robot;
-import game.packet.PacketHandler;
-import game.packet.packets.Update;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +19,7 @@ public class Lobby {
   public Lobby(String lobbyName, ClientThread clientThread) {
     this.lobbyName = lobbyName;
     this.serverSettings = new ServerSettings("");
-    startGame();
+    initialize();
   }
 
   public ClientThread getHost() {
@@ -74,6 +72,10 @@ public class Lobby {
 
   public void updateMove() {
     turnCounter++;
+    printMap();
+  }
+
+  public void printMap () {
     System.out.println("---");
     this.gameMap.printMapToConsole();
     System.out.println("---");
@@ -110,9 +112,15 @@ public class Lobby {
     return listOfClients;
   }
 
-  public void startGame() {
+  public void initialize() {
     spawnRobots();
     generateGameMap();
+    printMapForEveryone();
+  }
+  public void printMapForEveryone () {
+    for(ClientThread c : getListOfClients()) {
+      c.updatePlayersAboutMapChanges();
+    }
   }
 
   public void spawnRobots() {
