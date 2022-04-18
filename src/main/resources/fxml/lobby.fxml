@@ -19,6 +19,40 @@
                       <TableColumn fx:id="scoreColumn" prefWidth="75.0" text="Score" />
                     </columns>
                   </TableView>
+                  <Button mnemonicParsing="false" onAction="#handleStartGame" prefHeight="25.0" prefWidth="148.0" text="Start Game" />
+                  <Button mnemonicParsing="false" onAction="#handleWinGame" prefHeight="25.0" prefWidth="150.0" text="Win game" />
+                  <TableView prefHeight="200.0" prefWidth="200.0">
+                     <columns>
+                        <TableColumn prefWidth="75.0" text="C1" />
+                        <TableColumn prefWidth="75.0" text="C2" />
+                     </columns>
+                  </TableView>
+                  <HBox prefHeight="178.0" prefWidth="412.0">
+                     <children>
+                        <ListView fx:id="playerRobotList" prefHeight="200.0" prefWidth="314.0" />
+                        <ListView fx:id="currentRobotMovesList" prefHeight="100.0" prefWidth="303.0" />
+                     </children>
+                  </HBox>
+                  <VBox prefHeight="79.0" prefWidth="350.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="25.0" prefWidth="71.0" text="X-Coordinate" />
+                              <TextField fx:id="textFieldXCoord" promptText="Put your coordinate here" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="24.0" prefWidth="71.0" text="Y-Coordinate" />
+                              <TextField fx:id="textFieldYCoord" promptText="Put your coordinate here" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Label prefHeight="17.0" prefWidth="396.0" text="Current move" />
+                  <ChoiceBox fx:id="playerRobotActionList" prefWidth="150.0" />
+                  <Button fx:id="buttonMakeMove" mnemonicParsing="false" onAction="#onActionButtonMakeMove" text="Set individual Move!" />
+                  <Button fx:id="endTurnButton" mnemonicParsing="false" onAction="#onActionEndTurnButton" text="End Turn" />
                </children>
             </VBox>
             <ImageView fx:id="underConstruction" fitHeight="494.0" fitWidth="697.0" pickOnBounds="true" preserveRatio="true">

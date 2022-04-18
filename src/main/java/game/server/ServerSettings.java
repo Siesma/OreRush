@@ -5,100 +5,118 @@ import java.util.ArrayList;
 
 public class ServerSettings {
 
-    /*
-    TODO: Make a new Datatype called "ServerSettings" which holds information about packet-replacement procedure,
-     the setting and a way to default back to working values in case something gets messed up.
-     */
-    private int numberOfRobots;
-    private int mapWidth = 10, mapHeight = 10;
-    private int numberOfRounds = 100;
-    private float oreDensity = 1f;
-    private int maxAllowedMoves = 4;
-    private ArrayList<Object> ores;
+  /*
+  TODO: Make a new Datatype called "ServerSettings" which holds information about packet-replacement procedure,
+   the setting and a way to default back to working values in case something gets messed up.
+   */
+  private int numberOfRobots;
+  private int mapWidth, mapHeight;
+  private int numberOfRounds;
+  private float oreDensity;
+  private int maxAllowedMoves;
+  private ArrayList<Object> ores;
 
-    private int maxClusterSize = 2;
-    private float oreThreshold;
+  private int maxClusterSize;
+  private float oreThreshold;
 
-    /**
-     * @param pathToFile Used  to import settings from a ".ore_game_settings" file
-     */
-    public ServerSettings(String pathToFile) {
 
-    }
+  public ServerSettings() {
+    setDefaultValues();
+  }
 
-    /**
-     * @param numberOfRobots
-     * @param mapWidth
-     * @param mapHeight
-     * @param numberOfRounds
-     * @param ores           Default user settings initialization
-     */
-    public ServerSettings(int numberOfRobots, int mapWidth, int mapHeight, int numberOfRounds, ArrayList<Object> ores) {
-        numberOfRobots = numberOfRobots;
-        mapWidth = mapWidth;
-        mapHeight = mapHeight;
-        this.numberOfRounds = numberOfRounds;
-        this.ores = ores;
-    }
+  /**
+   * @param pathToFile Used  to import settings from a ".ore_game_settings" file
+   */
+  public ServerSettings(String pathToFile) {
+    setDefaultValues();
+    // TODO: Make a file system for the settings
+  }
 
-    public int getNumberOfRobots() {
-        return numberOfRobots;
-    }
+  /**
+   * @param numberOfRobots
+   * @param mapWidth
+   * @param mapHeight
+   * @param numberOfRounds
+   * @param ores           Default user settings initialization
+   */
+  public ServerSettings(int numberOfRobots, int mapWidth, int mapHeight, int numberOfRounds, ArrayList<Object> ores) {
+    setDefaultValues();
+    this.numberOfRobots = numberOfRobots;
+    this.mapWidth = mapWidth;
+    this.mapHeight = mapHeight;
+    this.numberOfRounds = numberOfRounds;
+    this.ores = ores;
+  }
 
-    public ServerSettings setNumberOfRobots(int numberOfRobots) {
-        numberOfRobots = numberOfRobots;
-        return this;
-    }
+  private void setDefaultValues() {
+    this.numberOfRobots = 1;
+    this.mapWidth = 10;
+    this.mapHeight = 10;
+    this.numberOfRounds = 100;
+    this.oreDensity = 1f;
+    this.maxAllowedMoves = 4;
+    this.maxClusterSize = 4;
+    this.oreThreshold = 0.75f;
+  }
 
-    public int getMapWidth() {
-        return mapWidth;
-    }
+  public int getNumberOfRobots() {
+    return numberOfRobots;
+  }
 
-    public ServerSettings setMapWidth(int mapWidth) {
-        mapWidth = mapWidth;
-        return this;
-    }
+  public ServerSettings setNumberOfRobots(int numberOfRobots) {
+    this.numberOfRobots = numberOfRobots;
+    return this;
+  }
 
-    public int getMapHeight() {
-        return mapHeight;
-    }
+  public int getMapWidth() {
+    return mapWidth;
+  }
 
-    public ServerSettings setMapHeight(int mapHeight) {
-        mapHeight = mapHeight;
-        return this;
-    }
+  public ServerSettings setMapWidth(int mapWidth) {
+    this.mapWidth = mapWidth;
+    return this;
+  }
 
-    public int getNumberOfRounds() {
-        return numberOfRounds;
-    }
+  public int getMapHeight() {
+    return mapHeight;
+  }
 
-    public ServerSettings setNumberOfRounds(int numberOfRounds) {
-        this.numberOfRounds = numberOfRounds;
-        return this;
-    }
+  public ServerSettings setMapHeight(int mapHeight) {
+    this.mapHeight = mapHeight;
+    return this;
+  }
 
-    public ArrayList<Object> getOres() {
-        return ores;
-    }
+  public int getNumberOfRounds() {
+    return numberOfRounds;
+  }
 
-    public ServerSettings setOres(ArrayList<Object> ores) {
-        this.ores = ores;
-        return this;
-    }
+  public ServerSettings setNumberOfRounds(int numberOfRounds) {
+    this.numberOfRounds = numberOfRounds;
+    return this;
+  }
 
-    public int getMaxAllowedMoves() {
-        return maxAllowedMoves;
-    }
+  public ArrayList<Object> getOres() {
+    return ores;
+  }
 
-    public float getOreDensity() {
-        return oreDensity;
-    }
+  public ServerSettings setOres(ArrayList<Object> ores) {
+    this.ores = ores;
+    return this;
+  }
 
-    public float getOreThreshold() {
-        return oreThreshold;
-    }
+  public int getMaxAllowedMoves() {
+    return maxAllowedMoves;
+  }
 
-    public int getMaxClusterSize() {
-        return maxClusterSize;
-    }
+  public float getOreDensity() {
+    return oreDensity;
+  }
+
+  public float getOreThreshold() {
+    return oreThreshold;
+  }
+
+  public int getMaxClusterSize() {
+    return maxClusterSize;
+  }
 }

@@ -2,7 +2,6 @@ package game.datastructures;
 
 public abstract interface GameObject {
 
-
     public void setID(int id);
     /**
      * This method sets the GameObject position based on a given x,y value.
