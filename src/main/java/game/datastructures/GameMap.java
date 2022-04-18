@@ -190,8 +190,22 @@ public class GameMap {
         }
         if (robot) {
           out.append("R");
+          if(!(cell.robotsOnCell().get(0).getInventory() instanceof Nothing)) {
+            GameObject inv = cell.robotsOnCell().get(0).getInventory();
+            if(inv instanceof Ore) {
+              out.append("O");
+            } else if (inv instanceof Radar) {
+              out.append("H");
+            } else if (inv instanceof Trap) {
+              out.append("T");
+            } else {
+              out.append("_");
+            }
+          } else {
+            out.append("_");
+          }
         } else {
-          out.append("_");
+          out.append("__");
         }
         System.out.print("[" + out.toString() + "]");
       }
@@ -270,7 +284,6 @@ public class GameMap {
       }
       if(ore.size() > 0) {
         robotObject.loadInventory(ore.get(0));
-//        ore.remove(0);
         getCellArray()[newPosition[0]][newPosition[1]].remove(getCellArray()[newPosition[0]][newPosition[1]].oreOnCell().get(0));
       }
     }

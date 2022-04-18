@@ -257,7 +257,7 @@ public class ClientThread implements Runnable {
   }
 
   public void setPlayerScore(int playerScore) {
-    pushChatMessageToAllClients(this.getPlayerName() + " Increased their score to now be " + playerScore);
+    pushChatMessageToALobby(this.getConnectedLobby().getLobbyName(), this.getPlayerName() + " Increased their score to now be " + playerScore);
     this.playerScore = playerScore;
   }
 
