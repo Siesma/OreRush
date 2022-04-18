@@ -185,8 +185,25 @@ public class GameMap {
         }
         if (ore) {
           out.append("O");
+          switch (cell.oreOnCell().get(0).getOreType()) {
+            case Copper:
+              out.append("C");
+              break;
+            case Iron:
+              out.append("F");
+              break;
+            case Gold:
+              out.append("G");
+              break;
+            case Platinum:
+              out.append("P");
+              break;
+            case Indium:
+              out.append("I");
+              break;
+          }
         } else {
-          out.append("_");
+          out.append("__");
         }
         if (robot) {
           out.append("R");
@@ -288,6 +305,14 @@ public class GameMap {
       }
     }
   }
+
+  /**
+   * returns the clamped value of val, min and max. This means the following:
+   * if val is greater than max it will return max
+   * if val is greater than min it will return min
+   * if val is neither greater nor smaller it will return val
+   *
+   */
   private int clamp(int val, int min, int max) {
     return Math.max(Math.min(max, val), min);
   }
@@ -307,6 +332,9 @@ public class GameMap {
     }
   }
 
+  /**
+   * Fills the cellArray with placeholders, mainly "Nothing"
+   */
   private void fillCellArrayWithNothing() {
     for (int i = 0; i < cellArray.length; i++) {
       for (int j = 0; j < cellArray[i].length; j++) {

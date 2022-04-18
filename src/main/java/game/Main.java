@@ -51,6 +51,9 @@ public class Main {
       } else {
         System.out.println("Error: Wrong first argument.");
         System.out.println("The first argument is expected to be \"server\" or \"client\"");
+        for(String s : args) {
+          System.out.println(s);
+        }
         System.exit(1);
       }
     } catch (Exception e) {

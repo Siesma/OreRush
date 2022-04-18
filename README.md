@@ -1,6 +1,4 @@
 
-
-
 <h3 align="center">Ore-Rush</h3>
 
   <p align="center">
@@ -51,6 +49,8 @@ Every player has five Robots that can be controlled each round by four commands.
 The following libraries are used:
 
 * [Gradle](https://gradle.org/)
+* [JavaFX](https://openjfx.io/)
+* [Log4J](https://logging.apache.org/log4j/2.x/)
 
 ## Getting Started
 
@@ -69,7 +69,7 @@ There is, currently, no need for external software to play this game!
 
 3. build the project using gradle
 
-4. launch the game
+4. launch the game using ./gradlew run --args="client <hostAddress>:<port> [<username>] | server <port>"
 
 
 ## Usage

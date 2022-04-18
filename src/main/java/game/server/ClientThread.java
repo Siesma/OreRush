@@ -27,7 +27,6 @@ public class ClientThread implements Runnable {
   private boolean pingReceived;
   private String playerName;
   private Lobby connectedLobby;
-
   private int playerScore;
   private int playerID;
   private ArrayList<Robot> robots;
@@ -258,7 +257,9 @@ public class ClientThread implements Runnable {
   }
 
   public void setPlayerScore(int playerScore) {
-    pushChatMessageToALobby(this.getConnectedLobby().getLobbyName(), this.getPlayerName() + " Increased their score to now be " + playerScore);
+    for (ClientThread clientThread: connectedLobby.getListOfClients()) {
+      (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Score()).encodeWithContent(playerName,String.valueOf(playerScore)));
+    }
     this.playerScore = playerScore;
   }
 
