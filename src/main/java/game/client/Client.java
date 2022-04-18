@@ -1,5 +1,6 @@
 package game.client;
 
+import game.datastructures.GameMap;
 import game.datastructures.Robot;
 import game.gui.LobbyController;
 import game.packet.PacketHandler;
@@ -203,6 +204,9 @@ public class Client{
         return lobbyInClient;
     }
 
+    public void printCurrentGameMap (GameMap gameMap) {
+        gameMap.printMapToConsole();
+    }
 
     public String getNickname() {
         return nickname.get();

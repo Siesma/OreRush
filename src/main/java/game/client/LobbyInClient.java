@@ -1,6 +1,9 @@
 package game.client;
 
 import game.gui.Player;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -9,7 +12,7 @@ public class LobbyInClient {
 
     private final String name;
 
-
+    private final StringProperty lastChatMessage = new SimpleStringProperty();
     private final ObservableList<Player> observablePlayerList = FXCollections.observableArrayList();
 
 
@@ -33,4 +36,11 @@ public class LobbyInClient {
     public ObservableList<Player> getPlayerData() {
         return observablePlayerList;
     }
+
+    public StringProperty lastChatMessageProperty() { return lastChatMessage;}
+
+    public void setLastChatMessage(String message) {
+        Platform.runLater(() -> lastChatMessage.setValue(message));
+    }
+
 }

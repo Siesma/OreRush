@@ -1,10 +1,7 @@
 package game.packet.packets;
 
+import game.client.InputStreamThread;
 import game.datastructures.GameMap;
-import game.datastructures.GameObject;
-import game.datastructures.Ore;
-import game.datastructures.Robot;
-import game.helper.FileHelper;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
@@ -15,7 +12,7 @@ public class Update extends AbstractPacket {
 
   public Update() {
     super("", new String[]{
-      "^[0-9]+,[0-9]+" + "_" + "(Nothing|Robot|Trap|Radar|Ore):[0-9]+(:(Trap|Radar|Ore):[0-9]+)?$"
+      "^[0-9]+,[0-9]+_(Nothing|Robot|Trap|Radar|Ore):[0-9]+(:(Trap|Radar|Ore):[0-9]+)?$"
     }, "Updating the user about the board!");
   }
 
@@ -75,56 +72,12 @@ public class Update extends AbstractPacket {
     }
     if (parent instanceof ClientThread) {
       ClientThread obj = (ClientThread) parent;
-      String[] information = AbstractPacket.splitMessageBySpacer(message, "_");
-      GameMap newMap = new GameMap(obj.getConnectedLobby().getServerSettings().getMapWidth(), obj.getConnectedLobby().getServerSettings().getMapHeight(), obj.getConnectedLobby().getServerSettings());
-      int cellX = -1, cellY = -1;
-      for (String s : information) {
-        if (s.matches("^[0-9]+,[0-9]+$")) {
-          cellX = Integer.parseInt(s.split(",")[0]);
-          cellY = Integer.parseInt(s.split(",")[1]);
-        } else {
-          if (cellX == -1 || cellY == -1) {
-            System.out.println("Somehow the cellID was not updated");
-            continue; // should not be possible if the packet is valid, will be included just in case!
-          }
-          Object object;
-          try {
-            object = (new FileHelper()).createInstanceOfClass("src/main/java/game/datastructures/" + s.split(":")[0]);
-          } catch (Exception e) {
-            System.out.println("An unidentified object!");
-            System.out.println("Ignoring this element!");
-            continue;
-          }
-          if (!(object instanceof GameObject)) {
-            System.out.println("Somehow the initial object trying to be passed is not a GameObject");
-            continue;  // should not be possible if the packet is valid, will be included just in case!
-          }
-          GameObject gameObject = (GameObject) object;
-          gameObject.setID(Integer.parseInt(s.split(":")[1]));
-          if (gameObject instanceof Robot) {
+      obj.setCurrentGameMap(GameMap.getMapFromString(message));
+    }
 
-            Object inv;
-            try {
-              inv = (new FileHelper()).createInstanceOfClass("src/main/java/game/datastructures/" + s.split(":")[2]);
-            } catch (Exception e) {
-              System.out.println("An unidentified object!");
-              System.out.println("Ignoring this element!");
-              continue;
-            }
-            if (!(inv instanceof GameObject)) {
-              System.out.println("Somehow the inventory of the Robot is not a GameObject");
-              continue;  // should not be possible if the packet is valid, will be included just in case!
-            }
-
-            GameObject inventory = (GameObject) inv;
-            inventory.setID(Integer.parseInt(s.split(":")[3]));
-            ((Robot) gameObject).loadInventory(inventory);
-          }
-
-          newMap.placeObjectOnMap(gameObject, cellX, cellY);
-        }
-      }
-      obj.setCurrentGameMap(newMap);
+    if(parent instanceof InputStreamThread) {
+      InputStreamThread obj = (InputStreamThread) parent;
+      obj.getClient().printCurrentGameMap(GameMap.getMapFromString(message));
     }
   }
 }

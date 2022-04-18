@@ -1,5 +1,7 @@
 package game.datastructures;
 
+import game.helper.FileHelper;
+import game.packet.AbstractPacket;
 import game.server.ServerSettings;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class GameMap {
     this.cellArray = new Cell[sizeX][sizeY];
     this.serverSettings = serverSettings;
     fillCellArray();
+    fillCellArrayWithNothing();
 //    spawnOreInMap();
 //    printOreMapToConsole();
   }
@@ -63,7 +66,10 @@ public class GameMap {
                 double max = oreSpawnLikelyhood * 2;
                 Cell c = cellArray[ni][nj];
                 int amount = (int) getAmountOfOre(max, 0.84d, oreSpawnLikelyhood, ni, nj, i, j, 0, 0);
-                c.place(new Ore(curOreType, amount));
+                Ore ore = new Ore();
+                ore.setAmount(amount);
+                ore.setID(1);
+                c.place(ore);
               }
             }
           }
@@ -137,8 +143,16 @@ public class GameMap {
     cellArray[x][y].place(object);
   }
 
+  public void placeObjectOnMap(GameObject gameObject, int[] xy) {
+    this.placeObjectOnMap(gameObject, xy[0], xy[1]);
+  }
+
   public void removeObjectFromMap(GameObject gameObject, int x, int y) {
     cellArray[x][y].remove(gameObject);
+  }
+
+  public void removeObjectFromMap(GameObject gameObject, int[] xy) {
+    this.removeObjectFromMap(gameObject, xy[0], xy[1]);
   }
 
   public void printMapToConsole() {
@@ -178,20 +192,19 @@ public class GameMap {
   }
 
   /**
-   *
    * Returns an array of Strings that is used to make the update packet.
    */
   public String[] cellStrings() {
     ArrayList<String> strings = new ArrayList<>();
     for (int i = 0; i < gameMapSize[0]; i++) {
       for (int j = 0; j < gameMapSize[1]; j++) {
-        StringBuilder out = new StringBuilder();
-        out.append("").append(i).append(",").append(j).append("");
         for (GameObject objectOnCell : this.getCellArray()[i][j].getPlacedObjects()) {
+          StringBuilder out = new StringBuilder();
+          out.append("").append(i).append(",").append(j).append("");
           out.append("_");
           out.append(objectOnCell.encodeToString());
+          strings.add(out.toString());
         }
-        strings.add(out.toString());
       }
     }
     String[] out = new String[strings.size()];
@@ -214,6 +227,77 @@ public class GameMap {
         cellArray[i][j] = new Cell(i, j);
       }
     }
+  }
+
+  private void fillCellArrayWithNothing() {
+    for (int i = 0; i < cellArray.length; i++) {
+      for (int j = 0; j < cellArray[i].length; j++) {
+        Nothing nothing = new Nothing();
+        nothing.setPosition(i, j);
+        nothing.setID(0);
+        cellArray[i][j].place(nothing);
+      }
+    }
+  }
+
+  public static GameMap getMapFromString(String message) {
+    String[] individualCell = AbstractPacket.splitMessageBySpacer(message);
+    ServerSettings serverSettings = new ServerSettings();
+    GameMap newMap = new GameMap(serverSettings.getMapWidth(), serverSettings.getMapHeight(), serverSettings);
+    int cellX = -1, cellY = -1;
+    for (String impliedCell : individualCell) {
+      String[] type = impliedCell.split("_");
+      for (String s : type) {
+        if (s.matches("^[0-9]+,[0-9]+$")) {
+          cellX = Integer.parseInt(s.split(",")[0]);
+          cellY = Integer.parseInt(s.split(",")[1]);
+        } else {
+
+          if (cellX == -1 || cellY == -1) {
+            System.out.println("Somehow the cell index was not updated");
+            continue;
+          }
+          String[] objectData = s.split(":");
+          String objectType = objectData[0];
+          int objectID = Integer.parseInt(objectData[1]);
+          Object object;
+          try {
+            object = (new FileHelper()).createInstanceOfClass("game.datastructures." + objectType);
+          } catch (Exception e) {
+            System.out.println("An unidentified object!");
+            System.out.println("Ignoring this element!");
+            continue;
+          }
+          if(!(object instanceof GameObject)) {
+            System.out.println(object + " \"" +objectType + "\"");
+            System.out.println("Somehow the object is no gameobject");
+            continue;
+          }
+          GameObject finalGameObject = (GameObject) object;
+          finalGameObject.setID(objectID);
+          if(objectData.length > 2) {
+            if(finalGameObject instanceof Robot) {
+              Object inv;
+              try {
+                inv = (new FileHelper()).createInstanceOfClass("game.datastructures." + s.split(":")[2]);
+              } catch (Exception e) {
+                System.out.println("An unidentified object!");
+                System.out.println("Ignoring this element!");
+                continue;
+              }
+              if (!(inv instanceof GameObject)) {
+                System.out.println("Somehow the inventory of the Robot is not a GameObject");
+                continue;  // should not be possible if the packet is valid, will be included just in case!
+              }
+              ((Robot) finalGameObject).loadInventory((GameObject) inv);
+            }
+          }
+          newMap.getCellArray()[cellX][cellY].place(finalGameObject);
+        }
+      }
+    }
+
+    return newMap;
   }
 
   public void setCellArray(Cell[][] array) {

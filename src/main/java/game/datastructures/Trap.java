@@ -27,6 +27,7 @@ public class Trap implements GameObject {
     yCoordinate = y;
   }
 
+
   /**
    * @return An array [x,y] of the current coordinates of the trap.
    */
@@ -58,6 +59,12 @@ public class Trap implements GameObject {
   public String encodeToString() {
     String s = "Trap:" + playerID;
     return s;
+  }
+
+
+  @Override
+  public String toString() {
+    return "Trap:" + this.playerID;
   }
 
   @Override

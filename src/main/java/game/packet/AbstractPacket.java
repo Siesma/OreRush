@@ -37,7 +37,7 @@ public abstract class AbstractPacket {
   }
 
   public static AbstractPacket getPacketByMessage(String message) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-    return getPacketByName(splitMessageBySpacer(replaceIndicatorChars(message))[0]);
+    return getPacketByName(splitMessageBySpacer(replaceIndicatorChars(message), String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0]);
   }
 
   /**
@@ -46,7 +46,7 @@ public abstract class AbstractPacket {
    */
   public boolean validate(String input) {
     input = replaceIndicatorChars(input);
-    String[] parts = splitMessageBySpacer(input);
+    String[] parts = splitMessageBySpacer(input, String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
     String[] possiblePackets = Objects.requireNonNull(new File(System.getProperty("user.dir") + "/src/main/java/game/packet/packets").list());
     StringBuilder appended = new StringBuilder();
     Arrays.asList(possiblePackets).forEach(e -> appended.append("|((?i)").append(e.split(".java")[0]).append(")"));
@@ -88,7 +88,7 @@ public abstract class AbstractPacket {
    * Splits a message in its components. Those components are seperated using DEFAULT_PACKET_SPACERs.
    * The DEFAULT_PACKET_SPACER is ASCII value 31.
    */
-  protected static String[] splitMessageBySpacer(String message) {
+  public static String[] splitMessageBySpacer(String message) {
     return message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
   }
 

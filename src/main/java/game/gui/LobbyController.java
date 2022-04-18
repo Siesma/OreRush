@@ -90,7 +90,7 @@ public class LobbyController {
             addition = ":" + playerRobotActionList.getSelectionModel().getSelectedItem().split("Request")[1];
         }
         this.currentRobotMovesList.getItems().set(index,
-                index + ":" + playerRobotActionList.getSelectionModel().getSelectedItem().replace("Request", "Request_").split("_")[0] + ":" + textFieldXCoord.getText() + ":" + textFieldYCoord.getText() + addition);
+                index + ":" + playerRobotActionList.getSelectionModel().getSelectedItem() + ":" + textFieldXCoord.getText() + ":" + textFieldYCoord.getText() + addition);
 
     }
 

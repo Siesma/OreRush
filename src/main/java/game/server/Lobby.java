@@ -2,6 +2,8 @@ package game.server;
 
 import game.datastructures.GameMap;
 import game.datastructures.Robot;
+import game.packet.PacketHandler;
+import game.packet.packets.Update;
 
 import java.util.ArrayList;
 
@@ -60,7 +62,10 @@ public class Lobby {
     public void updateMove () {
         turnCounter++;
         System.out.println("Trying to print the map");
-        gameMap.printMapToConsole();
+        for(ClientThread clientThread : listOfClients) {
+            (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Update()).encodeWithContent(gameMap.cellStrings()));
+        }
+//        gameMap.printMapToConsole();
     }
 
     public void addClient(ClientThread clientThread) {
@@ -80,8 +85,8 @@ public class Lobby {
     }
 
     public void startGame() {
-        generateGameMap();
         spawnRobots();
+        generateGameMap();
     }
 
     public void spawnRobots() {

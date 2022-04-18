@@ -13,7 +13,7 @@ public class Move extends AbstractPacket {
 
     public Move() {
         super("", new String[] {
-                "^[0-9]+:(Move|Dig|Request|Wait):[0-9]+:[0-9]+((:(Ore|Trap|Radar))?)$"
+                "^[0-9]+:(Move|Dig|RequestRadar|RequestTrap|Wait):[0-9]+:[0-9]+((:(Ore|Trap|Radar))?)$"
         }, "Making a move!");
     }
 
@@ -58,7 +58,7 @@ public class Move extends AbstractPacket {
                 Object object = null;
                 if (split.length > 4) {
                     try {
-                        object = (new FileHelper()).createInstanceOfClass("src/main/java/game/datastructures/" + split[4]);
+                        object = (new FileHelper()).createInstanceOfClass("game.datastructures" + split[4]);
                     } catch (Exception e) {
                         System.out.println("An unidentified object!");
                         System.out.println("Ignoring this element!");

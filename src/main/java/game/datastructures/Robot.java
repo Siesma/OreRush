@@ -55,6 +55,10 @@ public class Robot implements GameObject {
     }
   }
 
+  public void setAction (RobotAction robotAction, int[] xy, Object optionalInventoryChange) {
+    this.setAction(robotAction, xy[0], xy[1], optionalInventoryChange);
+  }
+
   /**
    * This will put the given object into the inventory of the robot
    *
@@ -85,6 +89,9 @@ public class Robot implements GameObject {
    * @return The encoded string that holds all the information of the robot
    */
   public String encodeToString() {
+    if(this.inventory == null) {
+      return "Robot:" + this.playerID;
+    }
     String encodedRobot = "robot:" + this.playerID + ":" + inventory.encodeToString();
     return encodedRobot;
   }

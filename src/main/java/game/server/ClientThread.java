@@ -4,10 +4,7 @@ import game.datastructures.GameMap;
 import game.datastructures.Robot;
 import game.packet.AbstractPacket;
 import game.packet.PacketHandler;
-import game.packet.packets.Chat;
-import game.packet.packets.Success;
-import game.packet.packets.Update;
-import game.packet.packets.Whisper;
+import game.packet.packets.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -156,7 +153,24 @@ public class ClientThread implements Runnable {
         return playerName;
     }
 
-    /**
+  /**
+   * Sends Chat packet to a all clients
+   * @param msg message that is sent preceded by the name of the sender
+   */
+  public void pushChatMessageToALobby(String lobbyName,String msg) {
+    msg = playerName + ": " + msg;
+    for (Lobby lobby:server.getLobbyArrayList()) {
+      if (lobby.getLobbyName().equals(lobbyName)) {
+        for(ClientThread clientThread : lobby.listOfClients) {
+          (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new ChatLobby()).encodeWithContent(lobbyName,msg));
+        }
+      }
+    }
+
+  }
+
+
+  /**
      * Sends Chat packet to a specific client
      *
      * @param receiverName name of the specific client that should receive the message
@@ -268,6 +282,7 @@ public class ClientThread implements Runnable {
 
     public void setCurrentGameMap(GameMap currentGameMap) {
         this.currentGameMap = currentGameMap;
+        currentGameMap.printMapToConsole();
     }
 
     public ArrayList<Robot> getRobots() {
