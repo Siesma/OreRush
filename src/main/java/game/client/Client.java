@@ -1,6 +1,5 @@
 package game.client;
 
-import game.datastructures.Robot;
 import game.packet.PacketHandler;
 import game.packet.packets.*;
 import javafx.application.Platform;
@@ -32,6 +31,8 @@ public class Client{
 
 
     private LobbyInClient lobbyInClient;
+
+    private final ObservableList<LobbyInClient> lobbyInClientObservableList = FXCollections.observableArrayList();
 
     ObservableList<String> observableClientList = FXCollections.observableArrayList();
     ListProperty<String> clientList = new SimpleListProperty<>(observableClientList);
@@ -128,11 +129,6 @@ public class Client{
     }
 
     public void joinLobby(String lobbyName) {
-        for (LobbyInClient lobby:lobbyInClientArrayList) {
-            if (lobby.getName().equals(lobbyName)) {
-                lobbyInClient = lobby;
-            }
-        }
         (new PacketHandler(this)).pushMessage(outputStream, (new JoinLobby()).encodeWithContent(lobbyName, nickname.getValue()));
     }
     public void addClient(String clientName) {
@@ -141,15 +137,15 @@ public class Client{
 
     public void addClientToLobby(String clientName, String lobbyName) {
         if(clientName.equals(getNickname())) {
-            for (LobbyInClient lobby:lobbyInClientArrayList) {
-                if (lobby.getName().equals(lobbyName)) {
-                    lobbyInClient = lobby;
+            for (LobbyInClient lobby:lobbyInClientObservableList) {
+                if (lobby.getLobbyName().equals(lobbyName)) {
+                    this.lobbyInClient = lobby;
                 }
             }
         }
 
-        for (LobbyInClient lobbyInClient:lobbyInClientArrayList) {
-            if (lobbyInClient.getName().equals(lobbyName)) {
+        for (LobbyInClient lobbyInClient:lobbyInClientObservableList) {
+            if (lobbyInClient.getLobbyName().equals(lobbyName)) {
                 lobbyInClient.addPlayer(clientName);
             }
         }
@@ -163,8 +159,8 @@ public class Client{
         Platform.runLater(() ->observableLobbyList.add(lobbyName));
     }
 
-    public void addLobbyInLobbyInClientsArrayList(String lobbyName) {
-        lobbyInClientArrayList.add(new LobbyInClient(lobbyName));
+    public void addLobbyInClient(String lobbyName) {
+        lobbyInClientObservableList.add(new LobbyInClient(lobbyName));
     }
 
     public OutputStream getOutputStream() {
@@ -217,6 +213,10 @@ public class Client{
 
     public void setLobbyInClient(LobbyInClient lobbyInClient) {
         this.lobbyInClient = lobbyInClient;
+    }
+
+    public ObservableList<LobbyInClient> getLobbyData() {
+        return lobbyInClientObservableList;
     }
 
 }

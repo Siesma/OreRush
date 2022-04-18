@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -34,9 +33,7 @@ public class LobbyController {
     private void initialize() {
         client = Client.getClient();
         lobby = client.getLobbyInClient();
-        playerTableView.setItems(
-                lobby.getPlayerData());
-        // Initialize the person table with the two columns.
+        playerTableView.setItems(lobby.getPlayerData());
         nicknameColumn.setCellValueFactory(cellData -> cellData.getValue().nicknameProperty());
         scoreColumn.setCellValueFactory(cellData -> cellData.getValue().scoreProperty());
         lobby.lastChatMessageProperty().addListener((observable, oldValue, newValue) -> {
@@ -56,11 +53,13 @@ public class LobbyController {
 
     public void handleSendMessage(ActionEvent actionEvent) {
         if (!newLobbyMessageTextField.getText().equals("")) {
-            client.sendChatMessageToLobby(lobby.getName(), newLobbyMessageTextField.getText());
+            client.sendChatMessageToLobby(lobby.getLobbyName(), newLobbyMessageTextField.getText());
             newLobbyMessageTextField.setText("");
         }
         actionEvent.consume();
     }
+
+    // TODO fix whisper only works on first person
     public void handleWhisperMessage(ActionEvent actionEvent) {
         try {
             if (!newLobbyMessageTextField.getText().equals("")) {

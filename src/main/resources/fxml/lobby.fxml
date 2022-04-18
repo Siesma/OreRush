@@ -15,8 +15,8 @@
                   <Button mnemonicParsing="false" onAction="#handleWinGame" prefHeight="25.0" prefWidth="150.0" text="Win game" />
                   <TableView fx:id="playerTableView" prefHeight="200.0" prefWidth="200.0">
                     <columns>
-                      <TableColumn fx:id="nicknameColumn" prefWidth="75.0" text="C1" />
-                      <TableColumn fx:id="scoreColumn" prefWidth="75.0" text="C2" />
+                      <TableColumn fx:id="nicknameColumn" prefWidth="75.0" text="Player" />
+                      <TableColumn fx:id="scoreColumn" prefWidth="75.0" text="Score" />
                     </columns>
                   </TableView>
                </children>

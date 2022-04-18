@@ -2,16 +2,13 @@ package game.gui;
 
 import game.Main;
 import game.client.Client;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import game.client.LobbyInClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -34,7 +31,15 @@ public class StartMenuController{
 
     @FXML private ListView<String> clientListView;
 
-    @FXML private ListView<String> lobbyListView;
+    @FXML
+    private TableView<LobbyInClient> lobbyTableView;
+    @FXML
+    private TableColumn<LobbyInClient, String> lobbyNameColumn;
+    @FXML
+    private TableColumn<LobbyInClient, String> statusColumn;
+    @FXML
+    private TableColumn<LobbyInClient, String> playerColumn;
+
 
     // TODO fix nicknames with underscore number
 
@@ -50,11 +55,12 @@ public class StartMenuController{
             chatTextFlow.getChildren().add(newMessage);
         });
         clientListView.itemsProperty().bind(client.clientListProperty());
-        lobbyListView.itemsProperty().bind(client.lobbyListProperty());
+        lobbyTableView.setItems(
+                client.getLobbyData());
+        lobbyNameColumn.setCellValueFactory(cellData -> cellData.getValue().lobbyNameProperty());
+        statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+        playerColumn.setCellValueFactory(cellData -> cellData.getValue().playersProperty());
 
-
-        lobbyListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-        });
 
         clientListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
         });
@@ -91,20 +97,30 @@ public class StartMenuController{
     }
 
     public void handleJoinLobby(ActionEvent actionEvent) {
-        if (lobbyListView.getSelectionModel().getSelectedItem() != null) {
-            client.joinLobby(lobbyListView.getSelectionModel().getSelectedItem());
+        try {
+            client.joinLobby(lobbyNameColumn.getCellObservableValue(lobbyTableView.getItems().get(lobbyTableView.getSelectionModel().getSelectedCells().get(0).getRow())).getValue());
             changeToLobbyScene();
+        } catch (Exception ignored) {
+
         }
+
         actionEvent.consume();
     }
 
     public void changeToLobbyScene() {
         try {
+            while (client.getLobbyInClient() == null) {
+                Thread.sleep(1000);
+                System.out.println("Waiting for the lobby to be created.");
+            }
+
             Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/lobby.fxml")));
             Stage stage = (Stage) nickname.getScene().getWindow();
             stage.setScene(new Scene(parent));
-        }catch (IOException io){
+        }catch (IOException io) {
             io.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

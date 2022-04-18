@@ -35,8 +35,14 @@
                         </HBox>
                     </children>
                 </VBox>
-            <ListView fx:id="clientListView" prefHeight="296.0" prefWidth="185.0" />
-            <ListView fx:id="lobbyListView" prefHeight="296.0" prefWidth="185.0" />
+                <ListView fx:id="clientListView" prefHeight="296.0" prefWidth="185.0" />
+                <TableView fx:id="lobbyTableView" prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                        <TableColumn fx:id="lobbyNameColumn" prefWidth="75.0" text="Lobby" />
+                        <TableColumn fx:id="statusColumn" prefWidth="75.0" text="Status" />
+                        <TableColumn fx:id="playerColumn" prefWidth="75.0" text="Players" />
+                    </columns>
+                </TableView>
             </children>
         </HBox>
     </center>
