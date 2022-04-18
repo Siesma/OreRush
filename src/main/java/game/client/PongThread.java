@@ -3,11 +3,15 @@ package game.client;
 
 import game.packet.PacketHandler;
 import game.packet.packets.Awake;
+import game.server.Server;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.OutputStream;
 
 
 public class PongThread implements Runnable {
+    public static final Logger logger = LogManager.getLogger(Server.class);
 
     private final Client client;
 
@@ -16,7 +20,7 @@ public class PongThread implements Runnable {
     }
 
     public void run() {
-        System.out.println("Pong thread started");
+        logger.info("Pong thread started");
         while (true) {
             sendPong();
             try {
@@ -26,8 +30,8 @@ public class PongThread implements Runnable {
             }
 
             if (!client.isPongReceived()) {
-                System.out.println("No response from the server.");
-                System.out.println("The client will shutdown shortly.");
+                logger.error("No response from the server, The client will shutdown shortly.");
+
                 client.shutDownClient(); // TODO: try and reconnect to server
             } else {
                 client.setPongReceived(false);
@@ -47,7 +51,7 @@ public class PongThread implements Runnable {
         try {
             (new PacketHandler(this)).pushMessage(client.getOutputStream(), (new Awake().encode()));
         } catch (Exception e) {
-            System.out.println("Client-server connection lost");
+            logger.fatal("Client-server connection lost");
         }
     }
 }

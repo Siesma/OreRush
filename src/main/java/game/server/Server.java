@@ -19,7 +19,8 @@ public class Server {
     public void run(int port) throws IOException {
 
         ServerSocket serverSocket = new ServerSocket(port);
-        System.out.println("Now listening on port " + port);
+        logger.info("Now listening on port " + port);
+
 
 
 //        PingThread pT = new PingThread();
@@ -28,15 +29,15 @@ public class Server {
 
         while (true) {
             try {
-                System.out.println(clientThreads.size() + " clients are connected to the server.");
-                System.out.println("Waiting for client connection... ");
+                logger.info(clientThreads.size() + " clients are connected to the server.");
+                logger.info("Waiting for client connection... ");
 
                 Socket socket = serverSocket.accept();
                 ClientThread cT = new ClientThread(this, socket);
                 clientThreads.add(cT);
                 Thread clientThread = new Thread(cT);
                 clientThread.start();
-                System.out.println("New client connected.");
+                logger.info("New client connected.");
 
 
             } catch (IOException e) {

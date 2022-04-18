@@ -3,7 +3,10 @@ package game.client;
 import game.packet.AbstractPacket;
 import game.packet.PacketHandler;
 import game.packet.packets.Success;
+import game.server.Server;
 import game.server.ServerConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +16,7 @@ public class InputStreamThread implements Runnable {
     private final Client client;
     private final InputStream in;
     private final OutputStream out;
+    public static final Logger logger = LogManager.getLogger(Server.class);
 
 
     public InputStreamThread(Client client) {
@@ -46,7 +50,7 @@ public class InputStreamThread implements Runnable {
                 try {
                     AbstractPacket receivedPacket = AbstractPacket.getPacketByMessage(message);
                     if (receivedPacket == null) {
-                        System.out.println("The received packet contains garbage.");
+                        logger.info("The received packet contains garbage.");
                         break;
                     }
 //                    generateAppropriateReaction(receivedPacket);
@@ -80,7 +84,9 @@ public class InputStreamThread implements Runnable {
         try {
             (new PacketHandler(this)).pushMessage(out, (new Success()).encode());
         } catch (Exception e) {
-            System.out.println("Client-server connection lost");
+            logger.error("Client-server connection lost",
+                    new Exception()
+            );
         }
     }
 }

@@ -5,6 +5,9 @@ import game.datastructures.Robot;
 import game.packet.AbstractPacket;
 import game.packet.PacketHandler;
 import game.packet.packets.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +19,7 @@ import static org.apache.logging.log4j.core.appender.rewrite.MapRewritePolicy.Mo
 
 public class ClientThread implements Runnable {
 
+    public static final Logger logger = LogManager.getLogger(ClientThread.class);
     private final Server server;
     private final Socket socket;
     private final InputStream inputStream;
@@ -50,13 +54,13 @@ public class ClientThread implements Runnable {
                 cur = inputStream.read();
             } catch (IOException e) {
                 removeThreadFromServer();
-                System.out.println("Client disconnected.");
+                logger.info("Client disconnected.");
                 if (Server.getClientThreads().size() == 0) {
-                    System.out.println("No clients are connected to the server.");
+                    logger.info("No clients are connected to the server.");
                 } else if (Server.getClientThreads().size() == 1) {
-                    System.out.println("1 client is connected to the server.");
+                    logger.info("1 client is connected to the server.");
                 } else {
-                    System.out.println(Server.getClientThreads().size()
+                      logger.info(Server.getClientThreads().size()
                             + " clients are connected to the server.");
                 }
 
@@ -238,7 +242,7 @@ public class ClientThread implements Runnable {
         try {
             (new PacketHandler(this)).pushMessage(outputStream, (new Success()).encode());
         } catch (Exception e) {
-            System.out.println("Server-Client connection has been lost");
+            logger.error("Server-Client connection has been lost");
         }
     }
 

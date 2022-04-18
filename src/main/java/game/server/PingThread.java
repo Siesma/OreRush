@@ -2,6 +2,8 @@ package game.server;
 
 import game.packet.PacketHandler;
 import game.packet.packets.Awake;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -9,9 +11,10 @@ import java.util.ArrayList;
 
 public class PingThread implements Runnable {
     ArrayList<ClientThread> clientsWithNoResponse = new ArrayList<>();
+    public static final Logger logger = LogManager.getLogger(Server.class);
 
     public void run() {
-        System.out.println("Ping thread started");
+        logger.info("Ping thread started");
         while (true) {
             // creates a copy of the connected clients to avoid ConcurrentModificationErrors (different solution?)
             ArrayList<ClientThread> list = new ArrayList<>(Server.getClientThreads());
@@ -25,10 +28,10 @@ public class PingThread implements Runnable {
                     e.printStackTrace();
                 }
                 if (!clientThread.isPingReceived()) {
-                    System.out.println("No response from "
+                    logger.warn("No response from "
                       + clientThread.getPlayerName()
                       + " after 3 seconds.");
-                    System.out.println("The connection has been interrupted");
+                    logger.warn("The connection has been interrupted");
                     clientsWithNoResponse.add(clientThread);
                     clientThread.setConnectedToServer(false);
                 } else {

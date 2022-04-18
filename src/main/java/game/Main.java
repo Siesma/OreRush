@@ -9,6 +9,8 @@ import game.gui.ClientApp;
 import game.packet.packets.Update;
 import game.server.Server;
 import javafx.application.Application;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -18,6 +20,7 @@ public class Main {
     public static String hostAddress;
     public static String port;
     public static String name;
+
 
     public static void main(String[] args) {
         if (args.length == 0) {

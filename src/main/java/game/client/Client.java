@@ -12,7 +12,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -30,6 +31,7 @@ public class Client{
 
     private final StringProperty nickname;
     private final StringProperty lastChatMessage = new SimpleStringProperty();
+    public static final Logger logger = LogManager.getLogger(Client.class);
 
     private LobbyInClient lobbyInClient;
 
@@ -48,7 +50,8 @@ public class Client{
         try {
             socket = new Socket(hostAddress, port);
         } catch (Exception e) {
-            System.out.println("The connection with the server failed. \nPlease ensure the server is running with same port and try again. ");
+            logger.fatal("The connection with the server failed. Please ensure the server is running with same port and try again. " ,
+                    new Exception());
             System.exit(0);
         }
         try {
@@ -86,7 +89,7 @@ public class Client{
      * Shuts down the client.
      */
     public void shutDownClient() {
-        System.out.println("terminating ..");
+        logger.info("terminating ..");
         try {
             inputStream.close();
             outputStream.close();
@@ -94,7 +97,9 @@ public class Client{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("EXITING");
+        logger.info("EXITING",
+                new Exception()
+        );
         System.exit(0);
     }
 
