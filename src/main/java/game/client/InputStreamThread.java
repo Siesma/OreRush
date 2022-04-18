@@ -2,6 +2,7 @@ package game.client;
 
 import game.packet.AbstractPacket;
 import game.packet.PacketHandler;
+import game.packet.packets.Nickname;
 import game.packet.packets.Success;
 import game.server.Server;
 import game.server.ServerConstants;
@@ -45,7 +46,7 @@ public class InputStreamThread implements Runnable {
       if (cur == ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE) {
         startingToRecordMessage = false;
         String message = builder.toString();
-        System.out.println("client received: " + message);
+        System.out.println("client received: " + AbstractPacket.splitMessageBySpacer(message)[0]);
         builder.setLength(0);
 
         //This part here prints out what the server received. This is here just for bug fixing and manual validation.
