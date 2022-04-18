@@ -56,6 +56,7 @@ public class LobbyController {
             Text newMessage = new Text(newValue);
             chatLobbyTextFlow.getChildren().add(newMessage);
         });
+        playerTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {});
        // Initialize the list of the robots of the player.
        // Also initializes the default Move of the robots, to wait.
 
@@ -133,7 +134,7 @@ public class LobbyController {
     public void handleWhisperMessage(ActionEvent actionEvent) {
         try {
             if (!newLobbyMessageTextField.getText().equals("")) {
-                client.sendWhisper(nicknameColumn.getCellObservableValue(playerTableView.getItems().get(playerTableView.getSelectionModel().getSelectedCells().get(0).getRow())).toString(), newLobbyMessageTextField.getText());
+                client.sendWhisper(playerTableView.getSelectionModel().getSelectedItem().getNickname(), newLobbyMessageTextField.getText());
                 newLobbyMessageTextField.setText("");
             }
         } catch (Exception ignored) {}
