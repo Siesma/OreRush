@@ -54,8 +54,7 @@ public class Client {
     try {
       socket = new Socket(hostAddress, port);
     } catch (Exception e) {
-      logger.fatal("The connection with the server failed. Please ensure the server is running with same port and try again. ",
-              new Exception());
+      logger.fatal("The connection with the server failed. Please ensure the server is running with same port and try again. ", e);
       System.exit(0);
     }
     try {

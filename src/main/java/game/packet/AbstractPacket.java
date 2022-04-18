@@ -1,6 +1,9 @@
 package game.packet;
 
+import game.server.Server;
 import game.server.ServerConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Arrays;
@@ -13,6 +16,7 @@ public abstract class AbstractPacket {
   private final String help;
   private final String[] parts;
   private final String response;
+  public static final Logger logger = LogManager.getLogger(Server.class);
 
   public AbstractPacket(String help, String[] parts, String response) {
     String[] temp = this.getClass().toString().split("\\.");
@@ -59,7 +63,7 @@ public abstract class AbstractPacket {
 //    }
     for (int i = 0; i < parts.length; i++) {
       if (!parts[i].matches(this.getParts()[i % this.getParts().length])) {
-        System.out.println(parts[i] + " Was not properly encoded!!!");
+        logger.debug(parts[i] + " Was not properly encoded!!!");
         return false;
       }
     }

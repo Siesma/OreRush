@@ -63,8 +63,8 @@ public class Move extends AbstractPacket {
                     try {
                         object = (new FileHelper()).createInstanceOfClass("game.datastructures" + split[4]);
                     } catch (Exception e) {
-                        System.out.println("An unidentified object!");
-                        System.out.println("Ignoring this element!");
+                        logger.error("An unidentified object!");
+                        logger.error("Ignoring this element!");
                     }
                 }
                 if (!(object instanceof GameObject)) {
@@ -86,8 +86,8 @@ public class Move extends AbstractPacket {
                 obj.getConnectedLobby().getGameMap().replaceObject(obj.getRobots().get(id), result);
                 obj.getRobots().get(id).setAction(action, result, gameObject);
                 if(action == RobotAction.Dig || action == RobotAction.RequestRadar || action == RobotAction.RequestTrap) {
-                    System.out.println("The robot tries to update their inventory.");
-                    System.out.println(obj.getRobots().get(id).getInventory().toString());
+                    logger.debug("The robot tries to update their inventory.");
+                    logger.debug(obj.getRobots().get(id).getInventory().toString());
                 }
                 if(obj.getRobots().get(id).getInventory() instanceof Ore) {
                     if(obj.getRobots().get(id).getPosition()[0] == 0) {

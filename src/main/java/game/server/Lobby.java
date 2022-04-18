@@ -4,6 +4,8 @@ import game.datastructures.GameMap;
 import game.datastructures.Robot;
 import game.packet.PacketHandler;
 import game.packet.packets.Update;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
@@ -14,6 +16,7 @@ public class Lobby {
   protected GameMap gameMap;
   protected ServerSettings serverSettings; // just basic functionality to set constants, not modifiable yet.
   protected int turnCounter;
+  public static final Logger logger = LogManager.getLogger(Server.class);
 
   public Lobby(String lobbyName, ClientThread clientThread) {
     this.lobbyName = lobbyName;
@@ -45,13 +48,13 @@ public class Lobby {
    * cropped down.
    */
   public int[] getNextMove(Robot r, int[] destination) {
-    System.out.println("Trying to get the new position for the robot");
-    System.out.println("From: " + r.getPosition()[0] + " " + r.getPosition()[1] + "; to: " + destination[0] + " " + destination[1]);
+    logger.debug("Trying to get the new position for the robot");
+    logger.debug("From: " + r.getPosition()[0] + " " + r.getPosition()[1] + "; to: " + destination[0] + " " + destination[1]);
     int xDif = (destination[0] - r.getPosition()[0]);
     int yDif = (destination[1] - r.getPosition()[1]);
     int xMoves = Math.min(serverSettings.getMaxAllowedMoves(), xDif);
     int yMoves = Math.min(serverSettings.getMaxAllowedMoves() - xMoves, yDif);
-    System.out.println("Due to the max allowed cells that someone can move the robot is now at " + (r.getPosition()[0] + xMoves) + " " + (r.getPosition()[1] + yMoves));
+    logger.debug("Due to the max allowed cells that someone can move the robot is now at " + (r.getPosition()[0] + xMoves) + " " + (r.getPosition()[1] + yMoves));
     return new int[]{r.getPosition()[0] + xMoves, r.getPosition()[1] + yMoves};
   }
 

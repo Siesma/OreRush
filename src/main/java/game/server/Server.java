@@ -40,7 +40,7 @@ public class Server {
 
 
       } catch (IOException e) {
-        logger.error("e");
+        logger.error(e.getMessage());
         e.printStackTrace();
         System.out.println("EXITING");
         System.exit(1);

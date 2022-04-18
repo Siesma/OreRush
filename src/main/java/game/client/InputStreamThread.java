@@ -87,7 +87,7 @@ public class InputStreamThread implements Runnable {
     try {
       (new PacketHandler(this)).pushMessage(out, (new Success()).encode());
     } catch (Exception e) {
-      System.out.println("Client-server connection lost");
+      logger.error("Client-server connection lost", e.getMessage());
     }
   }
 }

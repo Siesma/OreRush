@@ -2,7 +2,10 @@ package game.datastructures;
 
 import game.helper.FileHelper;
 import game.packet.AbstractPacket;
+import game.server.Server;
 import game.server.ServerSettings;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.plaf.basic.BasicBorders;
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ public class GameMap {
   private Cell[][] cellArray;
 
   private ServerSettings serverSettings;
+  public static final Logger logger = LogManager.getLogger(Server.class);
 
   public GameMap(int sizeX, int sizeY, ServerSettings serverSettings) {
     this.gameMapSize[0] = sizeX;
@@ -236,7 +240,7 @@ public class GameMap {
     }
     ArrayList<GameObject> placedObjects = cellArray[curPosition[0]][curPosition[1]].getPlacedObjects();
     if(!placedObjects.contains(object)) {
-      System.out.println("The placed object was not on the original position");
+      logger.error("The placed object was not on the original position");
       return;
     }
     if (!isInBounds(newPosition, new int[] {0, 0}, gameMapSize)) {
@@ -307,7 +311,7 @@ public class GameMap {
         } else {
 
           if (cellX == -1 || cellY == -1) {
-            System.out.println("Somehow the cell index was not updated");
+            logger.error("Somehow the cell index was not updated");
             continue;
           }
           String[] objectData = s.split(":");
@@ -317,13 +321,13 @@ public class GameMap {
           try {
             object = (new FileHelper()).createInstanceOfClass("game.datastructures." + objectType);
           } catch (Exception e) {
-            System.out.println("An unidentified object!");
-            System.out.println("Ignoring this element!");
+            logger.error("An unidentified object!");
+            logger.error("Ignoring this element!");
             continue;
           }
           if (!(object instanceof GameObject)) {
-            System.out.println(object + " \"" + objectType + "\"");
-            System.out.println("Somehow the object is no gameobject");
+            logger.debug(object + " \"" + objectType + "\"");
+            logger.debug("Somehow the object is no gameobject");
             continue;
           }
           GameObject finalGameObject = (GameObject) object;
@@ -334,12 +338,12 @@ public class GameMap {
               try {
                 inv = (new FileHelper()).createInstanceOfClass("game.datastructures." + s.split(":")[2]);
               } catch (Exception e) {
-                System.out.println("An unidentified object!");
-                System.out.println("Ignoring this element!");
+                logger.error("An unidentified object!");
+                logger.error("Ignoring this element!");
                 continue;
               }
               if (!(inv instanceof GameObject)) {
-                System.out.println("Somehow the inventory of the Robot is not a GameObject");
+                logger.debug("Somehow the inventory of the Robot is not a GameObject");
                 continue;  // should not be possible if the packet is valid, will be included just in case!
               }
               ((Robot) finalGameObject).loadInventory((GameObject) inv);

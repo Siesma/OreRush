@@ -41,7 +41,7 @@ public class Nickname extends AbstractPacket {
    */
   @Override
   public String encode() {
-    System.out.println("What do you want your new name to be?");
+    //System.out.println("What do you want your new name to be?");
     return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
       this.name +
       (char) ServerConstants.DEFAULT_PACKET_SPACER +

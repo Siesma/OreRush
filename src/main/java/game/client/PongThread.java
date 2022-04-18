@@ -49,7 +49,7 @@ public class PongThread implements Runnable {
         try {
             (new PacketHandler(this)).pushMessage(client.getOutputStream(), (new Awake().encode()));
         } catch (Exception e) {
-            logger.fatal("Client-server connection lost");
+            logger.fatal("Client-server connection lost", e.getMessage());
         }
     }
 }

@@ -1,6 +1,9 @@
 package game.packet;
 
+import game.client.Client;
 import game.server.ServerConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.OutputStream;
@@ -10,6 +13,7 @@ import java.util.Scanner;
 public class PacketHandler {
 
   private Object parent;
+  public static final Logger logger = LogManager.getLogger(Client.class);
 
   public PacketHandler(Object parent) {
     this.parent = parent;
@@ -38,7 +42,7 @@ public class PacketHandler {
       System.out.println("The specified packet does not exist!");
       return null;
     } catch (IllegalAccessException illegalAccessException) {
-      System.out.println("You are not allowed to access the specified file!");
+      logger.fatal("You are not allowed to access the specified file!");
       return null;
     }
     if (packet == null) {
@@ -66,7 +70,7 @@ public class PacketHandler {
       System.out.println("The specified packet does not exist!");
       return;
     } catch (IllegalAccessException illegalAccessException) {
-      System.out.println("You are not allowed to access the specified file!");
+      logger.fatal("You are not allowed to access the specified file!");
       return;
     }
     if (packet == null) {
