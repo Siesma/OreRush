@@ -46,7 +46,7 @@ public class Move extends AbstractPacket {
         }
         if (parent instanceof ClientThread) {
             ClientThread obj = (ClientThread) parent;
-            if(obj.getConnectedLobby().getTurnCounter() % obj.getConnectedLobby().getListOfClients().size() != obj.getConnectedLobby().getIDOfClient(obj)) {
+            if(obj.getConnectedLobby().turnOfPlayer() != obj.getConnectedLobby().getIDOfClient(obj)) {
                 System.out.println("Player " + obj.getPlayerName() + " tried to make a turn but its not their turn.");
                 System.out.println("Ignoring this turn attempt.");
                 return;

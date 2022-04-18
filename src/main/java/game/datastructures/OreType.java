@@ -2,10 +2,15 @@ package game.datastructures;
 
 public enum OreType {
 
-  Copper(), Iron(), Gold(), Platinum(), Indium();
+  Copper(1), Iron(2), Gold(4), Platinum(6), Indium(9);
 
-  OreType() {
+  int value;
+  OreType(int value) {
+    this.value = value;
+  }
 
+  int getValue () {
+    return this.value;
   }
 
 }
