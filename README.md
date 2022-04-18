@@ -1,5 +1,4 @@
 
-
 <h3 align="center">Ore-Rush</h3>
 
   <p align="center">
@@ -50,8 +49,8 @@ Every player has five Robots that can be controlled each round by four commands.
 The following libraries are used:
 
 * [Gradle](https://gradle.org/)
-* [JavaFX] (https://openjfx.io/)
-* [Log4J] (https://logging.apache.org/log4j/2.x/)
+* [JavaFX](https://openjfx.io/)
+* [Log4J](https://logging.apache.org/log4j/2.x/)
 
 ## Getting Started
 
