@@ -41,9 +41,9 @@ public class ServerSettings {
    */
   public ServerSettings(int numberOfRobots, int mapWidth, int mapHeight, int numberOfRounds, ArrayList<Object> ores) {
     setDefaultValues();
-    numberOfRobots = numberOfRobots;
-    mapWidth = mapWidth;
-    mapHeight = mapHeight;
+    this.numberOfRobots = numberOfRobots;
+    this.mapWidth = mapWidth;
+    this.mapHeight = mapHeight;
     this.numberOfRounds = numberOfRounds;
     this.ores = ores;
   }
@@ -64,7 +64,7 @@ public class ServerSettings {
   }
 
   public ServerSettings setNumberOfRobots(int numberOfRobots) {
-    numberOfRobots = numberOfRobots;
+    this.numberOfRobots = numberOfRobots;
     return this;
   }
 
@@ -73,7 +73,7 @@ public class ServerSettings {
   }
 
   public ServerSettings setMapWidth(int mapWidth) {
-    mapWidth = mapWidth;
+    this.mapWidth = mapWidth;
     return this;
   }
 
@@ -82,7 +82,7 @@ public class ServerSettings {
   }
 
   public ServerSettings setMapHeight(int mapHeight) {
-    mapHeight = mapHeight;
+    this.mapHeight = mapHeight;
     return this;
   }
 
