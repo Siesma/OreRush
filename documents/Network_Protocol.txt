@@ -44,6 +44,7 @@ JoinLobby NAME_DER_LOBBY NAME_DES_SPIELERS
 LeaveLobby NAME_DER_LOBBY NAME_DES_SPIELERS
 Move (ID_DES_ROBOTERS:ROBOTER_AKTION:X_COORDINATE:Y_COORDINATE(:OPTIONALES_INVENTAR)) wiederholt
 Nickname ALTER_NAME_DES_SPIELERS NEUER_NAME_DES_SPIELERS
+Score NAME_DES_SPIELERS NEUER_SCORE
 Success success
 Timeout NAME_DES_SERVERS timeout
 Update (X_COORDINATE, Y_COORDINATE:OBJEKT_AUF_ZELLE:ID_DES_OBJEKTES(:OPTIONALES_INVENTAR:ID_DES_OPTIONALEN_INVENTARS)) wiederholt
@@ -59,6 +60,7 @@ CreateLobby wird dafür genutzt um eine Lobby auf dem jeweiligen Server anzulege
 LeaveLobby wird dafür genutzt um die Lobby zu verlassen.
 Move wird dafür genutzt um die Roboter zu bewegen.
 Nickname wird dafür genutzt um den Namen des Spielers zu aktualisieren.
+Score wird dafür genutzt um den Score eines Spielers zu aktualisieren.
 Success wird dafür genutzt um eine erfolgreich initialisierte Verbindung zu signalisieren.
 Timeout wird dafür genutzt anzuzeigen, dass eine Verbindung getrennt wird.
 Update wird dafür genutzt das Spielfeld an alle Spieler zu senden.
