@@ -30,3 +30,39 @@ Die encode funktion muss lediglichdie besondere Packetstruktur besitzten und sof
 
 Die decode funktion bekommt zwei Parameter übergeben. Der eine ist das Object selber welches die jeweilige Decode funktion aufgerufen hat. Dies wird dafür genutzt, dass eine bidirektionalität von Packets möglich ist, da dort dann angegeben werden kann welche Teile der einezlenen Parent-Klassen verändert werden sollen.
 Der andere Parameter ist lediglich ein String welcher den Inhalt des erhaltenden Packets darstellt. Dieser wird dafür genutzt, dass die Inhalte richtig an das Parent-Objekt übermittelt und verarbeitet werden.
+
+Die folgenden Packets, mit der korrekten Encodierung, sind bisher definiert (aus Lesbarkeitsgründen werden die Begin und End Zeichen komplett ausgelassen und müssen sich am Anfang und Ende beigedacht werden. Ebenso werden die "SPACER" mit einfachen " " abgekürzt.):
+
+Awake awake
+Broadcast EINE_NACHRICHT
+Chat EINE_NACHRICHT
+ChatLobby NAME_DER_LOBBY EINE_NACHRICHT
+Close close
+Connect NAME_DES_SPIELERS
+CreateLobby NAME_DER_LOBBY
+JoinLobby NAME_DER_LOBBY
+LeaveLobby NAME_DER_LOBBY
+Move (ID_DES_ROBOTERS:ROBOTER_AKTION:X_COORDINATE:Y_COORDINATE(:OPTIONALES_INVENTAR)) wiederholt
+Nickname NEUER_NAME_DES_SPIELERS
+Success success
+Timeout NAME_DES_SERVERS timeout
+Update (X_COORDINATE, Y_COORDINATE:OBJEKT_AUF_ZELLE:ID_DES_OBJEKTES(:OPTIONALES_INVENTAR:ID_DES_OPTIONALEN_INVENTARS)) wiederholt
+Whisper EINE_NACHRICHT
+
+
+Awake wird dafür genutzt um zu überprüfen ob der Client noch verbunden ist.
+Broadcast wird dafür genutzt um eine Nachricht über alle Lobbies zu senden.
+Chat wird dafür genutzt um in dem derzeiten Raum eine Nachricht zu senden.
+Close wird dafür genutzt um eine Verbindung zu trennen.
+Connect wird dafür genutzt um den Spieler mit dem Server zu verbinden.
+CreateLobby wird dafür genutzt um eine Lobby auf dem jeweiligen Server anzulegen.
+LeaveLobby wird dafür genutzt um die Lobby zu verlassen.
+Move wird dafür genutzt um die Roboter zu bewegen.
+Nickname wird dafür genutzt um den Namen des Spielers zu aktualisieren.
+Success wird dafür genutzt um eine erfolgreich initialisierte Verbindung zu signalisieren.
+Timeout wird dafür genutzt anzuzeigen, dass eine Verbindung getrennt wird.
+Update wird dafür genutzt das Spielfeld an alle Spieler zu senden.
+Whisper wird dafür genutzt um eine Nachricht an einen spezifischen Spieler zu senden.
+
+
+Um ein neues Packet zu senden muss eine neue Instanz des "PacketHandlers" erstellt werden und auf diesem muss die Funktion "pushMessage" aufgerufen werden. Diese erwartet zwei Parameter, der erste ist der OutputStream an welchen das jeweilige Packet gesendet werden soll und der zweite Parameter ist die eigentliche Nachricht selber in String form.
