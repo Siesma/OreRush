@@ -12,7 +12,7 @@ public class Update extends AbstractPacket {
 
   public Update() {
     super("", new String[]{
-      "^[0-9]+,[0-9]+_(Nothing|Robot|Trap|Radar|Ore):[0-9]+(:(Trap|Radar|Ore):[0-9]+)?$"
+      "^[0-9]+,[0-9]+_(Nothing|Robot|Trap|Radar|Ore):[0-9]+(:(Nothing|Trap|Radar|Ore):[0-9]+)?$"
     }, "Updating the user about the board!");
   }
 
@@ -50,6 +50,10 @@ public class Update extends AbstractPacket {
    */
   @Override
   public void decode(Object parent, String message) {
+
+    //7,2_robot:0:Ore:1
+    "".matches("^[0-9]+,[0-9]+_(Nothing|Robot|Trap|Radar|Ore):[0-9]+(:(Nothing|Trap|Radar|Ore):[0-9]+)?$");
+
     /*
     Packet structure would be:
     - Cell

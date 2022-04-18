@@ -76,6 +76,20 @@ public class Lobby {
     System.out.println("---");
   }
 
+  public int getTurnCounter() {
+    return turnCounter;
+  }
+
+  public int getIDOfClient (ClientThread clientThread) {
+    for(int i = 0; i < listOfClients.size(); i++) {
+      ClientThread c = listOfClients.get(i);
+      if(c.getPlayerName().equals(clientThread.getPlayerName())) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
 
   public String getLobbyName() {
     return lobbyName;

@@ -11,16 +11,15 @@ import java.io.OutputStream;
 
 
 public class PongThread implements Runnable {
-    public static final Logger logger = LogManager.getLogger(Server.class);
 
     private final Client client;
+    public static final Logger logger = LogManager.getLogger(Server.class);
 
     public PongThread(Client client) {
         this.client = client;
     }
-
     public void run() {
-        logger.info("Pong thread started");
+        System.out.println("Pong thread started");
         while (true) {
             sendPong();
             try {
@@ -31,7 +30,6 @@ public class PongThread implements Runnable {
 
             if (!client.isPongReceived()) {
                 logger.error("No response from the server, The client will shutdown shortly.");
-
                 client.shutDownClient(); // TODO: try and reconnect to server
             } else {
                 client.setPongReceived(false);

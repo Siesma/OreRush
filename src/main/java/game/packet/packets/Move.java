@@ -1,8 +1,6 @@
 package game.packet.packets;
 
-import game.datastructures.GameObject;
-import game.datastructures.Robot;
-import game.datastructures.RobotAction;
+import game.datastructures.*;
 import game.helper.FileHelper;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
@@ -48,6 +46,11 @@ public class Move extends AbstractPacket {
         }
         if (parent instanceof ClientThread) {
             ClientThread obj = (ClientThread) parent;
+            if(obj.getConnectedLobby().getTurnCounter() % obj.getConnectedLobby().getListOfClients().size() != obj.getConnectedLobby().getIDOfClient(obj)) {
+                System.out.println("Player " + obj.getPlayerName() + " tried to make a turn but its not their turn.");
+                System.out.println("Ignoring this turn attempt.");
+                return;
+            }
             String[] data = splitMessageBySpacer(message);
             for (String s : data) {
                 String[] split = s.split(":");
@@ -86,11 +89,15 @@ public class Move extends AbstractPacket {
                     System.out.println("The robot tries to update their inventory.");
                     System.out.println(obj.getRobots().get(id).getInventory().toString());
                 }
-                if(obj.getRobots().get(id).getPosition()[0] == 0) {
-                    //TODO: Increase score!
+                if(obj.getRobots().get(id).getInventory() instanceof Ore) {
+                    if(obj.getRobots().get(id).getPosition()[0] == 0) {
+                        obj.setPlayerScore(obj.getPlayerScore() + 1);
+                        obj.getRobots().get(id).loadInventory(new Nothing());
+                    }
                 }
             }
             obj.getConnectedLobby().updateMove();
+            obj.updatePlayersAboutMapChanges();
         }
     }
 }

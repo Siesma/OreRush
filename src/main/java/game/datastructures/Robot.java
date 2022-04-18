@@ -103,7 +103,7 @@ public class Robot implements GameObject {
     if(this.inventory == null) {
       return "Robot:" + this.playerID;
     }
-    String encodedRobot = "robot:" + this.playerID + ":" + inventory.encodeToString();
+    String encodedRobot = "Robot:" + this.playerID + ":" + inventory.encodeToString();
     return encodedRobot;
   }
 

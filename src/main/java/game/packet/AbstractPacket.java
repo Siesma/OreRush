@@ -59,6 +59,7 @@ public abstract class AbstractPacket {
 //    }
     for (int i = 0; i < parts.length; i++) {
       if (!parts[i].matches(this.getParts()[i % this.getParts().length])) {
+        System.out.println(parts[i] + " Was not properly encoded!!!");
         return false;
       }
     }
