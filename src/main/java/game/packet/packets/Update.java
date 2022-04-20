@@ -15,9 +15,9 @@ public class Update extends AbstractPacket {
 
 
   /**
-   * Will encode incoming data >as is<.
+   * Will encode incoming data "as is".
    * Normal behaviour should create something like this:
-   * "CellX","CellY" "SPACER" "ObjectOnCell_1:InformationForObject_1:..."SPACER"ObjectOnCell_2:InformationForObject_2:..." + "SPACER" -> repeat
+   * "CellX","CellY" "SPACER" "ObjectOnCell_1:InformationForObject_1:..."SPACER"ObjectOnCell_2:InformationForObject_2:..." + "SPACER" to repeat
    */
   @Override
   public String encodeWithContent(String... content) {

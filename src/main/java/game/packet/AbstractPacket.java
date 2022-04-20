@@ -29,6 +29,8 @@ public abstract class AbstractPacket {
   /**
    * Returns a new instance of the class with the specified name in the folder "packet.packets".
    * This is used to not have to hardcode any allowed packets.
+   * @param name the name of the packet
+   * @return TODO: Tom please fill this
    */
   public static AbstractPacket getPacketByName(String name) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
     try {
@@ -47,6 +49,8 @@ public abstract class AbstractPacket {
   /**
    * Validates a given input by matching it against the packet parts.
    * The parts are a predefined blueprint in how to produce a message for a given packet.
+   * @param input the encoded packet
+   * @return is this encoded packet valid?
    */
   public boolean validate(String input) {
     input = replaceIndicatorChars(input);
@@ -72,6 +76,8 @@ public abstract class AbstractPacket {
 
   /**
    * Prompts a user to enter a String.
+   * @param sc the scanner that is waiting for a user input
+   * @return the string the user has entered
    */
   protected static String promptUserForInput(Scanner sc) {
     return sc.nextLine();
@@ -82,6 +88,8 @@ public abstract class AbstractPacket {
    * Cuts of characters that are only used for indicating a packet. Those are the
    * DEFAULT_PACKET_STARTING_MESSAGE and the DEFAULT_PACKET_ENDING_MESSAGE which are respectively
    * ASCII value 2 and ASCII value 3.
+   * @param message the string that should be manipulated
+   * @return the manipulated string
    */
   protected static String replaceIndicatorChars(String message) {
     message = message.replace(String.valueOf((char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE), "");
@@ -92,6 +100,8 @@ public abstract class AbstractPacket {
   /**
    * Splits a message in its components. Those components are seperated using DEFAULT_PACKET_SPACERs.
    * The DEFAULT_PACKET_SPACER is ASCII value 31.
+   * @param message some message that should be split into pieces
+   * @return the message split into pieces as an array
    */
   public static String[] splitMessageBySpacer(String message) {
     return message.split(String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
@@ -110,6 +120,8 @@ public abstract class AbstractPacket {
 
   /**
    * Helperfunction that removes the first element of a given array and returns the remaining subset.
+   * @param in some input array
+   * @return a new string array with the first element of the input array removed
    */
   public static String[] removeFirstElement(String[] in) {
     String[] out = new String[in.length - 1];

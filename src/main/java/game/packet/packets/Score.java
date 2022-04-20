@@ -21,7 +21,7 @@ public class Score extends AbstractPacket {
      * Creates the score packet
      * @param content contains the playerName which score has changed,
      *                and the new score the player
-     * @return
+     * @return the string containing the information of "content"
      */
     @Override
     public String encodeWithContent(String... content) {

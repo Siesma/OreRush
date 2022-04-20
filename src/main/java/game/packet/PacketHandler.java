@@ -23,6 +23,7 @@ public class PacketHandler {
    * A function that prompts the user to specify which packet is meant to be sent next.
    * All the possible packets are gathered using the files that are in the respective folder.
    * This folder is "packet.packets"
+   * @return the encoded packet as a string
    */
   public String createPacketMessage() {
     System.out.println("Please tell which packet you want to send");
@@ -55,6 +56,8 @@ public class PacketHandler {
   /**
    * A function that pushes a given input string and its according values to the server or client.
    * If a packet is attempted to be created, but it is not succeeding it will return nothing.
+   * @param out the outputStream the message should be pushed through
+   * @param message the message that should be pushed
    */
   public void pushMessage(OutputStream out, String message) {
     if (message.equals("")) {
@@ -90,6 +93,9 @@ public class PacketHandler {
 
   /**
    * TODO: Create a function that creates a respective output from a given input.
+   * TODO: Tom Is this still nessacary?
+   * @param input some string
+   * @return the generic output
    */
   public static String generateOutputFromInput(String input) {
     return "Generic output given the input \"" + input + "\"!";

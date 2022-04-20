@@ -33,10 +33,10 @@ public class ServerSettings {
   }
 
   /**
-   * @param numberOfRobots
-   * @param mapWidth
-   * @param mapHeight
-   * @param numberOfRounds
+   * @param numberOfRobots The number of Robots each player should control
+   * @param mapWidth The width of the game field
+   * @param mapHeight The height of the game field
+   * @param numberOfRounds The number of round that the game should last
    * @param ores           Default user settings initialization
    */
   public ServerSettings(int numberOfRobots, int mapWidth, int mapHeight, int numberOfRounds, ArrayList<Object> ores) {

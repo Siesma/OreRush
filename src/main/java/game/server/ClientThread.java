@@ -189,7 +189,7 @@ public class ClientThread implements Runnable {
 
   /**
    * Sends Chat packet to a all clients
-   *
+   * @param lobbyName the name of the target lobby
    * @param msg message that is sent preceded by the name of the sender
    */
   public void pushChatMessageToALobby(String lobbyName, String msg) {

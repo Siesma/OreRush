@@ -66,3 +66,12 @@ jar {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
+
+javadoc {
+    options.encoding = 'UTF-8'
+}
+
+tasks.register('build-cs108') {
+    dependsOn jar
+    dependsOn javadoc
+}

@@ -112,7 +112,7 @@ public class StartMenuController{
 
     /**
      * Joins the Lobby
-     *
+     * @param actionEvent TODO: Fill this please!
      */
     public void handleJoinLobby(ActionEvent actionEvent) {
         try {
@@ -151,7 +151,7 @@ public class StartMenuController{
 
     /**
      * checks if the whisper message can be sent and send it
-     *
+     * @param actionEvent TODO: Fill this please!
      */
     public void handleWhisperMessage(ActionEvent actionEvent) {
         if (clientListView.getSelectionModel().getSelectedItem() != null &&
@@ -164,7 +164,7 @@ public class StartMenuController{
 
     /**
      *checks if the textfield is empty and send the message as broadcast
-     *
+     * @param actionEvent TODO: Fill this please!
      */
     public void handleBroadcastMessage(ActionEvent actionEvent) {
         if (!newMessageTextField.getText().equals("")) {

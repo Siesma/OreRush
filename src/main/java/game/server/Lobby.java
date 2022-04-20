@@ -32,7 +32,9 @@ public class Lobby {
   }
 
   /**
-   * Returns the amount of single cell moves that would have to be done to reach a destination
+   * @param now current position
+   * @param then destination
+   * @return the amount of single cell moves that would need to be done to reach a destination
    */
   public int distanceFromPosition(int[] now, int[] then) {
     return Math.abs(now[0] - then[0]) + Math.abs(now[1] - then[1]);
@@ -44,6 +46,10 @@ public class Lobby {
    * <p>
    * This function can be used to not have to validate moves as every invalid move will automatically will be
    * cropped down.
+   *
+   * @param r //TODO: Tom was soll hier rein?
+   * @param destination //TODO: Tom was soll hier rein?
+   * @return //TODO: Tom was soll hier rein?
    */
   public int[] getNextMove(Robot r, int[] destination) {
     logger.debug("Trying to get the new position for the robot");
@@ -59,6 +65,7 @@ public class Lobby {
     /**
      *
      * Returns the players ID of whoms turn it is
+     * @return the id of the player who's turn it is.
      */
     public int turnOfPlayer () {
         return turnCounter % listOfClients.size();
