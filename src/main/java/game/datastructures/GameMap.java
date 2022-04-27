@@ -87,6 +87,16 @@ public class GameMap {
    * Determines the amount of ore a field should have.
    * However, this function is more or less useless as the amount of ore is set to 1, but because we may change it
    * the function is already implemented.
+   * @param max the maximum ore allowed per field
+   * @param exp TODO: TOM please fill this
+   * @param oreSpawnLikelyhood TODO: TOM please fill this
+   * @param ni TODO: TOM please fill this
+   * @param nj TODO: TOM please fill this
+   * @param i TODO: TOM please fill this
+   * @param j TODO: TOM please fill this
+   * @param shift_a TODO: TOM please fill this
+   * @param shift_b TODO: TOM please fill this
+   * @return the Ore Amount
    */
   public double getAmountOfOre(double max, double exp, float oreSpawnLikelyhood, int ni, int nj, int i, int j, int shift_a, int shift_b) {
     return Math.round(lessen(max, exp, lessen(1, 0.5, getRandomNumber(), oreSpawnLikelyhood, shift_a) - (oreSpawnLikelyhood * max - oreSpawnLikelyhood), dist(ni, nj, i, j), shift_b));
