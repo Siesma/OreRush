@@ -149,13 +149,15 @@ public class Client {
     (new PacketHandler(this)).pushMessage(outputStream, (new CreateLobby()).encodeWithContent(newLobbyName));
   }
   /**
-   * Sends anew JoinLobby-packet and encodes it with the predetermined content
+   * Sends a new JoinLobby-packet and encodes it with the predetermined content
+   * @param lobbyName the name of the lobby that should be joined
    */
   public void joinLobby(String lobbyName) {
     (new PacketHandler(this)).pushMessage(outputStream, (new JoinLobby()).encodeWithContent(lobbyName, nickname.getValue()));
   }
   /**
    * adds the client to the observableClientList
+   * @param clientName the name of the client that should be added to the list
    */
   public void addClient(String clientName) {
     Platform.runLater(() -> observableClientList.add(clientName));
@@ -165,6 +167,8 @@ public class Client {
   /**
    * checks if it is possible to add the Client to the Lobby.
    * adds the Client to the Playerlist of the Lobby
+   * @param lobbyName the name of the lobby that the client should be added to
+   * @param clientName the name of the client that should be added to the lobby
    */
   public void addClientToLobby(String clientName, String lobbyName) {
     if (clientName.equals(getNickname())) {
@@ -185,6 +189,7 @@ public class Client {
   }
   /**
    * Sends a new LeaveLobby-packet and encodes it with the predetermined content
+   * @param lobbyName the name the lobby that is being left
    */
   public void leaveLobby(String lobbyName) {
     (new PacketHandler(this)).pushMessage(outputStream, (new LeaveLobby()).encodeWithContent(lobbyName, getNickname()));
@@ -193,6 +198,7 @@ public class Client {
   // TODO (seb) disconnect packet
   /**
    * remove the Client from The observableClientlist
+   * @param clientName the name of the client that should be removed
    */
   public void removeClient(String clientName) {
     Platform.runLater(() -> observableClientList.remove(clientName));
@@ -200,6 +206,7 @@ public class Client {
 
   /**
    * add the Lobby to the observableLobbyList
+   * @param lobbyName the name of the lobby that should be added to the lobby list
    */
   public void addLobby(String lobbyName) {
     Platform.runLater(() -> observableLobbyList.add(lobbyName));
@@ -207,6 +214,7 @@ public class Client {
 
   /**
    * Sends a new ChatLobby-packet and encodes it with the predetermined content
+   * @param lobbyName the name of the lobby the message should be sent it
    */
   public void addLobbyInClient(String lobbyName) {
     lobbyInClientObservableList.add(new LobbyInClient(lobbyName));
