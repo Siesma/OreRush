@@ -11,7 +11,7 @@ public class  Test {
     int x, y;
     x = 10;
     y = 10;
-    GameMap map = new GameMap(x, y, (new ServerSettings("")));
+    GameMap map = new GameMap((new ServerSettings("")));
     for (int i = 0; i < x; i++) {
       for (int j = 0; j < y; j++) {
         if (Math.random() > 0.8) {

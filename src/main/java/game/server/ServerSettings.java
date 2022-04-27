@@ -14,6 +14,7 @@ public class ServerSettings {
   private int numberOfRounds;
   private float oreDensity;
   private int maxAllowedMoves;
+  private int radarDistance;
   private ArrayList<Object> ores;
 
   private int maxClusterSize;
@@ -55,6 +56,7 @@ public class ServerSettings {
     this.numberOfRounds = 100;
     this.oreDensity = 1f;
     this.maxAllowedMoves = 4;
+    this.radarDistance = 4;
     this.maxClusterSize = 4;
     this.oreThreshold = 0.75f;
   }
@@ -101,6 +103,35 @@ public class ServerSettings {
 
   public ServerSettings setOres(ArrayList<Object> ores) {
     this.ores = ores;
+    return this;
+  }
+
+  public ServerSettings setOreDensity(float oreDensity) {
+    this.oreDensity = oreDensity;
+    return this;
+  }
+
+  public ServerSettings setMaxAllowedMoves(int maxAllowedMoves) {
+    this.maxAllowedMoves = maxAllowedMoves;
+    return this;
+  }
+
+  public int getRadarDistance() {
+    return radarDistance;
+  }
+
+  public ServerSettings setRadarDistance(int radarDistance) {
+    this.radarDistance = radarDistance;
+    return this;
+  }
+
+  public ServerSettings setMaxClusterSize(int maxClusterSize) {
+    this.maxClusterSize = maxClusterSize;
+    return this;
+  }
+
+  public ServerSettings setOreThreshold(float oreThreshold) {
+    this.oreThreshold = oreThreshold;
     return this;
   }
 

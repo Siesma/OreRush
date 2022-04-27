@@ -1,6 +1,5 @@
 package game.datastructures;
 
-import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import game.helper.FileHelper;
 import game.helper.MapType;
 import game.packet.AbstractPacket;
@@ -164,6 +163,16 @@ public class Robot implements GameObject {
   public boolean isDead() {
     return isDead;
   }
+
+  /**
+   *
+   * @return the name of the owner of this gameobject
+   */
+  @Override
+  public String getOwner () {
+    return owner;
+  }
+
 
   public void setDead(boolean isDead) {
     this.isDead = isDead;

@@ -63,4 +63,14 @@ public class Ore implements GameObject {
   public void setOwner(String nameOfOwner) {
     this.owner = nameOfOwner;
   }
+
+  /**
+   *
+   * @return the name of the owner of this gameobject
+   */
+  @Override
+  public String getOwner () {
+    return owner;
+  }
+
 }

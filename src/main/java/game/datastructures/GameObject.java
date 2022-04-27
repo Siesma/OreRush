@@ -35,4 +35,6 @@ public abstract interface GameObject {
      * @param nameOfOwner the name of the player creating this gameObject.
      */
     public void setOwner (String nameOfOwner);
+
+    public String getOwner ();
 }

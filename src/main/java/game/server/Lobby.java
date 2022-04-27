@@ -27,7 +27,7 @@ public class Lobby {
   }
 
   private void generateGameMap() {
-    gameMap = new GameMap(serverSettings.getMapWidth(), serverSettings.getMapHeight(), serverSettings);
+    gameMap = new GameMap(serverSettings);
     gameMap.spawnOreInMap();
   }
 
@@ -36,7 +36,7 @@ public class Lobby {
    * @param then destination
    * @return the amount of single cell moves that would need to be done to reach a destination
    */
-  public int distanceFromPosition(int[] now, int[] then) {
+  public static int distanceFromPosition(int[] now, int[] then) {
     return Math.abs(now[0] - then[0]) + Math.abs(now[1] - then[1]);
   }
 

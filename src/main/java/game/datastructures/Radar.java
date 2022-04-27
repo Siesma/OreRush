@@ -82,4 +82,13 @@ public class Radar implements GameObject {
     this.owner = nameOfOwner;
   }
 
+  /**
+   *
+   * @return the name of the owner of this gameobject
+   */
+  @Override
+  public String getOwner () {
+    return owner;
+  }
+
 }

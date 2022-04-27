@@ -3,12 +3,12 @@ package game.datastructures;
 import game.helper.FileHelper;
 import game.helper.MapType;
 import game.packet.AbstractPacket;
+import game.server.Lobby;
 import game.server.Server;
 import game.server.ServerSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.plaf.basic.BasicBorders;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -22,10 +22,10 @@ public class GameMap {
   private ServerSettings serverSettings;
   public static final Logger logger = LogManager.getLogger(Server.class);
 
-  public GameMap(int sizeX, int sizeY, ServerSettings serverSettings) {
-    this.gameMapSize[0] = sizeX;
-    this.gameMapSize[1] = sizeY;
-    this.cellArray = new Cell[sizeX][sizeY];
+  public GameMap(ServerSettings serverSettings) {
+    this.gameMapSize[0] = serverSettings.getMapWidth();
+    this.gameMapSize[1] = serverSettings.getMapHeight();
+    this.cellArray = new Cell[serverSettings.getMapWidth()][serverSettings.getMapHeight()];
     this.serverSettings = serverSettings;
     fillCellArray();
     fillCellArrayWithNothing();
@@ -91,15 +91,16 @@ public class GameMap {
    * This function would basically be the evaluation of the exponential function
    * but for its input it also has another exponential function. The exponential function in question
    * is the function "lessen" defined a little earlier.
-   * @param max the maximum ore allowed per field. - can be any real value.
-   * @param exp the exponent of the first function. - 1 > exp > 0.
+   *
+   * @param max                the maximum ore allowed per field. - can be any real value.
+   * @param exp                the exponent of the first function. - 1 > exp > 0.
    * @param oreSpawnLikelyhood the likelyhood of something actually spawning.
-   * @param ni the x coordinate that is being compared to.
-   * @param nj the y coordinate that is being compared to.
-   * @param i the reference x coordinate.
-   * @param j the reference y coordinate.
-   * @param shift_a the shift in the x-direction from the function.
-   * @param shift_b the shift in the x-direction of the distribution.
+   * @param ni                 the x coordinate that is being compared to.
+   * @param nj                 the y coordinate that is being compared to.
+   * @param i                  the reference x coordinate.
+   * @param j                  the reference y coordinate.
+   * @param shift_a            the shift in the x-direction from the function.
+   * @param shift_b            the shift in the x-direction of the distribution.
    * @return the Ore Amount
    */
   public double getAmountOfOre(double max, double exp, float oreSpawnLikelyhood, int ni, int nj, int i, int j, int shift_a, int shift_b) {
@@ -109,10 +110,11 @@ public class GameMap {
   /**
    * Returns the inverse of an exponential function from the form:
    * a - b ^ (c*d + f)
-   * @param max the y-offset - can be any real value.
-   * @param exp - the base of the exponential. - should be between 0 and 1.
-   * @param in - the value being evaluated. - can be any real value
-   * @param fac - the factor of the value that is being evaluated. - can be any real value.
+   *
+   * @param max   the y-offset - can be any real value.
+   * @param exp   - the base of the exponential. - should be between 0 and 1.
+   * @param in    - the value being evaluated. - can be any real value
+   * @param fac   - the factor of the value that is being evaluated. - can be any real value.
    * @param shift - the strength of the exponential decay. - should be between 0 and 1
    * @return
    */
@@ -124,10 +126,11 @@ public class GameMap {
   /**
    * Returns the distance between the points (P(nx, ny) and P(x, y)) by taking the
    * square root of the absolute difference between the two points raised to the m th power where m is a constant
+   *
    * @param nx x of the first point
    * @param ny y of the first point
-   * @param x x of the second point
-   * @param y y of the second point
+   * @param x  x of the second point
+   * @param y  y of the second point
    * @return the calculated distance
    */
   public double dist(int nx, int ny, int x, int y) {
@@ -138,6 +141,7 @@ public class GameMap {
 
   /**
    * Returns a random number between 0 and 1
+   *
    * @return the random number as a double
    */
   public double getRandomNumber() {
@@ -167,7 +171,7 @@ public class GameMap {
   }
 
   public boolean isInBounds(int[] xy, int[] minxy, int[] maxxy) {
-    return isInBounds(xy[0], xy[1], minxy[0], minxy[1], maxxy[0], maxxy[1]);
+    return isInBounds(xy[0], xy[1], minxy[0], maxxy[0], minxy[1], maxxy[1]);
   }
 
   public OreType determineOreType() {
@@ -177,6 +181,7 @@ public class GameMap {
 
   public void placeObjectOnMap(GameObject object, int x, int y) {
     cellArray[x][y].place(object);
+    object.setPosition(x, y);
   }
 
   public void placeObjectOnMap(GameObject gameObject, int[] xy) {
@@ -189,6 +194,54 @@ public class GameMap {
 
   public void removeObjectFromMap(GameObject gameObject, int[] xy) {
     this.removeObjectFromMap(gameObject, xy[0], xy[1]);
+  }
+
+  /**
+   * This function is used to determine what a player should see or not.
+   *
+   * @param playerName name of the player asking for the map.
+   * @return a new GameMap that consists of the players visible objects.
+   */
+  public GameMap getIndividualGameMapForPlayer(String playerName) {
+    // generates a new gamemap that is used to return.
+    GameMap out = new GameMap(serverSettings);
+    ArrayList<GameObject> playerOwnedGameObjects = new ArrayList<>();
+    // adds all the gameobjects that were placed by the player himself.
+    for (int j = 0; j < gameMapSize[1]; j++) {
+      for (int i = 0; i < gameMapSize[0]; i++) {
+        for (GameObject gameObject : cellArray[i][j].getPlacedObjects()) {
+          if (gameObject.getOwner().equals(playerName)) {
+            playerOwnedGameObjects.add(gameObject);
+          }
+        }
+      }
+    }
+    // goes through all of the players own gameobjects and if the gameobject is a radar it will reveal the surrounding area.
+    for (GameObject gameObject : playerOwnedGameObjects) {
+      out.placeObjectOnMap(gameObject, gameObject.getPosition());
+      if (gameObject instanceof Radar) {
+        int dist = serverSettings.getRadarDistance();
+        for (int xi = -dist; xi <= dist; xi++) {
+          for (int yi = -dist; yi <= dist; yi++) {
+            int[] xyi = new int[]{gameObject.getPosition()[0] + xi, gameObject.getPosition()[1]};
+            // checks if the radar is scanning outside the gamemap.
+            if (!isInBounds(xyi, new int[]{0, 0}, gameMapSize)) {
+              continue;
+            }
+            // because we are looking in an n x n grid around the radar position some of those are outside of the normal reach.
+            if(Lobby.distanceFromPosition(gameObject.getPosition(), xyi) <= dist) {
+              continue;
+            }
+            // if every checks pass, it will place every gameobject from the full gamemap on the map that is being returned.
+            for(GameObject object : this.cellArray[xyi[0]][xyi[1]].getPlacedObjects()) {
+              out.placeObjectOnMap(object, xyi);
+            }
+          }
+        }
+      }
+    }
+
+    return out;
   }
 
   public void printMapToConsole() {
@@ -234,9 +287,9 @@ public class GameMap {
         }
         if (robot) {
           out.append("R");
-          if(!(cell.robotsOnCell().get(0).getInventory() instanceof Nothing)) {
+          if (!(cell.robotsOnCell().get(0).getInventory() instanceof Nothing)) {
             GameObject inv = cell.robotsOnCell().get(0).getInventory();
-            if(inv instanceof Ore) {
+            if (inv instanceof Ore) {
               out.append("O");
             } else if (inv instanceof Radar) {
               out.append("H");
@@ -259,6 +312,7 @@ public class GameMap {
 
   /**
    * Returns an array of Strings that is used to make the update packet.
+   *
    * @return the array of Strings
    */
   public String[] cellStrings() {
@@ -284,7 +338,8 @@ public class GameMap {
   /**
    * Changes the position of an already existing object.
    * The method restricts the amount of cells an object can move through if the target position is too far.
-   * @param object the object that is to be moved
+   *
+   * @param object      the object that is to be moved
    * @param newPosition the new position of the object
    */
   public void replaceObject(GameObject object, int[] newPosition) {
@@ -292,43 +347,43 @@ public class GameMap {
     if (curPosition == null) {
       return;
     }
-    if (!isInBounds(curPosition, new int[] {0, 0}, gameMapSize)) {
-      curPosition = new int[] {
-              clamp(curPosition[0], 0,gameMapSize[0] - 1),
-              clamp(curPosition[1], 0,gameMapSize[1] - 1)
+    if (!isInBounds(curPosition, new int[]{0, 0}, gameMapSize)) {
+      curPosition = new int[]{
+        clamp(curPosition[0], 0, gameMapSize[0] - 1),
+        clamp(curPosition[1], 0, gameMapSize[1] - 1)
       };
     }
     ArrayList<GameObject> placedObjects = cellArray[curPosition[0]][curPosition[1]].getPlacedObjects();
-    if(!placedObjects.contains(object)) {
+    if (!placedObjects.contains(object)) {
       logger.error("The placed object was not on the original position");
       return;
     }
-    if (!isInBounds(newPosition, new int[] {0, 0}, gameMapSize)) {
-      newPosition = new int[] {
-              clamp(newPosition[0], 0,gameMapSize[0] - 1),
-              clamp(newPosition[1], 0,gameMapSize[1] - 1)
+    if (!isInBounds(newPosition, new int[]{0, 0}, gameMapSize)) {
+      newPosition = new int[]{
+        clamp(newPosition[0], 0, gameMapSize[0] - 1),
+        clamp(newPosition[1], 0, gameMapSize[1] - 1)
       };
     }
     removeObjectFromMap(object, curPosition);
     placeObjectOnMap(object, newPosition);
-    if(object instanceof Robot) {
+    if (object instanceof Robot) {
       Robot robotObject = (Robot) object;
-      if(robotObject.getRobotAction() != RobotAction.Dig) {
+      if (robotObject.getRobotAction() != RobotAction.Dig) {
         return;
       }
-      if(getCellArray()[newPosition[0]][newPosition[1]].trapOnCell() != null) {
+      if (getCellArray()[newPosition[0]][newPosition[1]].trapOnCell() != null) {
         robotObject.setDead(true);
         getCellArray()[newPosition[0]][newPosition[1]].remove(getCellArray()[newPosition[0]][newPosition[1]].trapOnCell());
       }
-      if(!(robotObject.getInventory() instanceof Nothing)) {
+      if (!(robotObject.getInventory() instanceof Nothing)) {
         getCellArray()[newPosition[0]][newPosition[1]].place(robotObject.getInventory());
         robotObject.loadInventory(new Nothing());
       }
       ArrayList<Ore> ore = getCellArray()[newPosition[0]][newPosition[1]].oreOnCell();
-      if(ore == null) {
+      if (ore == null) {
         return;
       }
-      if(ore.size() > 0) {
+      if (ore.size() > 0) {
         robotObject.loadInventory(ore.get(0));
         getCellArray()[newPosition[0]][newPosition[1]].remove(getCellArray()[newPosition[0]][newPosition[1]].oreOnCell().get(0));
       }
@@ -340,7 +395,6 @@ public class GameMap {
    * if val is greater than max it will return max
    * if val is greater than min it will return min
    * if val is neither greater nor smaller it will return val
-   *
    */
   private int clamp(int val, int min, int max) {
     return Math.max(Math.min(max, val), min);
@@ -380,7 +434,7 @@ public class GameMap {
     String[] individualCell = AbstractPacket.splitMessageBySpacer(message);
     // defines new serverSettings to be used here to obtain needed informations.
     ServerSettings serverSettings = new ServerSettings();
-    GameMap newMap = new GameMap(serverSettings.getMapWidth(), serverSettings.getMapHeight(), serverSettings);
+    GameMap newMap = new GameMap(serverSettings);
     // sets default values so that they can be compared to.
     int cellX = -1, cellY = -1;
     for (String impliedCell : individualCell) {

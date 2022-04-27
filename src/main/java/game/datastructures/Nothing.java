@@ -42,5 +42,10 @@ public class Nothing implements GameObject {
     this.owner = nameOfOwner;
   }
 
+  @Override
+  public String getOwner() {
+    return "";
+  }
+
 
 }
