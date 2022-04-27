@@ -128,6 +128,8 @@ public class Client {
 
   /**
    * Sends a new ChatLobby-packet and encodes it with the predetermined content
+   * @param message the message that should be sent in the lobby chat
+   * @param lobbyName the name of the lobby the message should be sent in
    */
   public void sendChatMessageToLobby(String lobbyName, String message) {
     (new PacketHandler(this)).pushMessage(outputStream, (new ChatLobby()).encodeWithContent(lobbyName, message));
