@@ -106,8 +106,8 @@ public class LobbyController {
     }
 
     /**
-     *
-     *
+     * This method executes the moves once the "EndTurnButton" is pressed
+     * @param actionEvent UI Action that triggers this method
      */
     public void onActionEndTurnButton(ActionEvent actionEvent) {
         if (client == null) {
@@ -117,8 +117,8 @@ public class LobbyController {
     }
 
     /**
-     *
-     *
+     * This method changes the status lable of a lobby, once it's game has started
+     * @param actionEvent UI Action that triggers this method
      */
     public void handleStartGame(ActionEvent actionEvent) {
         lobby.setStatus("in game");
@@ -126,7 +126,7 @@ public class LobbyController {
 
     /**
      * get the winner and ends the Lobby
-     *
+     * @param actionEvent UI Action that triggers this method
      */
     public void handleWinGame(ActionEvent actionEvent) {
         client.sendChatMessage(client.getNickname() + "won in lobby " + lobby.getLobbyName());
@@ -135,7 +135,7 @@ public class LobbyController {
 
     /**
      * sends the message from the textfield to the Lobby Chat
-     *
+     * @param actionEvent UI Action that triggers this method
      */
     public void handleSendMessage(ActionEvent actionEvent) {
         if (!newLobbyMessageTextField.getText().equals("")) {
@@ -149,7 +149,7 @@ public class LobbyController {
 
     /**
      * sends a Whisper Message
-     *
+     * @param actionEvent UI Action that triggers this method
      */
     public void handleWhisperMessage(ActionEvent actionEvent) {
         try {
@@ -163,8 +163,8 @@ public class LobbyController {
     }
 
     /**
-     * sends a Broadcast Message
-     *
+     * sends a Broadcast Message to all clients
+     * @param actionEvent UI Action that triggers this method
      */
     public void handleBroadcastMessage(ActionEvent actionEvent) {
         if (!newLobbyMessageTextField.getText().equals("")) {

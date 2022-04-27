@@ -98,7 +98,7 @@ public class StartMenuController{
 
     /**
      * checks if the Textfield is empty creates a Lobby joins the Lobby and clear the textfield
-     *
+     * @param actionEvent UI Action that triggers this method
      */
     public void handleCreateLobby(ActionEvent actionEvent) {
         if (!newLobbyName.getText().equals("")){
@@ -112,7 +112,7 @@ public class StartMenuController{
 
     /**
      * Joins the Lobby
-     * @param actionEvent TODO: Fill this please!
+     * @param actionEvent UI Action that triggers this method
      */
     public void handleJoinLobby(ActionEvent actionEvent) {
         try {

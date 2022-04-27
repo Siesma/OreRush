@@ -26,11 +26,15 @@ public abstract class AbstractPacket {
     this.response = response;
   }
 
+
   /**
    * Returns a new instance of the class with the specified name in the folder "packet.packets".
    * This is used to not have to hardcode any allowed packets.
    * @param name the name of the packet
    * @return TODO: Tom please fill this
+   * @throws InstantiationException
+   * @throws IllegalAccessException
+   * @throws ClassNotFoundException
    */
   public static AbstractPacket getPacketByName(String name) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
     try {
