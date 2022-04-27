@@ -82,7 +82,6 @@ public class FileHelper {
    */
   public Object createNewInstanceFromName (MapType typeOfMap, String key) {
     initialize();
-    System.out.println(typeOfMap.name() + " " + key);
     Object obj = objectMap.get(typeOfMap.name().toLowerCase(Locale.ROOT)).get(key.toLowerCase(Locale.ROOT));
 
     return obj;
