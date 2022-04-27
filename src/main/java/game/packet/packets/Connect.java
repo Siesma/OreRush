@@ -50,6 +50,10 @@ public class Connect extends AbstractPacket {
       ClientThread obj = (ClientThread) parent;
       obj.changePlayerName(message);
 
+      if (!message.equals(obj.getPlayerName())) {
+        (new PacketHandler(this)).pushMessage(obj.getOutputStream(),(new InitNickname().encodeWithContent(obj.getPlayerName())));
+      }
+
 
       // informs player of already existing players
       for (ClientThread clientThread:Server.getClientThreads()) {
@@ -79,6 +83,7 @@ public class Connect extends AbstractPacket {
       InputStreamThread obj = (InputStreamThread) parent;
       obj.getClient().setLastChatMessage("Server: " + message + " has joined the server.\n");
       obj.getClient().addClient(message);
+
     }
   }
 }

@@ -111,7 +111,6 @@ public class Client {
    */
   public void changeNickname(String newNickname) {
     (new PacketHandler(this)).pushMessage(outputStream, (new Nickname()).encodeWithContent(nickname.get(), newNickname));
-    nickname.setValue(newNickname);
   }
 
   public void makeMove(LobbyController lobbyController) {
@@ -265,17 +264,12 @@ public class Client {
   }
 
   /**
-   * replaces the old nickname with the new nickname in the observableClientList
-   */
-  /**
    * replace the old nickname with the new nickname in the observableClientList
    * @param oldNickname the old nickname
    * @param newNickname the new nickname
    */
   public void changeNicknameOfOtherClient(String oldNickname, String newNickname) {
-//    for(String s : observableClientList) {
-//      System.out.println("Nickname: \t" + s);
-//    }
+
     Platform.runLater(() -> observableClientList.set(observableClientList.indexOf(oldNickname), newNickname));
   }
 

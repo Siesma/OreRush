@@ -6,6 +6,7 @@ import game.packet.PacketHandler;
 import game.server.ClientThread;
 import game.server.Server;
 import game.server.ServerConstants;
+import javafx.application.Platform;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -78,9 +79,13 @@ public class Nickname extends AbstractPacket {
     }
     if (parent instanceof InputStreamThread) {
       InputStreamThread obj = (InputStreamThread) parent;
+      if (obj.getClient().getNickname().equals(oldName)) {
+        String finalMessage = message;
+        Platform.runLater(() ->obj.getClient().nicknameProperty().setValue(finalMessage));
+      }
       obj.getClient().changeNicknameOfOtherClient(oldName, message);
       obj.getClient().setLastChatMessage("Server: " + oldName + " has changed their name to "
-              + obj.getClient().getNickname() + ".\n");
+              + message + ".\n");
     }
   }
 }
