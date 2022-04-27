@@ -23,6 +23,8 @@ public class Robot implements GameObject {
 
   private int playerID;
 
+  private String owner;
+
   @Override
   public void setID(int id) {
     this.playerID = id;
@@ -116,6 +118,15 @@ public class Robot implements GameObject {
   }
 
 
+
+  /**
+   * Sets the owner of this dataType
+   * @param nameOfOwner the name of the player creating this gameObject.
+   */
+  @Override
+  public void setOwner(String nameOfOwner) {
+    this.owner = nameOfOwner;
+  }
   @Override
   /**
    *

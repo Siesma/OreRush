@@ -5,6 +5,7 @@ public class Nothing implements GameObject {
   private int x;
   private int y;
   private int id;
+  private String owner;
 
   @Override
   public void setID(int id) {
@@ -31,4 +32,15 @@ public class Nothing implements GameObject {
   public void fillGameObjectWithData(String... data) {
 
   }
+
+  /**
+   * Sets the owner of this dataType
+   * @param nameOfOwner the name of the player creating this gameObject.
+   */
+  @Override
+  public void setOwner(String nameOfOwner) {
+    this.owner = nameOfOwner;
+  }
+
+
 }

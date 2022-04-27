@@ -34,18 +34,7 @@ public class PacketHandler {
     Scanner sc = new Scanner(System.in);
     String entered = AbstractPacket.promptUserForInput(sc);
     AbstractPacket packet;
-    try {
-      packet = AbstractPacket.getPacketByName(entered);
-    } catch (InstantiationException instantiationException) {
-      System.out.println("The packet expected some parameters that were not given!");
-      return null;
-    } catch (ClassNotFoundException classNotFoundException) {
-      System.out.println("The specified packet does not exist!");
-      return null;
-    } catch (IllegalAccessException illegalAccessException) {
-      logger.fatal("You are not allowed to access the specified file!");
-      return null;
-    }
+    packet = AbstractPacket.getPacketByName(entered);
     if (packet == null) {
       return "";
     }
@@ -64,18 +53,7 @@ public class PacketHandler {
       return;
     }
     AbstractPacket packet;
-    try {
-      packet = AbstractPacket.getPacketByName(AbstractPacket.splitMessageBySpacer(message, String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0]);
-    } catch (InstantiationException instantiationException) {
-      System.out.println("The packet expected some parameters that were not given!");
-      return;
-    } catch (ClassNotFoundException classNotFoundException) {
-      System.out.println("The specified packet does not exist!");
-      return;
-    } catch (IllegalAccessException illegalAccessException) {
-      logger.fatal("You are not allowed to access the specified file!");
-      return;
-    }
+    packet = AbstractPacket.getPacketByName(AbstractPacket.splitMessageBySpacer(message, String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0]);
     if (packet == null) {
       return;
     }
@@ -89,16 +67,6 @@ public class PacketHandler {
     } catch (Exception e) {
       e.printStackTrace();
     }
-  }
-
-  /**
-   * TODO: Create a function that creates a respective output from a given input.
-   * TODO: Tom Is this still nessacary?
-   * @param input some string
-   * @return the generic output
-   */
-  public static String generateOutputFromInput(String input) {
-    return "Generic output given the input \"" + input + "\"!";
   }
 
 }

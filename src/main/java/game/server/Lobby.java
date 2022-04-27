@@ -47,9 +47,9 @@ public class Lobby {
    * This function can be used to not have to validate moves as every invalid move will automatically will be
    * cropped down.
    *
-   * @param r //TODO: Tom was soll hier rein?
-   * @param destination //TODO: Tom was soll hier rein?
-   * @return //TODO: Tom was soll hier rein?
+   * @param r is the Robot in question that tries to move.
+   * @param destination is the Position to which the robot in question wants to move to. Expecteto be two integers.
+   * @return the next Position that is within the reach of the robots original position without moving more than allowed.
    */
   public int[] getNextMove(Robot r, int[] destination) {
     logger.debug("Trying to get the new position for the robot");

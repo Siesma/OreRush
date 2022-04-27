@@ -28,4 +28,11 @@ public abstract interface GameObject {
      * @param data the received string corresponding to the GameObject
      */
     public void fillGameObjectWithData (String... data);
+
+    /**
+     * Sets the Owner of a given Object on the Map. This is used to keep track of who the radar and or Trap belongs to.
+     *
+     * @param nameOfOwner the name of the player creating this gameObject.
+     */
+    public void setOwner (String nameOfOwner);
 }

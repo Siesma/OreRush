@@ -10,6 +10,8 @@ public class Radar implements GameObject {
   private int xCoordinate;
   private int yCoordinate;
   private int playerID;
+  
+  private String owner;
 
   @Override
   public void setID(int id) {
@@ -69,4 +71,15 @@ public class Radar implements GameObject {
     setPosition(Integer.parseInt(data[1]), Integer.parseInt(data[2]));
     setPlayerID(Integer.parseInt(data[3]));
   }
+
+
+  /**
+   * Sets the owner of this dataType
+   * @param nameOfOwner the name of the player creating this gameObject.
+   */
+  @Override
+  public void setOwner(String nameOfOwner) {
+    this.owner = nameOfOwner;
+  }
+
 }

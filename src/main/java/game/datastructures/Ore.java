@@ -12,6 +12,8 @@ public class Ore implements GameObject {
   private  int xCoordinate;
   private int yCoordinate;
   private int amount = 1;
+  private String owner;
+
   @Override
   public void setID(int id) {
     this.oreType = OreType.values()[id % OreType.values().length];
@@ -51,5 +53,14 @@ public class Ore implements GameObject {
     xCoordinate = Integer.parseInt(data[2]);
     yCoordinate = Integer.parseInt(data[3]);
     amount = Integer.parseInt(data[4]);
+  }
+
+  /**
+   * Sets the owner of this dataType
+   * @param nameOfOwner the name of the player creating this gameObject.
+   */
+  @Override
+  public void setOwner(String nameOfOwner) {
+    this.owner = nameOfOwner;
   }
 }
