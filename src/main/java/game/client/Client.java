@@ -251,7 +251,11 @@ public class Client {
   /**
    * replaces the old nickname with the new nickname in the observableClientList
    */
-
+  /**
+   * replace the old nickname with the new nickname in the observableClientList
+   * @param oldNickname the old nickname
+   * @param newNickname the new nickname
+   */
   public void changeNicknameOfOtherClient(String oldNickname, String newNickname) {
 //    for(String s : observableClientList) {
 //      System.out.println("Nickname: \t" + s);

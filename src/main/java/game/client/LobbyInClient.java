@@ -36,7 +36,7 @@ public class LobbyInClient {
 
     /**
      * Returns the data as an observable list of Persons.
-     * @return
+     * @return the list of all Players in the lobby
      */
     public ObservableList<Player> getPlayerData() {
         return observablePlayerList;
@@ -79,8 +79,10 @@ public class LobbyInClient {
     public void setPlayers(String players) {
         this.players.set(players);
     }
+
     /**
-    *removes Player from observablePlayerList
+     * removes Player from observablePlayerList
+     * @param playerToDel the player that should be removed from the list
      */
     public void removePlayer(Player playerToDel) {
         players.setValue(players.getValue().replace(playerToDel.getNickname(),""));
