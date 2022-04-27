@@ -1,5 +1,6 @@
 package game.packet;
 
+import game.helper.FileHelper;
 import game.server.Server;
 import game.server.ServerConstants;
 import org.apache.logging.log4j.LogManager;
@@ -32,11 +33,12 @@ public abstract class AbstractPacket {
    * This is used to not have to hardcode any allowed packets.
    * @param name the name of the packet
    * @return TODO: Tom please fill this
-   * @throws InstantiationException
-   * @throws IllegalAccessException
-   * @throws ClassNotFoundException
+   * @throws InstantiationException TODO: Tom please fill this
+   * @throws IllegalAccessException TODO: Tom please fill this
+   * @throws ClassNotFoundException TODO: Tom please fill this
    */
   public static AbstractPacket getPacketByName(String name) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+    /*
     try {
       Class<AbstractPacket> classes = (Class<AbstractPacket>) Class.forName("game.packet.packets." + replaceIndicatorChars(name));
       return classes.newInstance();
@@ -44,6 +46,8 @@ public abstract class AbstractPacket {
       System.out.println("Some error occurred! Reverting to null");
       return null;
     }
+    */
+    return (AbstractPacket) (new FileHelper()).createInstanceOfClass("game.packet.packets." + replaceIndicatorChars(name));
   }
 
   public static AbstractPacket getPacketByMessage(String message) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
