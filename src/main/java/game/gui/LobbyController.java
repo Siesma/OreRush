@@ -79,10 +79,10 @@ public class LobbyController {
     }
 
     /**
-     *
      * Once the player is finished with the move they can click the "Finish move" button that sends the given information to the server.
      * I sadly had to quickly modify the request structure to make this work.
      * TODO: Revert the request move structure to its original dynamic state.
+     * @param actionEvent UI Action that triggers this method
      */
     public void onActionButtonMakeMove(ActionEvent actionEvent) {
         String defaultTextMessage = "";

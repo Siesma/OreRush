@@ -47,9 +47,12 @@ public class Robot implements GameObject {
   }
 
   /**
-   *
-   * This function applies the new information.
+   * This function applies the new information of robot action.
    * This function implies that the wanted Action is valid.
+   * @param robotAction what Action the robot should take
+   * @param x where the robot should move in the x coordinate
+   * @param y where the robot should move in the y coordinate
+   * @param optionalInventoryChange what changes should be applied to the Inventory of the robot
    */
   public void setAction(RobotAction robotAction, int x, int y, Object optionalInventoryChange) {
     if(isDead) {
