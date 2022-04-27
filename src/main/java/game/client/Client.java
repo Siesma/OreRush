@@ -107,6 +107,7 @@ public class Client {
 
   /**
    * Changes the nickname.
+   * @param newNickname the new nickname
    */
   public void changeNickname(String newNickname) {
     (new PacketHandler(this)).pushMessage(outputStream, (new Nickname()).encodeWithContent(nickname.get(), newNickname));
@@ -119,6 +120,7 @@ public class Client {
 
   /**
    * Sends a new Chat-packet and encodes it with the predetermined content
+   * @param message the message the should be sent in the chat
    */
   public void sendChatMessage(String message) {
     (new PacketHandler(this)).pushMessage(outputStream, (new Chat()).encodeWithContent(message));
@@ -132,18 +134,22 @@ public class Client {
   }
   /**
    * Sends a new Whisper-packet and encodes it with the predetermined content
+   * @param message the message of the whisper
+   * @param receiverName the name of the player that should received the whisper
    */
   public void sendWhisper(String receiverName, String message) {
     (new PacketHandler(this)).pushMessage(outputStream, (new Whisper()).encodeWithContent(receiverName, message));
   }
   /**
    * Sends a new Broadcast-packet and encodes it with the predetermined content
+   * @param message the message that should be broadcasted
    */
   public void sendBroadcast(String message) {
     (new PacketHandler(this)).pushMessage(outputStream, (new Broadcast()).encodeWithContent(message));
   }
   /**
    * Sends a new CreateLobby-packet and encodes it with the predetermined content
+   * @param newLobbyName the name of the new lobby
    */
   public void createLobby(String newLobbyName) {
     (new PacketHandler(this)).pushMessage(outputStream, (new CreateLobby()).encodeWithContent(newLobbyName));
