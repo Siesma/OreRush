@@ -103,6 +103,11 @@ public class GameMap {
   /**
    * Returns the distance between the points (P(nx, ny) and P(x, y)) by taking the
    * square root of the absolute difference between the two points raised to the m th power where m is a constant
+   * @param nx x of the first point
+   * @param ny y of the first point
+   * @param x x of the second point
+   * @param y y of the second point
+   * @return the calculated distance
    */
   public double dist(int nx, int ny, int x, int y) {
     double m = 2; // Default distance function for m = 2
@@ -112,6 +117,7 @@ public class GameMap {
 
   /**
    * Returns a random number between 0 and 1
+   * @return the random number as a double
    */
   public double getRandomNumber() {
     return getRandomNumber((new Random()).nextLong());
@@ -232,6 +238,7 @@ public class GameMap {
 
   /**
    * Returns an array of Strings that is used to make the update packet.
+   * @return the array of Strings
    */
   public String[] cellStrings() {
     ArrayList<String> strings = new ArrayList<>();
@@ -254,7 +261,10 @@ public class GameMap {
   }
 
   /**
-   * Repositions an already existing object
+   * Changes the position of an already existing object.
+   * The method restricts the amount of cells an object can move through if the target position is too far.
+   * @param object the object that is to be moved
+   * @param newPosition the new position of the object
    */
   public void replaceObject(GameObject object, int[] newPosition) {
     int[] curPosition = object.getPosition();
