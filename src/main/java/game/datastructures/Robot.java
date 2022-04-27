@@ -2,6 +2,7 @@ package game.datastructures;
 
 import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import game.helper.FileHelper;
+import game.helper.MapType;
 import game.packet.AbstractPacket;
 import game.server.ServerConstants;
 
@@ -140,7 +141,7 @@ public class Robot implements GameObject {
   private GameObject parseInventoryObjectFromString(String[] encodedGameObjectArray) throws Exception {
     // Same algorithm but having new possible items is just as easy as with the packets!
     // it is also easier to maintain and less code in general
-    Object obj = (new FileHelper()).createInstanceOfClass("");
+    Object obj = (new FileHelper()).createNewInstanceFromName(MapType.GameObjects, "");
     if (!(obj instanceof GameObject)) {
       return null;
     }

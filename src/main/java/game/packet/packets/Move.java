@@ -2,6 +2,7 @@ package game.packet.packets;
 
 import game.datastructures.*;
 import game.helper.FileHelper;
+import game.helper.MapType;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
@@ -66,7 +67,8 @@ public class Move extends AbstractPacket {
                 // if there is an optionalInventory it will be tried to make a new instance of it.
                 if (split.length > 4) {
                     try {
-                        object = (new FileHelper()).createInstanceOfClass("game.datastructures." + split[4]);
+                        object = (new FileHelper()).createNewInstanceFromName(MapType.GameObjects, split[4]);
+//                        object = (new FileHelper()).createInstanceOfClass("game.datastructures." + split[4]);
                     } catch (Exception e) {
                         // this should never happen as this means that the object is valid but the file for it does not exist.
                         logger.error("An unidentified object!");

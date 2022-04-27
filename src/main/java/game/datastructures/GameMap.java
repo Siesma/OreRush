@@ -1,6 +1,7 @@
 package game.datastructures;
 
 import game.helper.FileHelper;
+import game.helper.MapType;
 import game.packet.AbstractPacket;
 import game.server.Server;
 import game.server.ServerSettings;
@@ -87,15 +88,18 @@ public class GameMap {
    * Determines the amount of ore a field should have.
    * However, this function is more or less useless as the amount of ore is set to 1, but because we may change it
    * the function is already implemented.
-   * @param max the maximum ore allowed per field
-   * @param exp TODO: TOM please fill this
-   * @param oreSpawnLikelyhood TODO: TOM please fill this
-   * @param ni TODO: TOM please fill this
-   * @param nj TODO: TOM please fill this
-   * @param i TODO: TOM please fill this
-   * @param j TODO: TOM please fill this
-   * @param shift_a TODO: TOM please fill this
-   * @param shift_b TODO: TOM please fill this
+   * This function would basically be the evaluation of the exponential function
+   * but for its input it also has another exponential function. The exponential function in question
+   * is the function "lessen" defined a little earlier.
+   * @param max the maximum ore allowed per field. - can be any real value.
+   * @param exp the exponent of the first function. - 1 > exp > 0.
+   * @param oreSpawnLikelyhood the likelyhood of something actually spawning.
+   * @param ni the x coordinate that is being compared to.
+   * @param nj the y coordinate that is being compared to.
+   * @param i the reference x coordinate.
+   * @param j the reference y coordinate.
+   * @param shift_a the shift in the x-direction from the function.
+   * @param shift_b the shift in the x-direction of the distribution.
    * @return the Ore Amount
    */
   public double getAmountOfOre(double max, double exp, float oreSpawnLikelyhood, int ni, int nj, int i, int j, int shift_a, int shift_b) {
@@ -103,7 +107,14 @@ public class GameMap {
   }
 
   /**
-   * Returns the
+   * Returns the inverse of an exponential function from the form:
+   * a - b ^ (c*d + f)
+   * @param max the y-offset - can be any real value.
+   * @param exp - the base of the exponential. - should be between 0 and 1.
+   * @param in - the value being evaluated. - can be any real value
+   * @param fac - the factor of the value that is being evaluated. - can be any real value.
+   * @param shift - the strength of the exponential decay. - should be between 0 and 1
+   * @return
    */
   private double lessen(double max, double exp, double in, double fac, double shift) {
     return max - (Math.pow(exp, in * fac + shift));
@@ -395,7 +406,8 @@ public class GameMap {
           Object object;
           // the type will be tried to make a new instance of it.
           try {
-            object = (new FileHelper()).createInstanceOfClass("game.datastructures." + objectType);
+            object = (new FileHelper()).createNewInstanceFromName(MapType.GameObjects, objectType);
+//            object = (new FileHelper()).createInstanceOfClass("game.datastructures." + objectType);
           } catch (Exception e) {
             // this should never happen as this means that the object is valid but the file for it does not exist.
             logger.error("An unidentified object!");
@@ -417,7 +429,8 @@ public class GameMap {
             if (finalGameObject instanceof Robot) {
               Object inv;
               try {
-                inv = (new FileHelper()).createInstanceOfClass("game.datastructures." + s.split(":")[2]);
+                inv = (new FileHelper()).createNewInstanceFromName(MapType.GameObjects, s.split(":")[2]);
+//                inv = (new FileHelper()).createInstanceOfClass("game.datastructures." + s.split(":")[2]);
               } catch (Exception e) {
                 // this should never happen as this means that the object is valid but the file for it does not exist.
                 logger.error("An unidentified object!");

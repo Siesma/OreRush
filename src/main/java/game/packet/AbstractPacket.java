@@ -1,6 +1,7 @@
 package game.packet;
 
 import game.helper.FileHelper;
+import game.helper.MapType;
 import game.server.Server;
 import game.server.ServerConstants;
 import org.apache.logging.log4j.LogManager;
@@ -32,13 +33,11 @@ public abstract class AbstractPacket {
    * Returns a new instance of the class with the specified name in the folder "packet.packets".
    * This is used to not have to hardcode any allowed packets.
    * @param name the name of the packet
-   * @return TODO: Tom please fill this
-   * @throws InstantiationException TODO: Tom please fill this
-   * @throws IllegalAccessException TODO: Tom please fill this
-   * @throws ClassNotFoundException TODO: Tom please fill this
+   * @return returns a new instance of the wanted packet given by the relative name.
    */
-  public static AbstractPacket getPacketByName(String name) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+  public static AbstractPacket getPacketByName(String name) {
     /*
+    Wenn wir diese funktion nichtmehr nutzen hn wir keine Throws.
     try {
       Class<AbstractPacket> classes = (Class<AbstractPacket>) Class.forName("game.packet.packets." + replaceIndicatorChars(name));
       return classes.newInstance();
@@ -47,7 +46,8 @@ public abstract class AbstractPacket {
       return null;
     }
     */
-    return (AbstractPacket) (new FileHelper()).createInstanceOfClass("game.packet.packets." + replaceIndicatorChars(name));
+    return (AbstractPacket) (new FileHelper()).createNewInstanceFromName(MapType.Packets, replaceIndicatorChars(name));
+//    return (AbstractPacket) (new FileHelper()).createInstanceOfClass("game.packet.packets." + replaceIndicatorChars(name));
   }
 
   public static AbstractPacket getPacketByMessage(String message) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
