@@ -95,6 +95,8 @@ public class Move extends AbstractPacket {
                     }
                 }
                 obj.getRobots().get(id).setID(id);
+                // sets the unique owner of the robot to the StringName of the corresponding clientthread.
+                obj.getRobots().get(id).setOwner(obj.getPlayerName());
                 // checks if the robot is dead, and if so will not continue performing the action.
                 if(obj.getRobots().get(id).isDead()) {
                     continue;

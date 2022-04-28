@@ -80,11 +80,13 @@ public class Robot implements GameObject {
   }
 
   /**
-   * This will put the given object into the inventory of the robot
+   * This will put the given object into the inventory of the robot.
+   * It will also set the newly acquired items owner as this robots owner.
    *
    * @param objectToLoad The object that should be loaded into the inventory of the robot
    */
   public void loadInventory(GameObject objectToLoad) {
+    objectToLoad.setOwner(this.getOwner());
     inventory = objectToLoad;
   }
 

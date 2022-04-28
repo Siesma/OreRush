@@ -83,7 +83,9 @@ public class FileHelper {
   public Object createNewInstanceFromName (MapType typeOfMap, String key) {
     initialize();
     Object obj = objectMap.get(typeOfMap.name().toLowerCase(Locale.ROOT)).get(key.toLowerCase(Locale.ROOT));
-
+    if(obj == null) {
+      logger.debug("The object  \"" + key + "\" is missing from the \"" + typeOfMap + "\" MapType.");
+    }
     return obj;
   }
 

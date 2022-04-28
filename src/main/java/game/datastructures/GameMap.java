@@ -73,6 +73,7 @@ public class GameMap {
                 Cell c = cellArray[ni][nj];
                 int amount = (int) getAmountOfOre(max, 0.84d, oreSpawnLikelyhood, ni, nj, i, j, 0, 0);
                 Ore ore = new Ore();
+                ore.setOwner(getUniqueServerName());
                 ore.setAmount(amount);
                 ore.setID(1);
                 c.place(ore);
@@ -82,6 +83,11 @@ public class GameMap {
         }
       }
     }
+  }
+
+  // TODO: figure out a unique name different from every other players name.
+  private String getUniqueServerName() {
+    return "Server";
   }
 
   /**
@@ -377,7 +383,9 @@ public class GameMap {
       }
       if (!(robotObject.getInventory() instanceof Nothing)) {
         getCellArray()[newPosition[0]][newPosition[1]].place(robotObject.getInventory());
-        robotObject.loadInventory(new Nothing());
+        Nothing nothing = new Nothing();
+        nothing.setOwner(getUniqueServerName());
+        robotObject.loadInventory(nothing);
       }
       ArrayList<Ore> ore = getCellArray()[newPosition[0]][newPosition[1]].oreOnCell();
       if (ore == null) {
@@ -452,6 +460,12 @@ public class GameMap {
             logger.error("Somehow the cell index was not updated");
             continue;
           }
+
+          if(!newMap.isInBounds(cellX, cellY, 0, 0, serverSettings.getMapWidth(), serverSettings.getMapHeight())) {
+            logger.error("Somehow the cell index was outside of the map boundaries");
+            continue;
+          }
+
           // splits the object information to its parts.
           // -> type:id:optionalInventory
           String[] objectData = s.split(":");

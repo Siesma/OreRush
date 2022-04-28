@@ -44,7 +44,7 @@ public class Nothing implements GameObject {
 
   @Override
   public String getOwner() {
-    return "";
+    return owner;
   }
 
 
