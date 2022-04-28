@@ -173,11 +173,11 @@ public class GameMap {
   }
 
   public boolean isInBounds(int x, int y, int min_x, int max_x, int min_y, int max_y) {
-    return x > min_x && x < max_x && y > min_y && y < max_y;
+    return x >= min_x && x < max_x && y >= min_y && y < max_y;
   }
 
-  public boolean isInBounds(int[] xy, int[] minxy, int[] maxxy) {
-    return isInBounds(xy[0], xy[1], minxy[0], maxxy[0], minxy[1], maxxy[1]);
+  public boolean isInBounds(int[] xy, int[] minDimension, int[] maxDimension) {
+    return isInBounds(xy[0], xy[1], minDimension[0], maxDimension[0], minDimension[1], maxDimension[1]);
   }
 
   public OreType determineOreType() {
@@ -461,8 +461,8 @@ public class GameMap {
             continue;
           }
 
-          if(!newMap.isInBounds(cellX, cellY, 0, 0, serverSettings.getMapWidth(), serverSettings.getMapHeight())) {
-            logger.error("Somehow the cell index was outside of the map boundaries");
+          if(!newMap.isInBounds(cellX, cellY, 0, serverSettings.getMapWidth(), 0, serverSettings.getMapHeight())) {
+            logger.error("Somehow the cell index was outside of the map boundaries.\t" + cellX + "|" + cellY+ "|" + serverSettings.getMapWidth()+ "|" + serverSettings.getMapHeight());
             continue;
           }
 
