@@ -62,7 +62,7 @@ public class GameMap {
       for (int j = 0; j < h; j++) {
         if (createCluster(i, j, threshold)) {
           double clusterSize = Math.sqrt(serverSettings.getMaxClusterSize());
-          OreType curOreType = determineOreType();
+          int curOreType = determineOreTypeIndex();
           for (int xo = (int) -(1 + MathHelper.getRandomNumber() * clusterSize); xo < (int) (1 + MathHelper.getRandomNumber() * clusterSize); xo++) {
             for (int yo = (int) (1 + MathHelper.getRandomNumber() * clusterSize); yo < (int) (1 + MathHelper.getRandomNumber() * clusterSize); yo++) {
               int ni, nj;
@@ -75,8 +75,7 @@ public class GameMap {
                 Ore ore = new Ore();
                 ore.setOwner(getUniqueServerName());
                 ore.setAmount(amount);
-                // TODO: Fix the ID section so that different ores will be put down.
-                ore.setID(1);
+                ore.setID(curOreType);
                 c.place(ore);
               }
             }
@@ -129,9 +128,9 @@ public class GameMap {
   }
 
 
-  public OreType determineOreType() {
+  public int determineOreTypeIndex() {
     // TODO: make it so that more valuable oretypes spawn futher on the right
-    return OreType.values()[(int) (Math.random() * OreType.values().length)];
+    return (int) (Math.random() * OreType.values().length);
   }
 
   public void placeObjectOnMap(GameObject object, int x, int y) {
