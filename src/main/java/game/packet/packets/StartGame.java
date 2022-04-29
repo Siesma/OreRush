@@ -36,7 +36,6 @@ public class StartGame extends AbstractPacket {
      */
     @Override
     public String encode() {
-
         return null;
     }
 

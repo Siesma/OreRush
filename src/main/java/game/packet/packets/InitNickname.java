@@ -34,8 +34,7 @@ public class InitNickname extends AbstractPacket {
      */
     @Override
     public String encode() {
-        //System.out.println("What do you want your new name to be?");
-        return null;
+        return encodeWithContent();
     }
 
     /**

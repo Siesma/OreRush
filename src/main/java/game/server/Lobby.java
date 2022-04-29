@@ -2,6 +2,7 @@ package game.server;
 
 import game.datastructures.GameMap;
 import game.datastructures.Robot;
+import game.helper.MathHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,16 +45,13 @@ public class Lobby {
    * @return the next Position that is within the reach of the robots original position without moving more than allowed.
    */
   public int[] getNextMove(Robot r, int[] destination) {
-//    int xDif = (destination[0] - r.getPosition()[0]);
-//    int yDif = (destination[1] - r.getPosition()[1]);
-//    int xMoves = Math.min(serverSettings.getMaxAllowedMoves(), xDif);
-//    int yMoves = Math.min(serverSettings.getMaxAllowedMoves() - xMoves, yDif);
-//    return new int[]{r.getPosition()[0] + xMoves, r.getPosition()[1] + yMoves};
-
     int xDif = -r.getPosition()[0] + destination[0];
     int yDif = -r.getPosition()[1] + destination[1];
-    int amountOfXMoves = 0;
-    return null;
+    int maxTotalMoves = serverSettings.getMaxAllowedMoves();
+    int xMoves = MathHelper.clamp(xDif, -maxTotalMoves, maxTotalMoves);
+    maxTotalMoves -= Math.abs(xMoves);
+    int yMoves = MathHelper.clamp(yDif, -maxTotalMoves, maxTotalMoves);
+    return new int[]{r.getPosition()[0] + xMoves, r.getPosition()[1] + yMoves};
 
   }
 
@@ -117,13 +115,7 @@ public class Lobby {
   public void initialize() {
     spawnRobots();
     generateGameMap();
-    // printMapForEveryone();
   }
-//  public void printMapForEveryone () {
-//    for(ClientThread c : getListOfClients()) {
-//      c.updatePlayersAboutMapChanges();
-//    }
-//  }
 
   public void spawnRobots() {
     for (int i = 0; i < listOfClients.size(); i++) {

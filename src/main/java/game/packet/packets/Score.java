@@ -38,6 +38,10 @@ public class Score extends AbstractPacket {
     }
 
 
+    /**
+     *
+     * This function is not used.
+     */
     @Override
     public String encode() {
         return null;
