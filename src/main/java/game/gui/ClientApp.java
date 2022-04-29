@@ -24,6 +24,7 @@ public class ClientApp extends Application {
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
         primaryStage.setOnCloseRequest(e -> {
+            // TODO: SEB send close packet when the application is closed.
             System.exit(1);
         });
     }
