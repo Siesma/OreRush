@@ -169,7 +169,7 @@ public class GameMap {
     int h = gameMapSize[1];
     int ni = i - (w / 10);
     int nj = j - (h / 2);
-    return lessen(1d, 0.4, Math.max(ni, 0) * getRandomNumber() - Math.abs(nj), 0.5, 2) > 0.75;
+    return lessen(1d, 0.4, Math.max(ni, 0) * getRandomNumber() - Math.abs(nj), 0.5, 2) > threshold;
   }
 
   public boolean isInBounds(int x, int y, int min_x, int max_x, int min_y, int max_y) {
