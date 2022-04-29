@@ -17,7 +17,6 @@ public class ClientApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/startMenu.fxml")));
-
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
         primaryStage.setOnCloseRequest(e -> {
