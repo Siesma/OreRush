@@ -64,7 +64,7 @@ public class JoinLobby extends AbstractPacket {
                 (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new JoinLobby()).encodeWithContent(lobbyName, clientName));
             }
             obj.setConnectedLobby(obj.getServer().getLobbyByName(lobbyName));
-            obj.getConnectedLobby().printMapForEveryone();
+            // obj.getConnectedLobby().printMapForEveryone();
             for (int i = 0; i < obj.getConnectedLobby().getServerSettings().getNumberOfRobots(); i++) {
                 obj.addRobot();
             }

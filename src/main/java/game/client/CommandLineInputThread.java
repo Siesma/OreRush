@@ -1,10 +1,8 @@
 package game.client;
 
-import game.packet.PacketHandler;
-
 import java.io.OutputStream;
 
-public class CommandLineInputThread implements Runnable{
+public class CommandLineInputThread implements Runnable {
 
     private final Client client;
     private final OutputStream outputStream;

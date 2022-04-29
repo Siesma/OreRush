@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class StartMenuController{
+public class StartMenuController {
     /**
      * Controller Class for the GUI
      * handles On Action methods
@@ -24,16 +24,22 @@ public class StartMenuController{
 
     private Client client;
 
-    @FXML private Label nickname;
+    @FXML
+    private Label nickname;
 
-    @FXML private TextField newNickname;
+    @FXML
+    private TextField newNickname;
 
-    @FXML private TextField newLobbyName;
+    @FXML
+    private TextField newLobbyName;
 
-    @FXML private TextField newMessageTextField;
-    @FXML private TextFlow chatTextFlow;
+    @FXML
+    private TextField newMessageTextField;
+    @FXML
+    private TextFlow chatTextFlow;
 
-    @FXML private ListView<String> clientListView;
+    @FXML
+    private ListView<String> clientListView;
 
     @FXML
     private TableView<LobbyInClient> lobbyTableView;
@@ -50,7 +56,7 @@ public class StartMenuController{
     public void initialize() {
 
         //get model
-        this.client = new Client(Main.hostAddress, Integer.parseInt(Main.port),Main.name);
+        this.client = new Client(Main.hostAddress, Integer.parseInt(Main.port), Main.name);
 
         //link model with view
         nickname.textProperty().bind(client.nicknameProperty());
@@ -72,10 +78,9 @@ public class StartMenuController{
 
     /**
      * tests if the textfield is empty  sends the message to the CLients and clears the Textfield
-     *
-     *
      */
-    @FXML private void handleSendMessage(ActionEvent actionEvent) throws Exception {
+    @FXML
+    private void handleSendMessage(ActionEvent actionEvent) throws Exception {
         if (!newMessageTextField.getText().equals("")) {
             client.sendChatMessage(newMessageTextField.getText());
             newMessageTextField.setText("");
@@ -85,10 +90,9 @@ public class StartMenuController{
 
     /**
      * checks if the textfield is empty changes the nickname and clears the textfield
-     *
-     *
      */
-    @FXML private void handleChangeNickname(ActionEvent actionEvent) throws Exception {
+    @FXML
+    private void handleChangeNickname(ActionEvent actionEvent) throws Exception {
         if (!newNickname.getText().equals("")) {
             client.changeNickname(newNickname.getText());
             newNickname.setText("");
@@ -98,10 +102,11 @@ public class StartMenuController{
 
     /**
      * checks if the Textfield is empty creates a Lobby joins the Lobby and clear the textfield
+     *
      * @param actionEvent UI Action that triggers this method
      */
     public void handleCreateLobby(ActionEvent actionEvent) {
-        if (!newLobbyName.getText().equals("")){
+        if (!newLobbyName.getText().equals("")) {
             client.createLobby(newLobbyName.getText());
             client.joinLobby(newLobbyName.getText());
             newLobbyName.setText("");
@@ -112,6 +117,7 @@ public class StartMenuController{
 
     /**
      * Joins the Lobby
+     *
      * @param actionEvent UI Action that triggers this method
      */
     public void handleJoinLobby(ActionEvent actionEvent) {
@@ -142,7 +148,7 @@ public class StartMenuController{
                 client.setLobbyInClient(null);
             });
             stage.show();
-        }catch (IOException io) {
+        } catch (IOException io) {
             io.printStackTrace();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
@@ -151,6 +157,7 @@ public class StartMenuController{
 
     /**
      * checks if the whisper message can be sent and send it
+     *
      * @param actionEvent TODO: Fill this please!
      */
     public void handleWhisperMessage(ActionEvent actionEvent) {
@@ -163,7 +170,8 @@ public class StartMenuController{
     }
 
     /**
-     *checks if the textfield is empty and send the message as broadcast
+     * checks if the textfield is empty and send the message as broadcast
+     *
      * @param actionEvent TODO: Fill this please!
      */
     public void handleBroadcastMessage(ActionEvent actionEvent) {

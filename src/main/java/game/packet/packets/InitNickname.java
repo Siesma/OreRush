@@ -2,13 +2,8 @@ package game.packet.packets;
 
 import game.client.InputStreamThread;
 import game.packet.AbstractPacket;
-import game.packet.PacketHandler;
-import game.server.ClientThread;
-import game.server.Server;
 import game.server.ServerConstants;
 import javafx.application.Platform;
-
-import java.util.Scanner;
 
 public class InitNickname extends AbstractPacket {
     public InitNickname() {
@@ -18,6 +13,7 @@ public class InitNickname extends AbstractPacket {
 
     /**
      * This function will create a InitNickname packet
+     *
      * @param content the new name
      * @return the formatted InitNickname packet
      */
@@ -44,7 +40,8 @@ public class InitNickname extends AbstractPacket {
 
     /**
      * Decodes the packet
-     * @param parent client updates its nickname
+     *
+     * @param parent  client updates its nickname
      * @param message contains the clientname
      */
     @Override
@@ -55,7 +52,7 @@ public class InitNickname extends AbstractPacket {
         if (parent instanceof InputStreamThread) {
             InputStreamThread obj = (InputStreamThread) parent;
             String finalMessage = message;
-            Platform.runLater(() ->obj.getClient().nicknameProperty().setValue(finalMessage));
+            Platform.runLater(() -> obj.getClient().nicknameProperty().setValue(finalMessage));
         }
     }
 }

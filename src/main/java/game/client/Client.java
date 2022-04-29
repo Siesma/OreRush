@@ -155,6 +155,10 @@ public class Client {
   public void createLobby(String newLobbyName) {
     (new PacketHandler(this)).pushMessage(outputStream, (new CreateLobby()).encodeWithContent(newLobbyName));
   }
+
+  public void sendStartGame() {
+    (new PacketHandler(this)).pushMessage(outputStream, (new StartGame()).encodeWithContent(client.getLobbyInClient().getLobbyName()));
+  }
   /**
    * Sends a new JoinLobby-packet and encodes it with the predetermined content
    * @param lobbyName the name of the lobby that should be joined

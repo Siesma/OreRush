@@ -122,13 +122,13 @@ public class Lobby {
   public void initialize() {
     spawnRobots();
     generateGameMap();
-    printMapForEveryone();
+    // printMapForEveryone();
   }
-  public void printMapForEveryone () {
-    for(ClientThread c : getListOfClients()) {
-      c.updatePlayersAboutMapChanges();
-    }
-  }
+//  public void printMapForEveryone () {
+//    for(ClientThread c : getListOfClients()) {
+//      c.updatePlayersAboutMapChanges();
+//    }
+//  }
 
   public void spawnRobots() {
     for (int i = 0; i < listOfClients.size(); i++) {

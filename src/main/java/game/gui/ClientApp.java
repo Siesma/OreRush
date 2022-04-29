@@ -1,19 +1,16 @@
 package game.gui;
 
-import game.client.Client;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.List;
 import java.util.Objects;
 
 public class ClientApp extends Application {
     /**
      * This class gets the Javafx fxml file and starts the GUI
-     *
      */
 
 

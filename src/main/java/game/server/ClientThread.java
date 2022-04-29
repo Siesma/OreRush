@@ -277,7 +277,7 @@ public class ClientThread implements Runnable {
 
   public void setConnectedLobby(Lobby lobby) {
     this.connectedLobby = lobby;
-    connectedLobby.printMapForEveryone();
+    // connectedLobby.printMapForEveryone();
   }
 
   public OutputStream getOutputStream() {
