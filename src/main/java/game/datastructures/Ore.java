@@ -9,17 +9,24 @@ package game.datastructures;
 public class Ore implements GameObject {
 
   private OreType oreType;
-  private  int xCoordinate;
+  private int xCoordinate;
   private int yCoordinate;
   private int amount = 1;
   private String owner;
+
+  /**
+   * Default constructor to set the owner of this type as an empty string.
+   */
+  public Ore() {
+    this.owner = "";
+  }
 
   @Override
   public void setID(int id) {
     this.oreType = OreType.values()[id % OreType.values().length];
   }
 
-  public void setAmount (int amount) {
+  public void setAmount(int amount) {
     this.amount = amount;
   }
 
@@ -43,7 +50,7 @@ public class Ore implements GameObject {
     return s;
   }
 
-  public OreType getOreType () {
+  public OreType getOreType() {
     return this.oreType;
   }
 
@@ -57,6 +64,7 @@ public class Ore implements GameObject {
 
   /**
    * Sets the owner of this dataType
+   *
    * @param nameOfOwner the name of the player creating this gameObject.
    */
   @Override
@@ -65,11 +73,10 @@ public class Ore implements GameObject {
   }
 
   /**
-   *
    * @return the name of the owner of this gameobject
    */
   @Override
-  public String getOwner () {
+  public String getOwner() {
     return owner;
   }
 

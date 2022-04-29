@@ -7,6 +7,13 @@ public class Nothing implements GameObject {
   private int id;
   private String owner;
 
+  public Nothing () {
+    this.owner = "";
+  }
+  
+  /**
+   * Default constructor to set the owner of this type as an empty string.
+   */
   @Override
   public void setID(int id) {
     this.id = id;

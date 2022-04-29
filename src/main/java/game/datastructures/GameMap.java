@@ -216,6 +216,10 @@ public class GameMap {
     for (int j = 0; j < gameMapSize[1]; j++) {
       for (int i = 0; i < gameMapSize[0]; i++) {
         for (GameObject gameObject : cellArray[i][j].getPlacedObjects()) {
+          if(gameObject.getOwner() == null) {
+            logger.debug("The Owner of the Object \"" + gameObject + "\" in the position (" + i + ", " + j + ") was not set correctly.");
+            continue;
+          }
           if (gameObject.getOwner().equals(playerName)) {
             playerOwnedGameObjects.add(gameObject);
           }
@@ -250,10 +254,11 @@ public class GameMap {
     return out;
   }
 
-  public void printMapToConsole() {
-    for (int j = 0; j < gameMapSize[1]; j++) {
-      for (int i = 0; i < gameMapSize[0]; i++) {
-        Cell cell = cellArray[i][j];
+  public static void printMapToConsole(GameMap gameMap) {
+    Cell[][] cells = gameMap.getCellArray();
+    for (int j = 0; j < cells.length; j++) {
+      for (int i = 0; i < cells[j].length; i++) {
+        Cell cell = cells[i][j];
         boolean trap = cell.trapOnCell() != null;
         boolean radar = cell.radarOnCell() != null;
         boolean ore = cell.oreOnCell() != null;
@@ -432,6 +437,7 @@ public class GameMap {
         Nothing nothing = new Nothing();
         nothing.setPosition(i, j);
         nothing.setID(0);
+        nothing.setOwner(getUniqueServerName());
         cellArray[i][j].place(nothing);
       }
     }

@@ -278,7 +278,8 @@ public class Client {
   }
 
   public void printCurrentGameMap(GameMap gameMap) {
-    gameMap.printMapToConsole();
+//    GameMap.printMapToConsole(gameMap);
+    GameMap.printMapToConsole(gameMap.getIndividualGameMapForPlayer(nickname.get()));
   }
 
   public String getNickname() {

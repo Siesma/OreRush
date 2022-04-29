@@ -84,7 +84,7 @@ public class Lobby {
 
   public void printMap () {
     System.out.println("---");
-    this.gameMap.printMapToConsole();
+    GameMap.printMapToConsole(gameMap);
     System.out.println("---");
   }
 

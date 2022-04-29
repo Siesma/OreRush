@@ -31,7 +31,7 @@ public class  Test {
     r.setID(1);
 
     map.placeObjectOnMap(r, r.getPosition());
-    map.printMapToConsole();
+    GameMap.printMapToConsole(map);
     System.out.println("---");
     map.removeObjectFromMap(r, r.getPosition());
     int[] wantedDestination = {4, 9};

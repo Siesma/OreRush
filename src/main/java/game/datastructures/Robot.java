@@ -24,6 +24,13 @@ public class Robot implements GameObject {
 
   private String owner;
 
+  /**
+   * Default constructor to set the owner of this type as an empty string.
+   */
+  public Robot () {
+    this.owner = "";
+  }
+
   @Override
   public void setID(int id) {
     this.playerID = id;

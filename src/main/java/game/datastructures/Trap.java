@@ -12,6 +12,14 @@ public class Trap implements GameObject {
   private int playerID;
 
   private String owner;
+
+  /**
+   * Default constructor to set the owner of this type as an empty string.
+   */
+  public Trap () {
+    this.owner = "";
+  }
+
   @Override
   public void setID(int id) {
     this.playerID = id;
