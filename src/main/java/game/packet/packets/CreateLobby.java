@@ -53,7 +53,7 @@ public class CreateLobby extends AbstractPacket {
         }
         if(parent instanceof ClientThread) {
             ClientThread obj = (ClientThread) parent;
-            obj.getServer().addLobby(new Lobby(message,obj));
+            obj.getServer().addLobby(new Lobby(message,obj.getServer()));
             for(ClientThread clientThread : Server.getClientThreads()) {
                 (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new CreateLobby()).encodeWithContent(message));
             }

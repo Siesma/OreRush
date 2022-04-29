@@ -298,4 +298,9 @@ public class Client {
     return lobbyInClientObservableList;
   }
 
+  public ObservableList<String> getObservableLobbyList() {
+    return observableLobbyList;
+  }
+
+
 }

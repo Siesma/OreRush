@@ -23,31 +23,14 @@
                                 <ListView fx:id="currentRobotMovesList" prefHeight="100.0" prefWidth="303.0" />
                             </children>
                         </HBox>
-                        <VBox prefHeight="79.0" prefWidth="350.0">
-                            <children>
-                                <HBox prefHeight="100.0" prefWidth="200.0">
-                                    <children>
-                                        <Label prefHeight="25.0" prefWidth="71.0" text="X-Coordinate" />
-                                        <TextField fx:id="textFieldXCoord" promptText="Put your coordinate here" />
-                                    </children>
-                                </HBox>
-                                <HBox prefHeight="100.0" prefWidth="200.0">
-                                    <children>
-                                        <Label prefHeight="24.0" prefWidth="71.0" text="Y-Coordinate" />
-                                        <TextField fx:id="textFieldYCoord" promptText="Put your coordinate here" />
-                                    </children>
-                                </HBox>
-                            </children>
-                        </VBox>
                         <Label prefHeight="17.0" prefWidth="396.0" text="Current move" />
                         <ChoiceBox fx:id="playerRobotActionList" prefWidth="150.0" />
                         <Button fx:id="buttonMakeMove" mnemonicParsing="false" onAction="#onActionButtonMakeMove" text="Set individual Move!" />
                         <Button fx:id="endTurnButton" mnemonicParsing="false" onAction="#onActionEndTurnButton" text="End Turn" />
-                        <Button mnemonicParsing="false" onAction="#handleWinGame" prefHeight="25.0" prefWidth="150.0" text="Win game" />
                     </children>
                 </VBox>
 
-                <Pane fx:id="mapPane"  maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="728.0" prefWidth="572.0">
+                <Pane fx:id="mapPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="728.0" prefWidth="572.0">
                     <children>
                         <GridPane fx:id="mapGridPane" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="728.0" prefWidth="572.0">
 

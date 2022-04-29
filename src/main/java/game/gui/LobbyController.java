@@ -89,7 +89,6 @@ public class LobbyController {
     public void updateMap() {
         Platform.runLater(
                 () -> {
-                    GameMap.printMapToConsole(lobby.getGameMap());
                     mapGridPane.getChildren().clear();
                     int xMax = lobby.getGameMap().getGameMapSize()[0];
                     int yMax = lobby.getGameMap().getGameMapSize()[1];
@@ -105,33 +104,29 @@ public class LobbyController {
                             imageView.setFitWidth(cellSize);
                             String type;
                             Image image;
-                            if (lobby.getGameMap().getCellArray()[x][y].robotsOnCell() != null) {
-                                type = "robot";
-                                System.out.println(type);
-
+                            if (lobby.getGameMap().getCellArray()[x][y].robotsOnCell() != null) { //TODO: differentiate robot owner
                                 image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/robot.png")));
-
                                 imageView.setImage(image);
                                 button.setGraphic(imageView);
-                            } else if (lobby.getGameMap().getCellArray()[x][y].oreOnCell() != null){
-                                type = "ore";
-                                System.out.println(type);
+                            } else if (lobby.getGameMap().getCellArray()[x][y].oreOnCell() != null){ //TODO: individual ores
                                 image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/ore.png")));
                                 imageView.setImage(image);
                                 button.setGraphic(imageView);
+                            } else if (lobby.getGameMap().getCellArray()[x][y].radarOnCell() != null){
+                                image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/radar.png")));
+                                imageView.setImage(image);
+                                button.setGraphic(imageView);
+                            } else if (lobby.getGameMap().getCellArray()[x][y].trapOnCell() != null){
+                                image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/trap.png")));
+                                imageView.setImage(image);
+                                button.setGraphic(imageView);
                             }
-
-                            int finalX = x;
-                            int finalY = y;
                             button.setOnMouseClicked((MouseEvent event) -> {
-                                System.out.println(event.toString());
-                                System.out.println(finalX + " "+finalY);
                                 Node node = (Node) event.getTarget();
                                 int row = GridPane.getRowIndex(node);
                                 int column = GridPane.getColumnIndex(node);
                                 saveClickedPosition(column, row);
                             });
-
                             mapGridPane.add(button, x, y, 1, 1);
                         }
                     }

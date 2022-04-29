@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class Lobby {
 
+  private final Server server;
   private final String lobbyName;
   protected ArrayList<ClientThread> listOfClients = new ArrayList<>();
   protected GameMap gameMap;
@@ -16,7 +17,11 @@ public class Lobby {
   protected int turnCounter;
   public static final Logger logger = LogManager.getLogger(Server.class);
 
-  public Lobby(String lobbyName, ClientThread clientThread) {
+  ClientThread winnerClientThread ;
+  int winnerScore = -1;
+
+  public Lobby(String lobbyName, Server server) {
+    this.server = server;
     this.lobbyName = lobbyName;
     this.serverSettings = new ServerSettings("");
     initialize();
@@ -80,6 +85,21 @@ public class Lobby {
   public void updateMove() {
     turnCounter++;
     printMap();
+    checkGameEnd();
+
+  }
+
+  private void checkGameEnd() {
+    if (turnCounter == serverSettings.getNumberOfRounds()*listOfClients.size()) {
+      for (ClientThread clientThread:listOfClients) {
+        if (clientThread.getPlayerScore() > winnerScore) {
+          winnerClientThread = clientThread;
+          winnerScore = clientThread.getPlayerScore();
+        }
+      }
+      server.saveHighScore(winnerClientThread);
+      winnerClientThread.informOfWinner();
+    }
   }
 
   public void printMap () {
