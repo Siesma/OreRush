@@ -3,6 +3,7 @@ package game.packet.packets;
 import game.datastructures.*;
 import game.helper.FileHelper;
 import game.helper.MapType;
+import game.helper.MathHelper;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
@@ -86,7 +87,7 @@ public class Move extends AbstractPacket {
                 // if the distance is too big for a valid "dig" or "request" action it will revert it to a move action.
                 Robot rob = obj.getRobots().get(id);
                 int[] result = obj.getConnectedLobby().getNextMove(rob, new int[] { x, y });
-                if (obj.getConnectedLobby().distanceFromPosition(rob.getPosition(), result) > 1) {
+                if (MathHelper.absoluteCellDistance(rob.getPosition(), result) > 1) {
                     action = RobotAction.Move;
                 }
                 if (action == RobotAction.RequestRadar || action == RobotAction.RequestTrap) {
