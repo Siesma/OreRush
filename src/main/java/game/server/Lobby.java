@@ -2,6 +2,7 @@ package game.server;
 
 import game.datastructures.GameMap;
 import game.datastructures.Robot;
+import game.helper.MathHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,14 +37,6 @@ public class Lobby {
     gameMap.spawnOreInMap();
   }
 
-  /**
-   * @param now current position
-   * @param then destination
-   * @return the amount of single cell moves that would need to be done to reach a destination
-   */
-  public static int distanceFromPosition(int[] now, int[] then) {
-    return Math.abs(now[0] - then[0]) + Math.abs(now[1] - then[1]);
-  }
 
   /**
    * Returns the position the robot is allowed to move to relative to the maximum allowed moves.
@@ -57,14 +50,14 @@ public class Lobby {
    * @return the next Position that is within the reach of the robots original position without moving more than allowed.
    */
   public int[] getNextMove(Robot r, int[] destination) {
-    logger.debug("Trying to get the new position for the robot");
-    logger.debug("From: " + r.getPosition()[0] + " " + r.getPosition()[1] + "; to: " + destination[0] + " " + destination[1]);
-    int xDif = (destination[0] - r.getPosition()[0]);
-    int yDif = (destination[1] - r.getPosition()[1]);
-    int xMoves = Math.min(serverSettings.getMaxAllowedMoves(), xDif);
-    int yMoves = Math.min(serverSettings.getMaxAllowedMoves() - xMoves, yDif);
-    logger.debug("Due to the max allowed cells that someone can move the robot is now at " + (r.getPosition()[0] + xMoves) + " " + (r.getPosition()[1] + yMoves));
+    int xDif = -r.getPosition()[0] + destination[0];
+    int yDif = -r.getPosition()[1] + destination[1];
+    int maxTotalMoves = serverSettings.getMaxAllowedMoves();
+    int xMoves = MathHelper.clamp(xDif, -maxTotalMoves, maxTotalMoves);
+    maxTotalMoves -= Math.abs(xMoves);
+    int yMoves = MathHelper.clamp(yDif, -maxTotalMoves, maxTotalMoves);
     return new int[]{r.getPosition()[0] + xMoves, r.getPosition()[1] + yMoves};
+
   }
 
     /**
@@ -142,13 +135,7 @@ public class Lobby {
   public void initialize() {
     spawnRobots();
     generateGameMap();
-    // printMapForEveryone();
   }
-//  public void printMapForEveryone () {
-//    for(ClientThread c : getListOfClients()) {
-//      c.updatePlayersAboutMapChanges();
-//    }
-//  }
 
   public void spawnRobots() {
     for (int i = 0; i < listOfClients.size(); i++) {

@@ -59,17 +59,6 @@ public class FileHelper {
         objectMap.put(MapType.GameObjects.name().toLowerCase(Locale.ROOT), gameObjectMap);
     }
 
-//  public Object createInstanceOfClass(String relativePath) {
-//    try {
-//      Class<?> classes = (Class<?>) Class.forName(relativePath);
-//      return classes.newInstance();
-//    } catch (Exception e) {
-////      logger.error("Some error occurred! Reverting to null");
-//      return null;
-//    }
-//
-//  }
-
     /**
      * This function returns a new object by name.
      * This will requires the typeOfMap and the key to be in lowercase, although the function already

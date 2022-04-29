@@ -36,21 +36,10 @@ public abstract class AbstractPacket {
    * @return returns a new instance of the wanted packet given by the relative name.
    */
   public static AbstractPacket getPacketByName(String name) {
-    /*
-    Wenn wir diese funktion nichtmehr nutzen hn wir keine Throws.
-    try {
-      Class<AbstractPacket> classes = (Class<AbstractPacket>) Class.forName("game.packet.packets." + replaceIndicatorChars(name));
-      return classes.newInstance();
-    } catch (Exception e) {
-      System.out.println("Some error occurred! Reverting to null");
-      return null;
-    }
-    */
     return (AbstractPacket) (new FileHelper()).createNewInstanceFromName(MapType.Packets, replaceIndicatorChars(name));
-//    return (AbstractPacket) (new FileHelper()).createInstanceOfClass("game.packet.packets." + replaceIndicatorChars(name));
   }
 
-  public static AbstractPacket getPacketByMessage(String message) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+  public static AbstractPacket getPacketByMessage(String message) {
     return getPacketByName(splitMessageBySpacer(replaceIndicatorChars(message), String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0]);
   }
 
@@ -70,9 +59,6 @@ public abstract class AbstractPacket {
     if (parts[0].matches("^" + matching + "$")) {
       parts = removeFirstElement(parts);
     }
-//    if (parts.length != this.getParts().length) {
-//      return false;
-//    }
     for (int i = 0; i < parts.length; i++) {
       if (!parts[i].matches(this.getParts()[i % this.getParts().length])) {
         logger.debug(parts[i] + " Was not properly encoded!!!");

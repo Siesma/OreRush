@@ -37,6 +37,10 @@ public class JoinLobby extends AbstractPacket {
                 (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
     }
 
+    /**
+     * 
+     * this function is not used.
+     */
     @Override
     public String encode() {
         return null;

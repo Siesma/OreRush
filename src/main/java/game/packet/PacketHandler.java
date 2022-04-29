@@ -1,6 +1,7 @@
 package game.packet;
 
 import game.client.Client;
+import game.helper.FileHelper;
 import game.server.ServerConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,6 +30,7 @@ public class PacketHandler {
     public String createPacketMessage() {
         System.out.println("Please tell which packet you want to send");
         System.out.println("A list of possible packets are:");
+        // TODO: Figure out whether we want to continue having this or not because in its current state it is not working.
         for (String s : (Objects.requireNonNull(new File(System.getProperty("user.dir") + "/src/main/java/game/packet/packets").list()))) {
             System.out.println("\t->" + s.split(".java")[0]);
         }

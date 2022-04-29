@@ -2,8 +2,8 @@ package game.datastructures;
 
 import game.helper.FileHelper;
 import game.helper.MapType;
+import game.helper.MathHelper;
 import game.packet.AbstractPacket;
-import game.server.Lobby;
 import game.server.Server;
 import game.server.ServerSettings;
 import org.apache.logging.log4j.LogManager;
@@ -62,20 +62,20 @@ public class GameMap {
       for (int j = 0; j < h; j++) {
         if (createCluster(i, j, threshold)) {
           double clusterSize = Math.sqrt(serverSettings.getMaxClusterSize());
-          OreType curOreType = determineOreType();
-          for (int xo = (int) -(1 + getRandomNumber() * clusterSize); xo < (int) (1 + getRandomNumber() * clusterSize); xo++) {
-            for (int yo = (int) (1 + getRandomNumber() * clusterSize); yo < (int) (1 + getRandomNumber() * clusterSize); yo++) {
+          int curOreType = determineOreTypeIndex();
+          for (int xo = (int) -(1 + MathHelper.getRandomNumber() * clusterSize); xo < (int) (1 + MathHelper.getRandomNumber() * clusterSize); xo++) {
+            for (int yo = (int) (1 + MathHelper.getRandomNumber() * clusterSize); yo < (int) (1 + MathHelper.getRandomNumber() * clusterSize); yo++) {
               int ni, nj;
               ni = i + xo;
               nj = j + yo;
-              if (isInBounds(ni, nj, 0, w, 0, h)) {
+              if (MathHelper.isInBounds(ni, nj, serverSettings)) {
                 double max = oreSpawnLikelyhood * 2;
                 Cell c = cellArray[ni][nj];
                 int amount = (int) getAmountOfOre(max, 0.84d, oreSpawnLikelyhood, ni, nj, i, j, 0, 0);
                 Ore ore = new Ore();
                 ore.setOwner(getUniqueServerName());
                 ore.setAmount(amount);
-                ore.setID(1);
+                ore.setID(curOreType);
                 c.place(ore);
               }
             }
@@ -110,55 +110,10 @@ public class GameMap {
    * @return the Ore Amount
    */
   public double getAmountOfOre(double max, double exp, float oreSpawnLikelyhood, int ni, int nj, int i, int j, int shift_a, int shift_b) {
-    return Math.round(lessen(max, exp, lessen(1, 0.5, getRandomNumber(), oreSpawnLikelyhood, shift_a) - (oreSpawnLikelyhood * max - oreSpawnLikelyhood), dist(ni, nj, i, j), shift_b));
-  }
-
-  /**
-   * Returns the inverse of an exponential function from the form:
-   * a - b ^ (c*d + f)
-   *
-   * @param max   the y-offset - can be any real value.
-   * @param exp   - the base of the exponential. - should be between 0 and 1.
-   * @param in    - the value being evaluated. - can be any real value
-   * @param fac   - the factor of the value that is being evaluated. - can be any real value.
-   * @param shift - the strength of the exponential decay. - should be between 0 and 1
-   * @return
-   */
-  private double lessen(double max, double exp, double in, double fac, double shift) {
-    return max - (Math.pow(exp, in * fac + shift));
+    return Math.round(MathHelper.inverseExponential(max, exp, MathHelper.inverseExponential(1, 0.5, MathHelper.getRandomNumber(), oreSpawnLikelyhood, shift_a) - (oreSpawnLikelyhood * max - oreSpawnLikelyhood), MathHelper.exactDistanceBetweenPoints(ni, nj, i, j), shift_b));
   }
 
 
-  /**
-   * Returns the distance between the points (P(nx, ny) and P(x, y)) by taking the
-   * square root of the absolute difference between the two points raised to the m th power where m is a constant
-   *
-   * @param nx x of the first point
-   * @param ny y of the first point
-   * @param x  x of the second point
-   * @param y  y of the second point
-   * @return the calculated distance
-   */
-  public double dist(int nx, int ny, int x, int y) {
-    double m = 2; // Default distance function for m = 2
-    // CAN control density, for m > 2 the density shrinks
-    return Math.sqrt(Math.pow(Math.abs(nx - x), m) + Math.pow(Math.abs(ny - y), m));
-  }
-
-  /**
-   * Returns a random number between 0 and 1
-   *
-   * @return the random number as a double
-   */
-  public double getRandomNumber() {
-    return getRandomNumber((new Random()).nextLong());
-  }
-
-  private double getRandomNumber(long seed) {
-    Random random = new Random();
-    random.setSeed(seed);
-    return random.nextDouble();
-  }
 
   /**
    * Calculates whether a given Cellindex should create a cluster by asking whether (1 - exponential function) greater
@@ -169,20 +124,13 @@ public class GameMap {
     int h = gameMapSize[1];
     int ni = i - (w / 10);
     int nj = j - (h / 2);
-    return lessen(1d, 0.4, Math.max(ni, 0) * getRandomNumber() - Math.abs(nj), 0.5, 2) > threshold;
+    return MathHelper.inverseExponential(1d, 0.4, Math.max(ni, 0) * MathHelper.getRandomNumber() - Math.abs(nj), 0.5, 2) > threshold;
   }
 
-  public boolean isInBounds(int x, int y, int min_x, int max_x, int min_y, int max_y) {
-    return x >= min_x && x < max_x && y >= min_y && y < max_y;
-  }
 
-  public boolean isInBounds(int[] xy, int[] minDimension, int[] maxDimension) {
-    return isInBounds(xy[0], xy[1], minDimension[0], maxDimension[0], minDimension[1], maxDimension[1]);
-  }
-
-  public OreType determineOreType() {
+  public int determineOreTypeIndex() {
     // TODO: make it so that more valuable oretypes spawn futher on the right
-    return OreType.values()[(int) (Math.random() * OreType.values().length)];
+    return (int) (Math.random() * OreType.values().length);
   }
 
   public void placeObjectOnMap(GameObject object, int x, int y) {
@@ -236,13 +184,13 @@ public class GameMap {
         int dist = serverSettings.getRadarDistance();
         for (int xi = -dist; xi <= dist; xi++) {
           for (int yi = -dist; yi <= dist; yi++) {
-            int[] xyi = new int[]{gameObject.getPosition()[0] + xi, gameObject.getPosition()[1]};
+            int[] xyi = new int[]{gameObject.getPosition()[0] + xi, gameObject.getPosition()[1] + yi};
             // checks if the radar is scanning outside the gamemap.
-            if (!isInBounds(xyi, new int[]{0, 0}, gameMapSize)) {
+            if (!MathHelper.isInBounds(xyi, new int[]{0, 0}, gameMapSize)) {
               continue;
             }
             // because we are looking in an n x n grid around the radar position some of those are outside of the normal reach.
-            if(Lobby.distanceFromPosition(gameObject.getPosition(), xyi) <= dist) {
+            if(MathHelper.absoluteCellDistance(gameObject.getPosition(), xyi) <= dist) {
               continue;
             }
             // if every checks pass, it will place every gameobject from the full gamemap on the map that is being returned.
@@ -361,10 +309,10 @@ public class GameMap {
     if (curPosition == null) {
       return;
     }
-    if (!isInBounds(curPosition, new int[]{0, 0}, gameMapSize)) {
+    if (!MathHelper.isInBounds(curPosition, new int[]{0, 0}, gameMapSize)) {
       curPosition = new int[]{
-        clamp(curPosition[0], 0, gameMapSize[0] - 1),
-        clamp(curPosition[1], 0, gameMapSize[1] - 1)
+        MathHelper.clamp(curPosition[0], 0, gameMapSize[0] - 1),
+        MathHelper.clamp(curPosition[1], 0, gameMapSize[1] - 1)
       };
     }
     ArrayList<GameObject> placedObjects = cellArray[curPosition[0]][curPosition[1]].getPlacedObjects();
@@ -372,10 +320,10 @@ public class GameMap {
       logger.error("The placed object was not on the original position");
       return;
     }
-    if (!isInBounds(newPosition, new int[]{0, 0}, gameMapSize)) {
+    if (!MathHelper.isInBounds(newPosition, new int[]{0, 0}, gameMapSize)) {
       newPosition = new int[]{
-        clamp(newPosition[0], 0, gameMapSize[0] - 1),
-        clamp(newPosition[1], 0, gameMapSize[1] - 1)
+        MathHelper.clamp(newPosition[0], 0, gameMapSize[0] - 1),
+        MathHelper.clamp(newPosition[1], 0, gameMapSize[1] - 1)
       };
     }
     removeObjectFromMap(object, curPosition);
@@ -404,16 +352,6 @@ public class GameMap {
         getCellArray()[newPosition[0]][newPosition[1]].remove(getCellArray()[newPosition[0]][newPosition[1]].oreOnCell().get(0));
       }
     }
-  }
-
-  /**
-   * returns the clamped value of val, min and max. This means the following:
-   * if val is greater than max it will return max
-   * if val is greater than min it will return min
-   * if val is neither greater nor smaller it will return val
-   */
-  private int clamp(int val, int min, int max) {
-    return Math.max(Math.min(max, val), min);
   }
 
   public int[] getGameMapSize() {
@@ -470,7 +408,7 @@ public class GameMap {
             continue;
           }
 
-          if(!newMap.isInBounds(cellX, cellY, 0, serverSettings.getMapWidth(), 0, serverSettings.getMapHeight())) {
+          if(!MathHelper.isInBounds(cellX, cellY, serverSettings)) {
             logger.error("Somehow the cell index was outside of the map boundaries.\t" + cellX + "|" + cellY+ "|" + serverSettings.getMapWidth()+ "|" + serverSettings.getMapHeight());
             continue;
           }
