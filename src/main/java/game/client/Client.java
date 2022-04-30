@@ -303,4 +303,7 @@ public class Client {
   }
 
 
+    public void sendHighScore() {
+      (new PacketHandler(this)).pushMessage(outputStream, (new HighScore()).encodeWithContent());
+    }
 }

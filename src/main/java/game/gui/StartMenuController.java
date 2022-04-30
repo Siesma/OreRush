@@ -179,4 +179,8 @@ public class StartMenuController {
         }
         actionEvent.consume();
     }
+
+    public void handleHighScore(ActionEvent actionEvent) {
+        client.sendHighScore();
+    }
 }
