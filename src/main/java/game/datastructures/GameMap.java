@@ -100,7 +100,7 @@ public class GameMap {
    * is the function "lessen" defined a little earlier.
    *
    * @param max                the maximum ore allowed per field. - can be any real value.
-   * @param exp                the exponent of the first function. - 1 > exp > 0.
+   * @param exp                the exponent of the first function. - 1 smaller than exp smaller than 0.
    * @param oreSpawnLikelyhood the likelyhood of something actually spawning.
    * @param ni                 the x coordinate that is being compared to.
    * @param nj                 the y coordinate that is being compared to.
