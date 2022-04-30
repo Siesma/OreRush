@@ -3,6 +3,7 @@ package game.gui;
 import game.Main;
 import game.client.Client;
 import game.client.LobbyInClient;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -70,6 +71,10 @@ public class StartMenuController {
         playerColumn.setCellValueFactory(cellData -> cellData.getValue().playersProperty());
         clientListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
         });
+        Platform.runLater(() -> nickname.getScene().getWindow().setOnCloseRequest(e -> {
+            client.sendClosePacket();
+            System.exit(0);
+        }));
 
     }
 

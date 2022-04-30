@@ -113,6 +113,13 @@ public class Client {
     (new PacketHandler(this)).pushMessage(outputStream, (new Nickname()).encodeWithContent(nickname.get(), newNickname));
   }
 
+  /**
+   * Sends close packet to server if client is shut down from the GUI
+   */
+  public void sendClosePacket() {
+    (new PacketHandler(this)).pushMessage(outputStream, (new Close()).encodeWithContent(getNickname()));
+  }
+
   public void makeMove(LobbyController lobbyController) {
     (new PacketHandler(this)).pushMessage(outputStream, (new Move()).encodeWithContent(lobbyController.currentRobotMovesList.getItems().toArray(new String[0])));
   }
