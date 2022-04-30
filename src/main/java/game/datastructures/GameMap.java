@@ -183,7 +183,7 @@ public class GameMap {
     for (GameObject gameObject : playerOwnedGameObjects) {
       out.placeObjectOnMap(gameObject, gameObject.getPosition());
       if (gameObject instanceof Radar) {
-        int dist = serverSettings.getRadarDistance();
+        int dist = serverSettings.getRadarDistance() / 2;
         for (int xi = -dist; xi <= dist; xi++) {
           for (int yi = -dist; yi <= dist; yi++) {
             int[] xyi = new int[]{gameObject.getPosition()[0] + xi, gameObject.getPosition()[1] + yi};
