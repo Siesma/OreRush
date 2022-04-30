@@ -9,7 +9,7 @@ import game.server.ServerConstants;
 public class Update extends AbstractPacket {
     public Update() {
         super("", new String[]{
-                "^[0-9]+,[0-9]+_(Nothing|Robot|Trap|Radar|Ore):[0-9]+(:(Nothing|Trap|Radar|Ore):[0-9]+)?$"
+                "^[0-9]+,[0-9]+_(Nothing|Robot|Trap|Radar|Ore):[0-9]+:.*(:(Nothing|Trap|Radar|Ore):[0-9]+)?$"
         }, "Updating the user about the board!");
     }
 
@@ -70,12 +70,12 @@ public class Update extends AbstractPacket {
         }
         if (parent instanceof ClientThread) {
             ClientThread obj = (ClientThread) parent;
-            obj.setCurrentGameMap(GameMap.getMapFromString(message));
+            obj.setCurrentGameMap(GameMap.getMapFromString(parent, message));
         }
 
         if (parent instanceof InputStreamThread) {
             InputStreamThread obj = (InputStreamThread) parent;
-            obj.getClient().getLobbyInClient().updateGameMap(message);
+            obj.getClient().getLobbyInClient().updateGameMap(parent, message);
 
         }
     }

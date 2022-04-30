@@ -32,12 +32,7 @@ public class Nothing implements GameObject {
 
     @Override
     public String encodeToString() {
-        return "Nothing:" + id;
-    }
-
-    @Override
-    public void fillGameObjectWithData(String... data) {
-
+        return "Nothing:" + id + ":" + this.owner;
     }
 
     /**

@@ -25,13 +25,6 @@ public interface GameObject {
      */
     String encodeToString();
 
-    /**
-     * This function will fill the GameObjects information based on a string from a packet
-     *
-     * @param data the received string corresponding to the GameObject
-     */
-    void fillGameObjectWithData(String... data);
-
     String getOwner();
 
     /**

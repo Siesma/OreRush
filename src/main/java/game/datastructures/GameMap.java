@@ -1,9 +1,11 @@
 package game.datastructures;
 
+import game.client.InputStreamThread;
 import game.helper.FileHelper;
 import game.helper.MapType;
 import game.helper.MathHelper;
 import game.packet.AbstractPacket;
+import game.server.ClientThread;
 import game.server.Server;
 import game.server.ServerSettings;
 import org.apache.logging.log4j.LogManager;
@@ -190,6 +192,7 @@ public class GameMap {
             continue;
           }
           if (gameObject.getOwner().equals(playerName)) {
+            System.out.println(gameObject.toString() + " " + gameObject.getOwner());
             playerOwnedGameObjects.add(gameObject);
           }
         }
@@ -417,7 +420,7 @@ public class GameMap {
     }
   }
 
-  public static GameMap getMapFromString(String message) {
+  public static GameMap getMapFromString(Object parent, String message) {
     // splits the incoming singular information into an array.
     String[] individualCell = AbstractPacket.splitMessageBySpacer(message);
     // defines new serverSettings to be used here to obtain needed informations.
@@ -447,10 +450,11 @@ public class GameMap {
           }
 
           // splits the object information to its parts.
-          // -> type:id:optionalInventory
+          // -> type:id:ownerName:optionalInventory
           String[] objectData = s.split(":");
           String objectType = objectData[0];
           int objectID = Integer.parseInt(objectData[1]);
+          String owner = objectData[2];
           Object object;
           // the type will be tried to make a new instance of it.
           try {
@@ -470,13 +474,14 @@ public class GameMap {
           }
           // creates a final game object and sets its id.
           GameObject finalGameObject = (GameObject) object;
+          finalGameObject.setOwner(owner);
           finalGameObject.setID(objectID);
           // if there is an optionalInventory it will be tried to make a new instance of it.
-          if (objectData.length > 2) {
+          if (objectData.length > 3) {
             if (finalGameObject instanceof Robot) {
               Object inv;
               try {
-                inv = (new FileHelper()).createNewInstanceFromName(MapType.GameObjects, s.split(":")[2]);
+                inv = (new FileHelper()).createNewInstanceFromName(MapType.GameObjects, s.split(":")[3]);
               } catch (Exception e) {
                 // this should never happen as this means that the object is valid but the file for it does not exist.
                 logger.error("An unidentified object!");

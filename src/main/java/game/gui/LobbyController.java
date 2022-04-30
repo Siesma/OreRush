@@ -94,7 +94,8 @@ public class LobbyController {
     Platform.runLater(
             () -> {
               mapGridPane.getChildren().clear();
-              GameMap currentGameMap = lobby.getGameMap();
+              GameMap currentGameMap = lobby.getGameMap().getIndividualGameMapForPlayer(client.getNickname());
+              GameMap.printMapToConsole(currentGameMap);
               int xMax = currentGameMap.getGameMapSize()[0];
               int yMax = currentGameMap.getGameMapSize()[1];
               int mapPixel = 500;

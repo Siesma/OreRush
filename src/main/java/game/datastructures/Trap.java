@@ -73,14 +73,9 @@ public class Trap implements GameObject {
 
   @Override
   public String toString() {
-    return "Trap:" + this.playerID;
+    return "Trap:" + this.playerID + ":" + this.owner;
   }
 
-  @Override
-  public void fillGameObjectWithData(String... data) {
-    setPosition(Integer.parseInt(data[1]), Integer.parseInt(data[2]));
-    setPlayerID(Integer.parseInt(data[3]));
-  }
 
   /**
    * Sets the owner of this dataType

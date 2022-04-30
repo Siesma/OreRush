@@ -37,8 +37,8 @@ public class LobbyInClient {
         this.players = new SimpleStringProperty();
     }
 
-    public void updateGameMap(String gameMapString) {
-        gameMap = GameMap.getMapFromString(gameMapString);
+    public void updateGameMap(Object parent, String gameMapString) {
+        gameMap = GameMap.getMapFromString(parent, gameMapString);
         gameMapProperty.setValue(gameMapProperty.getValue()+1);
     }
 

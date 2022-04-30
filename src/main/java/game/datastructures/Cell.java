@@ -85,8 +85,6 @@ public class Cell {
    * @param object that is being placed onto the map
    */
   public void place(GameObject object) {
-    if (object instanceof Robot)
-      System.out.println("In Cell trying to place the object " + object.toString() + " whoms owner is " + object.getOwner());
     placedObjects.add(object);
   }
 
