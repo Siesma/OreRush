@@ -48,8 +48,8 @@ public class MathHelper {
    * @return the next Position that is within the reach of the robots original position without moving more than allowed.
    */
   public static int[] getNextMove(int[] position, int[] destination, ServerSettings serverSettings) {
-    int xDif = position[0] + destination[0];
-    int yDif = position[1] + destination[1];
+    int xDif = destination[0] - position[0];
+    int yDif = destination[1] - position[1];
     int maxTotalMoves = serverSettings.getMaxAllowedMoves();
     int xMoves = MathHelper.clamp(xDif, -maxTotalMoves, maxTotalMoves);
     maxTotalMoves -= Math.abs(xMoves);
