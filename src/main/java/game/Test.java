@@ -19,8 +19,8 @@ public class Test {
         if (Math.random() < 0.2) {
           Trap trap = new Trap();
           trap.setID(i + j % 5);
-//          trap.setOwner(playerName);
-          map.placeObjectOnMap(trap, i, j);
+          trap.setOwner(playerName);
+//          map.placeObjectOnMap(trap, i, j);
         }
       }
     }
@@ -31,17 +31,12 @@ public class Test {
     radar.setOwner(playerName);
 
     map.placeObjectOnMap(radar, 3, 4);
-//    map.placeObjectOnMap(radar, 4, 3);
+    GameMap newMap = map.getIndividualGameMapForPlayer(playerName);
 
-//    GameMap newMap = map.getIndividualGameMapForPlayer(playerName);
+    GameMap.printMapToConsole(map);
+    System.out.println("---");
+    GameMap.printMapToConsole(newMap);
 
-//    GameMap.printMapToConsole(map);
-//    System.out.println("---");
-//    GameMap.printMapToConsole(newMap);
-
-    for (int i = 0; i < serverSettings.getMapWidth(); i++) {
-      System.out.println(i + "\t" + OreType.values()[map.determineOreTypeIndex(i)]);
-    }
 
   }
 

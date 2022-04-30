@@ -39,8 +39,8 @@ public class Ore implements GameObject {
   @Override
   public int[] getPosition() {
     int[] coordinate = new int[2];
-    coordinate[0] = yCoordinate;
-    coordinate[1] = xCoordinate;
+    coordinate[0] = xCoordinate;
+    coordinate[1] = yCoordinate;
     return coordinate;
   }
 

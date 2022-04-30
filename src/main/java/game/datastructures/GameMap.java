@@ -223,7 +223,6 @@ public class GameMap {
         }
       }
     }
-
     return out;
   }
 
