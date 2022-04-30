@@ -127,13 +127,20 @@ public class GameMap {
     return MathHelper.inverseExponential(1d, 0.4, Math.max(ni, 0) * MathHelper.getRandomNumber() - Math.abs(nj), 0.5, 2) > threshold;
   }
 
-
+  /**
+   * Calculates the Ore Type. It is semi random, taking into account the current X position to allow for a bias. More valuable ore spawns on the right.
+   * @param xCoordinate the xCoordinate of the field the Ore is to be place in
+   * @return the Ore Type as an int
+   */
   public int determineOreTypeIndex(int xCoordinate) {
     // a - b ^ (c*d + f)
     // TODO: make it so that more valuable oretypes spawn futher on the right
 
-
-    return (int) Math.floor(MathHelper.exponential(1,1,(MathHelper.exponential(1,1,MathHelper.getRandomNumber(),1,0)-xCoordinate),1,0)*OreType.values().length);
+    double fx = MathHelper.exponential(1.2,0.7,xCoordinate/serverSettings.getMapWidth(),1.4,-0.2);
+    fx = fx - ((MathHelper.getRandomNumber()-0.2)/(Math.abs(xCoordinate+0.2)));
+    fx = fx * OreType.values().length;
+    return (int) Math.floor(fx);
+    //return (int) Math.floor(MathHelper.exponential(1,1,(MathHelper.exponential(1,1,MathHelper.getRandomNumber(),1,0)-(xCoordinate/serverSettings.getMapWidth())),1,0)*OreType.values().length);
             //(Math.random() * OreType.values().length);
   }
 
