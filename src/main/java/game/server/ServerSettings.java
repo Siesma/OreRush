@@ -53,7 +53,7 @@ public class ServerSettings {
     this.numberOfRobots = 1;
     this.mapWidth = 10;
     this.mapHeight = 10;
-    this.numberOfRounds = 100;
+    this.numberOfRounds = 5;
     this.oreDensity = 1f;
     this.maxAllowedMoves = 4;
     this.radarDistance = 4;

@@ -4,6 +4,8 @@ package game.server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -82,4 +84,14 @@ public class Server {
         return lobbyArrayList;
     }
 
+
+    public void saveHighScore(ClientThread winnerClientThread) {
+        try {
+            FileWriter myWriter = new FileWriter("HighScore.txt",true);
+            myWriter.write(winnerClientThread.getPlayerName() + " " + winnerClientThread.getPlayerScore() + "\n");
+            myWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

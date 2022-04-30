@@ -310,4 +310,14 @@ public class ClientThread implements Runnable {
     return robots;
   }
 
+  public void informOfWinner() {
+    for (ClientThread clientThread : Server.getClientThreads()) {
+      (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Winner()).encodeWithContent(connectedLobby.getLobbyName(),getPlayerName(),String.valueOf(playerScore)));
+    }
+    String message = playerName + " has won with " + playerScore + " in " + connectedLobby.getLobbyName() + ".";
+
+    for (ClientThread clientThread: Server.getClientThreads()) {
+      (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Broadcast()).encodeWithContent(message));
+    }
+  }
 }

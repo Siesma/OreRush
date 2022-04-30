@@ -51,8 +51,6 @@ public class StartMenuController {
     private TableColumn<LobbyInClient, String> playerColumn;
 
 
-    // TODO fix nicknames with underscore number
-
     public void initialize() {
 
         //get model
