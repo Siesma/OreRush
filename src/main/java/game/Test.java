@@ -11,55 +11,31 @@ public class  Test {
     int x, y;
     x = 10;
     y = 10;
+    String playerName = "player";
     GameMap map = new GameMap((new ServerSettings("")));
     for (int i = 0; i < x; i++) {
       for (int j = 0; j < y; j++) {
         if (Math.random() > 0.8) {
           Trap trap = new Trap();
           trap.setID(i + j % 5);
+//          trap.setOwner(playerName);
           map.placeObjectOnMap(trap, i, j);
-        } else {
-          Nothing nothing = new Nothing();
-          nothing.setID(i + j % 5);
-          map.placeObjectOnMap(nothing, i, j);
         }
       }
     }
     map.spawnOreInMap();
-    Robot r = new Robot();
-    r.setPosition(0, 5);
-    r.setID(1);
 
-    map.placeObjectOnMap(r, r.getPosition());
+    Radar radar = new Radar();
+    radar.setID(1);
+    radar.setOwner(playerName);
+
+    map.placeObjectOnMap(radar, 5, 5);
+
+    GameMap newMap = map.getIndividualGameMapForPlayer(playerName);
+
     GameMap.printMapToConsole(map);
     System.out.println("---");
-    map.removeObjectFromMap(r, r.getPosition());
-    int[] wantedDestination = {4, 9};
-    int[] receivedDestination = getNextMove(r, wantedDestination, new ServerSettings(""));
-    r.setAction(RobotAction.Move, receivedDestination, null);
-    map.placeObjectOnMap(r, r.getPosition());
-//    map.printMapToConsole();
-    System.out.println(update.validate(update.encodeWithContent(map.cellStrings())));
-    System.out.println(update.encodeWithContent(map.cellStrings()));
-    System.out.println(r.getPosition()[0]);
-    System.out.println(r.getPosition()[1]);
-    Object ob;
-    try {
-      Class<GameObject> classes = (Class<GameObject>) Class.forName("game.datastructures.Ore");
-      ob = classes.newInstance();
-    } catch (Exception e) {
-      System.out.println("Some error occurred! Reverting to null");
-      ob = null;
-    }
-
-    System.out.println(ob);
-    System.out.println(ob instanceof GameObject);
-
-//    for(String ss : map.cellStrings()) {
-//      if(!update.validate(ss)) {
-//        System.out.println(update.validate(ss) + "\t" + ss);
-//      }
-//    }
+    GameMap.printMapToConsole(newMap);
 
   }
   public static int[] getNextMove (Robot r, int[] destination, ServerSettings serverSettings) {
