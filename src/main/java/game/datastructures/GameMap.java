@@ -114,7 +114,6 @@ public class GameMap {
   }
 
 
-
   /**
    * Calculates whether a given Cellindex should create a cluster by asking whether (1 - exponential function) greater
    * than a threshold is
@@ -129,24 +128,40 @@ public class GameMap {
 
   /**
    * Calculates the Ore Type. It is semi random, taking into account the current X position to allow for a bias. More valuable ore spawns on the right.
+   *
    * @param xCoordinate the xCoordinate of the field the Ore is to be place in
    * @return the Ore Type as an int
    */
   public int determineOreTypeIndex(int xCoordinate) {
-    // a - b ^ (c*d + f)
-    // TODO: make it so that more valuable oretypes spawn futher on the right
 
-    double fx = MathHelper.exponential(1.2,0.7,xCoordinate/serverSettings.getMapWidth(),1.4,-0.2);
-    fx = fx - ((MathHelper.getRandomNumber()-0.2)/(Math.abs(xCoordinate+0.2)));
-    fx = fx * OreType.values().length;
-    return MathHelper.clamp((int) Math.floor(fx),0,OreType.values().length);
-    //return (int) Math.floor(MathHelper.exponential(1,1,(MathHelper.exponential(1,1,MathHelper.getRandomNumber(),1,0)-(xCoordinate/serverSettings.getMapWidth())),1,0)*OreType.values().length);
-            //(Math.random() * OreType.values().length);
+    double a = 1.2;
+    double b = 0.7;
+    double c = 1.4;
+    double d = -0.2;
+
+    double r = MathHelper.getRandomNumber();
+
+    int n = OreType.values().length;
+
+    double inverseN = 1d / n;
+
+    double w = serverSettings.getMapWidth();
+
+    double xw = (double) ((w) - xCoordinate) / w;
+
+    double fx = MathHelper.exponential(a, b, xw, c, d);
+
+    double shiftFactor = (((r + 1) + d)) / (Math.abs(xw - d));
+    int v = MathHelper.clamp((int) Math.floor(Math.abs((fx - shiftFactor) / (Math.abs(xw - d)) * (inverseN))), 0, n - 1);
+//    System.out.println(v);
+
+    return v;
+
   }
 
   public void placeObjectOnMap(GameObject object, int x, int y) {
-    cellArray[x][y].place(object);
     object.setPosition(x, y);
+    cellArray[x][y].place(object);
   }
 
   public void placeObjectOnMap(GameObject gameObject, int[] xy) {
@@ -172,14 +187,14 @@ public class GameMap {
     GameMap out = new GameMap(serverSettings);
     ArrayList<GameObject> playerOwnedGameObjects = new ArrayList<>();
     // adds all the gameobjects that were placed by the player himself.
-    for (int j = 0; j < gameMapSize[1]; j++) {
       for (int i = 0; i < gameMapSize[0]; i++) {
+        for (int j = 0; j < gameMapSize[1]; j++) {
         for (GameObject gameObject : cellArray[i][j].getPlacedObjects()) {
-          if(gameObject.getOwner() == null) {
+          if (gameObject.getOwner() == null) {
             logger.debug("The Owner of the Object \"" + gameObject + "\" in the position (" + i + ", " + j + ") was not set correctly.");
             continue;
           }
-          if(gameObject instanceof Robot) {
+          if (gameObject instanceof Robot) {
             logger.debug("This robots owner is: \"" + gameObject.getOwner() + "\"");
           }
           if (gameObject.getOwner().equals(playerName)) {
@@ -201,11 +216,11 @@ public class GameMap {
               continue;
             }
             // because we are looking in an n x n grid around the radar position some of those are outside of the normal reach.
-            if(MathHelper.absoluteCellDistance(gameObject.getPosition(), xyi) <= dist) {
+            if (MathHelper.absoluteCellDistance(gameObject.getPosition(), xyi) <= dist) {
               continue;
             }
             // if every checks pass, it will place every gameobject from the full gamemap on the map that is being returned.
-            for(GameObject object : this.cellArray[xyi[0]][xyi[1]].getPlacedObjects()) {
+            for (GameObject object : this.cellArray[xyi[0]][xyi[1]].getPlacedObjects()) {
               out.placeObjectOnMap(object, xyi);
             }
           }
@@ -218,9 +233,9 @@ public class GameMap {
 
   public static void printMapToConsole(GameMap gameMap) {
     Cell[][] cells = gameMap.getCellArray();
-    for (int j = 0; j < cells.length; j++) {
-      for (int i = 0; i < cells[j].length; i++) {
-        Cell cell = cells[i][j];
+    for (int i = 0; i < cells[0].length; i++) {
+      for (int j = 0; j < cells.length; j++) {
+        Cell cell = cells[j][i];
         boolean trap = cell.trapOnCell() != null;
         boolean radar = cell.radarOnCell() != null;
         boolean ore = cell.oreOnCell() != null;
@@ -322,8 +337,8 @@ public class GameMap {
     }
     if (!MathHelper.isInBounds(curPosition, new int[]{0, 0}, gameMapSize)) {
       curPosition = new int[]{
-        MathHelper.clamp(curPosition[0], 0, gameMapSize[0] - 1),
-        MathHelper.clamp(curPosition[1], 0, gameMapSize[1] - 1)
+              MathHelper.clamp(curPosition[0], 0, gameMapSize[0] - 1),
+              MathHelper.clamp(curPosition[1], 0, gameMapSize[1] - 1)
       };
     }
     ArrayList<GameObject> placedObjects = cellArray[curPosition[0]][curPosition[1]].getPlacedObjects();
@@ -333,8 +348,8 @@ public class GameMap {
     }
     if (!MathHelper.isInBounds(newPosition, new int[]{0, 0}, gameMapSize)) {
       newPosition = new int[]{
-        MathHelper.clamp(newPosition[0], 0, gameMapSize[0] - 1),
-        MathHelper.clamp(newPosition[1], 0, gameMapSize[1] - 1)
+              MathHelper.clamp(newPosition[0], 0, gameMapSize[0] - 1),
+              MathHelper.clamp(newPosition[1], 0, gameMapSize[1] - 1)
       };
     }
     removeObjectFromMap(object, curPosition);
@@ -419,8 +434,8 @@ public class GameMap {
             continue;
           }
 
-          if(!MathHelper.isInBounds(cellX, cellY, serverSettings)) {
-            logger.error("Somehow the cell index was outside of the map boundaries.\t" + cellX + "|" + cellY+ "|" + serverSettings.getMapWidth()+ "|" + serverSettings.getMapHeight());
+          if (!MathHelper.isInBounds(cellX, cellY, serverSettings)) {
+            logger.error("Somehow the cell index was outside of the map boundaries.\t" + cellX + "|" + cellY + "|" + serverSettings.getMapWidth() + "|" + serverSettings.getMapHeight());
             continue;
           }
 

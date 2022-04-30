@@ -51,8 +51,8 @@ public class ServerSettings {
 
   private void setDefaultValues() {
     this.numberOfRobots = 1;
-    this.mapWidth = 10;
-    this.mapHeight = 10;
+    this.mapWidth = 100;
+    this.mapHeight = 15;
     this.numberOfRounds = 5;
     this.oreDensity = 1f;
     this.maxAllowedMoves = 4;
