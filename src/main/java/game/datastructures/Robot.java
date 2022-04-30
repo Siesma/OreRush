@@ -133,6 +133,7 @@ public class Robot implements GameObject {
    */
   @Override
   public void setOwner(String nameOfOwner) {
+    System.out.println("Trying to set the owner as " + nameOfOwner);
     this.owner = nameOfOwner;
   }
   @Override

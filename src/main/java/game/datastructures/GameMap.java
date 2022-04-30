@@ -70,13 +70,12 @@ public class GameMap {
               nj = j + yo;
               if (MathHelper.isInBounds(ni, nj, serverSettings)) {
                 double max = oreSpawnLikelyhood * 2;
-                Cell c = cellArray[ni][nj];
                 int amount = (int) getAmountOfOre(max, 0.84d, oreSpawnLikelyhood, ni, nj, i, j, 0, 0);
                 Ore ore = new Ore();
                 ore.setOwner(getUniqueServerName());
                 ore.setAmount(amount);
                 ore.setID(curOreType);
-                c.place(ore);
+                placeObjectOnMap(ore, i, j);
               }
             }
           }
@@ -190,40 +189,12 @@ public class GameMap {
             logger.debug("The Owner of the Object \"" + gameObject + "\" in the position (" + i + ", " + j + ") was not set correctly.");
             continue;
           }
-          if (gameObject instanceof Robot) {
-            logger.debug("This robots owner is: \"" + gameObject.getOwner() + "\"");
-          }
           if (gameObject.getOwner().equals(playerName)) {
             playerOwnedGameObjects.add(gameObject);
           }
         }
       }
     }
-    // goes through all of the players own gameobjects and if the gameobject is a radar it will reveal the surrounding area.
-//    for (GameObject gameObject : playerOwnedGameObjects) {
-//      out.placeObjectOnMap(gameObject, gameObject.getPosition());
-//      if (gameObject instanceof Radar) {
-//        int dist = serverSettings.getRadarDistance();
-//        for (int xi = -dist / 2; xi <= dist / 2; xi++) {
-//          for (int yi = -dist / 2; yi <= dist / 2; yi++) {
-//            int[] xyi = new int[]{gameObject.getPosition()[0] + xi, gameObject.getPosition()[1] + yi};
-//            // checks if the radar is scanning outside the gamemap.
-////            if (!MathHelper.isInBounds(xyi, new int[]{0, 0}, gameMapSize)) {
-////              continue;
-////            }
-//            // because we are looking in an n x n grid around the radar position some of those are outside of the normal reach.
-//            if (MathHelper.absoluteCellDistance(gameObject.getPosition(), xyi) >= dist) {
-//              continue;
-//            }
-//            // if every checks pass, it will place every gameobject from the full gamemap on the map that is being returned.
-//            for (GameObject object : this.cellArray[xyi[0]][xyi[1]].getPlacedObjects()) {
-//              out.placeObjectOnMap(object, xyi);
-//            }
-//          }
-//        }
-//      }
-//    }
-
     for (GameObject gameObject : playerOwnedGameObjects) {
       out.placeObjectOnMap(gameObject, gameObject.getPosition());
       if (gameObject instanceof Radar) {
@@ -234,6 +205,13 @@ public class GameMap {
     return out;
   }
 
+  /**
+   * This function fills the new build gameMap with the relevant gameObjects from the complete map.
+   *
+   * @param gameMap the current (unfilled) GameMap.
+   * @param xy the position of the Radar.
+   * @param revealSize the size in which the radar is revealing.
+   */
   public void revealAround(GameMap gameMap, int[] xy, int revealSize) {
     for (int xi = -revealSize; xi <= revealSize; xi++) {
       for (int yi = -revealSize; yi <= revealSize; yi++) {
@@ -393,7 +371,7 @@ public class GameMap {
         getCellArray()[newPosition[0]][newPosition[1]].remove(getCellArray()[newPosition[0]][newPosition[1]].trapOnCell());
       }
       if (!(robotObject.getInventory() instanceof Nothing)) {
-        getCellArray()[newPosition[0]][newPosition[1]].place(robotObject.getInventory());
+        placeObjectOnMap(robotObject.getInventory(), newPosition);
         Nothing nothing = new Nothing();
         nothing.setOwner(getUniqueServerName());
         robotObject.loadInventory(nothing);
@@ -434,7 +412,7 @@ public class GameMap {
         nothing.setPosition(i, j);
         nothing.setID(0);
         nothing.setOwner(getUniqueServerName());
-        cellArray[i][j].place(nothing);
+        placeObjectOnMap(nothing, i, j);
       }
     }
   }
@@ -477,7 +455,6 @@ public class GameMap {
           // the type will be tried to make a new instance of it.
           try {
             object = (new FileHelper()).createNewInstanceFromName(MapType.GameObjects, objectType);
-//            object = (new FileHelper()).createInstanceOfClass("game.datastructures." + objectType);
           } catch (Exception e) {
             // this should never happen as this means that the object is valid but the file for it does not exist.
             logger.error("An unidentified object!");
@@ -500,7 +477,6 @@ public class GameMap {
               Object inv;
               try {
                 inv = (new FileHelper()).createNewInstanceFromName(MapType.GameObjects, s.split(":")[2]);
-//                inv = (new FileHelper()).createInstanceOfClass("game.datastructures." + s.split(":")[2]);
               } catch (Exception e) {
                 // this should never happen as this means that the object is valid but the file for it does not exist.
                 logger.error("An unidentified object!");
@@ -518,7 +494,7 @@ public class GameMap {
             }
           }
           // places the new gameObject on the map
-          newMap.getCellArray()[cellX][cellY].place(finalGameObject);
+            newMap.placeObjectOnMap(finalGameObject, cellX, cellY);
         }
       }
     }
