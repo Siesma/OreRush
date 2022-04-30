@@ -93,6 +93,7 @@ public class LobbyController {
     for (RobotAction robotAction : RobotAction.values()) {
       this.playerRobotActionList.getItems().add(robotAction.name());
     }
+    playerRobotActionList.setValue("Move");
     lobby.gameMapPropertyProperty().addListener((obs, oldVal, newVal) -> {
       updateMap();
     });
