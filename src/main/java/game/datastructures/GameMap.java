@@ -139,7 +139,7 @@ public class GameMap {
     double fx = MathHelper.exponential(1.2,0.7,xCoordinate/serverSettings.getMapWidth(),1.4,-0.2);
     fx = fx - ((MathHelper.getRandomNumber()-0.2)/(Math.abs(xCoordinate+0.2)));
     fx = fx * OreType.values().length;
-    return (int) Math.floor(fx);
+    return MathHelper.clamp((int) Math.floor(fx),0,OreType.values().length);
     //return (int) Math.floor(MathHelper.exponential(1,1,(MathHelper.exponential(1,1,MathHelper.getRandomNumber(),1,0)-(xCoordinate/serverSettings.getMapWidth())),1,0)*OreType.values().length);
             //(Math.random() * OreType.values().length);
   }
