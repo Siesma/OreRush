@@ -230,10 +230,10 @@ public class ClientThread implements Runnable {
    */
   public void addRobot() {
     Robot robot = new Robot();
-    robot.setID(this.playerID);
     robot.setOwner(getPlayerName());
     int height = connectedLobby.gameMap.getGameMapSize()[1];
     robot.setPosition(0, (int) (Math.random() * height));
+    robot.setID(this.getRobots().size());
     this.getRobots().add(robot);
     this.getConnectedLobby().gameMap.placeObjectOnMap(robot, robot.getPosition());
   }

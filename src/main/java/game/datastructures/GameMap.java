@@ -192,7 +192,6 @@ public class GameMap {
             continue;
           }
           if (gameObject.getOwner().equals(playerName)) {
-            System.out.println(gameObject.toString() + " " + gameObject.getOwner());
             playerOwnedGameObjects.add(gameObject);
           }
         }

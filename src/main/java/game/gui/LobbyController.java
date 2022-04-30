@@ -2,8 +2,8 @@ package game.gui;
 
 import game.client.Client;
 import game.client.LobbyInClient;
-import game.datastructures.GameMap;
-import game.datastructures.RobotAction;
+import game.datastructures.*;
+import game.datastructures.Cell;
 import game.server.ClientThread;
 import game.server.ServerSettings;
 import javafx.application.Platform;
@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.effect.Bloom;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -19,10 +20,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Popup;
+import javafx.stage.Window;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class LobbyController {
@@ -54,6 +58,12 @@ public class LobbyController {
   private Pane mapPane;
   private int xClicked = -1;
   private int yClicked = -1;
+
+  private Robot selectedRobot;
+
+  private GameMap currentGameMap;
+
+  private Popup cellPreview;
 
   /**
    * Initializes the controller class. This method is automatically called
@@ -94,7 +104,7 @@ public class LobbyController {
     Platform.runLater(
             () -> {
               mapGridPane.getChildren().clear();
-              GameMap currentGameMap = lobby.getGameMap().getIndividualGameMapForPlayer(client.getNickname());
+              currentGameMap = lobby.getGameMap().getIndividualGameMapForPlayer(client.getNickname());
               GameMap.printMapToConsole(currentGameMap);
               int xMax = currentGameMap.getGameMapSize()[0];
               int yMax = currentGameMap.getGameMapSize()[1];
@@ -110,7 +120,8 @@ public class LobbyController {
                   imageView.setFitWidth(cellSize);
                   String type;
                   Image image;
-                  if (currentGameMap.getCellArray()[x][y].robotsOnCell() != null) { //TODO: differentiate robot owner
+                  Cell currentCell = currentGameMap.getCellArray()[x][y];
+                  if (currentCell.robotsOnCell() != null) { //TODO: differentiate robot owner
                     try {
                       image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Robot.png")));
                       imageView.setImage(image);
@@ -118,7 +129,7 @@ public class LobbyController {
                     } catch (Exception e) {
                       logger.error("The file \"Robot.png\" does not exist.");
                     }
-                  } else if (currentGameMap.getCellArray()[x][y].oreOnCell() != null) {
+                  } else if (currentCell.oreOnCell() != null) {
                     String oreType = currentGameMap.getCellArray()[x][y].oreOnCell().get(0).getOreType().name();
                     try {
                       image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/" + oreType + " Ore.png")));
@@ -127,7 +138,7 @@ public class LobbyController {
                     } catch (Exception e) {
                       logger.error("The file \"" + oreType + " Ore.png\" does not exist.");
                     }
-                  } else if (currentGameMap.getCellArray()[x][y].radarOnCell() != null) {
+                  } else if (currentCell.radarOnCell() != null) {
                     try {
                       image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Radar.png")));
                       imageView.setImage(image);
@@ -135,7 +146,7 @@ public class LobbyController {
                     } catch (Exception e) {
                       logger.error("The file \"Radar.png\" does not exist.");
                     }
-                  } else if (currentGameMap.getCellArray()[x][y].trapOnCell() != null) {
+                  } else if (currentCell.trapOnCell() != null) {
                     try {
                       image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/TrapEmpty.png")));
                       imageView.setImage(image);
@@ -148,8 +159,9 @@ public class LobbyController {
                     Node node = (Node) event.getTarget();
                     int row = GridPane.getRowIndex(node);
                     int column = GridPane.getColumnIndex(node);
-                    saveClickedPosition(column, row);
+                    saveClickedPosition(button, column, row);
                   });
+
                   mapGridPane.add(button, x, y, 1, 1);
                 }
               }
@@ -158,9 +170,37 @@ public class LobbyController {
 
   }
 
-  public void saveClickedPosition(int x, int y) {
-    this.xClicked = x;
-    this.yClicked = y;
+
+  public void saveClickedPosition(Button button, int x, int y) {
+    if (currentGameMap == null) {
+      // how? Just how?
+      return;
+    }
+//    this.xClicked = x;
+//    this.yClicked = y;
+
+    if (selectedRobot == null) {
+      ArrayList<Robot> robotsOnCell = currentGameMap.getCellArray()[x][y].robotsOnCell();
+      if (robotsOnCell == null) {
+        return;
+      }
+      selectedRobot = robotsOnCell.get(0);
+      System.out.println(selectedRobot.getId());
+    } else {
+      if (playerRobotActionList.getSelectionModel().getSelectedItem() == null) {
+        return;
+      }
+      String addition = "";
+      if (playerRobotActionList.getSelectionModel().getSelectedItem().matches("^Request.*$")) {
+        addition = ":" + playerRobotActionList.getSelectionModel().getSelectedItem().split("Request")[1];
+      }
+      int index = selectedRobot.getId();
+      String moveType = playerRobotActionList.getSelectionModel().getSelectedItem();
+      this.currentRobotMovesList.getItems().set(index, index + ":" + moveType + ":" + x + ":" + y + addition);
+
+      selectedRobot = null;
+    }
+
   }
 
 

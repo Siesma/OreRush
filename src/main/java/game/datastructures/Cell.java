@@ -88,6 +88,14 @@ public class Cell {
     placedObjects.add(object);
   }
 
+  public int getX() {
+    return x;
+  }
+
+  public int getY() {
+    return y;
+  }
+
   public ArrayList<GameObject> getPlacedObjects() {
     return placedObjects;
   }

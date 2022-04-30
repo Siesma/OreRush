@@ -153,4 +153,8 @@ public class Robot implements GameObject {
   public void setDead(boolean isDead) {
     this.isDead = isDead;
   }
+
+  public int getId() {
+    return this.playerID;
+  }
 }
