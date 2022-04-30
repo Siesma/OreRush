@@ -72,6 +72,22 @@ public class MathHelper {
     return max - (Math.pow(exp, in * fac + shift));
   }
 
+  /**
+   * Returns the exponential function by calling the inverseExponential and inverting the max and exp.
+   *
+   * @param max   the y-offset - can be any real value.
+   * @param exp   - the base of the exponential. - should be between 0 and 1.
+   * @param in    - the value being evaluated. - can be any real value
+   * @param fac   - the factor of the value that is being evaluated. - can be any real value.
+   * @param shift - the strength of the exponential decay. - should be between 0 and 1
+   * @return
+   */
+  public static double exponential(double max, double exp, double in, double fac, double shift) {
+    max = -1*max;
+    exp = -1*max;
+    return inverseExponential(max, exp, in, fac, shift);
+  }
+
 
   /**
    * @param now current position

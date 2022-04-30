@@ -129,6 +129,8 @@ public class GameMap {
 
 
   public int determineOreTypeIndex() {
+    // a - b ^ (c*d + f)
+
     // TODO: make it so that more valuable oretypes spawn futher on the right
     return (int) (Math.random() * OreType.values().length);
   }
