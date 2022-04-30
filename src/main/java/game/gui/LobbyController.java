@@ -105,19 +105,20 @@ public class LobbyController {
                             String type;
                             Image image;
                             if (lobby.getGameMap().getCellArray()[x][y].robotsOnCell() != null) { //TODO: differentiate robot owner
-                                image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/robot.png")));
+                                image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Robot.png")));
                                 imageView.setImage(image);
                                 button.setGraphic(imageView);
-                            } else if (lobby.getGameMap().getCellArray()[x][y].oreOnCell() != null){ //TODO: individual ores
-                                image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/ore.png")));
+                            } else if (lobby.getGameMap().getCellArray()[x][y].oreOnCell() != null){
+                                String oreType = lobby.getGameMap().getCellArray()[x][y].oreOnCell().get(0).getOreType().name();
+                                image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/" + oreType + " ore.png")));
                                 imageView.setImage(image);
                                 button.setGraphic(imageView);
                             } else if (lobby.getGameMap().getCellArray()[x][y].radarOnCell() != null){
-                                image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/radar.png")));
+                                image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Radar.png")));
                                 imageView.setImage(image);
                                 button.setGraphic(imageView);
                             } else if (lobby.getGameMap().getCellArray()[x][y].trapOnCell() != null){
-                                image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/trap.png")));
+                                image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/TrapEmpty.png")));
                                 imageView.setImage(image);
                                 button.setGraphic(imageView);
                             }
