@@ -86,7 +86,7 @@ public class Move extends AbstractPacket {
                 // also calculates the next valid move and sets its action to what is possible.
                 // if the distance is too big for a valid "dig" or "request" action it will revert it to a move action.
                 Robot rob = obj.getRobots().get(id);
-                int[] result = obj.getConnectedLobby().getNextMove(rob, new int[] { x, y });
+                int[] result = MathHelper.getNextMove(rob.getPosition(), new int[] { x, y }, obj.getConnectedLobby().getServerSettings());
                 if (MathHelper.absoluteCellDistance(rob.getPosition(), result) > 1) {
                     action = RobotAction.Move;
                 }

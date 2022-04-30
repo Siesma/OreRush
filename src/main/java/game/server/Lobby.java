@@ -33,28 +33,6 @@ public class Lobby {
   }
 
 
-  /**
-   * Returns the position the robot is allowed to move to relative to the maximum allowed moves.
-   * X-Coordinate will be prioritised if the wanted destination is not a valid move.
-   * <p>
-   * This function can be used to not have to validate moves as every invalid move will automatically will be
-   * cropped down.
-   *
-   * @param r is the Robot in question that tries to move.
-   * @param destination is the Position to which the robot in question wants to move to. Expecteto be two integers.
-   * @return the next Position that is within the reach of the robots original position without moving more than allowed.
-   */
-  public int[] getNextMove(Robot r, int[] destination) {
-    int xDif = -r.getPosition()[0] + destination[0];
-    int yDif = -r.getPosition()[1] + destination[1];
-    int maxTotalMoves = serverSettings.getMaxAllowedMoves();
-    int xMoves = MathHelper.clamp(xDif, -maxTotalMoves, maxTotalMoves);
-    maxTotalMoves -= Math.abs(xMoves);
-    int yMoves = MathHelper.clamp(yDif, -maxTotalMoves, maxTotalMoves);
-    return new int[]{r.getPosition()[0] + xMoves, r.getPosition()[1] + yMoves};
-
-  }
-
     /**
      *
      * Returns the players ID of whoms turn it is

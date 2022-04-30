@@ -16,6 +16,7 @@ public class FileHelper {
 
     public FileHelper() {
         objectMap = new HashMap<>();
+        initialize();
     }
 
     /**
@@ -71,11 +72,14 @@ public class FileHelper {
      */
     public Object createNewInstanceFromName(MapType typeOfMap, String key) {
         initialize();
-        Object obj = objectMap.get(typeOfMap.name().toLowerCase(Locale.ROOT)).get(key.toLowerCase(Locale.ROOT));
+        Object obj = objectMap.get(typeOfMap.getHashName()).get(key.toLowerCase(Locale.ROOT));
     if(obj == null) {
       logger.debug("The object  \"" + key + "\" is missing from the \"" + typeOfMap + "\" MapType.");
     }
         return obj;
     }
 
+    public HashMap<String, HashMap<String, Object>> getObjectMap() {
+        return objectMap;
+    }
 }

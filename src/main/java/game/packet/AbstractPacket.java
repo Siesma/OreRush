@@ -8,9 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public abstract class AbstractPacket {
 
@@ -52,9 +50,13 @@ public abstract class AbstractPacket {
   public boolean validate(String input) {
     input = replaceIndicatorChars(input);
     String[] parts = splitMessageBySpacer(input, String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
-    String[] possiblePackets = Objects.requireNonNull(new File(System.getProperty("user.dir") + "/src/main/java/game/packet/packets").list());
+    Set<String> packetHashMapKeySet = (new FileHelper()).getObjectMap().get(MapType.Packets.getHashName()).keySet();
+    ArrayList<String> possiblePackets = new ArrayList<>();
+
+    packetHashMapKeySet.stream().forEach(possiblePackets::add);
+
     StringBuilder appended = new StringBuilder();
-    Arrays.asList(possiblePackets).forEach(e -> appended.append("|((?i)").append(e.split(".java")[0]).append(")"));
+    possiblePackets.forEach(e -> appended.append("|((?i)").append(e).append(")"));
     String matching = appended.subSequence(1, appended.length()).toString();
     if (parts[0].matches("^" + matching + "$")) {
       parts = removeFirstElement(parts);
