@@ -12,6 +12,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * The InputStreamThread is responsible for recording and processing the packets received on the Inputstream connected to the server.
+ * It records the messages and forwards them to the packet handler which will process them further.
+ */
 public class InputStreamThread implements Runnable {
     public static final Logger logger = LogManager.getLogger(Server.class);
     private final Client client;

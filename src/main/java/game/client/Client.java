@@ -23,6 +23,11 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * The Client class is the main class storing information and threads the client needs to work.
+ * It is the model for the Startmenu
+ * It holds information of the socket for server connection
+ */
 public class Client {
 
   private static Client client;
@@ -73,9 +78,6 @@ public class Client {
 //            Thread pongThread = new Thread(pT);
 //            pongThread.start();
 
-      CommandLineInputThread cT = new CommandLineInputThread(this);
-      Thread commandLineInputThread = new Thread(cT);
-      commandLineInputThread.start();
 
 
     } catch (Exception e) {

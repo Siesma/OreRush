@@ -11,6 +11,10 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * The lobbyInClient class is the model for the lobby GUI, it has all the needed meta information about the lobby,
+ * as well as the game status, such as the game Map and round number.
+ */
 public class LobbyInClient {
     private final StringProperty lobbyName;
     private final StringProperty status;
@@ -20,6 +24,8 @@ public class LobbyInClient {
     private final ObservableList<Player> observablePlayerList = FXCollections.observableArrayList();
 
     private GameMap gameMap = new GameMap(new ServerSettings(""));
+
+    private IntegerProperty turnNumber; //TODO
 
     public int getGameMapProperty() {
         return gameMapProperty.get();

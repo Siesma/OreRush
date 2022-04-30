@@ -9,7 +9,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.OutputStream;
 
-
+/**
+ * The Pong thread is responsible for sending pong packets to the server and
+ * shutdown the client if the connection is lost
+ */
 public class PongThread implements Runnable {
 
     private final Client client;
