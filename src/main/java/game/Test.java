@@ -16,11 +16,11 @@ public class Test {
     GameMap map = new GameMap(serverSettings);
     for (int i = 0; i < x; i++) {
       for (int j = 0; j < y; j++) {
-        if (Math.random() < 0.2) {
+        if (Math.random() > 0.0) {
           Trap trap = new Trap();
           trap.setID(i + j % 5);
-          trap.setOwner(playerName);
-//          map.placeObjectOnMap(trap, i, j);
+          trap.setOwner("playerName");
+          map.placeObjectOnMap(trap, i, j);
         }
       }
     }

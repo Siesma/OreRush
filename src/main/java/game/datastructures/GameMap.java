@@ -183,8 +183,8 @@ public class GameMap {
     GameMap out = new GameMap(serverSettings);
     ArrayList<GameObject> playerOwnedGameObjects = new ArrayList<>();
     // adds all the gameobjects that were placed by the player himself.
-      for (int i = 0; i < gameMapSize[0]; i++) {
-        for (int j = 0; j < gameMapSize[1]; j++) {
+    for (int i = 0; i < gameMapSize[0]; i++) {
+      for (int j = 0; j < gameMapSize[1]; j++) {
         for (GameObject gameObject : cellArray[i][j].getPlacedObjects()) {
           if (gameObject.getOwner() == null) {
             logger.debug("The Owner of the Object \"" + gameObject + "\" in the position (" + i + ", " + j + ") was not set correctly.");
@@ -200,30 +200,55 @@ public class GameMap {
       }
     }
     // goes through all of the players own gameobjects and if the gameobject is a radar it will reveal the surrounding area.
+//    for (GameObject gameObject : playerOwnedGameObjects) {
+//      out.placeObjectOnMap(gameObject, gameObject.getPosition());
+//      if (gameObject instanceof Radar) {
+//        int dist = serverSettings.getRadarDistance();
+//        for (int xi = -dist / 2; xi <= dist / 2; xi++) {
+//          for (int yi = -dist / 2; yi <= dist / 2; yi++) {
+//            int[] xyi = new int[]{gameObject.getPosition()[0] + xi, gameObject.getPosition()[1] + yi};
+//            // checks if the radar is scanning outside the gamemap.
+////            if (!MathHelper.isInBounds(xyi, new int[]{0, 0}, gameMapSize)) {
+////              continue;
+////            }
+//            // because we are looking in an n x n grid around the radar position some of those are outside of the normal reach.
+//            if (MathHelper.absoluteCellDistance(gameObject.getPosition(), xyi) >= dist) {
+//              continue;
+//            }
+//            // if every checks pass, it will place every gameobject from the full gamemap on the map that is being returned.
+//            for (GameObject object : this.cellArray[xyi[0]][xyi[1]].getPlacedObjects()) {
+//              out.placeObjectOnMap(object, xyi);
+//            }
+//          }
+//        }
+//      }
+//    }
+
     for (GameObject gameObject : playerOwnedGameObjects) {
       out.placeObjectOnMap(gameObject, gameObject.getPosition());
       if (gameObject instanceof Radar) {
-        int dist = serverSettings.getRadarDistance() / 2;
-        for (int xi = -dist; xi <= dist; xi++) {
-          for (int yi = -dist; yi <= dist; yi++) {
-            int[] xyi = new int[]{gameObject.getPosition()[0] + xi, gameObject.getPosition()[1] + yi};
-            // checks if the radar is scanning outside the gamemap.
-            if (!MathHelper.isInBounds(xyi, new int[]{0, 0}, gameMapSize)) {
-              continue;
-            }
-            // because we are looking in an n x n grid around the radar position some of those are outside of the normal reach.
-            if (MathHelper.absoluteCellDistance(gameObject.getPosition(), xyi) <= dist) {
-              continue;
-            }
-            // if every checks pass, it will place every gameobject from the full gamemap on the map that is being returned.
-            for (GameObject object : this.cellArray[xyi[0]][xyi[1]].getPlacedObjects()) {
-              out.placeObjectOnMap(object, xyi);
-            }
-          }
+        revealAround(out, gameObject.getPosition(), serverSettings.getRadarDistance());
+      }
+    }
+
+    return out;
+  }
+
+  public void revealAround(GameMap gameMap, int[] xy, int revealSize) {
+    for (int xi = -revealSize; xi <= revealSize; xi++) {
+      for (int yi = -revealSize; yi <= revealSize; yi++) {
+        int[] nPos = new int[] {xy[0] + xi, xy[1] + yi};
+        if(!MathHelper.isInBounds(nPos[0], nPos[1], serverSettings)) {
+          continue;
+        }
+        if(!(MathHelper.absoluteCellDistance(xy, nPos) <= revealSize)) {
+          continue;
+        }
+        for(GameObject objectOnCell : this.cellArray[nPos[0]][nPos[1]].getPlacedObjects()) {
+          gameMap.placeObjectOnMap(objectOnCell, nPos);
         }
       }
     }
-    return out;
   }
 
   public static void printMapToConsole(GameMap gameMap) {
@@ -287,10 +312,19 @@ public class GameMap {
         } else {
           out.append("__");
         }
+
+//        out.setLength(0);
+//        int[] now = new int[] {3, 4};
+//        int[] then = new int[] {i, j};
+//        out.append(fixedLengthString("" + MathHelper.absoluteCellDistance(now, then), 5));
         System.out.print("[" + out.toString() + "]");
       }
       System.out.println("");
     }
+  }
+
+  public static String fixedLengthString(String string, int length) {
+    return String.format("%1$" + length + "s", string);
   }
 
   /**
