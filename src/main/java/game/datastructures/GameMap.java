@@ -133,29 +133,25 @@ public class GameMap {
    * @return the Ore Type as an int
    */
   public int determineOreTypeIndex(int xCoordinate) {
-
+    // some constants for an appealing distribution, they are not based on any experimental values but just values we thought look good.
     double a = 1.2;
     double b = 0.7;
     double c = 1.4;
     double d = -0.2;
 
+    /*
+    Creates a value based on a function that can be examined using the following link:
+    https://www.desmos.com/calculator/luphcn1lum
+     */
+
     double r = MathHelper.getRandomNumber();
-
     int n = OreType.values().length;
-
     double inverseN = 1d / n;
-
     double w = serverSettings.getMapWidth();
-
     double xw = (double) ((w) - xCoordinate) / w;
-
     double fx = MathHelper.exponential(a, b, xw, c, d);
-
     double shiftFactor = (((r + 1) + d)) / (Math.abs(xw - d));
-    int v = MathHelper.clamp((int) Math.floor(Math.abs((fx - shiftFactor) / (Math.abs(xw - d)) * (inverseN))), 0, n - 1);
-//    System.out.println(v);
-
-    return v;
+    return MathHelper.clamp((int) Math.floor(Math.abs((fx - shiftFactor) / (Math.abs(xw - d)) * (inverseN))), 0, n - 1);
 
   }
 
