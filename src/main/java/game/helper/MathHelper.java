@@ -1,6 +1,5 @@
 package game.helper;
 
-import game.packet.AbstractPacket;
 import game.server.ServerSettings;
 
 import java.util.Random;
@@ -90,7 +89,7 @@ public class MathHelper {
 
 
   /**
-   * @param now current position
+   * @param now  current position
    * @param then destination
    * @return the amount of single cell moves that would need to be done to reach a destination
    */
