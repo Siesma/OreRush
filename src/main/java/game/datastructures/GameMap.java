@@ -62,7 +62,7 @@ public class GameMap {
       for (int j = 0; j < h; j++) {
         if (createCluster(i, j, threshold)) {
           double clusterSize = Math.sqrt(serverSettings.getMaxClusterSize());
-          int curOreType = determineOreTypeIndex();
+          int curOreType = determineOreTypeIndex(i);
           for (int xo = (int) -(1 + MathHelper.getRandomNumber() * clusterSize); xo < (int) (1 + MathHelper.getRandomNumber() * clusterSize); xo++) {
             for (int yo = (int) (1 + MathHelper.getRandomNumber() * clusterSize); yo < (int) (1 + MathHelper.getRandomNumber() * clusterSize); yo++) {
               int ni, nj;
@@ -128,11 +128,13 @@ public class GameMap {
   }
 
 
-  public int determineOreTypeIndex() {
+  public int determineOreTypeIndex(int xCoordinate) {
     // a - b ^ (c*d + f)
-
     // TODO: make it so that more valuable oretypes spawn futher on the right
-    return (int) (Math.random() * OreType.values().length);
+
+
+    return (int) Math.floor(MathHelper.exponential(1,1,(MathHelper.exponential(1,1,MathHelper.getRandomNumber(),1,0)-xCoordinate),1,0)*OreType.values().length);
+            //(Math.random() * OreType.values().length);
   }
 
   public void placeObjectOnMap(GameObject object, int x, int y) {
