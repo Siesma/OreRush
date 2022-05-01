@@ -1,5 +1,8 @@
 package game.datastructures;
 
+/**
+ * Enum that holds the name of the ore and its value
+ */
 public enum OreType {
 
     Copper(1), Iron(2), Gold(4), Platinum(6), Indium(9);

@@ -1,5 +1,9 @@
 package game.datastructures;
 
+/**
+ * Interface for all game objects, Ore, Robot, Radar, Trap.
+ *
+ */
 public interface GameObject {
 
     void setID(int id);

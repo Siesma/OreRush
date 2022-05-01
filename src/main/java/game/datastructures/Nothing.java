@@ -1,5 +1,9 @@
 package game.datastructures;
 
+/**
+ * This GameObject is used to represent that there are no other Gameojects on the field.
+ * Used to avoid null pointers.
+ */
 public class Nothing implements GameObject {
 
     private int x;
