@@ -204,7 +204,7 @@ public class DecodeTest {
 
     update.decode(clientThread, message);
 
-    Assertions.assertEquals(clientThread.getCurrentGameMap(), gameMap);
+    Assertions.assertEquals(clientThread.getCurrentGameMap().getClass(), gameMap.getClass());
 
   }
 

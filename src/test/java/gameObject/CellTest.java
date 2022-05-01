@@ -80,7 +80,7 @@ public class CellTest extends TestCase {
             int y = TestHelper.generateRandomNumber(100);
             Cell cell = new Cell(x, y);
 
-            int amount = TestHelper.generateRandomNumber(1000);
+            int amount = TestHelper.generateRandomNumber(1000) + 1;
             for(int j = amount; j > 0; j--) {
                 Ore ore = new Ore();
                 ore.setID(TestHelper.generateRandomNumber(1000));
