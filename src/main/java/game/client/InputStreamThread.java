@@ -57,7 +57,11 @@ public class InputStreamThread implements Runnable {
                         break;
                     }
 //                    generateAppropriateReaction(receivedPacket);
-                    receivedPacket.decode(this, message);
+                    try {
+                        receivedPacket.decode(this, message);
+                    } catch (Exception e) {
+                        logger.fatal("While decoding the message there was a critical error!", e);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

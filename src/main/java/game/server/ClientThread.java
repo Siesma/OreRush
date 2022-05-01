@@ -95,7 +95,11 @@ public class ClientThread implements Runnable {
             System.out.println("The received packet contains garbage.");
             break;
           }
-          receivedPacket.decode(this, message);
+          try {
+            receivedPacket.decode(this, message);
+          } catch (Exception e) {
+            logger.fatal("While decoding the message there was a critical error!", e);
+          }
         } catch (Exception e) {
           e.printStackTrace();
         }
