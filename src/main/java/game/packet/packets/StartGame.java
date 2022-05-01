@@ -6,7 +6,13 @@ import game.packet.PacketHandler;
 import game.server.ClientThread;
 import game.server.Lobby;
 import game.server.ServerConstants;
-
+/**
+ * class representing the NICKNAME packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * This Packet is used by a client to inform the server that a game should start in specific lobby
+ * which in turn informs the other clients in the lobby and sends them the gamemap
+ */
 public class StartGame extends AbstractPacket {
     public StartGame() {
         super("", new String[]{"^.*$", //lobby

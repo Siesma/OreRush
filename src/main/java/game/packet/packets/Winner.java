@@ -10,7 +10,12 @@ import game.server.ServerConstants;
 import javafx.application.Platform;
 
 import java.util.Scanner;
-
+/**
+ * class representing the NICKNAME packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * This Packet is used by the server to inform all clients of the win of a player and update the GUI accordingly
+ */
 public class Winner extends AbstractPacket {
 
     public Winner() {

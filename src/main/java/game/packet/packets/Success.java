@@ -4,7 +4,12 @@ import game.client.InputStreamThread;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
-
+/**
+ * class representing the success packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * This Packet is used by the ping and pong threads to confirm that a ping or pong has arrived.
+ */
 public class Success extends AbstractPacket {
   public Success() {
     super("", new String[] {"^(?i)Success$"}, "");

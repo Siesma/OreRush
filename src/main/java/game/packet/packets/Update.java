@@ -5,7 +5,12 @@ import game.datastructures.GameMap;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
-
+/**
+ * class representing the update packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * This Packet is used by the server to update the players of the current state of the gamemap
+ */
 public class Update extends AbstractPacket {
     public Update() {
         super("", new String[]{

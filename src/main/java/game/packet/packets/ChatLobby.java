@@ -6,7 +6,12 @@ import game.server.ClientThread;
 import game.server.ServerConstants;
 
 import java.util.Scanner;
-
+/**
+ * class representing the ChatLobby packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * The ChatLobby packet is used to send a chat message to all clients connected in the same lobby
+ */
 public class ChatLobby extends AbstractPacket {
 
 

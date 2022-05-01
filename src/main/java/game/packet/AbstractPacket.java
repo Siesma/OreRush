@@ -9,7 +9,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.*;
-
+/**
+ * Abstract packet used by all packets
+ */
 public abstract class AbstractPacket {
 
   protected final String name;
