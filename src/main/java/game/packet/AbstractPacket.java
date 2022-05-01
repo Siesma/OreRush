@@ -87,7 +87,7 @@ public abstract class AbstractPacket {
    * @param message the string that should be manipulated
    * @return the manipulated string
    */
-  protected static String replaceIndicatorChars(String message) {
+  public static String replaceIndicatorChars(String message) {
     message = message.replace(String.valueOf((char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE), "");
     message = message.replace(String.valueOf((char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE), "");
     return message;
