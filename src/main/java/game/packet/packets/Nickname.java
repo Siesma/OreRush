@@ -11,7 +11,13 @@ import javafx.application.Platform;
 import java.io.InputStream;
 import java.util.Scanner;
 
-//TODO fix nickanme in Client gui changes should be reflected in client list and in lobbylist
+/**
+ * class representing the NICKNAME packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * This Packet is used by a client to inform the server of the client changing nickname
+ * which in turn informs the other clients
+ */
 
 public class Nickname extends AbstractPacket {
   public Nickname() {

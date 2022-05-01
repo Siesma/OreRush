@@ -8,7 +8,13 @@ import game.packet.PacketHandler;
 import game.server.ClientThread;
 import game.server.Server;
 import game.server.ServerConstants;
-
+/**
+ * class representing the leaveLobby packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * This Packet is used by a client to inform the server of the leaving of a lobby
+ * which in turn informs other players
+ */
 public class LeaveLobby extends AbstractPacket {
 
   public LeaveLobby() {

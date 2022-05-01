@@ -6,7 +6,12 @@ import game.server.ClientThread;
 import game.server.ServerConstants;
 
 import java.util.Scanner;
-
+/**
+ * class representing the NICKNAME packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * This Packet is used by a client to send a message to a specific client
+ */
 public class Whisper extends AbstractPacket{
 
     public Whisper() {

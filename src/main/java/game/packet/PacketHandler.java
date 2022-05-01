@@ -10,7 +10,9 @@ import java.io.File;
 import java.io.OutputStream;
 import java.util.Objects;
 import java.util.Scanner;
-
+/**
+ * this class is used to validate and push a packet.
+ */
 public class PacketHandler {
 
     public static final Logger logger = LogManager.getLogger(Client.class);

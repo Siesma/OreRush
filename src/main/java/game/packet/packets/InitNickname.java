@@ -4,7 +4,13 @@ import game.client.InputStreamThread;
 import game.packet.AbstractPacket;
 import game.server.ServerConstants;
 import javafx.application.Platform;
-
+/**
+ * class representing the Initnickname packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * This Packet is used by the server to inform a player if the initially chosen nickname was already taken and
+ * informs it of the new one
+ */
 public class InitNickname extends AbstractPacket {
     public InitNickname() {
         super("", new String[]{"^.*$", //new name

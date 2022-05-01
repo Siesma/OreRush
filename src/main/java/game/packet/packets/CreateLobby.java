@@ -7,7 +7,13 @@ import game.server.ClientThread;
 import game.server.Lobby;
 import game.server.Server;
 import game.server.ServerConstants;
-
+/**
+ * class representing the CreateLobby packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * The CreateLobby packet is used by a client to create a new lobby.
+ * The server then informs other players of this new lobby
+ */
 public class CreateLobby extends AbstractPacket {
 
     public CreateLobby() {

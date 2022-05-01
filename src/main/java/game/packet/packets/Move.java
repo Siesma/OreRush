@@ -7,7 +7,12 @@ import game.helper.MathHelper;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
-
+/**
+ * class representing the Move packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * This Packet is used by a client to indicate the robot action he wants to perform during his turn
+ */
 public class Move extends AbstractPacket {
 
 

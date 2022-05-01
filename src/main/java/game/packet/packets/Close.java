@@ -8,7 +8,12 @@ import game.server.Server;
 import game.server.ServerConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+/**
+ * class representing the Close packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * The Close packet is used to inform the server a client is disconnecting
+ */
 public class Close extends AbstractPacket {
 
 
@@ -48,7 +53,12 @@ public class Close extends AbstractPacket {
   }
 
   /**
-   * Closes the connection
+   * Generates appropriate response depending on the parent
+   * @param parent either server or client
+   *               if server: the client sending the packet is removed from the Server,
+   *               and the other players are informed
+   *               if client: the Gui is updated removing the client from the client list
+   * @param message the name of the client that is disconnecting
    */
   @Override
   public void decode(Object parent, String message) {

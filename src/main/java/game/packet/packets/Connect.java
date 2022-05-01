@@ -7,7 +7,14 @@ import game.server.ClientThread;
 import game.server.Lobby;
 import game.server.Server;
 import game.server.ServerConstants;
-
+/**
+ * class representing the Connect packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * The Connect packet is the first packet sent by a client, it informs the server of the new client
+ * and sends back all information needed by the client such as the other players connected and
+ * lobbies that were already created
+ */
 public class Connect extends AbstractPacket {
 
   public Connect() {

@@ -48,7 +48,6 @@ public class FileHelper {
         packetHashMap.put("createlobby", new CreateLobby());
         packetHashMap.put("score", new Score());
         packetHashMap.put("close", new Close());
-        packetHashMap.put("timeout", new Timeout());
         packetHashMap.put("chat", new Chat());
         packetHashMap.put("startgame", new StartGame());
         packetHashMap.put("winner", new Winner());

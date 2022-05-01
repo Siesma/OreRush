@@ -8,7 +8,12 @@ import game.server.Server;
 import game.server.ServerConstants;
 
 import java.util.Scanner;
-
+/**
+ * class representing the Broadcast packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * The Broadcast packet is used to send a chat message accross startmenus and lobbys of all clients
+ */
 public class Broadcast extends AbstractPacket {
 
 

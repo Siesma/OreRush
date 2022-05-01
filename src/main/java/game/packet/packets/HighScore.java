@@ -9,6 +9,12 @@ import game.server.ServerConstants;
 import javafx.application.Platform;
 
 import java.util.Scanner;
+/**
+ * class representing the highscore packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * The high score packet is used by a client to ask for the high score list
+ */
 
 public class HighScore extends AbstractPacket {
     public HighScore() {

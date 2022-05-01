@@ -7,7 +7,12 @@ import game.server.ServerConstants;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
-
+/**
+ * class representing the Chat packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * The Chat packet is used to send a message to all clients in start menus
+ */
 public class Chat extends AbstractPacket {
 
 
