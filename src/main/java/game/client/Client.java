@@ -215,7 +215,6 @@ public class Client {
     (new PacketHandler(this)).pushMessage(outputStream, (new LeaveLobby()).encodeWithContent(lobbyName, getNickname()));
   }
 
-  // TODO (seb) disconnect packet
   /**
    * remove the Client from The observableClientlist
    * @param clientName the name of the client that should be removed

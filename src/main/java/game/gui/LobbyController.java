@@ -42,6 +42,8 @@ public class LobbyController {
   Client client;
   LobbyInClient lobby;
   @FXML
+  private Button startGameButton;
+  @FXML
   private TableView<Player> playerTableView;
   @FXML
   private TableColumn<Player, String> nicknameColumn;
@@ -97,6 +99,11 @@ public class LobbyController {
     playerRobotActionList.setValue("Move");
     lobby.gameMapPropertyProperty().addListener((obs, oldVal, newVal) -> {
       updateMap();
+    });
+    lobby.statusProperty().addListener((obs, oldVal, newVal) -> {
+      if (newVal.equals("in game")) {
+        startGameButton.setVisible(false);
+      };
     });
 
 
@@ -254,8 +261,6 @@ public class LobbyController {
     client.makeMove(this);
   }
 
-  //TODO
-
   /**
    * This method changes the status lable of a lobby, once it's game has started
    *
@@ -263,9 +268,6 @@ public class LobbyController {
    */
   public void handleStartGame(ActionEvent actionEvent) {
     client.sendStartGame();
-
-
-    lobby.setStatus("in game");
   }
 
   /**
