@@ -74,6 +74,9 @@ public class Robot implements GameObject {
     if (!(optionalInventoryChange instanceof GameObject)) {
       return;
     }
+    if(this.getPosition()[0] != 0) {
+      return;
+    }
     switch (robotAction) {
       case RequestTrap:
       case RequestRadar:
