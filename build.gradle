@@ -54,6 +54,12 @@ test {
     useJUnitPlatform()
 }
 
+//test {
+//    useJUnit {
+//        includeCategories 'src.test.java'
+//    }
+//}
+
 /*
 The following block adds both compile and runtime dependencies to the jar
  */
@@ -77,4 +83,5 @@ javadoc {
 tasks.register('build-cs108') {
     dependsOn jar
     dependsOn javadoc
+    dependsOn test
 }
