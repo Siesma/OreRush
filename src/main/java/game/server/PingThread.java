@@ -7,7 +7,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
-
+/**
+ * The ping thread is responsible for sending ping packets to all the clients and
+ * removes clients from the server if the connection is lost
+ */
 
 public class PingThread implements Runnable {
     public static final Logger logger = LogManager.getLogger(Server.class);

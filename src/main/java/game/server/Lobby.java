@@ -8,6 +8,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
+/**
+ * the lobby class is responsible for handling one game instance.
+ * It holds a list of clients playing that game instance.
+ * As well as variables needed for the game, such as the map or turncounter.
+ */
 public class Lobby {
 
   private final Server server;
