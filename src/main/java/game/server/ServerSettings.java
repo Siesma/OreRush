@@ -3,6 +3,10 @@ package game.server;
 
 import java.util.ArrayList;
 
+/**
+ * This class holds the settings for a particular game instance such as game length and map size
+ * It can  also be used to set the default values of these parameters.
+ */
 public class ServerSettings {
 
   /*

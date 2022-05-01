@@ -15,6 +15,11 @@ import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * This class is created by the server for each client that connects to it.
+ * It holds information about the client auch as the name or the lobby to which it connects.
+ * It handles the receiving of packets from the client by validating and decoding them.
+ */
 
 public class ClientThread implements Runnable {
 

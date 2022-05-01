@@ -9,6 +9,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * Main class of the server.
+ * Infinite loop to accept new client connections.
+ * Holds a list of clients and a list of lobbys.
+ */
+
 public class Server {
 
     public static final Logger logger = LogManager.getLogger(Server.class);
