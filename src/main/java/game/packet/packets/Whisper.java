@@ -84,7 +84,7 @@ public class Whisper extends AbstractPacket{
             if (obj.getClient().getLobbyInClient() != null) {
                 obj.getClient().getLobbyInClient().setLastChatMessage(name + " (whisper): " + message + "\n");
             }
-            obj.getClient().setLastChatMessage(name + " (whisper): " + message + "\n");
+            obj.getClient().lastChatMessageProperty().setValue(name + " (whisper): " + message + "\n");
         }
     }
 }

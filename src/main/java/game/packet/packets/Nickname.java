@@ -90,7 +90,7 @@ public class Nickname extends AbstractPacket {
         Platform.runLater(() ->obj.getClient().nicknameProperty().setValue(finalMessage));
       }
       obj.getClient().changeNicknameOfOtherClient(oldName, message);
-      obj.getClient().setLastChatMessage("Server: " + oldName + " has changed their name to "
+      obj.getClient().lastChatMessageProperty().setValue("Server: " + oldName + " has changed their name to "
               + message + ".\n");
     }
   }
