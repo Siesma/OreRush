@@ -1,10 +1,13 @@
 package game.packet.packets;
 
+import game.client.InputStreamThread;
+import game.client.LobbyInClient;
 import game.datastructures.GameMap;
 import game.packet.AbstractPacket;
 import game.packet.PacketHandler;
 import game.server.ClientThread;
 import game.server.Lobby;
+import game.server.Server;
 import game.server.ServerConstants;
 /**
  * class representing the NICKNAME packet.
@@ -52,8 +55,7 @@ public class StartGame extends AbstractPacket {
      *
      * @param parent  server or client
      *                if server receives the packet it starts the game and sends the map to clients in the lobby
-     *                <p>
-     *                if client receives the packet, the map is updated
+     *                if client receives the packet, the game status in the startmenu lobby list is updated
      * @param message contains the lobbyname and clientname
      */
     @Override
@@ -73,8 +75,19 @@ public class StartGame extends AbstractPacket {
                 }
 
             }
+            for (ClientThread clientThread : Server.getClientThreads()) {
+                (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new StartGame()).encodeWithContent(message));
+            }
 
         }
+        if (parent instanceof InputStreamThread) {
+            InputStreamThread obj = (InputStreamThread) parent;
+            for(LobbyInClient lobbyInClient:obj.getClient().getLobbyData()) {
+                if (lobbyInClient.getLobbyName().equals(message)) {
+                    lobbyInClient.setStatus("in game");
+                }
+            }
 
+        }
     }
 }
