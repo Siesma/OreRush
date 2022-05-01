@@ -3,6 +3,7 @@ package game.gui;
 import game.Main;
 import game.client.Client;
 import game.client.LobbyInClient;
+import game.server.Server;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +14,8 @@ import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -52,6 +55,7 @@ public class StartMenuController {
     @FXML
     private TableColumn<LobbyInClient, String> playerColumn;
 
+    public static final Logger logger = LogManager.getLogger(Server.class);
 
     public void initialize() {
 
@@ -128,8 +132,8 @@ public class StartMenuController {
         try {
             client.joinLobby(lobbyNameColumn.getCellObservableValue(lobbyTableView.getItems().get(lobbyTableView.getSelectionModel().getSelectedCells().get(0).getRow())).getValue());
             changeToLobbyScene();
-        } catch (Exception ignored) {
-
+        } catch (Exception e) {
+            logger.fatal("There was an error while trying to connect to the lobby", e);
         }
         actionEvent.consume();
     }
