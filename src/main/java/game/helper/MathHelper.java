@@ -11,10 +11,11 @@ public class MathHelper {
 
 
   /**
-   * returns the clamped value of val, min and max. This means the following:
-   * if val is greater than max it will return max
-   * if val is greater than min it will return min
-   * if val is neither greater nor smaller it will return val
+   * returns one of the following variables
+   * @param val if between min and max
+   * @param min if val under min
+   * @param max if val over max
+   * @return the clamped value of val, min and max
    */
   public static int clamp(int val, int min, int max) {
     return Math.max(Math.min(max, val), min);
