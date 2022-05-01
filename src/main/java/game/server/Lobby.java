@@ -72,6 +72,10 @@ public class Lobby {
     checkGameEnd();
   }
 
+  /**
+   * checks whether the game has ended or not.
+   * And if the game has ended it will inform the players about it.
+   */
   private void checkGameEnd() {
     if (turnCounter == serverSettings.getNumberOfRounds()*listOfClients.size()) {
       for (ClientThread clientThread:listOfClients) {

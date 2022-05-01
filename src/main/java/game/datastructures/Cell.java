@@ -103,6 +103,10 @@ public class Cell {
     return placedObjects;
   }
 
+  /**
+   *
+   * @return all the necessary information about this cell in a Stringformat to be able to send and decode it everywhere and end up with the same object.
+   */
   @Override
   public String toString() {
     StringBuilder out = new StringBuilder();

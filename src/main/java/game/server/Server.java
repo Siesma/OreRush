@@ -67,6 +67,11 @@ public class Server {
         lobby.addClient(clientThread);
     }
 
+    /**
+     *
+     * @param lobbyName name of the wanted lobby
+     * @return the lobby that is associated by that name, null if no lobby with that name exists
+     */
     public Lobby getLobbyByName(String lobbyName) {
         for (Lobby lobby : lobbyArrayList) {
             if (lobby.getLobbyName().equals(lobbyName)) {
@@ -76,6 +81,11 @@ public class Server {
         return null;
     }
 
+    /**
+     *
+     * @param clientThread the client that has to be removed
+     * @param lobbyName the lobby in which the client is (supposedly) located
+     */
     public void removeClientFromLobby(ClientThread clientThread, String lobbyName) {
         for (Lobby lobby : lobbyArrayList) {
             if (lobby.getLobbyName().equals(lobbyName)) {
@@ -89,6 +99,10 @@ public class Server {
     }
 
 
+    /**
+     * Saves the new high scores in a local file.
+     * @param winnerClientThread a reference to the client that has won the game.
+     */
     public void saveHighScore(ClientThread winnerClientThread) {
 
         try {

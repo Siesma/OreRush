@@ -156,6 +156,12 @@ public class GameMap {
 
   }
 
+  /**
+   * Places an object onto the map and also updates the position of the object to the new position.
+   * @param object the object that is being placed down on the map
+   * @param x the respective x coordinate
+   * @param y the respective y coordinate
+   */
   public void placeObjectOnMap(GameObject object, int x, int y) {
     object.setPosition(x, y);
     cellArray[x][y].place(object);
@@ -165,6 +171,12 @@ public class GameMap {
     this.placeObjectOnMap(gameObject, xy[0], xy[1]);
   }
 
+  /**
+   * removes an object from the map
+   * @param gameObject the object that is being removed
+   * @param x the respective x coordinate
+   * @param y the respective y coordinate
+   */
   public void removeObjectFromMap(GameObject gameObject, int x, int y) {
     cellArray[x][y].remove(gameObject);
   }
@@ -231,6 +243,10 @@ public class GameMap {
     }
   }
 
+  /**
+   * Prints the map to the console, this is currently not really used and will most likely be removed in a future commit.
+   * @param gameMap the map that is being printed onto the console.
+   */
   public static void printMapToConsole(GameMap gameMap) {
     Cell[][] cells = gameMap.getCellArray();
     for (int i = 0; i < cells[0].length; i++) {
@@ -419,6 +435,11 @@ public class GameMap {
     }
   }
 
+  /**
+   * This function will handle any incoming messages, but it has to follow the regex of the Update packet.
+   * @param message the content in the format of the Update packet's encoding.
+   * @return a new gameMap object containing all the information given by the message
+   */
   public static GameMap getMapFromString(String message) {
     // splits the incoming singular information into an array.
     String[] individualCell = AbstractPacket.splitMessageBySpacer(message);

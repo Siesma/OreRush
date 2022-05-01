@@ -102,6 +102,16 @@ public class MathHelper {
   }
 
 
+  /**
+   *
+   * @param x the x coordinate that is being evaluated
+   * @param y the y coordinate that is being evaluated
+   * @param min_x the value that the x value is not allowed to be lower than
+   * @param max_x the value that the x value is not allowed to be greater than
+   * @param min_y the value that the y value is not allowed to be lower than
+   * @param max_y the value that the y value is not allowed to be greater than
+   * @return whether the x, y pair is within the bounds
+   */
   public static boolean isInBounds(int x, int y, int min_x, int max_x, int min_y, int max_y) {
     return x >= min_x && x < max_x && y >= min_y && y < max_y;
   }

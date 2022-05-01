@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.effect.Bloom;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -21,7 +20,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
-import javafx.stage.Window;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -178,7 +176,7 @@ public class LobbyController {
                     Node node = (Node) event.getTarget();
                     int row = GridPane.getRowIndex(node);
                     int column = GridPane.getColumnIndex(node);
-                    saveClickedPosition(button, column, row);
+                    selectedAndMakeActionForRobot(button, column, row);
                   });
 
                   mapGridPane.add(button, x, y, 1, 1);
@@ -188,9 +186,15 @@ public class LobbyController {
     );
 
   }
-
-
-  public void saveClickedPosition(Button button, int x, int y) {
+  /**
+   * This function sets the action of the associated robot.
+   * It will grab the current game maps cells to see if the selected x, y contain any robots.
+   * If so it will select this robot and once a robot is selected the next positional update will set the robots upcoming move to the selected cell with the respective action.
+   * @param button the button that is being pressed
+   * @param x the x coordinate of this button in terms of the gameMap's cellArray
+   * @param y the y coordinate of this button in terms of the gameMap's cellArray
+   */
+  public void selectedAndMakeActionForRobot(Button button, int x, int y) {
     if (currentGameMap == null) {
       // how? Just how?
       return;

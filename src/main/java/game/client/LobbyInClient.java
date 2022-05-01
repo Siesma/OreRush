@@ -58,6 +58,10 @@ public class LobbyInClient {
         this.lobbyName.set(lobbyName);
     }
 
+    /**
+     * Adds a player into the clients lobby view list.
+     * @param clientName name of the new player.
+     */
     public void addPlayer(String clientName) {
         observablePlayerList.add(new Player(clientName));
         if (players.getValue() == null) {
