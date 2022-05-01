@@ -70,6 +70,8 @@ public class StartGame extends AbstractPacket {
                         (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(),
                                 (new Update()).encodeWithContent(lobby.getGameMap().cellStrings()));
                                         // TODO .getIndividualGameMapForPlayer(clientThread.getPlayerName())));
+                        (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(),
+                                (new UpdateTurn()).encodeWithContent(lobby.getListOfClients().get(lobby.turnOfPlayer()).getPlayerName(),String.valueOf(lobby.getTurnCounter())));
                     }
 
                 }

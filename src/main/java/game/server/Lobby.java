@@ -3,6 +3,9 @@ package game.server;
 import game.datastructures.GameMap;
 import game.datastructures.Robot;
 import game.helper.MathHelper;
+import game.packet.PacketHandler;
+import game.packet.packets.Update;
+import game.packet.packets.UpdateTurn;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -61,8 +64,12 @@ public class Lobby {
   public void updateMove() {
     turnCounter++;
     printMap();
-    checkGameEnd();
 
+    for (ClientThread clientThread:listOfClients) {
+      (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(),
+              (new UpdateTurn()).encodeWithContent(listOfClients.get(turnOfPlayer()).getPlayerName(),String.valueOf(turnCounter)));
+    }
+    checkGameEnd();
   }
 
   private void checkGameEnd() {

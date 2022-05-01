@@ -59,6 +59,10 @@ public class LobbyController {
   public static final Logger logger = LogManager.getLogger(ClientThread.class);
   @FXML
   private Pane mapPane;
+  @FXML
+  private Label turnInfoLabel;
+  @FXML
+  private Label playerTurnLabel;
   private int xClicked = -1;
   private int yClicked = -1;
 
@@ -104,6 +108,12 @@ public class LobbyController {
       if (newVal.equals("in game")) {
         startGameButton.setVisible(false);
       };
+    });
+    lobby.playerOnPlayProperty().addListener((obs, oldVal, newVal) -> {
+      playerTurnLabel.setText("Turn of: " + newVal);
+    });
+    lobby.turnCounterProperty().addListener((obs, oldVal, newVal) -> {
+      turnInfoLabel.setText("Turn number: " + newVal);
     });
 
 
@@ -293,7 +303,6 @@ public class LobbyController {
     actionEvent.consume();
   }
 
-  // TODO fix whisper only works on first person
 
   /**
    * sends a Whisper Message

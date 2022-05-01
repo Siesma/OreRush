@@ -4,13 +4,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="728.0" prefWidth="1031.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.gui.LobbyController">
+<AnchorPane prefHeight="728.0" prefWidth="1031.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.gui.LobbyController">
     <children>
         <HBox prefHeight="728.0" prefWidth="1031.0">
             <children>
                 <VBox prefHeight="728.0" prefWidth="232.0">
                     <children>
                         <Button fx:id="startGameButton" mnemonicParsing="false" onAction="#handleStartGame" prefHeight="25.0" prefWidth="148.0" text="Start Game" />
+                  <Label fx:id="turnInfoLabel" prefHeight="17.0" prefWidth="187.0" text="Turn info" />
+                  <Label fx:id="playerTurnLabel" prefHeight="17.0" prefWidth="173.0" text="Player info" />
                         <TableView fx:id="playerTableView" prefHeight="200.0" prefWidth="200.0">
                             <columns>
                                 <TableColumn fx:id="nicknameColumn" prefWidth="75.0" text="Player" />

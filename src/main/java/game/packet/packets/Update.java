@@ -48,7 +48,12 @@ public class Update extends AbstractPacket {
 
 
     /**
-     * Placeholder for decoding the Update packet.
+     * Decodes the packet
+     *
+     * @param parent  server or client
+     *                if server receives the packet, it updates the Gamemap
+     *                if client receives the packet, it updates the Gamemap
+     * @param message contains the lobbyname and clientname
      */
     @Override
     public void decode(Object parent, String message) {

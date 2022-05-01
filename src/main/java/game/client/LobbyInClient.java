@@ -20,12 +20,14 @@ public class LobbyInClient {
     private final StringProperty status;
     private final StringProperty players;
 
+    private StringProperty playerOnPlay =  new SimpleStringProperty();
+
+    private StringProperty turnCounter =  new SimpleStringProperty();
+
     private final StringProperty lastChatMessage = new SimpleStringProperty();
     private final ObservableList<Player> observablePlayerList = FXCollections.observableArrayList();
 
     private GameMap gameMap = new GameMap(new ServerSettings(""));
-
-    private IntegerProperty turnNumber; //TODO
 
     public int getGameMapProperty() {
         return gameMapProperty.get();
@@ -123,5 +125,29 @@ public class LobbyInClient {
 
     public GameMap getGameMap() {
         return gameMap;
+    }
+
+    public String getPlayerOnPlay() {
+        return playerOnPlay.get();
+    }
+
+    public StringProperty playerOnPlayProperty() {
+        return playerOnPlay;
+    }
+
+    public void setPlayerOnPlay(String playerOnPlay) {
+        this.playerOnPlay.set(playerOnPlay);
+    }
+
+    public String getTurnCounter() {
+        return turnCounter.get();
+    }
+
+    public StringProperty turnCounterProperty() {
+        return turnCounter;
+    }
+
+    public void setTurnCounter(String turnCounter) {
+        this.turnCounter.set(turnCounter);
     }
 }
