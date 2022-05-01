@@ -6,7 +6,7 @@ import javafx.application.Application;
 
 /**
  * Main class of the program
- * to be launched with arguments: client <hostAddress>:<port> [<username>] | server <port>
+ * to be launched with arguments: client hostAddress:port [username] | server port
  * Depending on the arguments it either launches a server or a client
  */
 public class Main {
