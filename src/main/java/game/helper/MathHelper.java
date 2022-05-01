@@ -4,6 +4,9 @@ import game.server.ServerSettings;
 
 import java.util.Random;
 
+/**
+ * This class is a collection of all the mathematical functions.
+ */
 public class MathHelper {
 
 

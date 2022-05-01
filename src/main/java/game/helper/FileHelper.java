@@ -9,6 +9,10 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 import java.util.Locale;
 
+/**
+ * this class is used for the implementation of the abstract packets and game object.
+ * it allows for instantiation of the Abstract implementation by calling the respective Hashmaps
+ */
 public class FileHelper {
     public static final Logger logger = LogManager.getLogger(Server.class);
 
@@ -20,7 +24,8 @@ public class FileHelper {
     }
 
     /**
-     * Empties and then fills the (now) empty "objectMap" with a new instance of each Object that can maybe be create in runtime.
+     * Empties and then fills the (now) empty "objectMap" with a new instance of each Object that can maybe be created
+     * in runtime.
      */
     public void initialize() {
         objectMap.clear();
