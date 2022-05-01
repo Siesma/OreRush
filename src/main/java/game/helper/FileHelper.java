@@ -46,6 +46,7 @@ public class FileHelper {
         packetHashMap.put("move", new Move());
         packetHashMap.put("nickname", new Nickname());
         packetHashMap.put("createlobby", new CreateLobby());
+        packetHashMap.put("timeout", new Timeout());
         packetHashMap.put("score", new Score());
         packetHashMap.put("close", new Close());
         packetHashMap.put("chat", new Chat());

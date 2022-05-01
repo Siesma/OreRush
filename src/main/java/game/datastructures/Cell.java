@@ -107,7 +107,7 @@ public class Cell {
   public String toString() {
     StringBuilder out = new StringBuilder();
     for (GameObject gameObject : placedObjects) {
-      out.append(gameObject.toString());
+      out.append(gameObject.encodeToString());
     }
     return this.x + ":" + this.y + ":" + out;
   }

@@ -46,7 +46,7 @@ public class LobbyInClient {
     }
 
     public void updateGameMap(Object parent, String gameMapString) {
-        gameMap = GameMap.getMapFromString(parent, gameMapString);
+        gameMap = GameMap.getMapFromString(gameMapString);
         gameMapProperty.setValue(gameMapProperty.getValue()+1);
     }
 

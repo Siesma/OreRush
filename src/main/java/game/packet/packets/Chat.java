@@ -73,7 +73,7 @@ public class Chat extends AbstractPacket {
     }
     if(parent instanceof InputStreamThread) {
       InputStreamThread obj = (InputStreamThread) parent;
-      obj.getClient().setLastChatMessage(message + "\n");
+      obj.getClient().lastChatMessageProperty().setValue(message + "\n");
     }
   }
 }

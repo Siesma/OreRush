@@ -419,7 +419,7 @@ public class GameMap {
     }
   }
 
-  public static GameMap getMapFromString(Object parent, String message) {
+  public static GameMap getMapFromString(String message) {
     // splits the incoming singular information into an array.
     String[] individualCell = AbstractPacket.splitMessageBySpacer(message);
     // defines new serverSettings to be used here to obtain needed informations.

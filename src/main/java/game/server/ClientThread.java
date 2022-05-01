@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -308,6 +309,10 @@ public class ClientThread implements Runnable {
   public void setCurrentGameMap(GameMap currentGameMap) {
     this.currentGameMap = currentGameMap;
 //        currentGameMap.printMapToConsole();
+  }
+
+  public void setRobots (ArrayList<Robot> robots) {
+    this.robots = robots;
   }
 
   public ArrayList<Robot> getRobots() {
