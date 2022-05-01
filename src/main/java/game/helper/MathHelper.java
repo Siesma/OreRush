@@ -45,7 +45,7 @@ public class MathHelper {
    * <p>
    * This function can be used to not have to validate moves as every invalid move will automatically will be
    * cropped down.
-   *
+   * @param serverSettings gets the max allowed moved for this game
    * @param position is the position of the Robot in question that tries to move.
    * @param destination is the Position to which the robot in question wants to move to. Expecteto be two integers.
    * @return the next Position that is within the reach of the robots original position without moving more than allowed.
@@ -69,7 +69,7 @@ public class MathHelper {
    * @param in    - the value being evaluated. - can be any real value
    * @param fac   - the factor of the value that is being evaluated. - can be any real value.
    * @param shift - the strength of the exponential decay. - should be between 0 and 1
-   * @return
+   * @return inverse of an exponential function
    */
   public static double inverseExponential(double max, double exp, double in, double fac, double shift) {
     return max - (Math.pow(exp, in * fac + shift));
@@ -83,7 +83,7 @@ public class MathHelper {
    * @param in    - the value being evaluated. - can be any real value
    * @param fac   - the factor of the value that is being evaluated. - can be any real value.
    * @param shift - the strength of the exponential decay. - should be between 0 and 1
-   * @return
+   * @return  the exponential function
    */
   public static double exponential(double max, double exp, double in, double fac, double shift) {
     max = -1*max;
