@@ -3,6 +3,10 @@ package game.gui;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/**
+ * this class is used in the lobby player table
+ * it holds the nickname and score of the players in the lobby
+ */
 public class Player {
 
     private final StringProperty nickname;

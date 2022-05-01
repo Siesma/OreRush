@@ -17,11 +17,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Controller Class for the start menu GUI
+ * handles On Action methods
+ */
 public class StartMenuController {
-    /**
-     * Controller Class for the GUI
-     * handles On Action methods
-     */
+
 
     private Client client;
 

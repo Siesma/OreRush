@@ -29,14 +29,15 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * This class is the controller for the lobby GUI, it connects view to the lobby and client models.
+ */
 public class LobbyController {
 
   public ChoiceBox<String> playerRobotActionList;
   public ListView<String> playerRobotList;
   public ListView<String> currentRobotMovesList;
   public Button addPossibleMovesList;
-  public TextField textFieldXCoord;
-  public TextField textFieldYCoord;
   public Button buttonMakeMove;
   Client client;
   LobbyInClient lobby;

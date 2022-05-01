@@ -8,12 +8,10 @@ import javafx.stage.Stage;
 
 import java.util.Objects;
 
+/**
+ * This class loads the Javafx fxml file and starts the GUI application
+ */
 public class ClientApp extends Application {
-    /**
-     * This class gets the Javafx fxml file and starts the GUI
-     */
-
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/startMenu.fxml")));
