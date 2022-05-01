@@ -72,7 +72,7 @@ public class Broadcast extends AbstractPacket {
         }
         if(parent instanceof InputStreamThread) {
             InputStreamThread obj = (InputStreamThread) parent;
-            obj.getClient().setLastChatMessage(message + "\n");
+            obj.getClient().lastChatMessageProperty().setValue(message + "\n");
             if (obj.getClient().getLobbyInClient() != null) {
                 obj.getClient().getLobbyInClient().setLastChatMessage(message + "\n");
             }

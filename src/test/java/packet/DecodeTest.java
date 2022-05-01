@@ -8,16 +8,16 @@ import game.datastructures.Radar;
 import game.datastructures.Robot;
 import game.helper.TestHelper;
 import game.packet.AbstractPacket;
-import game.packet.packets.Chat;
-import game.packet.packets.Move;
-import game.packet.packets.Update;
+import game.packet.packets.*;
 import game.server.ClientThread;
 import game.server.Lobby;
 import game.server.ServerConstants;
 import game.server.ServerSettings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import org.junit.Test;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -224,5 +224,62 @@ public class DecodeTest {
     Assertions.assertEquals(client.lastChatMessageProperty().getValue(), chatMessage + "\n");
   }
 
+  @Test
+  public void testDecodeWhisper () {
+    Client client = mock(Client.class);
+    InputStreamThread inputStreamThread = mock(InputStreamThread.class);
+
+    when(client.lastChatMessageProperty()).thenReturn(new SimpleStringProperty());
+    when(inputStreamThread.getClient()).thenReturn(client);
+
+    Whisper whisper = new Whisper();
+    String whisperMessage = "Testing!";
+    String name = "Tester";
+
+    whisper.decode(inputStreamThread, AbstractPacket.replaceIndicatorChars(whisper.encodeWithContent(name, whisperMessage)));
+
+    Assertions.assertEquals(client.lastChatMessageProperty().getValue(), name + " (whisper): " + whisperMessage + "\n");
+
+  }
+
+  @Test
+  public void testDecodeBroadcast () {
+    Client client = mock(Client.class);
+    InputStreamThread inputStreamThread = mock(InputStreamThread.class);
+
+    when(client.lastChatMessageProperty()).thenReturn(new SimpleStringProperty());
+    when(inputStreamThread.getClient()).thenReturn(client);
+
+    Broadcast broadcast = new Broadcast();
+    String broadcastMessage = "Testing!";
+
+    broadcast.decode(inputStreamThread, AbstractPacket.replaceIndicatorChars(broadcast.encodeWithContent(broadcastMessage)));
+
+    Assertions.assertEquals(client.lastChatMessageProperty().getValue(), broadcastMessage + "\n");
+
+  }
+
+  @Test
+  public void testNicknameDecode () {
+    Client client = mock(Client.class);
+    InputStreamThread inputStreamThread = mock(InputStreamThread.class);
+
+    String oldName = "OldTester";
+    String newName = "NewTester";
+
+
+    when(client.getNickname()).thenReturn("player");
+
+    when(client.lastChatMessageProperty()).thenReturn(new SimpleStringProperty());
+    when(inputStreamThread.getClient()).thenReturn(client);
+
+
+    Nickname nickname = new Nickname();
+    nickname.decode(inputStreamThread, AbstractPacket.replaceIndicatorChars(nickname.encodeWithContent(oldName, newName)));
+
+
+    Assertions.assertEquals(client.lastChatMessageProperty().getValue(),
+            "Server: " + oldName + " has changed their name to " + newName + ".\n");
+  }
 
 }
