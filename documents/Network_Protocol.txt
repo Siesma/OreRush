@@ -40,15 +40,39 @@ ChatLobby NAME_DER_LOBBY EINE_NACHRICHT
 Close close
 Connect NAME_DES_SPIELERS
 CreateLobby NAME_DER_LOBBY
+HighScore high
+InitNickname NAME_DES_SPIELERS
 JoinLobby NAME_DER_LOBBY NAME_DES_SPIELERS
 LeaveLobby NAME_DER_LOBBY NAME_DES_SPIELERS
 Move (ID_DES_ROBOTERS:ROBOTER_AKTION:X_COORDINATE:Y_COORDINATE(:OPTIONALES_INVENTAR)) wiederholt
 Nickname ALTER_NAME_DES_SPIELERS NEUER_NAME_DES_SPIELERS
 Score NAME_DES_SPIELERS NEUER_SCORE
+StartGame NAME_DER_LOBBY
 Success success
 Timeout NAME_DES_SERVERS timeout
-Update (X_COORDINATE, Y_COORDINATE:OBJEKT_AUF_ZELLE:ID_DES_OBJEKTES(:OPTIONALES_INVENTAR:ID_DES_OPTIONALEN_INVENTARS)) wiederholt
+Update (X_COORDINATE, Y_COORDINATE:OBJEKT_AUF_ZELLE:ID_DES_OBJEKTES:NAME_DES_BESITZER:(:OPTIONALES_INVENTAR:ID_DES_OPTIONALEN_INVENTARS)) wiederholt
+UpdateTurn NAME_DES_SPIELERS_WELCHER_AM_ZUG_IST NUMMER_DES_ZUGES
 Whisper NAME_DES_SPIELERS EINE_NACHRICHT
+Winner NAME_DER_LOBBY NAME_DES_SIEGERS PUNKTESTAND_DES_SIEGERS
+
+EINE_NACHRICHT                          steht für einen String.
+NAME_DER_LOBBY                          steht für einen String.
+NAME_DES_SPIELERS                       steht für einen String.
+ID_DES_ROBOTERS                         steht für die Ganzzahl welche in der ArrayList aus Robotern des einzelnen Client der jeweilige Roboter vorzufinden ist. Anders gesagt steht diese ID für den Index des Roboters in der ArrayList.
+ROBOTER_AKTION                          steht für die jeweilige RoboterAktion welche der Roboter ausüben will, diese kann die Namen der Werte des Enums "RoboterAction" annehmen. Dies wäre "Move", "Dig", "Wait", "RequestRadar", "RequestTrap"
+X_COORDINATE                            steht für die jeweilige Ganzzahl zu welcher sich der Roboter bewegen will.
+Y_COORDINATE                            steht für die jeweilige Ganzzahl zu welcher sich der Roboter bewegen will.
+OPTIONALES_INVENTAR                     steht für einen String welcher dem Format "" entspricht damit dieser String innerhalb der Decoding funktion neu interpretiert werden kann.
+ALTER_NAME_DES_SPIELERS                 steht für einen String.
+NEUER_NAME_DES_SPIELERS                 steht für einen String.
+OBJEKT_AUF_ZELLE                        steht für das Objekt welches sich auf der jeweiligen Zelle befindet in dem Format "".
+ID_DES_OBJEKTES                         steht für die Ganzzahl welche mit diesem Objekt referiert werden soll. Für den Fall des Erzes ist dieses die Ordinität des Enums des Typen.
+NAME_DES_BESITZERS                      steht für einen String welcher den Namen des Spielers darstellt welcher dieses Objekt platzierte. Der Server hat einen besonderen Namen welcher anders von jedem Spielernamen ist.
+ID_DES_OPTIONALEN_INVENTARS             steht für die Ganzzahl welche mit dem Optionalen Inventar objekt assoziert werden soll.
+NAME_DES_SPIELERS_WELCHER_AM_ZUG_IST    steht für des Spielers Namen welcher gerade am Zug ist.
+NUMMER_DES_ZUGES                        steht für die Ganzzahl welche beschreibt welche Zugnummer gerade dran ist.
+NAME_DES_SIEGERS                        steht für den Namen des Spielers welcher die Runde gewonnen hat.
+PUNKTESTAND_DES_SIEGERS                 steht für den Punktestand welcher dieser Spieler erreicht hat.
 
 
 Awake wird dafür genutzt um zu überprüfen ob der Client noch verbunden ist.
