@@ -176,7 +176,6 @@ public class ClientThread implements Runnable {
    * @param msg          message that is sent preceded by the name of the sender
    */
   public void pushWhisperToAClient(String receiverName, String msg) {
-
     for (ClientThread clientThread : Server.getClientThreads()) {
       if (clientThread.getPlayerName().equals(receiverName)) {
         (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Whisper()).encodeWithContent(playerName, msg));
@@ -211,7 +210,6 @@ public class ClientThread implements Runnable {
         }
       }
     }
-
   }
 
   /**
@@ -220,6 +218,15 @@ public class ClientThread implements Runnable {
   public void updatePlayersAboutMapChanges() {
     for (ClientThread clientThread : this.connectedLobby.getListOfClients()) {
       (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Update()).encodeWithContent(clientThread.getConnectedLobby().gameMap.cellStrings()));
+    }
+  }
+  /**
+   * Sends an AddBot packet to all the Clients informing them about a new Robot in the lobby.
+   * @param botName the new Robots name.
+   */
+  public void updatePlayerAboutANewBot(String botName) {
+    for (ClientThread clientThread : this.connectedLobby.getListOfClients()) {
+      (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new AddBot()).encodeWithContent(botName));
     }
   }
 

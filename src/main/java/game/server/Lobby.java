@@ -1,14 +1,14 @@
 package game.server;
 
 import game.datastructures.GameMap;
-import game.datastructures.Robot;
-import game.helper.MathHelper;
 import game.packet.PacketHandler;
-import game.packet.packets.Update;
+import game.packet.packets.Nickname;
 import game.packet.packets.UpdateTurn;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 
 /**
@@ -26,7 +26,7 @@ public class Lobby {
   protected int turnCounter;
   public static final Logger logger = LogManager.getLogger(Server.class);
 
-  ClientThread winnerClientThread ;
+  ClientThread winnerClientThread;
   int winnerScore = -1;
 
   public Lobby(String lobbyName, Server server) {
@@ -46,30 +46,34 @@ public class Lobby {
   }
 
 
-    /**
-     *
-     * Returns the players ID of whoms turn it is
-     * @return the id of the player who's turn it is.
-     */
-    public int turnOfPlayer () {
-        return turnCounter % listOfClients.size();
-    }
-    public void addClient(ClientThread clientThread) {
-        listOfClients.add(clientThread);
-    }
-    public void removeClient(ClientThread clientThread) {
-        listOfClients.remove(clientThread);
-    }
+  /**
+   * Returns the players ID of whoms turn it is
+   *
+   * @return the id of the player who's turn it is.
+   */
+  public int turnOfPlayer() {
+    return turnCounter % listOfClients.size();
+  }
+
+  public void addClient(ClientThread clientThread) {
+    listOfClients.add(clientThread);
+  }
+
+  public void removeClient(ClientThread clientThread) {
+    listOfClients.remove(clientThread);
+  }
 
   public void updateMove() {
     turnCounter++;
     printMap();
-
-    for (ClientThread clientThread:listOfClients) {
+    for (ClientThread clientThread : listOfClients) {
       (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(),
-              (new UpdateTurn()).encodeWithContent(listOfClients.get(turnOfPlayer()).getPlayerName(),String.valueOf(turnCounter)));
+        (new UpdateTurn()).encodeWithContent(listOfClients.get(turnOfPlayer()).getPlayerName(), String.valueOf(turnCounter)));
     }
     checkGameEnd();
+    if(listOfClients.get(turnOfPlayer()) instanceof Bot) {
+      System.out.println("test");
+    }
   }
 
   /**
@@ -77,8 +81,8 @@ public class Lobby {
    * And if the game has ended it will inform the players about it.
    */
   private void checkGameEnd() {
-    if (turnCounter == serverSettings.getNumberOfRounds()*listOfClients.size()) {
-      for (ClientThread clientThread:listOfClients) {
+    if (turnCounter == serverSettings.getNumberOfRounds() * listOfClients.size()) {
+      for (ClientThread clientThread : listOfClients) {
         if (clientThread.getPlayerScore() > winnerScore) {
           winnerClientThread = clientThread;
           winnerScore = clientThread.getPlayerScore();
@@ -89,7 +93,7 @@ public class Lobby {
     }
   }
 
-  public void printMap () {
+  public void printMap() {
     System.out.println("---");
     GameMap.printMapToConsole(gameMap);
     System.out.println("---");
@@ -99,10 +103,10 @@ public class Lobby {
     return turnCounter;
   }
 
-  public int getIDOfClient (ClientThread clientThread) {
-    for(int i = 0; i < listOfClients.size(); i++) {
+  public int getIDOfClient(ClientThread clientThread) {
+    for (int i = 0; i < listOfClients.size(); i++) {
       ClientThread c = listOfClients.get(i);
-      if(c.getPlayerName().equals(clientThread.getPlayerName())) {
+      if (c.getPlayerName().equals(clientThread.getPlayerName())) {
         return i;
       }
     }

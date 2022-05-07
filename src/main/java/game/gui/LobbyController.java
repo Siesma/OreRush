@@ -2,8 +2,10 @@ package game.gui;
 
 import game.client.Client;
 import game.client.LobbyInClient;
-import game.datastructures.*;
 import game.datastructures.Cell;
+import game.datastructures.GameMap;
+import game.datastructures.Robot;
+import game.datastructures.RobotAction;
 import game.server.ClientThread;
 import game.server.ServerSettings;
 import javafx.application.Platform;
@@ -105,7 +107,8 @@ public class LobbyController {
     lobby.statusProperty().addListener((obs, oldVal, newVal) -> {
       if (newVal.equals("in game")) {
         startGameButton.setVisible(false);
-      };
+      }
+      ;
     });
     lobby.playerOnPlayProperty().addListener((obs, oldVal, newVal) -> {
       playerTurnLabel.setText("Turn of: " + newVal);
@@ -119,80 +122,82 @@ public class LobbyController {
 
   public void updateMap() {
     Platform.runLater(
-            () -> {
-              mapGridPane.getChildren().clear();
-              currentGameMap = lobby.getGameMap().getIndividualGameMapForPlayer(client.getNickname());
-              GameMap.printMapToConsole(currentGameMap);
-              int xMax = currentGameMap.getGameMapSize()[0];
-              int yMax = currentGameMap.getGameMapSize()[1];
-              int mapPixel = 500;
-              int cellSize = Math.min(mapPixel / xMax, mapPixel / yMax);
-              for (int x = 0; x < xMax; x++) {
-                for (int y = 0; y < yMax; y++) {
-                  Button button = new Button();
-                  button.setPrefSize(cellSize, cellSize);
-                  button.setPadding(Insets.EMPTY);
-                  ImageView imageView = new ImageView();
-                  imageView.setFitHeight(cellSize);
-                  imageView.setFitWidth(cellSize);
-                  String type;
-                  Image image;
-                  Cell currentCell = currentGameMap.getCellArray()[x][y];
-                  if (currentCell.robotsOnCell() != null) { //TODO: differentiate robot owner
-                    try {
-                      image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Robot.png")));
-                      imageView.setImage(image);
-                      button.setGraphic(imageView);
-                    } catch (Exception e) {
-                      logger.error("The file \"Robot.png\" does not exist.");
-                    }
-                  } else if (currentCell.oreOnCell() != null) {
-                    String oreType = currentGameMap.getCellArray()[x][y].oreOnCell().get(0).getOreType().name();
-                    try {
-                      image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/" + oreType + " Ore.png")));
-                      imageView.setImage(image);
-                      button.setGraphic(imageView);
-                    } catch (Exception e) {
-                      logger.error("The file \"" + oreType + " Ore.png\" does not exist.");
-                    }
-                  } else if (currentCell.radarOnCell() != null) {
-                    try {
-                      image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Radar.png")));
-                      imageView.setImage(image);
-                      button.setGraphic(imageView);
-                    } catch (Exception e) {
-                      logger.error("The file \"Radar.png\" does not exist.");
-                    }
-                  } else if (currentCell.trapOnCell() != null) {
-                    try {
-                      image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/TrapEmpty.png")));
-                      imageView.setImage(image);
-                      button.setGraphic(imageView);
-                    } catch (Exception e) {
-                      logger.error("The file \"TrapEmpty.png\" does not exist.");
-                    }
-                  }
-                  button.setOnMouseClicked((MouseEvent event) -> {
-                    Node node = (Node) event.getTarget();
-                    int row = GridPane.getRowIndex(node);
-                    int column = GridPane.getColumnIndex(node);
-                    selectedAndMakeActionForRobot(button, column, row);
-                  });
-
-                  mapGridPane.add(button, x, y, 1, 1);
+      () -> {
+        mapGridPane.getChildren().clear();
+        currentGameMap = lobby.getGameMap().getIndividualGameMapForPlayer(client.getNickname());
+        GameMap.printMapToConsole(currentGameMap);
+        int xMax = currentGameMap.getGameMapSize()[0];
+        int yMax = currentGameMap.getGameMapSize()[1];
+        int mapPixel = 500;
+        int cellSize = Math.min(mapPixel / xMax, mapPixel / yMax);
+        for (int x = 0; x < xMax; x++) {
+          for (int y = 0; y < yMax; y++) {
+            Button button = new Button();
+            button.setPrefSize(cellSize, cellSize);
+            button.setPadding(Insets.EMPTY);
+            ImageView imageView = new ImageView();
+            imageView.setFitHeight(cellSize);
+            imageView.setFitWidth(cellSize);
+            String type;
+            Image image = null;
+            Cell currentCell = currentGameMap.getCellArray()[x][y];
+            if (currentCell.robotsOnCell() != null) { //TODO: differentiate robot owner
+              try {
+                if (currentCell.robotsOnCell().get(0).getOwner().equals(this.client.getNickname())) {
+                  image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Robot.png")));
+                } else {
+                  image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/RobotEnemy.png")));
                 }
+              } catch (Exception e) {
+                logger.error("The file \"Robot.png\" does not exist.");
+              }
+            } else if (currentCell.oreOnCell() != null) {
+              String oreType = currentGameMap.getCellArray()[x][y].oreOnCell().get(0).getOreType().name();
+              try {
+                image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/" + oreType + " Ore.png")));
+              } catch (Exception e) {
+                logger.error("The file \"" + oreType + " Ore.png\" does not exist.");
+              }
+            } else if (currentCell.radarOnCell() != null) {
+              try {
+                image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Radar.png")));
+              } catch (Exception e) {
+                logger.error("The file \"Radar.png\" does not exist.");
+              }
+            } else if (currentCell.trapOnCell() != null) {
+              try {
+                image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/TrapEmpty.png")));
+              } catch (Exception e) {
+                logger.error("The file \"TrapEmpty.png\" does not exist.");
               }
             }
+            if (image != null) {
+              imageView.setImage(image);
+              button.setGraphic(imageView);
+            }
+            button.setOnMouseClicked((MouseEvent event) -> {
+              Node node = (Node) event.getTarget();
+              int row = GridPane.getRowIndex(node);
+              int column = GridPane.getColumnIndex(node);
+              selectedAndMakeActionForRobot(button, column, row);
+            });
+
+            mapGridPane.add(button, x, y, 1, 1);
+          }
+        }
+      }
     );
 
   }
+
   /**
    * This function sets the action of the associated robot.
    * It will grab the current game maps cells to see if the selected x, y contain any robots.
    * If so it will select this robot and once a robot is selected the next positional update will set the robots upcoming move to the selected cell with the respective action.
+   *
    * @param button the button that is being pressed
-   * @param x the x coordinate of this button in terms of the gameMap's cellArray
-   * @param y the y coordinate of this button in terms of the gameMap's cellArray
+   * @param x      the x coordinate of this button in terms of the gameMap's cellArray
+   * @param y      the y coordinate of this button in terms of the gameMap's cellArray
    */
   public void selectedAndMakeActionForRobot(Button button, int x, int y) {
     if (currentGameMap == null) {
@@ -207,7 +212,14 @@ public class LobbyController {
       if (robotsOnCell == null) {
         return;
       }
-      selectedRobot = robotsOnCell.get(0);
+      for (Robot r : robotsOnCell) {
+        if (r.getOwner().equals(this.client.getNickname())) {
+          selectedRobot = r;
+        }
+      }
+      if (selectedRobot == null) {
+        return;
+      }
       System.out.println(selectedRobot.getId());
     } else {
       if (playerRobotActionList.getSelectionModel().getSelectedItem() == null) {
@@ -259,7 +271,7 @@ public class LobbyController {
       addition = ":" + playerRobotActionList.getSelectionModel().getSelectedItem().split("Request")[1];
     }
     this.currentRobotMovesList.getItems().set(index,
-            index + ":" + playerRobotActionList.getSelectionModel().getSelectedItem() + ":" + xClicked + ":" + yClicked + addition);
+      index + ":" + playerRobotActionList.getSelectionModel().getSelectedItem() + ":" + xClicked + ":" + yClicked + addition);
 
   }
 

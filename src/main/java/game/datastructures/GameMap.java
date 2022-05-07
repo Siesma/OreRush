@@ -203,7 +203,7 @@ public class GameMap {
             logger.debug("The Owner of the Object \"" + gameObject + "\" in the position (" + i + ", " + j + ") was not set correctly.");
             continue;
           }
-          if (gameObject.getOwner().equals(playerName)) {
+          if (gameObject instanceof Robot || gameObject.getOwner().equals(playerName)) {
             playerOwnedGameObjects.add(gameObject);
           }
         }
