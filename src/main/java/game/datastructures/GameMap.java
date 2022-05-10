@@ -23,11 +23,11 @@ public class GameMap {
 
   public GameMap(ServerSettings serverSettings) {
 
-    Double w = serverSettings.getMapWidth().getVal().doubleValue();
-    Double h = serverSettings.getMapWidth().getVal().doubleValue();
+    double w = serverSettings.getMapWidth();
+    double h = serverSettings.getMapHeight();
 
-    this.gameMapSize[0] = w.intValue();
-    this.gameMapSize[1] = h.intValue();
+    this.gameMapSize[0] = (int) w;
+    this.gameMapSize[1] = (int) h;
     this.cellArray = new Cell[this.gameMapSize[0]][this.gameMapSize[1]];
     this.serverSettings = serverSettings;
     fillCellArray();
@@ -57,14 +57,14 @@ public class GameMap {
    */
   //TODO: Make this spawn more valuable ores at higher X Values
   public void spawnOreInMap() {
-    float oreSpawnLikelyhood = serverSettings.getOreDensity().getVal();
-    float threshold = serverSettings.getOreThreshold().getVal();
+    float oreSpawnLikelyhood = serverSettings.getOreDensity();
+    float threshold = serverSettings.getOreThreshold();
     int w = gameMapSize[0];
     int h = gameMapSize[1];
     for (int i = 0; i < w; i++) {
       for (int j = 0; j < h; j++) {
         if (createCluster(i, j, threshold)) {
-          double clusterSize = Math.sqrt(serverSettings.getMaxClusterSize().getVal());
+          double clusterSize = Math.sqrt(serverSettings.getMaxClusterSize());
           int curOreType = determineOreTypeIndex(i);
           for (int xo = (int) -(1 + MathHelper.getRandomNumber() * clusterSize); xo < (int) (1 + MathHelper.getRandomNumber() * clusterSize); xo++) {
             for (int yo = (int) (1 + MathHelper.getRandomNumber() * clusterSize); yo < (int) (1 + MathHelper.getRandomNumber() * clusterSize); yo++) {
@@ -149,7 +149,7 @@ public class GameMap {
     double r = MathHelper.getRandomNumber();
     int n = OreType.values().length;
     double inverseN = 1d / n;
-    double w = serverSettings.getMapWidth().getVal();
+    double w = serverSettings.getMapWidth();
     double xw = (double) ((w) - xCoordinate) / w;
     double fx = MathHelper.exponential(a, b, xw, c, d);
     double shiftFactor = (((r + 1) + d)) / (Math.abs(xw - d));
@@ -215,7 +215,7 @@ public class GameMap {
     for (GameObject gameObject : playerOwnedGameObjects) {
       out.placeObjectOnMap(gameObject, gameObject.getPosition());
       if (gameObject instanceof Radar) {
-        revealAround(out, gameObject.getPosition(), serverSettings.getRadarDistance().getVal());
+        revealAround(out, gameObject.getPosition(), serverSettings.getRadarDistance());
       }
     }
 

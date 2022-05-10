@@ -2,10 +2,8 @@ package game.server;
 
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Set;
 
 /**
  * This class holds the settings for a particular game instance such as game length and map size
@@ -53,7 +51,7 @@ public class ServerSettings {
     this.oreThreshold = new Setting<Float>("oreThreshold", 0.75f);
   }
 
-  public void setValue (String variable, Number newValue) {
+  public void setValue(String variable, Number newValue) {
     String variableName = getSimilarNameToVariable(variable, "", this.getClass().getDeclaredFields());
     Object obj;
     try {
@@ -63,7 +61,7 @@ public class ServerSettings {
       e.printStackTrace();
       return;
     }
-    if(!(obj instanceof Setting)) {
+    if (!(obj instanceof Setting)) {
       return;
     }
     Setting<Number> setting = (Setting) obj;
@@ -80,8 +78,8 @@ public class ServerSettings {
     return "NONE";
   }
 
-  public Setting<Integer> getNumberOfRobots() {
-    return numberOfRobots;
+  public int getNumberOfRobots() {
+    return numberOfRobots.getVal();
   }
 
   public ServerSettings setNumberOfRobots(Setting<Integer> numberOfRobots) {
@@ -89,8 +87,8 @@ public class ServerSettings {
     return this;
   }
 
-  public Setting<Integer> getMapWidth() {
-    return mapWidth;
+  public int getMapWidth() {
+    return mapWidth.getVal();
   }
 
   public ServerSettings setMapWidth(Setting<Integer> mapWidth) {
@@ -98,8 +96,8 @@ public class ServerSettings {
     return this;
   }
 
-  public Setting<Integer> getMapHeight() {
-    return mapHeight;
+  public int getMapHeight() {
+    return mapHeight.getVal();
   }
 
   public ServerSettings setMapHeight(Setting<Integer> mapHeight) {
@@ -107,8 +105,8 @@ public class ServerSettings {
     return this;
   }
 
-  public Setting<Integer> getNumberOfRounds() {
-    return numberOfRounds;
+  public int getNumberOfRounds() {
+    return numberOfRounds.getVal();
   }
 
   public ServerSettings setNumberOfRounds(Setting<Integer> numberOfRounds) {
@@ -116,8 +114,8 @@ public class ServerSettings {
     return this;
   }
 
-  public Setting<Float> getOreDensity() {
-    return oreDensity;
+  public float getOreDensity() {
+    return oreDensity.getVal();
   }
 
   public ServerSettings setOreDensity(Setting<Float> oreDensity) {
@@ -125,8 +123,8 @@ public class ServerSettings {
     return this;
   }
 
-  public Setting<Integer> getMaxAllowedMoves() {
-    return maxAllowedMoves;
+  public int getMaxAllowedMoves() {
+    return maxAllowedMoves.getVal();
   }
 
   public ServerSettings setMaxAllowedMoves(Setting<Integer> maxAllowedMoves) {
@@ -134,8 +132,8 @@ public class ServerSettings {
     return this;
   }
 
-  public Setting<Integer> getRadarDistance() {
-    return radarDistance;
+  public int getRadarDistance() {
+    return radarDistance.getVal();
   }
 
   public ServerSettings setRadarDistance(Setting<Integer> radarDistance) {
@@ -152,8 +150,8 @@ public class ServerSettings {
     return this;
   }
 
-  public Setting<Integer> getMaxClusterSize() {
-    return maxClusterSize;
+  public int getMaxClusterSize() {
+    return maxClusterSize.getVal();
   }
 
   public ServerSettings setMaxClusterSize(Setting<Integer> maxClusterSize) {
@@ -161,8 +159,8 @@ public class ServerSettings {
     return this;
   }
 
-  public Setting<Float> getOreThreshold() {
-    return oreThreshold;
+  public float getOreThreshold() {
+    return oreThreshold.getVal();
   }
 
   public ServerSettings setOreThreshold(Setting<Float> oreThreshold) {

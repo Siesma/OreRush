@@ -14,7 +14,7 @@ public class Test {
 
     serverSettings.setValue("mapWidth", 100);
 
-    System.out.println(serverSettings.getMapWidth().getVal());
+    System.out.println(serverSettings.getMapWidth());
   }
 
 }

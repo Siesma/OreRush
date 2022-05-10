@@ -27,7 +27,7 @@ public class MathTest extends TestCase {
             dest[0] = TestHelper.generateRandomNumber(100);
             dest[1] = TestHelper.generateRandomNumber(100);
             int[] nextMove = MathHelper.getNextMove(xy, dest, ss);
-            Assertions.assertTrue(MathHelper.absoluteCellDistance(xy, nextMove) <= ss.getMaxAllowedMoves().getVal());
+            Assertions.assertTrue(MathHelper.absoluteCellDistance(xy, nextMove) <= ss.getMaxAllowedMoves());
         }
 
     }

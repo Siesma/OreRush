@@ -85,7 +85,7 @@ public class Lobby {
    * And if the game has ended it will inform the players about it.
    */
   private void checkGameEnd() {
-    if (turnCounter == serverSettings.getNumberOfRounds().getVal() * listOfClients.size()) {
+    if (turnCounter == serverSettings.getNumberOfRounds() * listOfClients.size()) {
       for (ClientThread clientThread : listOfClients) {
         if (clientThread.getPlayerScore() > winnerScore) {
           winnerClientThread = clientThread;
@@ -141,7 +141,7 @@ public class Lobby {
 
   public void spawnRobots() {
     for (int i = 0; i < listOfClients.size(); i++) {
-      for (int j = 0; j < serverSettings.getNumberOfRobots().getVal(); j++) {
+      for (int j = 0; j < serverSettings.getNumberOfRobots(); j++) {
         listOfClients.get(i).addRobot();
       }
     }
