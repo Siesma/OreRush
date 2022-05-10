@@ -55,6 +55,7 @@ public class FileHelper {
         packetHashMap.put("highscore", new HighScore());
         packetHashMap.put("updateturn", new UpdateTurn());
         packetHashMap.put("addbot", new AddBot());
+        packetHashMap.put("serversettingspacket", new ServerSettingsPacket());
         objectMap.put(MapType.Packets.name().toLowerCase(Locale.ROOT), packetHashMap);
         /*
          * Initializes the gameObjectMap.

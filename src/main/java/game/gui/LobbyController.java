@@ -166,8 +166,7 @@ public class LobbyController {
     lobby.statusProperty().addListener((obs, oldVal, newVal) -> {
       if (newVal.equals("in game")) {
         startGameButton.setVisible(false);
-      }
-      ;
+      };
     });
     lobby.playerOnPlayProperty().addListener((obs, oldVal, newVal) -> {
       playerTurnLabel.setText("Turn of: " + newVal);

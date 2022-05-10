@@ -65,15 +65,6 @@ public class ServerSettings {
     this.oreThreshold = 0.75f;
   }
 
-  public int getNumberOfRobots() {
-    return numberOfRobots;
-  }
-
-  public ServerSettings setNumberOfRobots(int numberOfRobots) {
-    this.numberOfRobots = numberOfRobots;
-    return this;
-  }
-
   public int getMapWidth() {
     return mapWidth;
   }
@@ -101,18 +92,17 @@ public class ServerSettings {
     return this;
   }
 
-  public ArrayList<Object> getOres() {
-    return ores;
-  }
-
-  public ServerSettings setOres(ArrayList<Object> ores) {
-    this.ores = ores;
-    return this;
+  public float getOreDensity() {
+    return oreDensity;
   }
 
   public ServerSettings setOreDensity(float oreDensity) {
     this.oreDensity = oreDensity;
     return this;
+  }
+
+  public int getMaxAllowedMoves() {
+    return maxAllowedMoves;
   }
 
   public ServerSettings setMaxAllowedMoves(int maxAllowedMoves) {
@@ -129,9 +119,26 @@ public class ServerSettings {
     return this;
   }
 
+  public ArrayList<Object> getOres() {
+    return ores;
+  }
+
+  public ServerSettings setOres(ArrayList<Object> ores) {
+    this.ores = ores;
+    return this;
+  }
+
+  public int getMaxClusterSize() {
+    return maxClusterSize;
+  }
+
   public ServerSettings setMaxClusterSize(int maxClusterSize) {
     this.maxClusterSize = maxClusterSize;
     return this;
+  }
+
+  public float getOreThreshold() {
+    return oreThreshold;
   }
 
   public ServerSettings setOreThreshold(float oreThreshold) {
@@ -139,19 +146,12 @@ public class ServerSettings {
     return this;
   }
 
-  public int getMaxAllowedMoves() {
-    return maxAllowedMoves;
+  public int getNumberOfRobots() {
+    return numberOfRobots;
   }
 
-  public float getOreDensity() {
-    return oreDensity;
-  }
-
-  public float getOreThreshold() {
-    return oreThreshold;
-  }
-
-  public int getMaxClusterSize() {
-    return maxClusterSize;
+  public ServerSettings setNumberOfRobots(int numberOfRobots) {
+    this.numberOfRobots = numberOfRobots;
+    return this;
   }
 }
