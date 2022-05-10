@@ -96,7 +96,7 @@ public class ClientThread implements Runnable {
             break;
           }
           try {
-            receivedPacket.decode(this, message);
+          receivedPacket.decode(this, message);
           } catch (Exception e) {
             logger.fatal("While decoding the message there was a critical error!", e);
           }

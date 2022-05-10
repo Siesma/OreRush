@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
@@ -42,6 +43,8 @@ public class LobbyController {
   Client client;
   LobbyInClient lobby;
   @FXML
+  public VBox vBoxServerSettings;
+  @FXML
   private Button startGameButton;
   @FXML
   private TableView<Player> playerTableView;
@@ -55,6 +58,62 @@ public class LobbyController {
   private TextField newLobbyMessageTextField;
   @FXML
   private GridPane mapGridPane;
+
+
+
+  @FXML
+  private Slider sliderNumberOfRobots;
+
+  @FXML
+  private Label labelNumberOfRobots;
+
+  @FXML
+  private Slider sliderMapWidth;
+
+  @FXML
+  private Label labelMapWidth;
+
+  @FXML
+  private Slider sliderMapHeight;
+
+  @FXML
+  private Label labelMapHeight;
+
+  @FXML
+  private Slider sliderTurnsPerPlayer;
+
+  @FXML
+  private Label labelTurnsPerPlayer;
+
+  @FXML
+  private Slider sliderOreDensity;
+
+  @FXML
+  private Label labelOreDensity;
+
+  @FXML
+  private Slider sliderMaxAllowedMoves;
+
+  @FXML
+  private Label labelMaxAllowedMoves;
+
+  @FXML
+  private Slider sliderRadarDistance;
+
+  @FXML
+  private Label labelRadarDistance;
+
+  @FXML
+  private Slider sliderMaxClusterSize;
+
+  @FXML
+  private Label labelMaxClusterSize;
+
+  @FXML
+  private Slider sliderOreThreshold;
+
+  @FXML
+  private Label labelOreThreshold;
 
   public static final Logger logger = LogManager.getLogger(ClientThread.class);
   @FXML
@@ -116,7 +175,15 @@ public class LobbyController {
     lobby.turnCounterProperty().addListener((obs, oldVal, newVal) -> {
       turnInfoLabel.setText("Turn number: " + newVal);
     });
-
+    this.labelTurnsPerPlayer.setText("Turns Per Player: " + this.sliderTurnsPerPlayer.getValue());
+    this.labelRadarDistance.setText("Radar Distance: " + this.sliderRadarDistance.getValue());
+    this.labelOreThreshold.setText("Ore Threshold: " + this.sliderOreThreshold.getValue());
+    this.labelOreDensity.setText("Ore Density: " + this.sliderOreDensity.getValue());
+    this.labelNumberOfRobots.setText("Number Of Robots: " + this.sliderNumberOfRobots.getValue());
+    this.labelMaxClusterSize.setText("Max Cluster Size: " + this.sliderMaxClusterSize.getValue());
+    this.labelMaxAllowedMoves.setText("Max Allowed Moves: " + this.sliderMaxAllowedMoves.getValue());
+    this.labelMapWidth.setText("Map Width: " + this.sliderMapWidth.getValue());
+    this.labelMapHeight.setText("Map Height: " + this.sliderMapHeight.getValue());
 
   }
 
@@ -204,8 +271,8 @@ public class LobbyController {
       // how? Just how?
       return;
     }
-//    this.xClicked = x;
-//    this.yClicked = y;
+    this.xClicked = x;
+    this.yClicked = y;
 
     if (selectedRobot == null) {
       ArrayList<Robot> robotsOnCell = currentGameMap.getCellArray()[x][y].robotsOnCell();
@@ -348,5 +415,51 @@ public class LobbyController {
       newLobbyMessageTextField.setText("");
     }
     actionEvent.consume();
+  }
+
+
+  @FXML
+  void onMouseReleasedMapHeight(MouseEvent event) {
+    this.labelMapHeight.setText("Map Height: " + this.sliderMapHeight.getValue());
+  }
+
+  @FXML
+  void onMouseReleasedMapWidth(MouseEvent event) {
+    this.labelMapWidth.setText("Map Width: " + this.sliderMapWidth.getValue());
+  }
+
+  @FXML
+  void onMouseReleasedMaxAllowedMoves(MouseEvent event) {
+    this.labelMaxAllowedMoves.setText("Max Allowed Moves: " + this.sliderMaxAllowedMoves.getValue());
+  }
+
+  @FXML
+  void onMouseReleasedMaxClusterSize(MouseEvent event) {
+    this.labelMaxClusterSize.setText("Max Cluster Size: " + this.sliderMaxClusterSize.getValue());
+  }
+
+  @FXML
+  void onMouseReleasedNumberOfRobots(MouseEvent event) {
+    this.labelNumberOfRobots.setText("Number Of Robots: " + this.sliderNumberOfRobots.getValue());
+  }
+
+  @FXML
+  void onMouseReleasedOreDensity(MouseEvent event) {
+    this.labelOreDensity.setText("Ore Density: " + this.sliderOreDensity.getValue());
+  }
+
+  @FXML
+  void onMouseReleasedOreThreshold(MouseEvent event) {
+    this.labelOreThreshold.setText("Ore Threshold: " + this.sliderOreThreshold.getValue());
+  }
+
+  @FXML
+  void onMouseReleasedRadarDistance(MouseEvent event) {
+    this.labelRadarDistance.setText("Radar Distance: " + this.sliderRadarDistance.getValue());
+  }
+
+  @FXML
+  void onMouseReleasedTurnsPerPlayer(MouseEvent event) {
+    this.labelTurnsPerPlayer.setText("Turns Per Player: " + this.sliderTurnsPerPlayer.getValue());
   }
 }
