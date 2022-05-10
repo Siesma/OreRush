@@ -420,47 +420,54 @@ public class LobbyController {
   @FXML
   void onMouseReleasedMapHeight(MouseEvent event) {
     this.labelMapHeight.setText("Map Height: " + this.sliderMapHeight.getValue());
-    System.out.println("Sending!!!");
-    this.client.sendServerSettings();
+    this.client.sendServerSettings("mapHeight:" + this.sliderMapHeight.getValue());
   }
 
   @FXML
   void onMouseReleasedMapWidth(MouseEvent event) {
     this.labelMapWidth.setText("Map Width: " + this.sliderMapWidth.getValue());
+    this.client.sendServerSettings("mapWidth:" + this.sliderMapWidth.getValue());
   }
 
   @FXML
   void onMouseReleasedMaxAllowedMoves(MouseEvent event) {
     this.labelMaxAllowedMoves.setText("Max Allowed Moves: " + this.sliderMaxAllowedMoves.getValue());
+    this.client.sendServerSettings("maxAllowedMoves:" + this.sliderMaxAllowedMoves.getValue());
   }
 
   @FXML
   void onMouseReleasedMaxClusterSize(MouseEvent event) {
     this.labelMaxClusterSize.setText("Max Cluster Size: " + this.sliderMaxClusterSize.getValue());
+    this.client.sendServerSettings("maxClusterSize:" + this.sliderMaxClusterSize.getValue());
   }
 
   @FXML
   void onMouseReleasedNumberOfRobots(MouseEvent event) {
     this.labelNumberOfRobots.setText("Number Of Robots: " + this.sliderNumberOfRobots.getValue());
+    this.client.sendServerSettings("numberOfRobots:" + this.sliderNumberOfRobots.getValue());
   }
 
   @FXML
   void onMouseReleasedOreDensity(MouseEvent event) {
     this.labelOreDensity.setText("Ore Density: " + this.sliderOreDensity.getValue());
+    this.client.sendServerSettings("oreDensity:" + this.sliderOreDensity.getValue());
   }
 
   @FXML
   void onMouseReleasedOreThreshold(MouseEvent event) {
     this.labelOreThreshold.setText("Ore Threshold: " + this.sliderOreThreshold.getValue());
+    this.client.sendServerSettings("oreThreshold:" + this.sliderOreThreshold.getValue());
   }
 
   @FXML
   void onMouseReleasedRadarDistance(MouseEvent event) {
     this.labelRadarDistance.setText("Radar Distance: " + this.sliderRadarDistance.getValue());
+    this.client.sendServerSettings("radarDistance:" + this.sliderRadarDistance.getValue());
   }
 
   @FXML
   void onMouseReleasedTurnsPerPlayer(MouseEvent event) {
     this.labelTurnsPerPlayer.setText("Turns Per Player: " + this.sliderTurnsPerPlayer.getValue());
+    this.client.sendServerSettings("numberOfRounds:" + this.sliderTurnsPerPlayer.getValue());
   }
 }

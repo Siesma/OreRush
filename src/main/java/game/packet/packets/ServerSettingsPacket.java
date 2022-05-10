@@ -13,7 +13,7 @@ public class ServerSettingsPacket extends AbstractPacket {
 
   public ServerSettingsPacket() {
     super("help", new String[]{
-      "^((numberOfRobots|mapWidth|mapHeight|numberOfRounds|oreDensity|maxAllowedMoves|radarDistance|ores|maxClusterSize|oreThreshold):[0-9]+)+$"
+      "^((numberOfRobots|mapWidth|mapHeight|numberOfRounds|oreDensity|maxAllowedMoves|radarDistance|ores|maxClusterSize|oreThreshold):[0-9]+.[0-9]+)+$"
     }, "response");
   }
 

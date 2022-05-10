@@ -130,10 +130,11 @@ public class Client {
     (new PacketHandler(this)).pushMessage(outputStream, (new Move()).encodeWithContent(lobbyController.currentRobotMovesList.getItems().toArray(new String[0])));
   }
   /**
-   *
+   * informs the server about a changed server setting.
+   * @param content the encoded String in the format "name_of_variable:new_value_of_variable"
    */
-  public void sendServerSettings () {
-    (new PacketHandler(this)).pushMessage(outputStream, (new ServerSettingsPacket()).encodeWithContent("numberOfRobots:10"));
+  public void sendServerSettings (String content) {
+    (new PacketHandler(this)).pushMessage(outputStream, (new ServerSettingsPacket()).encodeWithContent(content));
   }
 
   /**
