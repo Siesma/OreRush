@@ -60,7 +60,6 @@ public class LobbyController {
   private GridPane mapGridPane;
 
 
-
   @FXML
   private Slider sliderNumberOfRobots;
 
@@ -166,7 +165,8 @@ public class LobbyController {
     lobby.statusProperty().addListener((obs, oldVal, newVal) -> {
       if (newVal.equals("in game")) {
         startGameButton.setVisible(false);
-      };
+      }
+      ;
     });
     lobby.playerOnPlayProperty().addListener((obs, oldVal, newVal) -> {
       playerTurnLabel.setText("Turn of: " + newVal);
@@ -420,31 +420,31 @@ public class LobbyController {
   @FXML
   void onMouseReleasedMapHeight(MouseEvent event) {
     this.labelMapHeight.setText("Map Height: " + this.sliderMapHeight.getValue());
-    this.client.sendServerSettings("mapHeight:" + this.sliderMapHeight.getValue());
+    this.client.sendServerSettings("mapHeight:" + (int) this.sliderMapHeight.getValue());
   }
 
   @FXML
   void onMouseReleasedMapWidth(MouseEvent event) {
     this.labelMapWidth.setText("Map Width: " + this.sliderMapWidth.getValue());
-    this.client.sendServerSettings("mapWidth:" + this.sliderMapWidth.getValue());
+    this.client.sendServerSettings("mapWidth:" + (int) this.sliderMapWidth.getValue());
   }
 
   @FXML
   void onMouseReleasedMaxAllowedMoves(MouseEvent event) {
     this.labelMaxAllowedMoves.setText("Max Allowed Moves: " + this.sliderMaxAllowedMoves.getValue());
-    this.client.sendServerSettings("maxAllowedMoves:" + this.sliderMaxAllowedMoves.getValue());
+    this.client.sendServerSettings("maxAllowedMoves:" + (int) this.sliderMaxAllowedMoves.getValue());
   }
 
   @FXML
   void onMouseReleasedMaxClusterSize(MouseEvent event) {
     this.labelMaxClusterSize.setText("Max Cluster Size: " + this.sliderMaxClusterSize.getValue());
-    this.client.sendServerSettings("maxClusterSize:" + this.sliderMaxClusterSize.getValue());
+    this.client.sendServerSettings("maxClusterSize:" + (int) this.sliderMaxClusterSize.getValue());
   }
 
   @FXML
   void onMouseReleasedNumberOfRobots(MouseEvent event) {
     this.labelNumberOfRobots.setText("Number Of Robots: " + this.sliderNumberOfRobots.getValue());
-    this.client.sendServerSettings("numberOfRobots:" + this.sliderNumberOfRobots.getValue());
+    this.client.sendServerSettings("numberOfRobots:" + (int) this.sliderNumberOfRobots.getValue());
   }
 
   @FXML
@@ -462,12 +462,12 @@ public class LobbyController {
   @FXML
   void onMouseReleasedRadarDistance(MouseEvent event) {
     this.labelRadarDistance.setText("Radar Distance: " + this.sliderRadarDistance.getValue());
-    this.client.sendServerSettings("radarDistance:" + this.sliderRadarDistance.getValue());
+    this.client.sendServerSettings("radarDistance:" + (int) this.sliderRadarDistance.getValue());
   }
 
   @FXML
   void onMouseReleasedTurnsPerPlayer(MouseEvent event) {
     this.labelTurnsPerPlayer.setText("Turns Per Player: " + this.sliderTurnsPerPlayer.getValue());
-    this.client.sendServerSettings("numberOfRounds:" + this.sliderTurnsPerPlayer.getValue());
+    this.client.sendServerSettings("numberOfRounds:" + (int) this.sliderTurnsPerPlayer.getValue());
   }
 }

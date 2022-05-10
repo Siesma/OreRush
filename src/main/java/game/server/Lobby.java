@@ -41,7 +41,11 @@ public class Lobby {
   }
 
   private void generateGameMap() {
-    gameMap = new GameMap(serverSettings);
+    recreateGameMap();
+  }
+
+  public void recreateGameMap () {
+    this.gameMap = new GameMap(serverSettings);
     gameMap.spawnOreInMap();
   }
 

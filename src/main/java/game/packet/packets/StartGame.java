@@ -64,6 +64,7 @@ public class StartGame extends AbstractPacket {
 
     if (parent instanceof ClientThread) {
       ClientThread obj = (ClientThread) parent;
+//      obj.getConnectedLobby().recreateGameMap();
       for (Lobby lobby : obj.getServer().getLobbyArrayList()) {
         if (lobby.getLobbyName().equals(message)) {
           for (ClientThread clientThread : lobby.getListOfClients()) {
@@ -80,7 +81,6 @@ public class StartGame extends AbstractPacket {
       for (ClientThread clientThread : Server.getClientThreads()) {
         (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new StartGame()).encodeWithContent(message));
       }
-
     }
     if (parent instanceof InputStreamThread) {
       InputStreamThread obj = (InputStreamThread) parent;
