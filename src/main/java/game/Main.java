@@ -1,5 +1,6 @@
 package game;
 
+import com.sun.javafx.runtime.VersionInfo;
 import game.gui.ClientApp;
 import game.server.Server;
 import javafx.application.Application;

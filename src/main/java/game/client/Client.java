@@ -122,8 +122,18 @@ public class Client {
     (new PacketHandler(this)).pushMessage(outputStream, (new Close()).encodeWithContent(getNickname()));
   }
 
+  /**
+   * Sends the move packet
+   * @param lobbyController the currently connected lobby to retrieve the selected moves.
+   */
   public void makeMove(LobbyController lobbyController) {
     (new PacketHandler(this)).pushMessage(outputStream, (new Move()).encodeWithContent(lobbyController.currentRobotMovesList.getItems().toArray(new String[0])));
+  }
+  /**
+   *
+   */
+  public void sendServerSettings () {
+    (new PacketHandler(this)).pushMessage(outputStream, (new ServerSettingsPacket()).encodeWithContent("numberOfRobots:10"));
   }
 
   /**
@@ -291,7 +301,7 @@ public class Client {
 
   public void printCurrentGameMap(GameMap gameMap) {
 //    GameMap.printMapToConsole(gameMap);
-    GameMap.printMapToConsole(gameMap.getIndividualGameMapForPlayer(nickname.get()));
+//    GameMap.printMapToConsole(gameMap.getIndividualGameMapForPlayer(nickname.get()));
   }
 
   public String getNickname() {

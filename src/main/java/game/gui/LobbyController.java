@@ -151,7 +151,7 @@ public class LobbyController {
     // Initialize the list of the robots of the player.
     // Also initializes the default Move of the robots, to wait.
 
-    for (int i = 0; i < (new ServerSettings("")).getNumberOfRobots(); i++) {
+    for (int i = 0; i < (new ServerSettings("")).getNumberOfRobots().getVal(); i++) {
       this.playerRobotList.getItems().add("Robot " + i);
       this.currentRobotMovesList.getItems().add(i + ":Wait:0:0");
     }
@@ -191,7 +191,7 @@ public class LobbyController {
       () -> {
         mapGridPane.getChildren().clear();
         currentGameMap = lobby.getGameMap().getIndividualGameMapForPlayer(client.getNickname());
-        GameMap.printMapToConsole(currentGameMap);
+//        GameMap.printMapToConsole(currentGameMap);
         int xMax = currentGameMap.getGameMapSize()[0];
         int yMax = currentGameMap.getGameMapSize()[1];
         int mapPixel = 500;
@@ -420,6 +420,8 @@ public class LobbyController {
   @FXML
   void onMouseReleasedMapHeight(MouseEvent event) {
     this.labelMapHeight.setText("Map Height: " + this.sliderMapHeight.getValue());
+    System.out.println("Sending!!!");
+    this.client.sendServerSettings();
   }
 
   @FXML

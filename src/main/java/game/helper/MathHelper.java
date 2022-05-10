@@ -53,7 +53,7 @@ public class MathHelper {
   public static int[] getNextMove(int[] position, int[] destination, ServerSettings serverSettings) {
     int xDif = destination[0] - position[0];
     int yDif = destination[1] - position[1];
-    int maxTotalMoves = serverSettings.getMaxAllowedMoves();
+    int maxTotalMoves = serverSettings.getMaxAllowedMoves().getVal();
     int xMoves = MathHelper.clamp(xDif, -maxTotalMoves, maxTotalMoves);
     maxTotalMoves -= Math.abs(xMoves);
     int yMoves = MathHelper.clamp(yDif, -maxTotalMoves, maxTotalMoves);
@@ -121,7 +121,7 @@ public class MathHelper {
   }
 
   public static boolean isInBounds (int x, int y, ServerSettings serverSettings) {
-    return isInBounds(x, y, 0, serverSettings.getMapWidth(), 0,serverSettings.getMapHeight());
+    return isInBounds(x, y, 0, serverSettings.getMapWidth().getVal(), 0,serverSettings.getMapHeight().getVal());
   }
 
 

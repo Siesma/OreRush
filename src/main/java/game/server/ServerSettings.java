@@ -1,7 +1,11 @@
 package game.server;
 
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * This class holds the settings for a particular game instance such as game length and map size
@@ -13,16 +17,16 @@ public class ServerSettings {
   TODO: Make a new Datatype called "ServerSettings" which holds information about packet-replacement procedure,
    the setting and a way to default back to working values in case something gets messed up.
    */
-  private int numberOfRobots;
-  private int mapWidth, mapHeight;
-  private int numberOfRounds;
-  private float oreDensity;
-  private int maxAllowedMoves;
-  private int radarDistance;
-  private ArrayList<Object> ores;
+  public Setting<Integer> numberOfRobots;
+  public Setting<Integer> mapWidth, mapHeight;
+  public Setting<Integer> numberOfRounds;
+  public Setting<Float> oreDensity;
+  public Setting<Integer> maxAllowedMoves;
+  public Setting<Integer> radarDistance;
+  public ArrayList<Object> ores;
 
-  private int maxClusterSize;
-  private float oreThreshold;
+  public Setting<Integer> maxClusterSize;
+  public Setting<Float> oreThreshold;
 
 
   public ServerSettings() {
@@ -37,84 +41,104 @@ public class ServerSettings {
     // TODO: Make a file system for the settings
   }
 
-  /**
-   * @param numberOfRobots The number of Robots each player should control
-   * @param mapWidth The width of the game field
-   * @param mapHeight The height of the game field
-   * @param numberOfRounds The number of round that the game should last
-   * @param ores           Default user settings initialization
-   */
-  public ServerSettings(int numberOfRobots, int mapWidth, int mapHeight, int numberOfRounds, ArrayList<Object> ores) {
-    setDefaultValues();
-    this.numberOfRobots = numberOfRobots;
-    this.mapWidth = mapWidth;
-    this.mapHeight = mapHeight;
-    this.numberOfRounds = numberOfRounds;
-    this.ores = ores;
-  }
-
   private void setDefaultValues() {
-    this.numberOfRobots = 2;
-    this.mapWidth = 30;
-    this.mapHeight = 15;
-    this.numberOfRounds = 25;
-    this.oreDensity = 1f;
-    this.maxAllowedMoves = 4;
-    this.radarDistance = 4;
-    this.maxClusterSize = 4;
-    this.oreThreshold = 0.75f;
+    this.numberOfRobots = new Setting<Integer>("numberOfRobots", 2);
+    this.mapWidth = new Setting<Integer>("mapWidth", 30);
+    this.mapHeight = new Setting<Integer>("mapHeight", 15);
+    this.numberOfRounds = new Setting<Integer>("numberOfRounds", 25);
+    this.oreDensity = new Setting<Float>("oreDensity", 1f);
+    this.maxAllowedMoves = new Setting<Integer>("maxAllowedMoves", 4);
+    this.radarDistance = new Setting<Integer>("radarDistance", 4);
+    this.maxClusterSize = new Setting<Integer>("maxClusterSize", 4);
+    this.oreThreshold = new Setting<Float>("oreThreshold", 0.75f);
   }
 
-  public int getMapWidth() {
+  public void setValue (String variable, Number newValue) {
+    String variableName = getSimilarNameToVariable(variable, "", this.getClass().getDeclaredFields());
+    Object obj;
+    try {
+      obj = this.getClass().getField(variableName).get(this);
+    } catch (Exception e) {
+//      System.out.println("test");
+      e.printStackTrace();
+      return;
+    }
+    if(!(obj instanceof Setting)) {
+      return;
+    }
+    Setting<Number> setting = (Setting) obj;
+    setting.setVal(newValue);
+
+  }
+
+  private String getSimilarNameToVariable(String similarName, String preFix, Field[] fields) {
+    for (Field f : fields) {
+      if (f.getName().toLowerCase(Locale.ROOT).matches(preFix + similarName.toLowerCase(Locale.ROOT))) {
+        return f.getName();
+      }
+    }
+    return "NONE";
+  }
+
+  public Setting<Integer> getNumberOfRobots() {
+    return numberOfRobots;
+  }
+
+  public ServerSettings setNumberOfRobots(Setting<Integer> numberOfRobots) {
+    this.numberOfRobots = numberOfRobots;
+    return this;
+  }
+
+  public Setting<Integer> getMapWidth() {
     return mapWidth;
   }
 
-  public ServerSettings setMapWidth(int mapWidth) {
+  public ServerSettings setMapWidth(Setting<Integer> mapWidth) {
     this.mapWidth = mapWidth;
     return this;
   }
 
-  public int getMapHeight() {
+  public Setting<Integer> getMapHeight() {
     return mapHeight;
   }
 
-  public ServerSettings setMapHeight(int mapHeight) {
+  public ServerSettings setMapHeight(Setting<Integer> mapHeight) {
     this.mapHeight = mapHeight;
     return this;
   }
 
-  public int getNumberOfRounds() {
+  public Setting<Integer> getNumberOfRounds() {
     return numberOfRounds;
   }
 
-  public ServerSettings setNumberOfRounds(int numberOfRounds) {
+  public ServerSettings setNumberOfRounds(Setting<Integer> numberOfRounds) {
     this.numberOfRounds = numberOfRounds;
     return this;
   }
 
-  public float getOreDensity() {
+  public Setting<Float> getOreDensity() {
     return oreDensity;
   }
 
-  public ServerSettings setOreDensity(float oreDensity) {
+  public ServerSettings setOreDensity(Setting<Float> oreDensity) {
     this.oreDensity = oreDensity;
     return this;
   }
 
-  public int getMaxAllowedMoves() {
+  public Setting<Integer> getMaxAllowedMoves() {
     return maxAllowedMoves;
   }
 
-  public ServerSettings setMaxAllowedMoves(int maxAllowedMoves) {
+  public ServerSettings setMaxAllowedMoves(Setting<Integer> maxAllowedMoves) {
     this.maxAllowedMoves = maxAllowedMoves;
     return this;
   }
 
-  public int getRadarDistance() {
+  public Setting<Integer> getRadarDistance() {
     return radarDistance;
   }
 
-  public ServerSettings setRadarDistance(int radarDistance) {
+  public ServerSettings setRadarDistance(Setting<Integer> radarDistance) {
     this.radarDistance = radarDistance;
     return this;
   }
@@ -128,30 +152,21 @@ public class ServerSettings {
     return this;
   }
 
-  public int getMaxClusterSize() {
+  public Setting<Integer> getMaxClusterSize() {
     return maxClusterSize;
   }
 
-  public ServerSettings setMaxClusterSize(int maxClusterSize) {
+  public ServerSettings setMaxClusterSize(Setting<Integer> maxClusterSize) {
     this.maxClusterSize = maxClusterSize;
     return this;
   }
 
-  public float getOreThreshold() {
+  public Setting<Float> getOreThreshold() {
     return oreThreshold;
   }
 
-  public ServerSettings setOreThreshold(float oreThreshold) {
+  public ServerSettings setOreThreshold(Setting<Float> oreThreshold) {
     this.oreThreshold = oreThreshold;
-    return this;
-  }
-
-  public int getNumberOfRobots() {
-    return numberOfRobots;
-  }
-
-  public ServerSettings setNumberOfRobots(int numberOfRobots) {
-    this.numberOfRobots = numberOfRobots;
     return this;
   }
 }

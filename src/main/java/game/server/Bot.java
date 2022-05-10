@@ -87,7 +87,7 @@ public class Bot extends ClientThread {
         desire = 0;
         break;
       }
-      desire *= Math.sqrt(((double) r.getPosition()[0] - robotInQuestion.getPosition()[0]) / (double) serverSettings.getMaxAllowedMoves());
+      desire *= Math.sqrt(((double) r.getPosition()[0] - robotInQuestion.getPosition()[0]) / (double) serverSettings.getMaxAllowedMoves().getVal());
     }
     return desire;
   }
@@ -95,7 +95,7 @@ public class Bot extends ClientThread {
   public Cell closestOreCell (Robot r, int allowedSteps) {
     int curmoveindex = 0;
     Vector cur = new Vector(-1, -1);
-    for (int i = 0; i < (serverSettings.getMaxAllowedMoves() * serverSettings.getMaxAllowedMoves()) * allowedSteps; i++) {
+    for (int i = 0; i < (serverSettings.getMaxAllowedMoves().getVal() * serverSettings.getMaxAllowedMoves().getVal()) * allowedSteps; i++) {
       for (int k = 0; k < 2; k++) {
         for (int j = 0; j < i; j++) {
           cur.add(directions.values()[curmoveindex].add);
