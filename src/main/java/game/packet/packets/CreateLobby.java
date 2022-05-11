@@ -67,7 +67,6 @@ public class CreateLobby extends AbstractPacket {
         }
         if(parent instanceof InputStreamThread) {
             InputStreamThread obj = (InputStreamThread) parent;
-            obj.getClient().addLobby(message);
             obj.getClient().addLobbyInClient(message);
         }
     }

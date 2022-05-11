@@ -136,7 +136,7 @@ public class LobbyController {
    * after the fxml file has been loaded.
    */
   @FXML
-  private void initialize() throws FileNotFoundException {
+  private void initialize() {
     client = Client.getClient();
     lobby = client.getLobbyInClient();
     playerTableView.setItems(lobby.getPlayerData());
