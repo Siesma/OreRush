@@ -64,8 +64,14 @@ public class ServerSettings {
     if (!(obj instanceof Setting)) {
       return;
     }
-    Setting<Number> setting = (Setting) obj;
-    setting.setVal(newValue);
+    Setting setting = (Setting) obj;
+    if(setting.getVal() instanceof Integer) {
+      setting.setVal(newValue.intValue());
+    } else if(setting.getVal() instanceof Float) {
+      setting.setVal(newValue.floatValue());
+    } else if(setting.getVal() instanceof Double) {
+      setting.setVal(newValue.doubleValue());
+    }
 
   }
 

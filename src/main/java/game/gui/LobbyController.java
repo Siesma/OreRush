@@ -150,7 +150,7 @@ public class LobbyController {
     // Initialize the list of the robots of the player.
     // Also initializes the default Move of the robots, to wait.
 
-    for (int i = 0; i < (new ServerSettings("")).getNumberOfRobots(); i++) {
+    for (int i = 0; i < (new ServerSettings()).getNumberOfRobots(); i++) {
       this.playerRobotList.getItems().add("Robot " + i);
       this.currentRobotMovesList.getItems().add(i + ":Wait:0:0");
     }

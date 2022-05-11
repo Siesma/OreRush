@@ -12,9 +12,20 @@ public class Test {
 
     ServerSettings serverSettings = new ServerSettings();
 
-    serverSettings.setValue("mapWidth", 100);
 
-    System.out.println(serverSettings.getMapWidth());
+    GameMap map = new GameMap(serverSettings);
+
+    GameMap.printMapToConsole(map);
+
+
+    System.out.println("---");
+
+
+    serverSettings.setValue("mapWidth", 5.0);
+    map = new GameMap(serverSettings);
+    GameMap.printMapToConsole(map);
+
+
   }
 
 }

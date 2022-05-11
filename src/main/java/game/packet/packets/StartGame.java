@@ -34,10 +34,10 @@ public class StartGame extends AbstractPacket {
       encode();
     }
     return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
-      this.name +
-      (char) ServerConstants.DEFAULT_PACKET_SPACER +
-      content[0] +
-      (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
+            this.name +
+            (char) ServerConstants.DEFAULT_PACKET_SPACER +
+            content[0] +
+            (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
   }
 
   /**
@@ -64,20 +64,21 @@ public class StartGame extends AbstractPacket {
 
     if (parent instanceof ClientThread) {
       ClientThread obj = (ClientThread) parent;
-//      obj.getConnectedLobby().recreateGameMap();
+      obj.getConnectedLobby().recreateGameMap();
       for (Lobby lobby : obj.getServer().getLobbyArrayList()) {
         if (lobby.getLobbyName().equals(message)) {
           for (ClientThread clientThread : lobby.getListOfClients()) {
             (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(),
-              (new Update()).encodeWithContent(lobby.getGameMap().cellStrings()));
+                    (new Update()).encodeWithContent(lobby.getGameMap().cellStrings()));
             // TODO .getIndividualGameMapForPlayer(clientThread.getPlayerName())));
             (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(),
-              (new UpdateTurn()).encodeWithContent(lobby.getListOfClients().get(lobby.turnOfPlayer()).getPlayerName(), String.valueOf(lobby.getTurnCounter())));
+                    (new UpdateTurn()).encodeWithContent(lobby.getListOfClients().get(lobby.turnOfPlayer()).getPlayerName(), String.valueOf(lobby.getTurnCounter())));
           }
 
         }
 
       }
+      obj.getConnectedLobby().printMap();
       for (ClientThread clientThread : Server.getClientThreads()) {
         (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new StartGame()).encodeWithContent(message));
       }

@@ -47,6 +47,7 @@ public class Lobby {
   public void recreateGameMap () {
     this.gameMap = new GameMap(serverSettings);
     gameMap.spawnOreInMap();
+    spawnRobots();
   }
 
 
@@ -98,9 +99,9 @@ public class Lobby {
   }
 
   public void printMap() {
-//    System.out.println("---");
-//    GameMap.printMapToConsole(gameMap);
-//    System.out.println("---");
+    System.out.println("---");
+    GameMap.printMapToConsole(gameMap);
+    System.out.println("---");
   }
 
   public int getTurnCounter() {
