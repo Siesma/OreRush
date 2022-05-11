@@ -1,1 +1,3 @@
-Adam:4 Eva:2 Adam:2
+High-Score list
+Adam:24
+Eva:12

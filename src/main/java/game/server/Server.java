@@ -107,7 +107,7 @@ public class Server {
 
         try {
             FileWriter myWriter = new FileWriter("HighScore.txt",true);
-            myWriter.write(winnerClientThread.getPlayerName() + ":" + winnerClientThread.getPlayerScore() + " ");
+            myWriter.write(winnerClientThread.getPlayerName() + ":" + winnerClientThread.getPlayerScore() + "\n");
             myWriter.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
