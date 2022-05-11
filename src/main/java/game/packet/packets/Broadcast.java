@@ -6,6 +6,7 @@ import game.packet.PacketHandler;
 import game.server.ClientThread;
 import game.server.Server;
 import game.server.ServerConstants;
+import javafx.application.Platform;
 
 import java.util.Scanner;
 /**
@@ -72,9 +73,15 @@ public class Broadcast extends AbstractPacket {
         }
         if(parent instanceof InputStreamThread) {
             InputStreamThread obj = (InputStreamThread) parent;
-            obj.getClient().lastChatMessageProperty().setValue(message + "\n");
+            String finalMessage = message;
+            Platform.runLater(() -> {
+                obj.getClient().lastChatMessageProperty().setValue(finalMessage + "\n");
+            });
             if (obj.getClient().getLobbyInClient() != null) {
-                obj.getClient().getLobbyInClient().setLastChatMessage(message + "\n");
+
+                Platform.runLater(() -> {
+                    obj.getClient().getLobbyInClient().lastChatMessageProperty().setValue(finalMessage + "\n");
+                });
             }
         }
     }

@@ -4,6 +4,7 @@ import game.client.InputStreamThread;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
+import javafx.application.Platform;
 
 import java.util.Scanner;
 /**
@@ -84,7 +85,10 @@ public class Whisper extends AbstractPacket{
             if (obj.getClient().getLobbyInClient() != null) {
                 obj.getClient().getLobbyInClient().setLastChatMessage(name + " (whisper): " + message + "\n");
             }
-            obj.getClient().lastChatMessageProperty().setValue(name + " (whisper): " + message + "\n");
+            String finalMessage = message;
+            Platform.runLater(() -> {
+                obj.getClient().lastChatMessageProperty().setValue(name + " (whisper): " + finalMessage + "\n");
+            });
         }
     }
 }

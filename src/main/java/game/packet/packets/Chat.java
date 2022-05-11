@@ -4,6 +4,7 @@ import game.client.InputStreamThread;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
+import javafx.application.Platform;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -73,7 +74,11 @@ public class Chat extends AbstractPacket {
     }
     if(parent instanceof InputStreamThread) {
       InputStreamThread obj = (InputStreamThread) parent;
-      obj.getClient().lastChatMessageProperty().setValue(message + "\n");
+      String finalMessage = message;
+      Platform.runLater(() -> {
+        obj.getClient().lastChatMessageProperty().setValue(finalMessage + "\n");
+      });
+
     }
   }
 }
