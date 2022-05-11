@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Main class of the server.
@@ -31,9 +32,9 @@ public class Server {
         logger.info("Now listening on port " + port);
 
 
-//        PingThread pT = new PingThread();
-//        Thread pingThread = new Thread(pT);
-//        pingThread.start();
+        PingThread pT = new PingThread();
+        Thread pingThread = new Thread(pT);
+        pingThread.start();
 
         while (true) {
             try {

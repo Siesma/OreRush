@@ -47,7 +47,7 @@ public class PingThread implements Runnable {
                 Server.getClientThreads().remove(clientWithNoResponse);
             }
             try {
-                Thread.sleep(120000);
+                Thread.sleep(12000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -1,7 +1,6 @@
 package game.client;
 
 import game.datastructures.GameMap;
-import game.datastructures.Robot;
 import game.gui.LobbyController;
 import game.packet.PacketHandler;
 import game.packet.packets.*;
@@ -12,16 +11,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 
 /**
  * The Client class is the main class storing information and threads the client needs to work.
@@ -74,10 +70,9 @@ public class Client {
       (new PacketHandler(this)).pushMessage(outputStream, (new Connect()).encodeWithContent(name));
 
 
-//            PongThread pT = new PongThread(this);
-//            Thread pongThread = new Thread(pT);
-//            pongThread.start();
-
+      PongThread pT = new PongThread(this);
+      Thread pongThread = new Thread(pT);
+      pongThread.start();
 
 
     } catch (Exception e) {
@@ -109,6 +104,7 @@ public class Client {
 
   /**
    * Changes the nickname.
+   *
    * @param newNickname the new nickname
    */
   public void changeNickname(String newNickname) {
@@ -124,21 +120,25 @@ public class Client {
 
   /**
    * Sends the move packet
+   *
    * @param lobbyController the currently connected lobby to retrieve the selected moves.
    */
   public void makeMove(LobbyController lobbyController) {
     (new PacketHandler(this)).pushMessage(outputStream, (new Move()).encodeWithContent(lobbyController.currentRobotMovesList.getItems().toArray(new String[0])));
   }
+
   /**
    * informs the server about a changed server setting.
+   *
    * @param content the encoded String in the format "name_of_variable:new_value_of_variable"
    */
-  public void sendServerSettings (String content) {
+  public void sendServerSettings(String content) {
     (new PacketHandler(this)).pushMessage(outputStream, (new ServerSettingsPacket()).encodeWithContent(content));
   }
 
   /**
    * Sends a new Chat-packet and encodes it with the predetermined content
+   *
    * @param message the message the should be sent in the chat
    */
   public void sendChatMessage(String message) {
@@ -147,29 +147,36 @@ public class Client {
 
   /**
    * Sends a new ChatLobby-packet and encodes it with the predetermined content
-   * @param message the message that should be sent in the lobby chat
+   *
+   * @param message   the message that should be sent in the lobby chat
    * @param lobbyName the name of the lobby the message should be sent in
    */
   public void sendChatMessageToLobby(String lobbyName, String message) {
     (new PacketHandler(this)).pushMessage(outputStream, (new ChatLobby()).encodeWithContent(lobbyName, message));
   }
+
   /**
    * Sends a new Whisper-packet and encodes it with the predetermined content
-   * @param message the message of the whisper
+   *
+   * @param message      the message of the whisper
    * @param receiverName the name of the player that should received the whisper
    */
   public void sendWhisper(String receiverName, String message) {
     (new PacketHandler(this)).pushMessage(outputStream, (new Whisper()).encodeWithContent(receiverName, message));
   }
+
   /**
    * Sends a new Broadcast-packet and encodes it with the predetermined content
+   *
    * @param message the message that should be broadcasted
    */
   public void sendBroadcast(String message) {
     (new PacketHandler(this)).pushMessage(outputStream, (new Broadcast()).encodeWithContent(message));
   }
+
   /**
    * Sends a new CreateLobby-packet and encodes it with the predetermined content
+   *
    * @param newLobbyName the name of the new lobby
    */
   public void createLobby(String newLobbyName) {
@@ -179,15 +186,19 @@ public class Client {
   public void sendStartGame() {
     (new PacketHandler(this)).pushMessage(outputStream, (new StartGame()).encodeWithContent(client.getLobbyInClient().getLobbyName()));
   }
+
   /**
    * Sends a new JoinLobby-packet and encodes it with the predetermined content
+   *
    * @param lobbyName the name of the lobby that should be joined
    */
   public void joinLobby(String lobbyName) {
     (new PacketHandler(this)).pushMessage(outputStream, (new JoinLobby()).encodeWithContent(lobbyName, nickname.getValue()));
   }
+
   /**
    * adds the client to the observableClientList
+   *
    * @param clientName the name of the client that should be added to the list
    */
   public void addClient(String clientName) {
@@ -198,7 +209,8 @@ public class Client {
   /**
    * checks if it is possible to add the Client to the Lobby.
    * adds the Client to the Playerlist of the Lobby
-   * @param lobbyName the name of the lobby that the client should be added to
+   *
+   * @param lobbyName  the name of the lobby that the client should be added to
    * @param clientName the name of the client that should be added to the lobby
    */
   public void addClientToLobby(String clientName, String lobbyName) {
@@ -218,8 +230,10 @@ public class Client {
       }
     }
   }
+
   /**
    * Sends a new LeaveLobby-packet and encodes it with the predetermined content
+   *
    * @param lobbyName the name the lobby that is being left
    */
   public void leaveLobby(String lobbyName) {
@@ -228,6 +242,7 @@ public class Client {
 
   /**
    * remove the Client from The observableClientlist
+   *
    * @param clientName the name of the client that should be removed
    */
   public void removeClient(String clientName) {
@@ -236,6 +251,7 @@ public class Client {
 
   /**
    * add the Lobby to the observableLobbyList
+   *
    * @param lobbyName the name of the lobby that should be added to the lobby list
    */
   public void addLobby(String lobbyName) {
@@ -244,6 +260,7 @@ public class Client {
 
   /**
    * Sends a new ChatLobby-packet and encodes it with the predetermined content
+   *
    * @param lobbyName the name of the lobby the message should be sent it
    */
   public void addLobbyInClient(String lobbyName) {
@@ -288,6 +305,7 @@ public class Client {
 
   /**
    * replace the old nickname with the new nickname in the observableClientList
+   *
    * @param oldNickname the old nickname
    * @param newNickname the new nickname
    */
@@ -322,7 +340,7 @@ public class Client {
   }
 
 
-    public void sendHighScore() {
-      (new PacketHandler(this)).pushMessage(outputStream, (new HighScore()).encodeWithContent());
-    }
+  public void sendHighScore() {
+    (new PacketHandler(this)).pushMessage(outputStream, (new HighScore()).encodeWithContent());
+  }
 }

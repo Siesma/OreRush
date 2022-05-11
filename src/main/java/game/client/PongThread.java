@@ -37,7 +37,7 @@ public class PongThread implements Runnable {
                 client.setPongReceived(false);
             }
             try {
-                Thread.sleep(120000);
+                Thread.sleep(12000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
