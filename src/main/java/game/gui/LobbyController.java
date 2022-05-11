@@ -3,9 +3,7 @@ package game.gui;
 import game.client.Client;
 import game.client.LobbyInClient;
 import game.datastructures.Cell;
-import game.datastructures.GameMap;
-import game.datastructures.Robot;
-import game.datastructures.RobotAction;
+import game.datastructures.*;
 import game.server.ServerSettings;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -172,36 +171,8 @@ public class LobbyController {
     });
     moveSelectionPopup = new Popup();
     moveSelectionPopup.hide();
-    Button buttonMove = new Button("Move");
-    Button buttonWait = new Button("Wait");
-    Button buttonRequestRadar = new Button("RequestRadar");
-    Button buttonRequestTrap = new Button("RequestTrap");
-    Button buttonDig = new Button("Dig");
-
-
-    buttonMove.setOnAction(e -> {
-      replacePopup("Move", "");
-    });
-    buttonWait.setOnAction(e -> {
-      replacePopup("Wait", "");
-    });
-    buttonRequestRadar.setOnAction(e -> {
-      replacePopup("RequestRadar", ":Radar");
-    });
-    buttonRequestTrap.setOnAction(e -> {
-      replacePopup("RequestTrap", ":Trap");
-    });
-    buttonDig.setOnAction(e -> {
-      replacePopup("Dig", "");
-    });
-    VBox vBox = new VBox();
-    vBox.getChildren().add(buttonMove);
-    vBox.getChildren().add(buttonWait);
-    vBox.getChildren().add(buttonRequestRadar);
-    vBox.getChildren().add(buttonRequestTrap);
-    vBox.getChildren().add(buttonDig);
-
-    moveSelectionPopup.getContent().add(vBox);
+    moveSelectionPopup.getContent().clear();
+    moveSelectionPopup.getContent().add(getPopupContent());
 
     this.labelTurnsPerPlayer.setText("Turns Per Player: " + this.sliderTurnsPerPlayer.getValue());
     this.labelRadarDistance.setText("Radar Distance: " + this.sliderRadarDistance.getValue());
@@ -215,7 +186,11 @@ public class LobbyController {
 
   }
 
-  public void replacePopup (String action, String addition) {
+  /**
+   * @param action   the action that the selected Robot should perform
+   * @param addition the additionally mandatory information about the inventory change that occurs for requests
+   */
+  public void setActionViaPopup(String action, String addition) {
     if (selectedRobot != null) {
       int index = selectedRobot.getId();
       this.currentRobotMovesList.getItems().set(index, index + ":" + action + ":" + xClicked + ":" + yClicked + addition);
@@ -224,6 +199,11 @@ public class LobbyController {
     moveSelectionPopup.hide();
   }
 
+  /**
+   * this function adds the preview of the robot list and their respective moves
+   *
+   * @param serverSettings the lobby server settings so that the correct amount of items are added
+   */
   private void changeAllRobots(ServerSettings serverSettings) {
     this.playerRobotList.getItems().clear();
     this.currentRobotMovesList.getItems().clear();
@@ -235,6 +215,63 @@ public class LobbyController {
     }
   }
 
+  /**
+   * @return vBox containing all the components of the popup
+   */
+  public HBox getPopupContent() {
+    HBox hBox = new HBox();
+    VBox movePreview = new VBox();
+    VBox cellPreview = new VBox();
+    Button buttonMove = new Button("Move");
+    Button buttonWait = new Button("Wait");
+    Button buttonRequestRadar = new Button("RequestRadar");
+    Button buttonRequestTrap = new Button("RequestTrap");
+    Button buttonDig = new Button("Dig");
+    buttonMove.setOnAction(e -> {
+      setActionViaPopup("Move", "");
+    });
+    buttonWait.setOnAction(e -> {
+      setActionViaPopup("Wait", "");
+    });
+    buttonRequestRadar.setOnAction(e -> {
+      setActionViaPopup("RequestRadar", ":Radar");
+    });
+    buttonRequestTrap.setOnAction(e -> {
+      setActionViaPopup("RequestTrap", ":Trap");
+    });
+    buttonDig.setOnAction(e -> {
+      setActionViaPopup("Dig", "");
+    });
+
+    buttonMove.setPrefWidth(150);
+    buttonWait.setPrefWidth(150);
+    buttonRequestRadar.setPrefWidth(150);
+    buttonRequestTrap.setPrefWidth(150);
+    buttonDig.setPrefWidth(150);
+    movePreview.getChildren().add(buttonMove);
+    movePreview.getChildren().add(buttonDig);
+    movePreview.getChildren().add(buttonRequestRadar);
+    movePreview.getChildren().add(buttonRequestTrap);
+    movePreview.getChildren().add(buttonWait);
+    if (currentGameMap != null) {
+      for (GameObject gameObject : currentGameMap.getCellArray()[xClicked][yClicked].getPlacedObjects()) {
+        if (gameObject instanceof Nothing) {
+          continue;
+        }
+        Label label = new Label();
+        label.setText(gameObject.encodeToString());
+        cellPreview.getChildren().add(label);
+      }
+    }
+
+
+    hBox.getChildren().addAll(movePreview, cellPreview);
+    return hBox;
+  }
+
+  /**
+   * Updates the displayed map.
+   */
   public void updateMap() {
     Platform.runLater(
       () -> {
