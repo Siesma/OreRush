@@ -10,6 +10,7 @@ import game.server.ServerSettings;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -176,46 +177,22 @@ public class LobbyController {
     Button buttonRequestRadar = new Button("RequestRadar");
     Button buttonRequestTrap = new Button("RequestTrap");
     Button buttonDig = new Button("Dig");
+
+
     buttonMove.setOnAction(e -> {
-      if (selectedRobot != null) {
-        int index = selectedRobot.getId();
-        this.currentRobotMovesList.getItems().set(index, index + ":" + "Move" + ":" + xClicked + ":" + yClicked);
-        this.selectedRobot = null;
-      }
-      moveSelectionPopup.hide();
+      replacePopup("Move", "");
     });
     buttonWait.setOnAction(e -> {
-
-      if (selectedRobot != null) {
-        int index = selectedRobot.getId();
-        this.currentRobotMovesList.getItems().set(index, index + ":" + "Wait" + ":" + xClicked + ":" + yClicked);
-        this.selectedRobot = null;
-      }
-      moveSelectionPopup.hide();
+      replacePopup("Wait", "");
     });
     buttonRequestRadar.setOnAction(e -> {
-      if (selectedRobot != null) {
-        int index = selectedRobot.getId();
-        this.currentRobotMovesList.getItems().set(index, index + ":" + "RequestRadar" + ":" + xClicked + ":" + yClicked + ":Radar");
-        this.selectedRobot = null;
-      }
-      moveSelectionPopup.hide();
+      replacePopup("RequestRadar", ":Radar");
     });
     buttonRequestTrap.setOnAction(e -> {
-      if (selectedRobot != null) {
-        int index = selectedRobot.getId();
-        this.currentRobotMovesList.getItems().set(index, index + ":" + "RequestTrap" + ":" + xClicked + ":" + yClicked + ":Trap");
-        this.selectedRobot = null;
-      }
-      moveSelectionPopup.hide();
+      replacePopup("RequestTrap", ":Trap");
     });
     buttonDig.setOnAction(e -> {
-      if (selectedRobot != null) {
-        int index = selectedRobot.getId();
-        this.currentRobotMovesList.getItems().set(index, index + ":" + "Dig" + ":" + xClicked + ":" + yClicked);
-        this.selectedRobot = null;
-      }
-      moveSelectionPopup.hide();
+      replacePopup("Dig", "");
     });
     VBox vBox = new VBox();
     vBox.getChildren().add(buttonMove);
@@ -238,6 +215,15 @@ public class LobbyController {
 
   }
 
+  public void replacePopup (String action, String addition) {
+    if (selectedRobot != null) {
+      int index = selectedRobot.getId();
+      this.currentRobotMovesList.getItems().set(index, index + ":" + action + ":" + xClicked + ":" + yClicked + addition);
+      this.selectedRobot = null;
+    }
+    moveSelectionPopup.hide();
+  }
+
   private void changeAllRobots(ServerSettings serverSettings) {
     this.playerRobotList.getItems().clear();
     this.currentRobotMovesList.getItems().clear();
@@ -254,7 +240,6 @@ public class LobbyController {
       () -> {
         mapGridPane.getChildren().clear();
         currentGameMap = lobby.getGameMap().getIndividualGameMapForPlayer(client.getNickname());
-//        GameMap.printMapToConsole(currentGameMap);
         int xMax = currentGameMap.getGameMapSize()[0];
         int yMax = currentGameMap.getGameMapSize()[1];
         int mapPixel = 500;
@@ -351,6 +336,12 @@ public class LobbyController {
         return;
       }
       try {
+        Bounds boundsInScreen = button.localToScreen(button.getBoundsInLocal());
+        int xPosition = (int) boundsInScreen.getMaxX();
+        int yPosition = (int) boundsInScreen.getMaxY();
+
+        moveSelectionPopup.setX(xPosition);
+        moveSelectionPopup.setY(yPosition);
         moveSelectionPopup.show(mapGridPane.getScene().getWindow());
       } catch (Exception e) {
         logger.error("Error");
