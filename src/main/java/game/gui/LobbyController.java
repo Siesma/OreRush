@@ -6,7 +6,6 @@ import game.datastructures.Cell;
 import game.datastructures.GameMap;
 import game.datastructures.Robot;
 import game.datastructures.RobotAction;
-import game.server.ClientThread;
 import game.server.ServerSettings;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -124,6 +123,8 @@ public class LobbyController {
   private int xClicked = -1;
   private int yClicked = -1;
 
+  Popup moveSelectionPopup;
+
   private Robot selectedRobot;
 
   private GameMap currentGameMap;
@@ -159,7 +160,8 @@ public class LobbyController {
     lobby.statusProperty().addListener((obs, oldVal, newVal) -> {
       if (newVal.equals("in game")) {
         startGameButton.setVisible(false);
-      };
+      }
+      ;
     });
     lobby.playerOnPlayProperty().addListener((obs, oldVal, newVal) -> {
       playerTurnLabel.setText("Turn of: " + newVal);
@@ -167,6 +169,65 @@ public class LobbyController {
     lobby.turnCounterProperty().addListener((obs, oldVal, newVal) -> {
       turnInfoLabel.setText("Turn number: " + newVal);
     });
+    moveSelectionPopup = new Popup();
+    moveSelectionPopup.hide();
+    Button buttonMove = new Button("Move");
+    Button buttonWait = new Button("Wait");
+    Button buttonRequestRadar = new Button("RequestRadar");
+    Button buttonRequestTrap = new Button("RequestTrap");
+    Button buttonDig = new Button("Dig");
+    buttonMove.setOnAction(e -> {
+      if (selectedRobot != null) {
+        int index = selectedRobot.getId();
+        this.currentRobotMovesList.getItems().set(index, index + ":" + "move" + ":" + xClicked + ":" + yClicked);
+        this.selectedRobot = null;
+      }
+      moveSelectionPopup.hide();
+    });
+    buttonWait.setOnAction(e -> {
+
+      if (selectedRobot != null) {
+        int index = selectedRobot.getId();
+        this.currentRobotMovesList.getItems().set(index, index + ":" + "wait" + ":" + xClicked + ":" + yClicked);
+        this.selectedRobot = null;
+      }
+      moveSelectionPopup.hide();
+    });
+    buttonRequestRadar.setOnAction(e -> {
+      if (selectedRobot != null) {
+        int index = selectedRobot.getId();
+        this.currentRobotMovesList.getItems().set(index, index + ":" + "RequestRadar" + ":" + xClicked + ":" + yClicked + ":Radar");
+        this.selectedRobot = null;
+      }
+      moveSelectionPopup.hide();
+    });
+    buttonRequestTrap.setOnAction(e -> {
+      if (selectedRobot != null) {
+        int index = selectedRobot.getId();
+        this.currentRobotMovesList.getItems().set(index, index + ":" + "RequestTrap" + ":" + xClicked + ":" + yClicked + ":Trap");
+        this.selectedRobot = null;
+      }
+      moveSelectionPopup.hide();
+    });
+    buttonDig.setOnAction(e -> {
+      if (selectedRobot != null) {
+        int index = selectedRobot.getId();
+        this.currentRobotMovesList.getItems().set(index, index + ":" + "dig" + ":" + xClicked + ":" + yClicked);
+        this.selectedRobot = null;
+      }
+      moveSelectionPopup.hide();
+    });
+    VBox vBox = new VBox();
+    vBox.getChildren().add(buttonMove);
+    vBox.getChildren().add(buttonWait);
+    if(xClicked == 0) {
+      vBox.getChildren().add(buttonRequestRadar);
+      vBox.getChildren().add(buttonRequestTrap);
+    }
+    vBox.getChildren().add(buttonDig);
+
+    moveSelectionPopup.getContent().add(vBox);
+
     this.labelTurnsPerPlayer.setText("Turns Per Player: " + this.sliderTurnsPerPlayer.getValue());
     this.labelRadarDistance.setText("Radar Distance: " + this.sliderRadarDistance.getValue());
     this.labelOreThreshold.setText("Ore Threshold: " + this.sliderOreThreshold.getValue());
@@ -287,27 +348,15 @@ public class LobbyController {
           selectedRobot = r;
         }
       }
-      if (selectedRobot == null) {
-        return;
-      }
-      logger.info(selectedRobot.getId());
     } else {
       if (playerRobotActionList.getSelectionModel().getSelectedItem() == null) {
         return;
       }
-      String addition = "";
-      if (playerRobotActionList.getSelectionModel().getSelectedItem().matches("^Request.*$")) {
-        addition = ":" + playerRobotActionList.getSelectionModel().getSelectedItem().split("Request")[1];
-      }
-      int index = selectedRobot.getId();
-      String moveType = playerRobotActionList.getSelectionModel().getSelectedItem();
       try {
-        this.currentRobotMovesList.getItems().set(index, index + ":" + moveType + ":" + x + ":" + y + addition);
+        moveSelectionPopup.show(mapGridPane.getScene().getWindow());
       } catch (Exception e) {
-        logger.info(selectedRobot.encodeToString() + " " + index + " " + moveType);
+        logger.error("Error");
       }
-
-      selectedRobot = null;
     }
 
   }
