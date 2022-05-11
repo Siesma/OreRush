@@ -18,8 +18,6 @@ public class Test {
     GameMap.printMapToConsole(map);
 
 
-    System.out.println("---");
-
 
     serverSettings.setValue("mapWidth", 5.0);
     map = new GameMap(serverSettings);

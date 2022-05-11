@@ -82,7 +82,7 @@ public class ClientThread implements Runnable {
       if (cur == ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE) {
         startingToRecordMessage = false;
         String message = builder.toString();
-        System.out.println("server received: " + message);
+        logger.info("server received: " + message);
         //PacketHandler.pushMessage(message);
         builder.setLength(0);
 
@@ -92,7 +92,7 @@ public class ClientThread implements Runnable {
         try {
           AbstractPacket receivedPacket = AbstractPacket.getPacketByMessage(message);
           if (receivedPacket == null) {
-            System.out.println("The received packet contains garbage.");
+            logger.debug("The received packet contains garbage.");
             break;
           }
           try {
@@ -101,7 +101,7 @@ public class ClientThread implements Runnable {
             logger.fatal("While decoding the message there was a critical error!", e);
           }
         } catch (Exception e) {
-          e.printStackTrace();
+          logger.error(e.getMessage());
         }
       }
       // This will read the whole message into the builder.
@@ -117,7 +117,7 @@ public class ClientThread implements Runnable {
     try {
       socket.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.error(e.getMessage());
     }
   }
 

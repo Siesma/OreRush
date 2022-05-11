@@ -51,7 +51,7 @@ public class ChatLobby extends AbstractPacket {
      */
     @Override
     public String encode() {
-        System.out.println("Chat-lobby-message:");
+        logger.info("Chat-lobby-message:");
         return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
                 this.name +
                 (char) ServerConstants.DEFAULT_PACKET_SPACER +
@@ -76,7 +76,7 @@ public class ChatLobby extends AbstractPacket {
             try {
                 obj.pushChatMessageToALobby(lobbyName,message);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
         }
         if(parent instanceof InputStreamThread) {

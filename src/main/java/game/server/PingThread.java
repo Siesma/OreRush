@@ -28,7 +28,7 @@ public class PingThread implements Runnable {
                 try {
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage());
                 }
                 if (!clientThread.isPingReceived()) {
                     logger.warn("No response from "
@@ -49,7 +49,7 @@ public class PingThread implements Runnable {
             try {
                 Thread.sleep(12000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
         }
     }
@@ -63,7 +63,7 @@ public class PingThread implements Runnable {
         try {
             (new PacketHandler(this)).pushMessage(outputStream, (new Awake().encode()));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 }

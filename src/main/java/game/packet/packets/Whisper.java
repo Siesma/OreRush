@@ -48,7 +48,7 @@ public class Whisper extends AbstractPacket{
      */
     @Override
     public String encode() {
-        System.out.println("whisper-message:");
+        logger.info("whisper-message:");
         return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
                 this.name +
                 (char) ServerConstants.DEFAULT_PACKET_SPACER +
@@ -77,7 +77,7 @@ public class Whisper extends AbstractPacket{
                 obj.pushWhisperToAClient(obj.getPlayerName(), message);
                 obj.pushWhisperToAClient(name, message);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
         }
         if(parent instanceof InputStreamThread) {

@@ -1,6 +1,9 @@
 package game.server;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -15,6 +18,7 @@ public class ServerSettings {
   TODO: Make a new Datatype called "ServerSettings" which holds information about packet-replacement procedure,
    the setting and a way to default back to working values in case something gets messed up.
    */
+  public static final Logger logger = LogManager.getLogger(ServerSettings.class);
   public Setting<Integer> numberOfRobots;
   public Setting<Integer> mapWidth, mapHeight;
   public Setting<Integer> numberOfRounds;
@@ -57,8 +61,7 @@ public class ServerSettings {
     try {
       obj = this.getClass().getField(variableName).get(this);
     } catch (Exception e) {
-//      System.out.println("test");
-      e.printStackTrace();
+      logger.error(e.getMessage());
       return;
     }
     if (!(obj instanceof Setting)) {

@@ -76,7 +76,7 @@ public class Client {
 
 
     } catch (Exception e) {
-      e.printStackTrace();
+      logger.error(e.getMessage());
     }
   }
 
@@ -90,15 +90,15 @@ public class Client {
    * Shuts down the client.
    */
   public void shutDownClient() {
-    System.out.println("terminating ..");
+    logger.info("terminating ..");
     try {
       inputStream.close();
       outputStream.close();
       socket.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.error(e.getMessage());
     }
-    System.out.println("EXITING");
+    logger.info("EXITING");
     System.exit(0);
   }
 

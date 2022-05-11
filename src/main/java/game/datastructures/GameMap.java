@@ -19,7 +19,7 @@ public class GameMap {
   private Cell[][] cellArray;
 
   private ServerSettings serverSettings;
-  public static final Logger logger = LogManager.getLogger(Server.class);
+  public static final Logger logger = LogManager.getLogger(GameMap.class);
 
   public GameMap(ServerSettings serverSettings) {
     this.gameMapSize[0] = serverSettings.getMapWidth();
@@ -310,9 +310,8 @@ public class GameMap {
 //        int[] now = new int[] {3, 4};
 //        int[] then = new int[] {i, j};
 //        out.append(fixedLengthString("" + MathHelper.absoluteCellDistance(now, then), 5));
-        System.out.print("[" + out.toString() + "]");
+        logger.info("[" + out.toString() + "]");
       }
-      System.out.println("");
     }
   }
 

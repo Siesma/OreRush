@@ -140,7 +140,7 @@ public class StartMenuController {
     try {
       while (client.getLobbyInClient() == null) {
         Thread.sleep(1000);
-        System.out.println("Waiting for the lobby to be created.");
+        logger.info("Waiting for the lobby to be created.");
       }
 
       Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/lobby.fxml")));
@@ -152,7 +152,7 @@ public class StartMenuController {
       });
       stage.show();
     } catch (IOException io) {
-      io.printStackTrace();
+      logger.error(io.getMessage());
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }

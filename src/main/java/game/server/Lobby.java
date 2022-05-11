@@ -73,9 +73,6 @@ public class Lobby {
         (new UpdateTurn()).encodeWithContent(listOfClients.get(turnOfPlayer()).getPlayerName(), String.valueOf(turnCounter)));
     }
     checkGameEnd();
-    if(listOfClients.get(turnOfPlayer()) instanceof Bot) {
-      System.out.println("test");
-    }
   }
 
   /**
@@ -96,9 +93,9 @@ public class Lobby {
   }
 
   public void printMap() {
-    System.out.println("---");
+    logger.info("---");
     GameMap.printMapToConsole(gameMap);
-    System.out.println("---");
+    logger.info("---");
   }
 
   public int getTurnCounter() {

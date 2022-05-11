@@ -47,7 +47,7 @@ public class Chat extends AbstractPacket {
    */
   @Override
   public String encode() {
-    System.out.println("Chat-message:");
+    logger.info("Chat-message:");
     return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
       this.name +
       (char) ServerConstants.DEFAULT_PACKET_SPACER +
@@ -69,7 +69,7 @@ public class Chat extends AbstractPacket {
       try {
         obj.pushChatMessageToAllClients(message);
       } catch (Exception e) {
-        e.printStackTrace();
+        logger.error(e.getMessage());
       }
     }
     if(parent instanceof InputStreamThread) {

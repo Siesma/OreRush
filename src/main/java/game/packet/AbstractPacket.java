@@ -18,7 +18,7 @@ public abstract class AbstractPacket {
   private final String help;
   private final String[] parts;
   private final String response;
-  public static final Logger logger = LogManager.getLogger(Server.class);
+  public static final Logger logger = LogManager.getLogger(AbstractPacket.class);
 
   public AbstractPacket(String help, String[] parts, String response) {
     String[] temp = this.getClass().toString().split("\\.");

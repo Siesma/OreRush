@@ -47,7 +47,7 @@ public class Broadcast extends AbstractPacket {
      */
     @Override
     public String encode() {
-        System.out.println("Broadcast-message:");
+        logger.info("Broadcast-message:");
         return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
                 this.name +
                 (char) ServerConstants.DEFAULT_PACKET_SPACER +

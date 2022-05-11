@@ -16,19 +16,19 @@ import java.io.OutputStream;
 public class PongThread implements Runnable {
 
     private final Client client;
-    public static final Logger logger = LogManager.getLogger(Server.class);
+    public static final Logger logger = LogManager.getLogger(PongThread.class);
 
     public PongThread(Client client) {
         this.client = client;
     }
     public void run() {
-        System.out.println("Pong thread started");
+        logger.info("Pong thread started");
         while (true) {
             sendPong();
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
             if (!client.isPongReceived()) {
                 logger.error("No response from the server, The client will shutdown shortly.");
@@ -39,7 +39,7 @@ public class PongThread implements Runnable {
             try {
                 Thread.sleep(12000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
         }
     }

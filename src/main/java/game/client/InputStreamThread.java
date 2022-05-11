@@ -46,7 +46,7 @@ public class InputStreamThread implements Runnable {
             if (cur == ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE) {
                 startingToRecordMessage = false;
                 String message = builder.toString();
-                System.out.println("client received: " + AbstractPacket.splitMessageBySpacer(message)[0]);
+                logger.info("client received: " + AbstractPacket.splitMessageBySpacer(message)[0]);
                 builder.setLength(0);
 
                 //This part here prints out what the server received. This is here just for bug fixing and manual validation.
@@ -63,7 +63,7 @@ public class InputStreamThread implements Runnable {
                         logger.fatal("While decoding the message there was a critical error!", e);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage());
                 }
 
             }

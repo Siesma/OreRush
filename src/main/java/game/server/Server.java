@@ -49,8 +49,7 @@ public class Server {
                 logger.info("New client connected.");
             } catch (IOException e) {
                 logger.error(e.getMessage());
-                e.printStackTrace();
-                System.out.println("EXITING");
+                logger.info("EXITING");
                 System.exit(1);
             }
         }

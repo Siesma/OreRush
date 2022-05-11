@@ -114,7 +114,7 @@ public class LobbyController {
   @FXML
   private Label labelOreThreshold;
 
-  public static final Logger logger = LogManager.getLogger(ClientThread.class);
+  public static final Logger logger = LogManager.getLogger(LobbyController.class);
   @FXML
   private Pane mapPane;
   @FXML
@@ -290,7 +290,7 @@ public class LobbyController {
       if (selectedRobot == null) {
         return;
       }
-      System.out.println(selectedRobot.getId());
+      logger.info(selectedRobot.getId());
     } else {
       if (playerRobotActionList.getSelectionModel().getSelectedItem() == null) {
         return;
@@ -304,7 +304,7 @@ public class LobbyController {
       try {
         this.currentRobotMovesList.getItems().set(index, index + ":" + moveType + ":" + x + ":" + y + addition);
       } catch (Exception e) {
-        System.out.println(selectedRobot.encodeToString() + " " + index + " " + moveType);
+        logger.info(selectedRobot.encodeToString() + " " + index + " " + moveType);
       }
 
       selectedRobot = null;

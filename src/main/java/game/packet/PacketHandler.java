@@ -15,7 +15,7 @@ import java.util.Scanner;
  */
 public class PacketHandler {
 
-    public static final Logger logger = LogManager.getLogger(Client.class);
+    public static final Logger logger = LogManager.getLogger(PacketHandler.class);
     private final Object parent;
 
     public PacketHandler(Object parent) {
@@ -30,11 +30,11 @@ public class PacketHandler {
      * @return the encoded packet as a string
      */
     public String createPacketMessage() {
-        System.out.println("Please tell which packet you want to send");
-        System.out.println("A list of possible packets are:");
+        logger.info("Please tell which packet you want to send");
+        logger.info("A list of possible packets are:");
         // TODO: Figure out whether we want to continue having this or not because in its current state it is not working.
         for (String s : (Objects.requireNonNull(new File(System.getProperty("user.dir") + "/src/main/java/game/packet/packets").list()))) {
-            System.out.println("\t->" + s.split(".java")[0]);
+            logger.info("\t->" + s.split(".java")[0]);
         }
         Scanner sc = new Scanner(System.in);
         String entered = AbstractPacket.promptUserForInput(sc);
@@ -65,14 +65,14 @@ public class PacketHandler {
             return;
         }
         if (!packet.validate(message)) {
-            System.out.println("Tried to send: " + message);
-            System.out.println("The given packet contained garbage");
+            logger.debug("Tried to send: " + message);
+            logger.debug("The given packet contained garbage");
             return;
         }
         try {
             out.write(message.getBytes());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
