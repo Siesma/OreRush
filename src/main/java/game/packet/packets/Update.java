@@ -80,7 +80,7 @@ public class Update extends AbstractPacket {
         }
         if (parent instanceof ClientThread) {
             ClientThread obj = (ClientThread) parent;
-            obj.setCurrentGameMap(GameMap.getMapFromString(message));
+            obj.setCurrentGameMap(GameMap.getMapFromString(message, obj.getConnectedLobby().getServerSettings()));
         }
 
         if (parent instanceof InputStreamThread) {

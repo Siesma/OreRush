@@ -147,13 +147,7 @@ public class LobbyController {
     });
     playerTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
     });
-    // Initialize the list of the robots of the player.
-    // Also initializes the default Move of the robots, to wait.
-
-    for (int i = 0; i < (new ServerSettings()).getNumberOfRobots(); i++) {
-      this.playerRobotList.getItems().add("Robot " + i);
-      this.currentRobotMovesList.getItems().add(i + ":Wait:0:0");
-    }
+    changeAllRobots(this.client.getLobbyInClient().getServerSettings());
     // Adds all the possible robot actions to the combobox.
     for (RobotAction robotAction : RobotAction.values()) {
       this.playerRobotActionList.getItems().add(robotAction.name());
@@ -165,8 +159,7 @@ public class LobbyController {
     lobby.statusProperty().addListener((obs, oldVal, newVal) -> {
       if (newVal.equals("in game")) {
         startGameButton.setVisible(false);
-      }
-      ;
+      };
     });
     lobby.playerOnPlayProperty().addListener((obs, oldVal, newVal) -> {
       playerTurnLabel.setText("Turn of: " + newVal);
@@ -184,6 +177,17 @@ public class LobbyController {
     this.labelMapWidth.setText("Map Width: " + this.sliderMapWidth.getValue());
     this.labelMapHeight.setText("Map Height: " + this.sliderMapHeight.getValue());
 
+  }
+
+  private void changeAllRobots(ServerSettings serverSettings) {
+    this.playerRobotList.getItems().clear();
+    this.currentRobotMovesList.getItems().clear();
+    // Initialize the list of the robots of the player.
+    // Also initializes the default Move of the robots, to wait.
+    for (int i = 0; i < serverSettings.getNumberOfRobots(); i++) {
+      this.playerRobotList.getItems().add("Robot " + i);
+      this.currentRobotMovesList.getItems().add(i + ":Wait:0:0");
+    }
   }
 
   public void updateMap() {
@@ -297,7 +301,11 @@ public class LobbyController {
       }
       int index = selectedRobot.getId();
       String moveType = playerRobotActionList.getSelectionModel().getSelectedItem();
-      this.currentRobotMovesList.getItems().set(index, index + ":" + moveType + ":" + x + ":" + y + addition);
+      try {
+        this.currentRobotMovesList.getItems().set(index, index + ":" + moveType + ":" + x + ":" + y + addition);
+      } catch (Exception e) {
+        System.out.println(selectedRobot.encodeToString() + " " + index + " " + moveType);
+      }
 
       selectedRobot = null;
     }
@@ -359,6 +367,7 @@ public class LobbyController {
    * @param actionEvent UI Action that triggers this method
    */
   public void handleStartGame(ActionEvent actionEvent) {
+    changeAllRobots(this.client.getLobbyInClient().getServerSettings());
     client.sendStartGame();
   }
 

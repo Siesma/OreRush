@@ -230,6 +230,12 @@ public class ClientThread implements Runnable {
     }
   }
 
+  public void updateLobbyAboutSettingChange (String content) {
+    for (ClientThread clientThread : this.connectedLobby.getListOfClients()) {
+      (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new ServerSettingsPacket()).encodeWithContent(content));
+    }
+  }
+
   /**
    * Sends Chat packet to a all clients
    *

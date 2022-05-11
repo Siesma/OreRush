@@ -26,7 +26,7 @@ public class GameMapTest extends TestCase {
     if (message.startsWith("Update" + (char) ServerConstants.DEFAULT_PACKET_SPACER)) {
       message = message.replace("Update" + (char) ServerConstants.DEFAULT_PACKET_SPACER, "");
     }
-    GameMap gameMapB = GameMap.getMapFromString(message);
+    GameMap gameMapB = GameMap.getMapFromString(message, serverSettings);
     Assertions.assertEquals(gameMapA.getGameMapSize()[0], gameMapB.getGameMapSize()[0]);
     Assertions.assertEquals(gameMapA.getGameMapSize()[1], gameMapB.getGameMapSize()[1]);
     for (int i = 0; i < gameMapA.getGameMapSize()[0]; i++) {

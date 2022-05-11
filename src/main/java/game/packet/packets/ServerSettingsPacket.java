@@ -1,5 +1,6 @@
 package game.packet.packets;
 
+import game.client.InputStreamThread;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
@@ -57,7 +58,28 @@ public class ServerSettingsPacket extends AbstractPacket {
           logger.error("Some error occurred tried to read the slider variables for the serversettings.", e);
         }
       }
+      obj.updateLobbyAboutSettingChange(message);
     }
+
+    if (parent instanceof InputStreamThread) {
+      InputStreamThread obj = (InputStreamThread) parent;
+      for (String s : AbstractPacket.splitMessageBySpacer(message)) {
+        try {
+          String name = s.split(":")[0];
+          Number val = Double.parseDouble(s.split(":")[1]);
+          ServerSettings settings = obj.getClient().getLobbyInClient().getServerSettings();
+          settings.setValue(name, val);
+          try {
+            settings.setValue(name, val);
+          } catch (Exception e) {
+            logger.fatal("The variable \"" + name + "\" does not exist", e);
+          }
+        } catch (Exception e) {
+          logger.error("Some error occurred tried to read the slider variables for the serversettings.", e);
+        }
+      }
+    }
+
   }
 
 }

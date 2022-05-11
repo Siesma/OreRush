@@ -39,14 +39,18 @@ public class LobbyInClient {
 
     private final IntegerProperty gameMapProperty = new SimpleIntegerProperty(0);
 
+    private ServerSettings serverSettings;
+
     public LobbyInClient(String lobbyName) {
         this.lobbyName = new SimpleStringProperty(lobbyName);
         this.status = new SimpleStringProperty("open");
         this.players = new SimpleStringProperty();
+        this.serverSettings = new ServerSettings();
     }
 
     public void updateGameMap(Object parent, String gameMapString) {
-        gameMap = GameMap.getMapFromString(gameMapString);
+        //TODO: How to get Serversettings in LobbyInClient
+        gameMap = GameMap.getMapFromString(gameMapString, serverSettings);
         gameMapProperty.setValue(gameMapProperty.getValue()+1);
     }
 
@@ -124,7 +128,14 @@ public class LobbyInClient {
     public void removePlayer(Player playerToDel) {
         players.setValue(players.getValue().replace(playerToDel.getNickname(), ""));
         observablePlayerList.remove(playerToDel);
+    }
 
+    public ServerSettings getServerSettings() {
+        return serverSettings;
+    }
+
+    public void setServerSettings(ServerSettings serverSettings) {
+        this.serverSettings = serverSettings;
     }
 
     public GameMap getGameMap() {

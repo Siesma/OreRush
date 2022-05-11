@@ -6,14 +6,10 @@ import game.datastructures.GameMap;
 import game.datastructures.Ore;
 import game.datastructures.Radar;
 import game.datastructures.Robot;
-import game.helper.TestHelper;
 import game.packet.AbstractPacket;
 import game.packet.packets.*;
 import game.server.*;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -24,7 +20,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.ArrayList;
 
 import static org.mockito.Mockito.mock;

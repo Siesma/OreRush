@@ -22,10 +22,6 @@ public class GameMap {
   public static final Logger logger = LogManager.getLogger(Server.class);
 
   public GameMap(ServerSettings serverSettings) {
-
-    double w = serverSettings.getMapWidth();
-    double h = serverSettings.getMapHeight();
-
     this.gameMapSize[0] = serverSettings.getMapWidth();
     this.gameMapSize[1] = serverSettings.getMapHeight();
     this.cellArray = new Cell[this.gameMapSize[0]][this.gameMapSize[1]];
@@ -441,11 +437,10 @@ public class GameMap {
    * @param message the content in the format of the Update packet's encoding.
    * @return a new gameMap object containing all the information given by the message
    */
-  public static GameMap getMapFromString(String message) {
+  public static GameMap getMapFromString(String message, ServerSettings serverSettings) {
     // splits the incoming singular information into an array.
     String[] individualCell = AbstractPacket.splitMessageBySpacer(message);
     // defines new serverSettings to be used here to obtain needed informations.
-    ServerSettings serverSettings = new ServerSettings();
     GameMap newMap = new GameMap(serverSettings);
     // sets default values so that they can be compared to.
     int cellX = -1, cellY = -1;
@@ -461,7 +456,7 @@ public class GameMap {
         } else {
           // it was not possible to parse the position as an integer, something went wrong and should not be happening.
           if (cellX == -1 || cellY == -1) {
-            logger.error("Somehow the cell index was not updated");
+            logger.error("Somehow the cell index was not updated:" + s);
             continue;
           }
 

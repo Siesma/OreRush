@@ -2,13 +2,10 @@ package game.server;
 
 import game.datastructures.GameMap;
 import game.packet.PacketHandler;
-import game.packet.packets.Nickname;
 import game.packet.packets.UpdateTurn;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 
 /**
@@ -47,7 +44,7 @@ public class Lobby {
   public void recreateGameMap () {
     this.gameMap = new GameMap(serverSettings);
     gameMap.spawnOreInMap();
-    spawnRobots();
+    respawnRobots();
   }
 
 
@@ -136,12 +133,13 @@ public class Lobby {
   }
 
   public void initialize() {
-    spawnRobots();
+    respawnRobots();
     generateGameMap();
   }
 
-  public void spawnRobots() {
+  public void respawnRobots() {
     for (int i = 0; i < listOfClients.size(); i++) {
+      listOfClients.get(i).getRobots().clear();
       for (int j = 0; j < serverSettings.getNumberOfRobots(); j++) {
         listOfClients.get(i).addRobot();
       }
