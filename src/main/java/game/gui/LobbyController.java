@@ -179,7 +179,7 @@ public class LobbyController {
     buttonMove.setOnAction(e -> {
       if (selectedRobot != null) {
         int index = selectedRobot.getId();
-        this.currentRobotMovesList.getItems().set(index, index + ":" + "move" + ":" + xClicked + ":" + yClicked);
+        this.currentRobotMovesList.getItems().set(index, index + ":" + "Move" + ":" + xClicked + ":" + yClicked);
         this.selectedRobot = null;
       }
       moveSelectionPopup.hide();
@@ -188,7 +188,7 @@ public class LobbyController {
 
       if (selectedRobot != null) {
         int index = selectedRobot.getId();
-        this.currentRobotMovesList.getItems().set(index, index + ":" + "wait" + ":" + xClicked + ":" + yClicked);
+        this.currentRobotMovesList.getItems().set(index, index + ":" + "Wait" + ":" + xClicked + ":" + yClicked);
         this.selectedRobot = null;
       }
       moveSelectionPopup.hide();
@@ -212,7 +212,7 @@ public class LobbyController {
     buttonDig.setOnAction(e -> {
       if (selectedRobot != null) {
         int index = selectedRobot.getId();
-        this.currentRobotMovesList.getItems().set(index, index + ":" + "dig" + ":" + xClicked + ":" + yClicked);
+        this.currentRobotMovesList.getItems().set(index, index + ":" + "Dig" + ":" + xClicked + ":" + yClicked);
         this.selectedRobot = null;
       }
       moveSelectionPopup.hide();
@@ -220,10 +220,8 @@ public class LobbyController {
     VBox vBox = new VBox();
     vBox.getChildren().add(buttonMove);
     vBox.getChildren().add(buttonWait);
-    if(xClicked == 0) {
-      vBox.getChildren().add(buttonRequestRadar);
-      vBox.getChildren().add(buttonRequestTrap);
-    }
+    vBox.getChildren().add(buttonRequestRadar);
+    vBox.getChildren().add(buttonRequestTrap);
     vBox.getChildren().add(buttonDig);
 
     moveSelectionPopup.getContent().add(vBox);
