@@ -4,6 +4,7 @@ import game.client.Client;
 import game.client.LobbyInClient;
 import game.datastructures.Cell;
 import game.datastructures.*;
+import game.helper.MathHelper;
 import game.server.ServerSettings;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -14,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -553,5 +555,15 @@ public class LobbyController {
   void onMouseReleasedTurnsPerPlayer(MouseEvent event) {
     this.labelTurnsPerPlayer.setText("Turns Per Player: " + this.sliderTurnsPerPlayer.getValue());
     this.client.sendServerSettings("numberOfRounds:" + (int) this.sliderTurnsPerPlayer.getValue());
+  }
+
+  @FXML
+  public void onKeyPressedAnchorPane(KeyEvent keyEvent) {
+    if(keyEvent.getText().toCharArray()[0] > '0' && keyEvent.getText().toCharArray()[0] <= ('0' + this.client.getLobbyInClient().getServerSettings().getNumberOfRobots())) {
+      System.out.println(keyEvent.getText());
+      Robot robot = new Robot();
+      robot.setID(Integer.parseInt("" + keyEvent.getText().toCharArray()[0]) - 1);
+      this.selectedRobot = robot;
+    }
   }
 }
