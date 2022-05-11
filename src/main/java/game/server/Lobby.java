@@ -67,7 +67,7 @@ public class Lobby {
 
   public void updateMove() {
     turnCounter++;
-    printMap();
+//    printMap();
     for (ClientThread clientThread : listOfClients) {
       (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(),
         (new UpdateTurn()).encodeWithContent(listOfClients.get(turnOfPlayer()).getPlayerName(), String.valueOf(turnCounter)));

@@ -88,7 +88,7 @@ public class StartMenuController {
    * tests if the textfield is empty  sends the message to the CLients and clears the Textfield
    */
   @FXML
-  private void handleSendMessage(ActionEvent actionEvent) throws Exception {
+  private void handleSendMessage(ActionEvent actionEvent) {
     if (!newMessageTextField.getText().equals("")) {
       client.sendChatMessage(newMessageTextField.getText());
       newMessageTextField.setText("");
@@ -100,7 +100,7 @@ public class StartMenuController {
    * checks if the textfield is empty changes the nickname and clears the textfield
    */
   @FXML
-  private void handleChangeNickname(ActionEvent actionEvent) throws Exception {
+  private void handleChangeNickname(ActionEvent actionEvent) {
     if (!newNickname.getText().equals("")) {
       client.changeNickname(newNickname.getText());
       newNickname.setText("");

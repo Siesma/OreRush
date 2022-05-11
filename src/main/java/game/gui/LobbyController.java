@@ -4,7 +4,6 @@ import game.client.Client;
 import game.client.LobbyInClient;
 import game.datastructures.Cell;
 import game.datastructures.*;
-import game.helper.MathHelper;
 import game.server.ServerSettings;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,17 +16,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -61,6 +56,8 @@ public class LobbyController {
   private GridPane mapGridPane;
 
 
+  @FXML
+  public AnchorPane anchorPane;
   @FXML
   private Slider sliderNumberOfRobots;
 
@@ -559,7 +556,7 @@ public class LobbyController {
 
   @FXML
   public void onKeyPressedAnchorPane(KeyEvent keyEvent) {
-    if(keyEvent.getText().toCharArray()[0] > '0' && keyEvent.getText().toCharArray()[0] <= ('0' + this.client.getLobbyInClient().getServerSettings().getNumberOfRobots())) {
+    if (keyEvent.getText().toCharArray()[0] > '0' && keyEvent.getText().toCharArray()[0] <= ('0' + this.client.getLobbyInClient().getServerSettings().getNumberOfRobots())) {
       System.out.println(keyEvent.getText());
       Robot robot = new Robot();
       robot.setID(Integer.parseInt("" + keyEvent.getText().toCharArray()[0]) - 1);
