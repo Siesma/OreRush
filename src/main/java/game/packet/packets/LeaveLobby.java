@@ -73,6 +73,7 @@ public class LeaveLobby extends AbstractPacket {
       for (ClientThread clientThread : Server.getClientThreads()) {
         (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new LeaveLobby()).encodeWithContent(lobbyName, clientName));
       }
+      obj.setConnectedLobby(null);
 
     }
     if (parent instanceof InputStreamThread) {

@@ -17,9 +17,9 @@
                         </Label>
                         <Button mnemonicParsing="false" onAction="#handleChangeNickname" text="Change Nickname" />
                         <TextField fx:id="newNickname" promptText="new nickname" />
-                        <Button mnemonicParsing="false" onAction="#handleCreateLobby" text="Create Lobby" />
+                        <Button fx:id="createLobbyButton" mnemonicParsing="false" onAction="#handleCreateLobby" text="Create Lobby" />
                         <TextField fx:id="newLobbyName" promptText="new lobby" />
-                        <Button mnemonicParsing="false" onAction="#handleJoinLobby" text="Join Lobby" />
+                        <Button fx:id="joinLobbyButton" mnemonicParsing="false" onAction="#handleJoinLobby" text="Join Lobby" />
                   <Button onAction="#handleHighScore"  mnemonicParsing="false" text="High Scores" />
                     </children>
                 </VBox>

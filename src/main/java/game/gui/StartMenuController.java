@@ -30,6 +30,11 @@ public class StartMenuController {
   private Client client;
 
   @FXML
+  private Button createLobbyButton;
+
+  @FXML
+  private Button joinLobbyButton;
+  @FXML
   private Label nickname;
   @FXML
   private TextField newNickname;
@@ -110,6 +115,8 @@ public class StartMenuController {
    */
   public void handleCreateLobby(ActionEvent actionEvent) {
     if (!newLobbyName.getText().equals("")) {
+      createLobbyButton.setDisable(true);
+      joinLobbyButton.setDisable(true);
       client.createLobby(newLobbyName.getText());
       client.joinLobby(newLobbyName.getText());
       newLobbyName.setText("");
@@ -149,6 +156,8 @@ public class StartMenuController {
       stage.setOnCloseRequest(event -> {
         client.leaveLobby(client.getLobbyInClient().getLobbyName());
         client.setLobbyInClient(null);
+        createLobbyButton.setDisable(false);
+        joinLobbyButton.setDisable(false);
       });
       stage.show();
     } catch (IOException io) {
