@@ -35,7 +35,6 @@ public class Server {
         PingThread pT = new PingThread();
         Thread pingThread = new Thread(pT);
         pingThread.start();
-
         while (true) {
             try {
                 logger.info(clientThreads.size() + " clients are connected to the server.");
@@ -118,7 +117,12 @@ public class Server {
         BufferedReader reader;
         String string;
         try {
-            reader = new BufferedReader(new FileReader("HighScore.txt"));
+            File highScore = new File(System.getProperty("user.dir") + "/HighScore.txt");
+            if(!highScore.exists()) {
+                logger.debug("The HighScore file did not exist! Creating the file in the folder " + System.getProperty("user.dir"));
+                highScore.createNewFile();
+            }
+            reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/HighScore.txt"));
             string = reader.readLine();
             reader.close();
         } catch (IOException e) {
