@@ -122,8 +122,9 @@ public class Server {
                 highScore.createNewFile();
             }
             reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/HighScore.txt"));
-            while(reader.readLine() != null) {
-                stringBuilder.append(reader.readLine()).append("; ");
+            String s;
+            while((s = reader.readLine()) != null) {
+                stringBuilder.append(s).append("; ");
             }
             reader.close();
         } catch (IOException e) {
