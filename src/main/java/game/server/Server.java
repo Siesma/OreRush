@@ -103,9 +103,8 @@ public class Server {
      * @param winnerClientThread a reference to the client that has won the game.
      */
     public void saveHighScore(ClientThread winnerClientThread) {
-
         try {
-            FileWriter myWriter = new FileWriter("HighScore.txt",true);
+            FileWriter myWriter = new FileWriter(System.getProperty("user.dir") + "/HighScore.txt",true);
             myWriter.write(winnerClientThread.getPlayerName() + ":" + winnerClientThread.getPlayerScore() + "\n");
             myWriter.close();
         } catch (IOException e) {
@@ -115,7 +114,7 @@ public class Server {
 
     public String getHighScore() {
         BufferedReader reader;
-        String string;
+        StringBuilder stringBuilder = new StringBuilder();
         try {
             File highScore = new File(System.getProperty("user.dir") + "/HighScore.txt");
             if(!highScore.exists()) {
@@ -123,11 +122,13 @@ public class Server {
                 highScore.createNewFile();
             }
             reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/HighScore.txt"));
-            string = reader.readLine();
+            while(reader.readLine() != null) {
+                stringBuilder.append(reader.readLine()).append("; ");
+            }
             reader.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return string;
+        return stringBuilder.toString();
     }
 }
