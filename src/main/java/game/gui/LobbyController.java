@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.effect.Bloom;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -290,7 +291,7 @@ public class LobbyController {
         }
         int xMax = currentGameMap.getGameMapSize()[0];
         int yMax = currentGameMap.getGameMapSize()[1];
-        int mapPixel = 750;
+        int mapPixel = 500;
         int cellSize = Math.min(mapPixel / xMax, mapPixel / yMax);
         for (int x = 0; x < xMax; x++) {
           for (int y = 0; y < yMax; y++) {
@@ -352,8 +353,15 @@ public class LobbyController {
               Robot curRob = getRobotObjectFromSelection(i);
               if (((curRob.getPosition()[0] == x && curRob.getPosition()[1] == y) || (!currentRobotMovesList.getItems().get(curRob.getId()).matches(".*Wait:[0-9]+:[0-9]+") && (Integer.parseInt(currentRobotMovesList.getItems().get(curRob.getId()).split(":")[2]) == x && Integer.parseInt(currentRobotMovesList.getItems().get(curRob.getId()).split(":")[3]) == y)))) {
                 Color col = colours[curRob.getId()];
-                String style = "-fx-background-color: " + String.format("#%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
-                button.setStyle(style);
+                float[] hsbValues = new float[3];
+                Color.RGBtoHSB(col.getRed(), col.getBlue(), col.getGreen(), hsbValues);
+                ColorAdjust colorAdjust = new ColorAdjust();
+                colorAdjust.setContrast(0.1);
+                colorAdjust.setHue(hsbValues[0]);
+                colorAdjust.setSaturation(hsbValues[1]);
+                colorAdjust.setBrightness(0);
+
+                button.setEffect(colorAdjust);
               }
             }
             if (selectedRobot != null && selectedRobot.getPosition()[0] == x && selectedRobot.getPosition()[1] == y) {
