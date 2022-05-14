@@ -6,8 +6,17 @@ package game.datastructures;
  */
 public class Nothing implements GameObject {
 
+    /**
+     * X Coordinate of the Cell
+     */
     private int x;
+    /**
+     * Y Coordinate of the Cell
+     */
     private int y;
+    /**
+     *
+     */
     private int id;
     private String owner;
 
