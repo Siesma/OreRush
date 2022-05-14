@@ -24,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
@@ -286,7 +287,7 @@ public class LobbyController {
       () -> {
         mapGridPane.getChildren().clear();
         currentGameMap = lobby.getGameMap().getIndividualGameMapForPlayer(client.getNickname());
-        if(this.colours.length != this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal()) {
+        if (this.colours.length != this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal()) {
           this.colours = MathHelper.getRandomColours(this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal());
         }
         int xMax = currentGameMap.getGameMapSize()[0];
@@ -360,7 +361,6 @@ public class LobbyController {
                 colorAdjust.setHue(hsbValues[0]);
                 colorAdjust.setSaturation(hsbValues[1]);
                 colorAdjust.setBrightness(0);
-
                 button.setEffect(colorAdjust);
               }
             }
@@ -613,10 +613,13 @@ public class LobbyController {
 
   @FXML
   public void onKeyPressedAnchorPane(KeyEvent keyEvent) {
+    if(keyEvent.getText().length() != 1) {
+      return;
+    }
     if (keyEvent.getText().toCharArray()[0] > '0' && keyEvent.getText().toCharArray()[0] <= ('0' + this.client.getLobbyInClient().getServerSettings().getNumberOfRobots())) {
       int id = Integer.parseInt("" + keyEvent.getText().toCharArray()[0]) - 1;
-      if(selectedRobot != null) {
-        if(selectedRobot.getId() == id) {
+      if (selectedRobot != null) {
+        if (selectedRobot.getId() == id) {
           this.selectedRobot = null;
           updateMap();
           return;
