@@ -2,6 +2,7 @@ package game.helper;
 
 import game.server.ServerSettings;
 
+import java.awt.*;
 import java.util.Random;
 
 /**
@@ -125,11 +126,11 @@ public class MathHelper {
   }
 
   /**
-   * @param alreadyUsedColours the colours that are already used by the ui.
+   * @param num the amount of colours that are needed.
    * @return a random colour that is different from all the other already used colours.
    */
-  public static String getRandomNotUsedColour (String[]... alreadyUsedColours) {
-    return "#22cb46";
+  public static Color[] getRandomColours (int num) {
+    return ColourUtils.getRandomColours(num);
   }
 
 

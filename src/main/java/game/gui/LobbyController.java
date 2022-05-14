@@ -3,6 +3,7 @@ package game.gui;
 import game.client.Client;
 import game.client.LobbyInClient;
 import game.datastructures.Cell;
+import game.datastructures.Robot;
 import game.datastructures.*;
 import game.helper.MathHelper;
 import game.server.ServerSettings;
@@ -12,19 +13,23 @@ import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.*;
+import javafx.scene.effect.Bloom;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -132,6 +137,8 @@ public class LobbyController {
 
   private Popup cellPreview;
 
+  private Color[] colours;
+
   /**
    * Initializes the controller class. This method is automatically called
    * after the fxml file has been loaded.
@@ -162,7 +169,6 @@ public class LobbyController {
       if (newVal.equals("in game")) {
         startGameButton.setVisible(false);
       }
-      ;
     });
     lobby.playerOnPlayProperty().addListener((obs, oldVal, newVal) -> {
       playerTurnLabel.setText("Turn of: " + newVal);
@@ -184,7 +190,7 @@ public class LobbyController {
     this.labelMaxAllowedMoves.setText("Max Allowed Moves: " + this.sliderMaxAllowedMoves.getValue());
     this.labelMapWidth.setText("Map Width: " + this.sliderMapWidth.getValue());
     this.labelMapHeight.setText("Map Height: " + this.sliderMapHeight.getValue());
-
+    this.colours = MathHelper.getRandomColours(this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal());
   }
 
   /**
@@ -198,6 +204,7 @@ public class LobbyController {
       this.selectedRobot = null;
     }
     moveSelectionPopup.hide();
+    updateMap();
   }
 
   /**
@@ -278,6 +285,9 @@ public class LobbyController {
       () -> {
         mapGridPane.getChildren().clear();
         currentGameMap = lobby.getGameMap().getIndividualGameMapForPlayer(client.getNickname());
+        if(this.colours.length != this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal()) {
+          this.colours = MathHelper.getRandomColours(this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal());
+        }
         int xMax = currentGameMap.getGameMapSize()[0];
         int yMax = currentGameMap.getGameMapSize()[1];
         int mapPixel = 500;
@@ -333,9 +343,16 @@ public class LobbyController {
               int column = GridPane.getColumnIndex(node);
               selectedAndMakeActionForRobot(button, column, row);
             });
-            if (selectedRobot != null && (selectedRobot.getPosition()[0] == x && selectedRobot.getPosition()[1] == y)) {
-              String style = "-fx-background-color: #22cb46";
-              button.setStyle(style);
+            for (int i = 0; i < this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal(); i++) {
+              Robot curRob = getRobotObjectFromSelection(i);
+              if (((curRob.getPosition()[0] == x && curRob.getPosition()[1] == y) || (!currentRobotMovesList.getItems().get(curRob.getId()).matches(".*Wait:[0-9]+:[0-9]+") && (Integer.parseInt(currentRobotMovesList.getItems().get(curRob.getId()).split(":")[2]) == x && Integer.parseInt(currentRobotMovesList.getItems().get(curRob.getId()).split(":")[3]) == y)))) {
+                Color col = colours[curRob.getId()];
+                String style = "-fx-background-color: " + String.format("#%02x%02x%02x", col.getRed(), col.getGreen(), col.getBlue());
+                button.setStyle(style);
+              }
+            }
+            if (selectedRobot != null && selectedRobot.getPosition()[0] == x && selectedRobot.getPosition()[1] == y) {
+              button.setEffect(new Bloom(0.4));
             }
             mapGridPane.add(button, x, y, 1, 1);
           }
@@ -585,6 +602,13 @@ public class LobbyController {
   public void onKeyPressedAnchorPane(KeyEvent keyEvent) {
     if (keyEvent.getText().toCharArray()[0] > '0' && keyEvent.getText().toCharArray()[0] <= ('0' + this.client.getLobbyInClient().getServerSettings().getNumberOfRobots())) {
       int id = Integer.parseInt("" + keyEvent.getText().toCharArray()[0]) - 1;
+      if(selectedRobot != null) {
+        if(selectedRobot.getId() == id) {
+          this.selectedRobot = null;
+          updateMap();
+          return;
+        }
+      }
       this.selectedRobot = getRobotObjectFromSelection(id);
       updateMap();
     }
