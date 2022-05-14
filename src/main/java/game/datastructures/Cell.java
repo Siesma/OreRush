@@ -7,11 +7,25 @@ import java.util.ArrayList;
  */
 public class Cell {
 
+  /**
+   * X Coordinate of the Cell
+   */
   private final int x;
+  /**
+   * Y Coordinate of the Cell
+   */
   private final int y;
 
+  /**
+   * List of the GameObject currently on the cell
+   */
   private final ArrayList<GameObject> placedObjects;
 
+  /**
+   * Constructor of the Cell. Used in GameMap to instantiate new Cells.
+   * @param x X Coordinate of the Cell
+   * @param y Y Coordinate of the Cell
+   */
   public Cell(int x, int y) {
     this.x = x;
     this.y = y;
@@ -91,20 +105,32 @@ public class Cell {
     placedObjects.add(object);
   }
 
+  /**
+   * Getter for the X Coordinate
+   * @return the X Coordinate of the Cell
+   */
   public int getX() {
     return x;
   }
 
+  /**
+   * Getter for the Y Coordinate
+   * @return the Y Coordinate of the Cell
+   */
   public int getY() {
     return y;
   }
 
+  /**
+   * Getter for the list of Game Objects in the Cell
+   * @return the list of Game Objects in the Cell
+   */
   public ArrayList<GameObject> getPlacedObjects() {
     return placedObjects;
   }
 
   /**
-   *
+   * Encodes the cell and it's contents to a string.
    * @return all the necessary information about this cell in a Stringformat to be able to send and decode it everywhere and end up with the same object.
    */
   @Override
