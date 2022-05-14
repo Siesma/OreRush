@@ -17,17 +17,37 @@ import java.io.OutputStream;
  * It records the messages and forwards them to the packet handler which will process them further.
  */
 public class InputStreamThread implements Runnable {
+    /**
+     * Log4j logger that allows great, clear and useful logging of information and errors
+     * instead of the ugly commandline prints
+     */
     public static final Logger logger = LogManager.getLogger(Server.class);
+    /**
+     * The Client listening on this input steam.
+     */
     private final Client client;
+    /**
+     * Inputstream of this client used to receive packages of the server
+     */
     private final InputStream in;
+    /**
+     * Outputstream of the client used to send packets to the server
+     */
     private final OutputStream out;
 
+    /**
+     * Constructor of the InputStreamThread class. Used in the constructor of the Client class.
+     * @param client the The Client listening on this input steam.
+     */
     public InputStreamThread(Client client) {
         this.client = client;
         this.in = client.getInputStream();
         this.out = client.getOutputStream();
     }
 
+    /**
+     * Starts the thread and listens to any input.
+     */
     public void run() {
         boolean startingToRecordMessage = false;
         StringBuilder builder = new StringBuilder();
@@ -81,6 +101,10 @@ public class InputStreamThread implements Runnable {
         }
     }
 
+    /**
+     * Getter for the Client
+     * @return the Client associated with this InputStreamThread
+     */
     public Client getClient() {
         return client;
     }

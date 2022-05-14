@@ -15,12 +15,28 @@ import java.io.OutputStream;
  */
 public class PongThread implements Runnable {
 
+    /**
+     * The Client associated with this pong thread
+     */
     private final Client client;
+
+    /**
+     * Log4j logger that allows great, clear and useful logging of information and errors
+     * instead of the ugly commandline prints
+     */
     public static final Logger logger = LogManager.getLogger(PongThread.class);
 
+    /**
+     * Constructor used in Client.
+     * @param client the client, to be associated with the Pong Thread
+     */
     public PongThread(Client client) {
         this.client = client;
     }
+
+    /**
+     * Starts the thread and begins sending pongs the server.
+     */
     public void run() {
         logger.info("Pong thread started");
         while (true) {
