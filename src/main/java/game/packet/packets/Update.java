@@ -85,7 +85,7 @@ public class Update extends AbstractPacket {
 
         if (parent instanceof InputStreamThread) {
             InputStreamThread obj = (InputStreamThread) parent;
-            obj.getClient().getLobbyInClient().updateGameMap(parent, message);
+            obj.getClient().getLobbyInClient().updateGameMap(message);
 
         }
     }
