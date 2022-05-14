@@ -7,11 +7,23 @@ package game.datastructures;
  * Player who laid the trap
  */
 public class Trap implements GameObject {
+  /**
+   * The X coordinate of the Trap
+   */
   private int xCoordinate;
+  /**
+   * The Y coordinate of the Trap
+   */
   private int yCoordinate;
+  /**
+   * The ID of the player who owns this Trap
+   */
   private int playerID;
-
+  /**
+   * The name of the player who owns this Trap
+   */
   private String owner;
+
 
   /**
    * Default constructor to set the owner of this type as an empty string.
@@ -20,6 +32,10 @@ public class Trap implements GameObject {
     this.owner = "";
   }
 
+  /**
+   * Setter for the ID
+   * @param id the new ID
+   */
   @Override
   public void setID(int id) {
     this.playerID = id;
@@ -63,14 +79,20 @@ public class Trap implements GameObject {
     return playerID;
   }
 
-
+  /**
+   * Encodes the Trap Object into a string
+   * @return the encoded Trap as a string
+   */
   @Override
   public String encodeToString() {
     String s = "Trap:" + playerID;
     return s;
   }
 
-
+  /**
+   * TODO: How is this different than encodeToString? Artefact?
+   * @return
+   */
   @Override
   public String toString() {
     return "Trap:" + this.playerID + ":" + this.owner;
