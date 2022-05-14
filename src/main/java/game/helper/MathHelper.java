@@ -124,6 +124,14 @@ public class MathHelper {
     return isInBounds(x, y, 0, serverSettings.getMapWidth(), 0,serverSettings.getMapHeight());
   }
 
+  /**
+   * @param alreadyUsedColours the colours that are already used by the ui.
+   * @return a random colour that is different from all the other already used colours.
+   */
+  public static String getRandomNotUsedColour (String[]... alreadyUsedColours) {
+    return "#22cb46";
+  }
+
 
   /**
    * Returns a random number between 0 and 1

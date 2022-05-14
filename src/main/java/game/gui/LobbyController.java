@@ -4,6 +4,7 @@ import game.client.Client;
 import game.client.LobbyInClient;
 import game.datastructures.Cell;
 import game.datastructures.*;
+import game.helper.MathHelper;
 import game.server.ServerSettings;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
@@ -331,7 +333,10 @@ public class LobbyController {
               int column = GridPane.getColumnIndex(node);
               selectedAndMakeActionForRobot(button, column, row);
             });
-
+            if (selectedRobot != null && (selectedRobot.getPosition()[0] == x && selectedRobot.getPosition()[1] == y)) {
+              String style = "-fx-background-color: #22cb46";
+              button.setStyle(style);
+            }
             mapGridPane.add(button, x, y, 1, 1);
           }
         }
@@ -554,13 +559,34 @@ public class LobbyController {
     this.client.sendServerSettings("numberOfRounds:" + (int) this.sliderTurnsPerPlayer.getValue());
   }
 
+  /**
+   * This function is pretty wasteful because it reiterates over everything
+   *
+   * @param id of the selected Robot
+   * @return the robot object on the gamemap that has this id.
+   */
+  public Robot getRobotObjectFromSelection(int id) {
+    for (int i = 0; i < currentGameMap.getGameMapSize()[0]; i++) {
+      for (int j = 0; j < currentGameMap.getGameMapSize()[1]; j++) {
+        if (currentGameMap.getCellArray()[i][j].robotsOnCell() == null || currentGameMap.getCellArray()[i][j].robotsOnCell().size() == 0) {
+          continue;
+        }
+        for (Robot r : currentGameMap.getCellArray()[i][j].robotsOnCell()) {
+          if (r.getOwner().equals(this.client.getNickname()) && r.getId() == id) {
+            return r;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   @FXML
   public void onKeyPressedAnchorPane(KeyEvent keyEvent) {
     if (keyEvent.getText().toCharArray()[0] > '0' && keyEvent.getText().toCharArray()[0] <= ('0' + this.client.getLobbyInClient().getServerSettings().getNumberOfRobots())) {
-      System.out.println(keyEvent.getText());
-      Robot robot = new Robot();
-      robot.setID(Integer.parseInt("" + keyEvent.getText().toCharArray()[0]) - 1);
-      this.selectedRobot = robot;
+      int id = Integer.parseInt("" + keyEvent.getText().toCharArray()[0]) - 1;
+      this.selectedRobot = getRobotObjectFromSelection(id);
+      updateMap();
     }
   }
 }
