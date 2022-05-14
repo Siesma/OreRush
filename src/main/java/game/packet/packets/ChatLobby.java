@@ -6,7 +6,12 @@ import game.server.ClientThread;
 import game.server.ServerConstants;
 
 import java.util.Scanner;
-
+/**
+ * class representing the ChatLobby packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * The ChatLobby packet is used to send a chat message to all clients connected in the same lobby
+ */
 public class ChatLobby extends AbstractPacket {
 
 
@@ -46,7 +51,7 @@ public class ChatLobby extends AbstractPacket {
      */
     @Override
     public String encode() {
-        System.out.println("Chat-lobby-message:");
+        logger.info("Chat-lobby-message:");
         return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
                 this.name +
                 (char) ServerConstants.DEFAULT_PACKET_SPACER +
@@ -71,7 +76,7 @@ public class ChatLobby extends AbstractPacket {
             try {
                 obj.pushChatMessageToALobby(lobbyName,message);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
         }
         if(parent instanceof InputStreamThread) {

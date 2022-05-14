@@ -8,6 +8,12 @@ import game.server.ClientThread;
 import game.server.PingThread;
 import game.server.ServerConstants;
 
+/**
+ * class representing the Awake packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * THe Awake paket is used by the Ping and Pong threads, to check the connection
+ */
 public class Awake extends AbstractPacket {
 
 

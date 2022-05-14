@@ -4,14 +4,18 @@ import game.server.ServerSettings;
 
 import java.util.Random;
 
+/**
+ * This class is a collection of all the mathematical functions.
+ */
 public class MathHelper {
 
 
   /**
-   * returns the clamped value of val, min and max. This means the following:
-   * if val is greater than max it will return max
-   * if val is greater than min it will return min
-   * if val is neither greater nor smaller it will return val
+   * returns one of the following variables
+   * @param val if between min and max
+   * @param min if val under min
+   * @param max if val over max
+   * @return the clamped value of val, min and max
    */
   public static int clamp(int val, int min, int max) {
     return Math.max(Math.min(max, val), min);
@@ -41,7 +45,7 @@ public class MathHelper {
    * <p>
    * This function can be used to not have to validate moves as every invalid move will automatically will be
    * cropped down.
-   *
+   * @param serverSettings gets the max allowed moved for this game
    * @param position is the position of the Robot in question that tries to move.
    * @param destination is the Position to which the robot in question wants to move to. Expecteto be two integers.
    * @return the next Position that is within the reach of the robots original position without moving more than allowed.
@@ -65,7 +69,7 @@ public class MathHelper {
    * @param in    - the value being evaluated. - can be any real value
    * @param fac   - the factor of the value that is being evaluated. - can be any real value.
    * @param shift - the strength of the exponential decay. - should be between 0 and 1
-   * @return
+   * @return inverse of an exponential function
    */
   public static double inverseExponential(double max, double exp, double in, double fac, double shift) {
     return max - (Math.pow(exp, in * fac + shift));
@@ -79,7 +83,7 @@ public class MathHelper {
    * @param in    - the value being evaluated. - can be any real value
    * @param fac   - the factor of the value that is being evaluated. - can be any real value.
    * @param shift - the strength of the exponential decay. - should be between 0 and 1
-   * @return
+   * @return  the exponential function
    */
   public static double exponential(double max, double exp, double in, double fac, double shift) {
     max = -1*max;
@@ -98,6 +102,16 @@ public class MathHelper {
   }
 
 
+  /**
+   *
+   * @param x the x coordinate that is being evaluated
+   * @param y the y coordinate that is being evaluated
+   * @param min_x the value that the x value is not allowed to be lower than
+   * @param max_x the value that the x value is not allowed to be greater than
+   * @param min_y the value that the y value is not allowed to be lower than
+   * @param max_y the value that the y value is not allowed to be greater than
+   * @return whether the x, y pair is within the bounds
+   */
   public static boolean isInBounds(int x, int y, int min_x, int max_x, int min_y, int max_y) {
     return x >= min_x && x < max_x && y >= min_y && y < max_y;
   }
@@ -108,6 +122,14 @@ public class MathHelper {
 
   public static boolean isInBounds (int x, int y, ServerSettings serverSettings) {
     return isInBounds(x, y, 0, serverSettings.getMapWidth(), 0,serverSettings.getMapHeight());
+  }
+
+  /**
+   * @param alreadyUsedColours the colours that are already used by the ui.
+   * @return a random colour that is different from all the other already used colours.
+   */
+  public static String getRandomNotUsedColour (String[]... alreadyUsedColours) {
+    return "#22cb46";
   }
 
 

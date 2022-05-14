@@ -65,19 +65,13 @@ public class Radar implements GameObject {
 
     @Override
     public String encodeToString() {
-        String s = "Radar:" + playerID;
+        String s = "Radar:" + playerID + ":" + this.owner;
         return s;
     }
 
     @Override
     public String toString() {
         return "Radar:" + this.playerID;
-    }
-
-    @Override
-    public void fillGameObjectWithData(String... data) {
-        setPosition(Integer.parseInt(data[1]), Integer.parseInt(data[2]));
-        setPlayerID(Integer.parseInt(data[3]));
     }
 
     /**

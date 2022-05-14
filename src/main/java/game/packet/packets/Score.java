@@ -9,7 +9,12 @@ import game.server.Server;
 import game.server.ServerConstants;
 
 import java.util.Scanner;
-
+/**
+ * class representing the score packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * This Packet is used by the sever to inform the players in the lobby that a player has changed score
+ */
 public class Score extends AbstractPacket {
     public Score() {
         super("", new String[]{"^.*$", // playerName

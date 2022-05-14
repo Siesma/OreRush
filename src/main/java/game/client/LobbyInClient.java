@@ -11,10 +11,18 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * The lobbyInClient class is the model for the lobby GUI, it has all the needed meta information about the lobby,
+ * as well as the game status, such as the game Map and round number.
+ */
 public class LobbyInClient {
     private final StringProperty lobbyName;
     private final StringProperty status;
     private final StringProperty players;
+
+    private StringProperty playerOnPlay =  new SimpleStringProperty();
+
+    private StringProperty turnCounter =  new SimpleStringProperty();
 
     private final StringProperty lastChatMessage = new SimpleStringProperty();
     private final ObservableList<Player> observablePlayerList = FXCollections.observableArrayList();
@@ -31,14 +39,18 @@ public class LobbyInClient {
 
     private final IntegerProperty gameMapProperty = new SimpleIntegerProperty(0);
 
+    private ServerSettings serverSettings;
+
     public LobbyInClient(String lobbyName) {
         this.lobbyName = new SimpleStringProperty(lobbyName);
         this.status = new SimpleStringProperty("open");
         this.players = new SimpleStringProperty();
+        this.serverSettings = new ServerSettings();
     }
 
-    public void updateGameMap(String gameMapString) {
-        gameMap = GameMap.getMapFromString(gameMapString);
+    public void updateGameMap(Object parent, String gameMapString) {
+        //TODO: How to get Serversettings in LobbyInClient
+        gameMap = GameMap.getMapFromString(gameMapString, serverSettings);
         gameMapProperty.setValue(gameMapProperty.getValue()+1);
     }
 
@@ -50,6 +62,10 @@ public class LobbyInClient {
         this.lobbyName.set(lobbyName);
     }
 
+    /**
+     * Adds a player into the clients lobby view list.
+     * @param clientName name of the new player.
+     */
     public void addPlayer(String clientName) {
         observablePlayerList.add(new Player(clientName));
         if (players.getValue() == null) {
@@ -112,10 +128,41 @@ public class LobbyInClient {
     public void removePlayer(Player playerToDel) {
         players.setValue(players.getValue().replace(playerToDel.getNickname(), ""));
         observablePlayerList.remove(playerToDel);
+    }
 
+    public ServerSettings getServerSettings() {
+        return serverSettings;
+    }
+
+    public void setServerSettings(ServerSettings serverSettings) {
+        this.serverSettings = serverSettings;
     }
 
     public GameMap getGameMap() {
         return gameMap;
+    }
+
+    public String getPlayerOnPlay() {
+        return playerOnPlay.get();
+    }
+
+    public StringProperty playerOnPlayProperty() {
+        return playerOnPlay;
+    }
+
+    public void setPlayerOnPlay(String playerOnPlay) {
+        this.playerOnPlay.set(playerOnPlay);
+    }
+
+    public String getTurnCounter() {
+        return turnCounter.get();
+    }
+
+    public StringProperty turnCounterProperty() {
+        return turnCounter;
+    }
+
+    public void setTurnCounter(String turnCounter) {
+        this.turnCounter.set(turnCounter);
     }
 }

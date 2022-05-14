@@ -5,11 +5,16 @@ import game.datastructures.GameMap;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
-
+/**
+ * class representing the update packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * This Packet is used by the server to update the players of the current state of the gamemap
+ */
 public class Update extends AbstractPacket {
     public Update() {
         super("", new String[]{
-                "^[0-9]+,[0-9]+_(Nothing|Robot|Trap|Radar|Ore):[0-9]+(:(Nothing|Trap|Radar|Ore):[0-9]+)?$"
+                "^[0-9]+,[0-9]+_(Nothing|Robot|Trap|Radar|Ore):[0-9]+:.*(:(Nothing|Trap|Radar|Ore):[0-9]+)?$"
         }, "Updating the user about the board!");
     }
 
@@ -43,7 +48,12 @@ public class Update extends AbstractPacket {
 
 
     /**
-     * Placeholder for decoding the Update packet.
+     * Decodes the packet
+     *
+     * @param parent  server or client
+     *                if server receives the packet, it updates the Gamemap
+     *                if client receives the packet, it updates the Gamemap
+     * @param message contains the lobbyname and clientname
      */
     @Override
     public void decode(Object parent, String message) {
@@ -70,12 +80,12 @@ public class Update extends AbstractPacket {
         }
         if (parent instanceof ClientThread) {
             ClientThread obj = (ClientThread) parent;
-            obj.setCurrentGameMap(GameMap.getMapFromString(message));
+            obj.setCurrentGameMap(GameMap.getMapFromString(message, obj.getConnectedLobby().getServerSettings()));
         }
 
         if (parent instanceof InputStreamThread) {
             InputStreamThread obj = (InputStreamThread) parent;
-            obj.getClient().getLobbyInClient().updateGameMap(message);
+            obj.getClient().getLobbyInClient().updateGameMap(parent, message);
 
         }
     }

@@ -4,6 +4,9 @@ import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
 
+/**
+ * This Packet is not yet used
+ */
 public class Timeout extends AbstractPacket {
 
 

@@ -4,12 +4,17 @@ package game.server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+/**
+ * Main class of the server.
+ * Infinite loop to accept new client connections.
+ * Holds a list of clients and a list of lobbys.
+ */
 
 public class Server {
 
@@ -27,10 +32,9 @@ public class Server {
         logger.info("Now listening on port " + port);
 
 
-//        PingThread pT = new PingThread();
-//        Thread pingThread = new Thread(pT);
-//        pingThread.start();
-
+        PingThread pT = new PingThread();
+        Thread pingThread = new Thread(pT);
+        pingThread.start();
         while (true) {
             try {
                 logger.info(clientThreads.size() + " clients are connected to the server.");
@@ -44,8 +48,7 @@ public class Server {
                 logger.info("New client connected.");
             } catch (IOException e) {
                 logger.error(e.getMessage());
-                e.printStackTrace();
-                System.out.println("EXITING");
+                logger.info("EXITING");
                 System.exit(1);
             }
         }
@@ -63,6 +66,11 @@ public class Server {
         lobby.addClient(clientThread);
     }
 
+    /**
+     *
+     * @param lobbyName name of the wanted lobby
+     * @return the lobby that is associated by that name, null if no lobby with that name exists
+     */
     public Lobby getLobbyByName(String lobbyName) {
         for (Lobby lobby : lobbyArrayList) {
             if (lobby.getLobbyName().equals(lobbyName)) {
@@ -72,6 +80,11 @@ public class Server {
         return null;
     }
 
+    /**
+     *
+     * @param clientThread the client that has to be removed
+     * @param lobbyName the lobby in which the client is (supposedly) located
+     */
     public void removeClientFromLobby(ClientThread clientThread, String lobbyName) {
         for (Lobby lobby : lobbyArrayList) {
             if (lobby.getLobbyName().equals(lobbyName)) {
@@ -85,13 +98,38 @@ public class Server {
     }
 
 
+    /**
+     * Saves the new high scores in a local file.
+     * @param winnerClientThread a reference to the client that has won the game.
+     */
     public void saveHighScore(ClientThread winnerClientThread) {
         try {
-            FileWriter myWriter = new FileWriter("HighScore.txt",true);
-            myWriter.write(winnerClientThread.getPlayerName() + " " + winnerClientThread.getPlayerScore() + "\n");
+            FileWriter myWriter = new FileWriter(System.getProperty("user.dir") + "/HighScore.txt",true);
+            myWriter.write(winnerClientThread.getPlayerName() + ":" + winnerClientThread.getPlayerScore() + "\n");
             myWriter.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getHighScore() {
+        BufferedReader reader;
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            File highScore = new File(System.getProperty("user.dir") + "/HighScore.txt");
+            if(!highScore.exists()) {
+                logger.debug("The HighScore file did not exist! Creating the file in the folder " + System.getProperty("user.dir"));
+                highScore.createNewFile();
+            }
+            reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/HighScore.txt"));
+            String s;
+            while((s = reader.readLine()) != null) {
+                stringBuilder.append(s).append("; ");
+            }
+            reader.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return stringBuilder.toString();
     }
 }

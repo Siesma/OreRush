@@ -11,10 +11,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * This class is created by the server for each client that connects to it.
+ * It holds information about the client auch as the name or the lobby to which it connects.
+ * It handles the receiving of packets from the client by validating and decoding them.
+ */
 
 public class ClientThread implements Runnable {
 
@@ -76,7 +82,7 @@ public class ClientThread implements Runnable {
       if (cur == ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE) {
         startingToRecordMessage = false;
         String message = builder.toString();
-        System.out.println("server received: " + message);
+        logger.info("server received: " + message);
         //PacketHandler.pushMessage(message);
         builder.setLength(0);
 
@@ -86,12 +92,16 @@ public class ClientThread implements Runnable {
         try {
           AbstractPacket receivedPacket = AbstractPacket.getPacketByMessage(message);
           if (receivedPacket == null) {
-            System.out.println("The received packet contains garbage.");
+            logger.debug("The received packet contains garbage.");
             break;
           }
+          try {
           receivedPacket.decode(this, message);
+          } catch (Exception e) {
+            logger.fatal("While decoding the message there was a critical error!", e);
+          }
         } catch (Exception e) {
-          e.printStackTrace();
+          logger.error(e.getMessage());
         }
       }
       // This will read the whole message into the builder.
@@ -107,7 +117,7 @@ public class ClientThread implements Runnable {
     try {
       socket.close();
     } catch (IOException e) {
-      e.printStackTrace();
+      logger.error(e.getMessage());
     }
   }
 
@@ -166,7 +176,6 @@ public class ClientThread implements Runnable {
    * @param msg          message that is sent preceded by the name of the sender
    */
   public void pushWhisperToAClient(String receiverName, String msg) {
-
     for (ClientThread clientThread : Server.getClientThreads()) {
       if (clientThread.getPlayerName().equals(receiverName)) {
         (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Whisper()).encodeWithContent(playerName, msg));
@@ -201,7 +210,6 @@ public class ClientThread implements Runnable {
         }
       }
     }
-
   }
 
   /**
@@ -210,6 +218,21 @@ public class ClientThread implements Runnable {
   public void updatePlayersAboutMapChanges() {
     for (ClientThread clientThread : this.connectedLobby.getListOfClients()) {
       (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Update()).encodeWithContent(clientThread.getConnectedLobby().gameMap.cellStrings()));
+    }
+  }
+  /**
+   * Sends an AddBot packet to all the Clients informing them about a new Robot in the lobby.
+   * @param botName the new Robots name.
+   */
+  public void updatePlayerAboutANewBot(String botName) {
+    for (ClientThread clientThread : this.connectedLobby.getListOfClients()) {
+      (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new AddBot()).encodeWithContent(botName));
+    }
+  }
+
+  public void updateLobbyAboutSettingChange (String content) {
+    for (ClientThread clientThread : this.connectedLobby.getListOfClients()) {
+      (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new ServerSettingsPacket()).encodeWithContent(content));
     }
   }
 
@@ -230,13 +253,12 @@ public class ClientThread implements Runnable {
    */
   public void addRobot() {
     Robot robot = new Robot();
-    robot.setID(this.playerID);
     robot.setOwner(getPlayerName());
     int height = connectedLobby.gameMap.getGameMapSize()[1];
-//    robot.setPosition(0, (int) (Math.random() * height));
-    robot.setPosition(0, 0);
+    robot.setPosition(0, (int) (Math.random() * height));
+    robot.setID(this.getRobots().size());
     this.getRobots().add(robot);
-    this.getConnectedLobby().gameMap.getCellArray()[robot.getPosition()[0]][robot.getPosition()[1]].place(robot);
+    this.getConnectedLobby().gameMap.placeObjectOnMap(robot, robot.getPosition());
   }
 
   /**
@@ -304,6 +326,10 @@ public class ClientThread implements Runnable {
   public void setCurrentGameMap(GameMap currentGameMap) {
     this.currentGameMap = currentGameMap;
 //        currentGameMap.printMapToConsole();
+  }
+
+  public void setRobots (ArrayList<Robot> robots) {
+    this.robots = robots;
   }
 
   public ArrayList<Robot> getRobots() {

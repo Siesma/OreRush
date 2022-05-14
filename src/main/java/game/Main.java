@@ -1,26 +1,34 @@
 package game;
 
+import com.sun.javafx.runtime.VersionInfo;
 import game.gui.ClientApp;
 import game.server.Server;
 import javafx.application.Application;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-
+/**
+ * Main class of the program
+ * to be launched with arguments: client hostAddress:port [username] | server port
+ * Depending on the arguments it either launches a server or a client
+ */
 public class Main {
+    public static final Logger logger = LogManager.getLogger(Main.class);
     public static String hostAddress;
     public static String port;
     public static String name;
 
     public static void main(String[] args) {
         if (args.length == 0) {
-            System.out.println("Error: Missing arguments.");
-            System.out.println("To launch the program following command line parameters are expected:");
-            System.out.println("client <hostAddress>:<port> [<username>] | server <port>");
+            logger.info("Error: Missing arguments.");
+            logger.info("To launch the program following command line parameters are expected:");
+            logger.info("client <hostAddress>:<port> [<username>] | server <port>");
             System.exit(1);
         } else if (args.length > 3) {
-            System.out.println("Error: Too many arguments.");
-            System.out.println("To launch the program following command line parameters are expected:");
-            System.out.println("client <hostAddress>:<port> [<username>] | server <port>");
-            System.out.println("The username can't contain spaces.");
+            logger.info("Error: Too many arguments.");
+            logger.info("To launch the program following command line parameters are expected:");
+            logger.info("client <hostAddress>:<port> [<username>] | server <port>");
+            logger.info("The username can't contain spaces.");
             System.exit(1);
         }
         try {
@@ -40,18 +48,18 @@ public class Main {
                 Application.launch(ClientApp.class);
 
             } else {
-                System.out.println("Error: Wrong first argument.");
-                System.out.println("The first argument is expected to be \"server\" or \"client\"");
+                logger.info("Error: Wrong first argument.");
+                logger.info("The first argument is expected to be \"server\" or \"client\"");
                 for (String s : args) {
-                    System.out.println(s);
+                    logger.info(s);
                 }
                 System.exit(1);
             }
         } catch (Exception e) {
-            System.out.println("Error: Wrong arguments.");
-            System.out.println("To launch the program following command line parameters are expected:");
-            System.out.println("client <hostAddress>:<port> [<username>] | server <port>");
-            e.printStackTrace();
+            logger.error("Error: Wrong arguments.");
+            logger.error("To launch the program following command line parameters are expected:");
+            logger.error("client <hostAddress>:<port> [<username>] | server <port>");
+            logger.error(e.getMessage());
         }
     }
 }

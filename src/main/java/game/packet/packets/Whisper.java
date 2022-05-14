@@ -4,9 +4,15 @@ import game.client.InputStreamThread;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
+import javafx.application.Platform;
 
 import java.util.Scanner;
-
+/**
+ * class representing the NICKNAME packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * This Packet is used by a client to send a message to a specific client
+ */
 public class Whisper extends AbstractPacket{
 
     public Whisper() {
@@ -42,7 +48,7 @@ public class Whisper extends AbstractPacket{
      */
     @Override
     public String encode() {
-        System.out.println("whisper-message:");
+        logger.info("whisper-message:");
         return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
                 this.name +
                 (char) ServerConstants.DEFAULT_PACKET_SPACER +
@@ -71,7 +77,7 @@ public class Whisper extends AbstractPacket{
                 obj.pushWhisperToAClient(obj.getPlayerName(), message);
                 obj.pushWhisperToAClient(name, message);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
         }
         if(parent instanceof InputStreamThread) {
@@ -79,7 +85,10 @@ public class Whisper extends AbstractPacket{
             if (obj.getClient().getLobbyInClient() != null) {
                 obj.getClient().getLobbyInClient().setLastChatMessage(name + " (whisper): " + message + "\n");
             }
-            obj.getClient().setLastChatMessage(name + " (whisper): " + message + "\n");
+            String finalMessage = message;
+            Platform.runLater(() -> {
+                obj.getClient().lastChatMessageProperty().setValue(name + " (whisper): " + finalMessage + "\n");
+            });
         }
     }
 }

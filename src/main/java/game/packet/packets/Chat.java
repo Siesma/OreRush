@@ -4,10 +4,16 @@ import game.client.InputStreamThread;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
+import javafx.application.Platform;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
-
+/**
+ * class representing the Chat packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * The Chat packet is used to send a message to all clients in start menus
+ */
 public class Chat extends AbstractPacket {
 
 
@@ -41,7 +47,7 @@ public class Chat extends AbstractPacket {
    */
   @Override
   public String encode() {
-    System.out.println("Chat-message:");
+    logger.info("Chat-message:");
     return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
       this.name +
       (char) ServerConstants.DEFAULT_PACKET_SPACER +
@@ -63,12 +69,16 @@ public class Chat extends AbstractPacket {
       try {
         obj.pushChatMessageToAllClients(message);
       } catch (Exception e) {
-        e.printStackTrace();
+        logger.error(e.getMessage());
       }
     }
     if(parent instanceof InputStreamThread) {
       InputStreamThread obj = (InputStreamThread) parent;
-      obj.getClient().setLastChatMessage(message + "\n");
+      String finalMessage = message;
+      Platform.runLater(() -> {
+        obj.getClient().lastChatMessageProperty().setValue(finalMessage + "\n");
+      });
+
     }
   }
 }

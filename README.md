@@ -1,4 +1,3 @@
-
 <h3 align="center">Ore-Rush</h3>
 
   <p align="center">
@@ -51,6 +50,7 @@ The following libraries are used:
 * [Gradle](https://gradle.org/)
 * [JavaFX](https://openjfx.io/)
 * [Log4J](https://logging.apache.org/log4j/2.x/)
+* [Mockinto](https://site.mockito.org/)
 
 ## Getting Started
 

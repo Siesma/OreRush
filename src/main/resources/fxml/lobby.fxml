@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
 
-<AnchorPane prefHeight="728.0" prefWidth="1031.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.gui.LobbyController">
+<AnchorPane fx:id="anchorPane" prefHeight="728.0" prefWidth="1031.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.gui.LobbyController" onKeyPressed="#onKeyPressedAnchorPane">
     <children>
         <HBox prefHeight="728.0" prefWidth="1031.0">
             <children>
                 <VBox prefHeight="728.0" prefWidth="232.0">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#handleStartGame" prefHeight="25.0" prefWidth="148.0" text="Start Game" />
+                        <Button fx:id="startGameButton" mnemonicParsing="false" onAction="#handleStartGame" prefHeight="39.0" prefWidth="148.0" text="Start Game" />
+                  <Label fx:id="turnInfoLabel" prefHeight="17.0" prefWidth="187.0" text="Turn info" />
+                  <Label fx:id="playerTurnLabel" prefHeight="17.0" prefWidth="173.0" text="Player info" />
                         <TableView fx:id="playerTableView" prefHeight="200.0" prefWidth="200.0">
                             <columns>
                                 <TableColumn fx:id="nicknameColumn" prefWidth="75.0" text="Player" />
@@ -33,8 +49,108 @@
                 <Pane fx:id="mapPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="728.0" prefWidth="572.0">
                     <children>
                         <GridPane fx:id="mapGridPane" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="728.0" prefWidth="572.0">
-
-                        </GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                     </rowConstraints>
+                     <children>
+                        <VBox fx:id="vBoxServerSettings" prefHeight="728.0" prefWidth="727.0">
+                           <children>
+                              <HBox prefHeight="40.0" prefWidth="572.0">
+                                 <children>
+                                    <Slider fx:id="sliderNumberOfRobots" blockIncrement="1.0" majorTickUnit="2.0" max="8.0" minorTickCount="1" onMouseReleased="#onMouseReleasedNumberOfRobots" prefHeight="40.0" prefWidth="137.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="2.0" />
+                                    <Label fx:id="labelNumberOfRobots" prefHeight="40.0" prefWidth="439.0" text="Number of Robots">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="40.0" prefWidth="572.0">
+                                 <children>
+                                    <Slider fx:id="sliderMapWidth" blockIncrement="1.0" majorTickUnit="10.0" max="50.0" minorTickCount="1" onMouseReleased="#onMouseReleasedMapWidth" prefHeight="40.0" prefWidth="137.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="30.0" />
+                                    <Label fx:id="labelMapWidth" prefHeight="40.0" prefWidth="439.0" text="Map Width">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="40.0" prefWidth="572.0">
+                                 <children>
+                                    <Slider fx:id="sliderMapHeight" blockIncrement="1.0" majorTickUnit="10.0" max="30.0" minorTickCount="1" onMouseReleased="#onMouseReleasedMapHeight" prefHeight="40.0" prefWidth="137.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="15.0" />
+                                    <Label fx:id="labelMapHeight" prefHeight="40.0" prefWidth="439.0" text="Map height">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="40.0" prefWidth="572.0">
+                                 <children>
+                                    <Slider fx:id="sliderTurnsPerPlayer" blockIncrement="5.0" majorTickUnit="50.0" max="200.0" minorTickCount="1" onMouseReleased="#onMouseReleasedTurnsPerPlayer" prefHeight="40.0" prefWidth="137.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
+                                    <Label fx:id="labelTurnsPerPlayer" prefHeight="40.0" prefWidth="439.0" text="Turns per Player">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="40.0" prefWidth="572.0">
+                                 <children>
+                                    <Slider fx:id="sliderOreDensity" blockIncrement="0.1" majorTickUnit="0.5" max="2.0" minorTickCount="1" onMouseReleased="#onMouseReleasedOreDensity" prefHeight="40.0" prefWidth="137.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
+                                    <Label fx:id="labelOreDensity" prefHeight="40.0" prefWidth="439.0" text="Ore Density">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="40.0" prefWidth="572.0">
+                                 <children>
+                                    <Slider fx:id="sliderMaxAllowedMoves" blockIncrement="1.0" majorTickUnit="2.0" max="8.0" min="1.0" minorTickCount="1" onMouseReleased="#onMouseReleasedMaxAllowedMoves" prefHeight="40.0" prefWidth="137.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="4.0" />
+                                    <Label fx:id="labelMaxAllowedMoves" prefHeight="40.0" prefWidth="439.0" text="Max allowed Moves">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="40.0" prefWidth="572.0">
+                                 <children>
+                                    <Slider fx:id="sliderRadarDistance" blockIncrement="1.0" majorTickUnit="2.0" max="10.0" minorTickCount="1" onMouseReleased="#onMouseReleasedRadarDistance" prefHeight="40.0" prefWidth="137.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="4.0" />
+                                    <Label fx:id="labelRadarDistance" prefHeight="40.0" prefWidth="439.0" text="Radar Distance">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="40.0" prefWidth="572.0">
+                                 <children>
+                                    <Slider fx:id="sliderMaxClusterSize" blockIncrement="1.0" majorTickUnit="2.0" max="10.0" minorTickCount="1" onMouseReleased="#onMouseReleasedMaxClusterSize" prefHeight="40.0" prefWidth="137.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="4.0" />
+                                    <Label fx:id="labelMaxClusterSize" prefHeight="40.0" prefWidth="439.0" text="Max Cluster Size">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="40.0" prefWidth="572.0">
+                                 <children>
+                                    <Slider fx:id="sliderOreThreshold" blockIncrement="0.125" majorTickUnit="0.5" max="1.0" minorTickCount="1" onMouseReleased="#onMouseReleasedOreThreshold" prefHeight="40.0" prefWidth="137.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="0.75" />
+                                    <Label fx:id="labelOreThreshold" prefHeight="40.0" prefWidth="439.0" text="Ore Threshold">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children></GridPane>
                     </children>
                 </Pane>
 

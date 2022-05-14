@@ -7,7 +7,12 @@ import game.helper.MathHelper;
 import game.packet.AbstractPacket;
 import game.server.ClientThread;
 import game.server.ServerConstants;
-
+/**
+ * class representing the Move packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * This Packet is used by a client to indicate the robot action he wants to perform during his turn
+ */
 public class Move extends AbstractPacket {
 
 
@@ -50,8 +55,8 @@ public class Move extends AbstractPacket {
       ClientThread obj = (ClientThread) parent;
       // check if the player that tries to a turn is the one who can make a turn.
       if (obj.getConnectedLobby().turnOfPlayer() != obj.getConnectedLobby().getIDOfClient(obj)) {
-        System.out.println("Player " + obj.getPlayerName() + " tried to make a turn but its not their turn.");
-        System.out.println("Ignoring this turn attempt.");
+        logger.info("Player " + obj.getPlayerName() + " tried to make a turn but its not their turn.");
+        logger.info("Ignoring this turn attempt.");
         return;
       }
       // splits the incoming singular information into an array.
@@ -87,6 +92,8 @@ public class Move extends AbstractPacket {
         // if the distance is too big for a valid "dig" or "request" action it will revert it to a move action.
         Robot rob = obj.getRobots().get(id);
         int[] result = MathHelper.getNextMove(rob.getPosition(), new int[]{x, y}, obj.getConnectedLobby().getServerSettings());
+        result[0] = MathHelper.clamp(result[0], 0, obj.getConnectedLobby().getServerSettings().getMapWidth());
+        result[1] = MathHelper.clamp(result[1], 0, obj.getConnectedLobby().getServerSettings().getMapHeight());
         if (MathHelper.absoluteCellDistance(rob.getPosition(), result) > 1) {
           action = RobotAction.Move;
         }
@@ -96,34 +103,34 @@ public class Move extends AbstractPacket {
           }
         }
 
-        obj.getRobots().get(id).setID(id);
+        rob.setID(id);
         // sets the unique owner of the robot to the StringName of the corresponding clientthread.
-        obj.getRobots().get(id).setOwner(obj.getPlayerName());
+        rob.setOwner(obj.getPlayerName());
         // checks if the robot is dead, and if so will not continue performing the action.
-        if (obj.getRobots().get(id).isDead()) {
+        if (rob.isDead()) {
           continue;
         }
-        obj.getRobots().get(id).setRobotAction(action);
+        rob.setRobotAction(action);
         // sets a default value for the inventory.
         // this is mainly so that no NullPointerExceptions are prevented.
-        if (obj.getRobots().get(id).getInventory() == null) {
-          obj.getRobots().get(id).loadInventory(new Nothing());
+        if (rob.getInventory() == null) {
+          rob.loadInventory(new Nothing());
         }
         // sets the object from the original position to the new position.
-        obj.getConnectedLobby().getGameMap().replaceObject(obj.getRobots().get(id), result);
+        obj.getConnectedLobby().getGameMap().replaceObject(rob, result);
         // if an action is being used that involves the inventory it will try to update it.
         if (action == RobotAction.Dig || action == RobotAction.RequestRadar || action == RobotAction.RequestTrap) {
           logger.debug("The robot tries to update their inventory.");
-          logger.debug(obj.getRobots().get(id).getInventory().toString());
+          logger.debug(rob.getInventory().toString());
         }
 
-        obj.getRobots().get(id).setAction(action, result, gameObject);
+        rob.setAction(action, result, gameObject);
         // checks if the score is supposed to be increased.
         // also reverts the inventory to "Nothing" if the ore is counted towards the score.
-        if (obj.getRobots().get(id).getInventory() instanceof Ore) {
-          if (obj.getRobots().get(id).getPosition()[0] == 0) {
-            obj.setPlayerScore(obj.getPlayerScore() + ((Ore) obj.getRobots().get(id).getInventory()).getOreType().getValue());
-            obj.getRobots().get(id).loadInventory(new Nothing());
+        if (rob.getInventory() instanceof Ore) {
+          if (rob.getPosition()[0] == 0) {
+            obj.setPlayerScore(obj.getPlayerScore() + ((Ore) rob.getInventory()).getOreType().getValue());
+            rob.loadInventory(new Nothing());
           }
         }
       }

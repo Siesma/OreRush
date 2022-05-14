@@ -9,23 +9,26 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.OutputStream;
 
-
+/**
+ * The Pong thread is responsible for sending pong packets to the server and
+ * shutdown the client if the connection is lost
+ */
 public class PongThread implements Runnable {
 
     private final Client client;
-    public static final Logger logger = LogManager.getLogger(Server.class);
+    public static final Logger logger = LogManager.getLogger(PongThread.class);
 
     public PongThread(Client client) {
         this.client = client;
     }
     public void run() {
-        System.out.println("Pong thread started");
+        logger.info("Pong thread started");
         while (true) {
             sendPong();
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
             if (!client.isPongReceived()) {
                 logger.error("No response from the server, The client will shutdown shortly.");
@@ -34,9 +37,9 @@ public class PongThread implements Runnable {
                 client.setPongReceived(false);
             }
             try {
-                Thread.sleep(120000);
+                Thread.sleep(12000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
         }
     }

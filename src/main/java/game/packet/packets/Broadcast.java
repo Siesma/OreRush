@@ -6,9 +6,15 @@ import game.packet.PacketHandler;
 import game.server.ClientThread;
 import game.server.Server;
 import game.server.ServerConstants;
+import javafx.application.Platform;
 
 import java.util.Scanner;
-
+/**
+ * class representing the Broadcast packet.
+ * Implementation of the AbstractPacket.
+ * Contains a constructor and methods to encode and decode the packet.
+ * The Broadcast packet is used to send a chat message accross startmenus and lobbys of all clients
+ */
 public class Broadcast extends AbstractPacket {
 
 
@@ -41,7 +47,7 @@ public class Broadcast extends AbstractPacket {
      */
     @Override
     public String encode() {
-        System.out.println("Broadcast-message:");
+        logger.info("Broadcast-message:");
         return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
                 this.name +
                 (char) ServerConstants.DEFAULT_PACKET_SPACER +
@@ -67,9 +73,15 @@ public class Broadcast extends AbstractPacket {
         }
         if(parent instanceof InputStreamThread) {
             InputStreamThread obj = (InputStreamThread) parent;
-            obj.getClient().setLastChatMessage(message + "\n");
+            String finalMessage = message;
+            Platform.runLater(() -> {
+                obj.getClient().lastChatMessageProperty().setValue(finalMessage + "\n");
+            });
             if (obj.getClient().getLobbyInClient() != null) {
-                obj.getClient().getLobbyInClient().setLastChatMessage(message + "\n");
+
+                Platform.runLater(() -> {
+                    obj.getClient().getLobbyInClient().lastChatMessageProperty().setValue(finalMessage + "\n");
+                });
             }
         }
     }

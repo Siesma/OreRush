@@ -1,5 +1,9 @@
 package game.server;
 
+/**
+ * Class containing the constants used in the project.
+ * It holds the AScii character for the network protocol.
+ */
 public class ServerConstants {
     public static int DEFAULT_PORT = 1038;
 

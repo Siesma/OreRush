@@ -46,20 +46,12 @@ public class Ore implements GameObject {
 
   @Override
   public String encodeToString() {
-    String s = "Ore:" + this.oreType.ordinal();
+    String s = "Ore:" + this.oreType.ordinal() + ":" + this.owner;
     return s;
   }
 
   public OreType getOreType() {
     return this.oreType;
-  }
-
-  @Override
-  public void fillGameObjectWithData(String... data) {
-    oreType = OreType.valueOf(data[1]);
-    xCoordinate = Integer.parseInt(data[2]);
-    yCoordinate = Integer.parseInt(data[3]);
-    amount = Integer.parseInt(data[4]);
   }
 
   /**

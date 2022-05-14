@@ -9,14 +9,16 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.*;
-
+/**
+ * Abstract packet used by all packets
+ */
 public abstract class AbstractPacket {
 
   protected final String name;
   private final String help;
   private final String[] parts;
   private final String response;
-  public static final Logger logger = LogManager.getLogger(Server.class);
+  public static final Logger logger = LogManager.getLogger(AbstractPacket.class);
 
   public AbstractPacket(String help, String[] parts, String response) {
     String[] temp = this.getClass().toString().split("\\.");
@@ -87,7 +89,7 @@ public abstract class AbstractPacket {
    * @param message the string that should be manipulated
    * @return the manipulated string
    */
-  protected static String replaceIndicatorChars(String message) {
+  public static String replaceIndicatorChars(String message) {
     message = message.replace(String.valueOf((char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE), "");
     message = message.replace(String.valueOf((char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE), "");
     return message;

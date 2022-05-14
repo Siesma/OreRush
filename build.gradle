@@ -39,7 +39,9 @@ dependencies {
     This is another example - it imports the javafx-controls dependency
      */
     implementation 'org.openjfx:javafx-controls:11.0.2'
-
+    implementation 'junit:junit:3.8.2'
+    implementation 'org.mockito:mockito-core:4.5.1'
+    implementation 'junit:junit:4.13.1'
     // JUNIT
     /*
     The following dependency is required to perform JUnit tests, as for example HelloWorldTest.
@@ -51,6 +53,12 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+//test {
+//    useJUnit {
+//        includeCategories 'src.test.java'
+//    }
+//}
 
 /*
 The following block adds both compile and runtime dependencies to the jar
@@ -75,4 +83,5 @@ javadoc {
 tasks.register('build-cs108') {
     dependsOn jar
     dependsOn javadoc
+    dependsOn test
 }

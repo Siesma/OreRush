@@ -1,5 +1,9 @@
 package game.datastructures;
 
+/**
+ * Interface for all game objects, Ore, Robot, Radar, Trap.
+ *
+ */
 public interface GameObject {
 
     void setID(int id);
@@ -24,13 +28,6 @@ public interface GameObject {
      * @return The encoded string that holds all the information of the robot
      */
     String encodeToString();
-
-    /**
-     * This function will fill the GameObjects information based on a string from a packet
-     *
-     * @param data the received string corresponding to the GameObject
-     */
-    void fillGameObjectWithData(String... data);
 
     String getOwner();
 

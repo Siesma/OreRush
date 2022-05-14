@@ -74,6 +74,9 @@ public class Robot implements GameObject {
     if (!(optionalInventoryChange instanceof GameObject)) {
       return;
     }
+    if(this.getPosition()[0] != 0) {
+      return;
+    }
     switch (robotAction) {
       case RequestTrap:
       case RequestRadar:
@@ -119,9 +122,9 @@ public class Robot implements GameObject {
    */
   public String encodeToString() {
     if(this.inventory == null) {
-      return "Robot:" + this.playerID;
+      return "Robot:" + this.playerID + ":" + this.owner;
     }
-    String encodedRobot = "Robot:" + this.playerID + ":" + inventory.encodeToString();
+    String encodedRobot = "Robot:" + this.playerID + ":" + this.owner + ":" + inventory.encodeToString();
     return encodedRobot;
   }
 
@@ -134,39 +137,6 @@ public class Robot implements GameObject {
   @Override
   public void setOwner(String nameOfOwner) {
     this.owner = nameOfOwner;
-  }
-  @Override
-  /**
-   *
-   */
-  public void fillGameObjectWithData(String... data) {
-    if (data.length == 1) {
-      data = AbstractPacket.splitMessageBySpacer(data[0], String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER));
-    }
-    setPosition(Integer.parseInt(data[1]), Integer.parseInt(data[2]));
-    try {
-      String[] encodedGameObjectArray = new String[data.length - 3];
-      for (int i = 3; i < data.length; i++) {
-        encodedGameObjectArray[i] = data[i];
-      }
-      GameObject inventoryObject = parseInventoryObjectFromString(encodedGameObjectArray);
-
-      loadInventory(inventoryObject);
-    } catch (Exception e) {
-      //TODO: Figure out what to do in this case
-    }
-  }
-
-  private GameObject parseInventoryObjectFromString(String[] encodedGameObjectArray) throws Exception {
-    // Same algorithm but having new possible items is just as easy as with the packets!
-    // it is also easier to maintain and less code in general
-    Object obj = (new FileHelper()).createNewInstanceFromName(MapType.GameObjects, "");
-    if (!(obj instanceof GameObject)) {
-      return null;
-    }
-    GameObject gameObject = (GameObject) obj;
-    gameObject.fillGameObjectWithData(AbstractPacket.removeFirstElement(encodedGameObjectArray));
-    return gameObject;
   }
 
   public boolean isDead() {
@@ -185,5 +155,9 @@ public class Robot implements GameObject {
 
   public void setDead(boolean isDead) {
     this.isDead = isDead;
+  }
+
+  public int getId() {
+    return this.playerID;
   }
 }
