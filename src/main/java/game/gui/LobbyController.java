@@ -290,7 +290,7 @@ public class LobbyController {
         }
         int xMax = currentGameMap.getGameMapSize()[0];
         int yMax = currentGameMap.getGameMapSize()[1];
-        int mapPixel = 500;
+        int mapPixel = 750;
         int cellSize = Math.min(mapPixel / xMax, mapPixel / yMax);
         for (int x = 0; x < xMax; x++) {
           for (int y = 0; y < yMax; y++) {
@@ -303,6 +303,11 @@ public class LobbyController {
             String type;
             Image image = null;
             Cell currentCell = currentGameMap.getCellArray()[x][y];
+            try {
+              image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Stone Floor.png")));
+            } catch (Exception e) {
+              logger.error("The file \"Stone Floor.png\" does not exist.");
+            }
             if (currentCell.robotsOnCell() != null) { //TODO: differentiate robot owner
               try {
                 if (currentCell.robotsOnCell().get(0).getOwner().equals(this.client.getNickname())) {
