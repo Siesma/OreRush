@@ -165,7 +165,6 @@ public class GameMap {
     double fx = MathHelper.exponential(a, b, xw, c, d);
     double shiftFactor = (((r + 1) + d)) / (Math.abs(xw - d));
     return MathHelper.clamp((int) Math.floor(Math.abs((fx - shiftFactor) / (Math.abs(xw - d)) * (inverseN))), 0, n - 1);
-
   }
 
   /**

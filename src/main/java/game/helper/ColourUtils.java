@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class ColourUtils {
   private static final long RAND_SEED = 0;
-  private static Random rand = new Random(RAND_SEED);
+  private static Random rand = new Random();
 
   /**
    *
@@ -18,7 +18,7 @@ public class ColourUtils {
    * @return an Array of visually distinct colours
    */
   public static Color[] getRandomColours(int amount) {
-    rand.setSeed(RAND_SEED);
+//    rand.setSeed(RAND_SEED);
     float[][] yuvColours = new float[amount][3];
     for (int i = 0; i < amount; i++) {
       System.arraycopy(randomColour(), 0, yuvColours[i], 0, 3);
