@@ -15,12 +15,28 @@ import java.util.ArrayList;
  * This class stores the information of the game-board, it's size and the objects on it.
  */
 public class GameMap {
+  /**
+   * An array holding the width (at: 0) and the height (at: 1) of the map
+   */
   private int[] gameMapSize = new int[2];
+  /**
+   * The array of cells that will hold the game object on the game map
+   */
   private Cell[][] cellArray;
-
+  /**
+   * Hold the game settings of the game, the Game Map is used in
+   */
   private ServerSettings serverSettings;
+  /**
+   * Log4j logger that allows great, clear and useful logging of information and errors
+   * instead of the ugly commandline prints
+   */
   public static final Logger logger = LogManager.getLogger(GameMap.class);
 
+  /**
+   * Constructor of the GameMap.
+   * @param serverSettings game settings of the game, the Game Map is used in
+   */
   public GameMap(ServerSettings serverSettings) {
     this.gameMapSize[0] = serverSettings.getMapWidth();
     this.gameMapSize[1] = serverSettings.getMapHeight();
@@ -51,7 +67,6 @@ public class GameMap {
    * <p>
    * oreSpawnLikelyhood a value from 0 to 1. The higher the number is, the more ores spawn
    */
-  //TODO: Make this spawn more valuable ores at higher X Values
   public void spawnOreInMap() {
     float oreSpawnLikelyhood = serverSettings.getOreDensity();
     float threshold = serverSettings.getOreThreshold();
@@ -315,10 +330,6 @@ public class GameMap {
     }
   }
 
-  public static String fixedLengthString(String string, int length) {
-    return String.format("%1$" + length + "s", string);
-  }
-
   /**
    * Returns an array of Strings that is used to make the update packet.
    *
@@ -401,6 +412,10 @@ public class GameMap {
     }
   }
 
+  /**
+   * Getter for the Game Map size
+   * @return the size of the Game Map
+   */
   public int[] getGameMapSize() {
     return gameMapSize;
   }
@@ -522,10 +537,18 @@ public class GameMap {
     return newMap;
   }
 
+  /**
+   * Setter for the Cell array
+   * @param array the new cell array
+   */
   public void setCellArray(Cell[][] array) {
     this.cellArray = array;
   }
 
+  /**
+   * Getter for the Cell array
+   * @return the cell array
+   */
   public Cell[][] getCellArray() {
     return cellArray;
   }

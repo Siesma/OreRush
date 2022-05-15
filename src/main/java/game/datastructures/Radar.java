@@ -7,19 +7,34 @@ package game.datastructures;
  * Player who placed the radar
  */
 public class Radar implements GameObject {
+    /**
+     * The X coordinate of the Radar
+     */
     private int xCoordinate;
+    /**
+     * The Y coordinate of the Radar
+     */
     private int yCoordinate;
+    /**
+     * The ID of the player who owns this Radar
+     */
     private int playerID;
-
+    /**
+     * The name of the player who owns this Radar
+     */
     private String owner;
 
-  /**
-   * Default constructor to set the owner of this type as an empty string.
-   */
-  public Radar () {
+    /**
+     * Default constructor to set the owner of this type as an empty string.
+     */
+    public Radar () {
     this.owner = "";
   }
 
+    /**
+     * Setter for the ID
+     * @param id the new ID
+     */
     @Override
     public void setID(int id) {
         this.playerID = id;
@@ -63,12 +78,20 @@ public class Radar implements GameObject {
         this.playerID = playerID;
     }
 
+    /**
+     * Encodes the Radar Object into a string
+     * @return the encoded Radar as a string
+     */
     @Override
     public String encodeToString() {
         String s = "Radar:" + playerID + ":" + this.owner;
         return s;
     }
 
+    /**
+     * TODO: How is this different than encodeToString? Artefact?
+     * @return
+     */
     @Override
     public String toString() {
         return "Radar:" + this.playerID;

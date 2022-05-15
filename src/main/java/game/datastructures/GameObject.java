@@ -6,6 +6,10 @@ package game.datastructures;
  */
 public interface GameObject {
 
+    /**
+     * Setter for the Game Object ID
+     * @param id the new ID
+     */
     void setID(int id);
 
     /**
@@ -29,6 +33,10 @@ public interface GameObject {
      */
     String encodeToString();
 
+    /**
+     * Getter for the owner of the Game Object.
+     * @return Game Object owner
+     */
     String getOwner();
 
     /**

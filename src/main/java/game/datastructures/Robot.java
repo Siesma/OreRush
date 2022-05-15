@@ -12,16 +12,33 @@ import game.server.ServerConstants;
  * Inventory
  */
 public class Robot implements GameObject {
+  /**
+   * The X coordinate of the Radar
+   */
   private int xCoordinate;
+  /**
+   * The Y coordinate of the Radar
+   */
   private int yCoordinate;
+  /**
+   * The GameObject currently carried by the Robot
+   */
   private GameObject inventory;
-
+  /**
+   * Flag weather the robot is dead or not
+   */
   private boolean isDead = false;
-
+  /**
+   * The set Robot Action
+   */
   private RobotAction robotAction = RobotAction.Wait;
-
+  /**
+   * The ID of the player that owns the robot
+   */
   private int playerID;
-
+  /**
+   * The name of the player that owns the robot
+   */
   private String owner;
 
   /**
@@ -31,11 +48,19 @@ public class Robot implements GameObject {
     this.owner = "";
   }
 
+  /**
+   * Setter for the ID
+   * @param id the new ID
+   */
   @Override
   public void setID(int id) {
     this.playerID = id;
   }
 
+  /**
+   * Setter for the robot's RobotAction
+   * @param robotAction the new RobotAction
+   */
   public void setRobotAction(RobotAction robotAction) {
     this.robotAction = robotAction;
   }
@@ -51,6 +76,10 @@ public class Robot implements GameObject {
     yCoordinate = y;
   }
 
+  /**
+   * Getter of the robot's action
+   * @return
+   */
   public RobotAction getRobotAction() {
     return robotAction;
   }
@@ -85,6 +114,12 @@ public class Robot implements GameObject {
     }
   }
 
+  /**
+   * TODO: What? This funcion calls itself? But why?
+   * @param robotAction TODO
+   * @param xy TODO
+   * @param optionalInventoryChange TODO
+   */
   public void setAction (RobotAction robotAction, int[] xy, Object optionalInventoryChange) {
     this.setAction(robotAction, xy[0], xy[1], optionalInventoryChange);
   }
@@ -139,6 +174,10 @@ public class Robot implements GameObject {
     this.owner = nameOfOwner;
   }
 
+  /**
+   * Getter to check if the robot is dead
+   * @return True if dead, false if not
+   */
   public boolean isDead() {
     return isDead;
   }
@@ -152,11 +191,18 @@ public class Robot implements GameObject {
     return owner;
   }
 
-
+  /**
+   * Setter to change the Robot's state.
+   * @param isDead the new state the robot is supposed to be in
+   */
   public void setDead(boolean isDead) {
     this.isDead = isDead;
   }
 
+  /**
+   * Getter for the player ID
+   * @return the player ID
+   */
   public int getId() {
     return this.playerID;
   }
