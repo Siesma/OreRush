@@ -112,6 +112,10 @@ public class Lobby {
     return -1;
   }
 
+  public void endGame () {
+      this.turnCounter = serverSettings.getNumberOfRounds() * listOfClients.size();
+      checkGameEnd();
+  }
 
   public String getLobbyName() {
     return lobbyName;

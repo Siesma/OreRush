@@ -136,6 +136,7 @@ public class LobbyController {
 
   private Color[] colours;
 
+
   /**
    * Initializes the controller class. This method is automatically called
    * after the fxml file has been loaded.
@@ -269,15 +270,86 @@ public class LobbyController {
         if (gameObject instanceof Nothing) {
           continue;
         }
-        Label label = new Label();
-        label.setText(gameObject.encodeToString());
-        cellPreview.getChildren().add(label);
+        HBox box = new HBox();
+        Label label = new Label(getObjectDisplayString(gameObject));
+        Pane pane = getObjectPreviewPane(gameObject);
+        label.setPrefHeight(pane.getHeight());
+        label.setPadding(new Insets(pane.getHeight() / 4));
+        box.getChildren().add(pane);
+        box.getChildren().add(label);
+//        label.setText(gameObject.encodeToString());
+        cellPreview.getChildren().add(box);
       }
     }
 
 
     hBox.getChildren().addAll(movePreview, cellPreview);
     return hBox;
+  }
+
+
+  /**
+   * @param gameObject the gameObject for which a pane is being created
+   * @return a Pane object that contains the image of the GameObject in question
+   */
+  public Pane getObjectPreviewPane(GameObject gameObject) {
+    Pane out = new Pane();
+    if (gameObject instanceof Radar) {
+      try {
+        out.getChildren().add(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Radar.png")))));
+      } catch (Exception e) {
+        logger.error("The file \"Radar.png\" does not exist.");
+      }
+    } else if (gameObject instanceof Trap) {
+      try {
+        out.getChildren().add(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Trap.png")))));
+      } catch (Exception e) {
+        logger.error("The file \"Trap.png\" does not exist.");
+      }
+    } else if (gameObject instanceof Ore) {
+      String oreType = currentGameMap.getCellArray()[xClicked][yClicked].oreOnCell().get(0).getOreType().name();
+      try {
+        out.getChildren().add(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/" + oreType + " Ore.png")))));
+      } catch (Exception e) {
+        logger.error("The file \"" + oreType + " Ore.png\" does not exist.");
+      }
+    } else if (gameObject instanceof Robot) {
+      try {
+        out.getChildren().add(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Robot.png")))));
+      } catch (Exception e) {
+        logger.error("The file \"Robot.png\" does not exist.");
+      }
+    }
+    return out;
+  }
+
+
+  public String getObjectDisplayString(GameObject gameObject) {
+    StringBuilder stringBuilder = new StringBuilder();
+
+    if (gameObject instanceof Radar) {
+      Radar radar = (Radar) gameObject;
+      stringBuilder.append("Owner: ").append(radar.getOwner());
+    } else if (gameObject instanceof Trap) {
+      Trap trap = (Trap) gameObject;
+      stringBuilder.append("Owner: ").append(trap.getOwner());
+    } else if (gameObject instanceof Ore) {
+      Ore ore = (Ore) gameObject;
+      stringBuilder.append("Type: ").append(ore.getOreType().name()).append(", Value: ").append(ore.getOreType().getValue());
+    } else if (gameObject instanceof Robot) {
+      Robot robot = (Robot) gameObject;
+      if (robot.getInventory() != null && !(robot.getInventory() instanceof Nothing)) {
+        stringBuilder.append(" Carrying: ");
+        if (robot.getInventory() instanceof Radar) {
+          stringBuilder.append("Radar");
+        } else if (robot.getInventory() instanceof Trap) {
+          stringBuilder.append("Trap");
+        } else if (robot.getInventory() instanceof Ore) {
+          stringBuilder.append(((Ore) (robot.getInventory())).getOreType().name()).append("Ore");
+        }
+      }
+    }
+    return stringBuilder.toString();
   }
 
   /**
@@ -288,7 +360,7 @@ public class LobbyController {
       () -> {
         mapGridPane.getChildren().clear();
         currentGameMap = lobby.getGameMap().getIndividualGameMapForPlayer(client.getNickname());
-        if(this.colours.length != this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal()) {
+        if (this.colours.length != this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal()) {
           this.colours = MathHelper.getRandomColours(this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal());
         }
         int xMax = currentGameMap.getGameMapSize()[0];
@@ -313,7 +385,7 @@ public class LobbyController {
             Image image = null;
             Cell currentCell = currentGameMap.getCellArray()[x][y];
             try {
-              image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Stone Floor.png")));
+//              image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Stone Floor.png")));
             } catch (Exception e) {
               logger.error("The file \"Stone Floor.png\" does not exist.");
             }
@@ -368,7 +440,6 @@ public class LobbyController {
                 colorAdjust.setHue(hsbValues[0]);
                 colorAdjust.setSaturation(hsbValues[1]);
                 colorAdjust.setBrightness(0);
-
                 button.setEffect(colorAdjust);
               }
             }
@@ -418,6 +489,8 @@ public class LobbyController {
 
         moveSelectionPopup.setX(xPosition);
         moveSelectionPopup.setY(yPosition);
+        moveSelectionPopup.getContent().clear();
+        moveSelectionPopup.getContent().add(getPopupContent());
         moveSelectionPopup.show(mapGridPane.getScene().getWindow());
       } catch (Exception e) {
         logger.error("Error");
@@ -581,10 +654,13 @@ public class LobbyController {
 
   @FXML
   public void onKeyPressedAnchorPane(KeyEvent keyEvent) {
+    if (keyEvent.getText().length() != 1) {
+      return;
+    }
     if (keyEvent.getText().toCharArray()[0] > '0' && keyEvent.getText().toCharArray()[0] <= ('0' + this.client.getLobbyInClient().getServerSettings().getNumberOfRobots())) {
       int id = Integer.parseInt("" + keyEvent.getText().toCharArray()[0]) - 1;
-      if(selectedRobot != null) {
-        if(selectedRobot.getId() == id) {
+      if (selectedRobot != null) {
+        if (selectedRobot.getId() == id) {
           this.selectedRobot = null;
           updateMap();
           return;
