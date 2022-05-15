@@ -7,14 +7,11 @@ import game.server.ServerConstants;
 
 public class CheatSetScore extends AbstractPacket {
   public CheatSetScore() {
-    super("", new String[]{"^(?i)CheatSetScore", "[0-9]+"}, "");
+    super("", new String[]{"[0-9]+"}, "");
   }
 
   @Override
   public String encodeWithContent(String... content) {
-    if(content.length != 1) {
-      return encode();
-    }
     String msg = content[0];
     return (char) ServerConstants.DEFAULT_PACKET_STARTING_MESSAGE +
       this.name +
