@@ -337,7 +337,7 @@ public class LobbyController {
     } else if (gameObject instanceof Robot) {
       Robot robot = (Robot) gameObject;
       if (robot.getInventory() != null && !(robot.getInventory() instanceof Nothing)) {
-        stringBuilder.append(" Inventory: ");
+        stringBuilder.append(" Carrying: ");
         if (robot.getInventory() instanceof Radar) {
           stringBuilder.append("Radar");
         } else if (robot.getInventory() instanceof Trap) {
