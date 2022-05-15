@@ -39,11 +39,8 @@ import java.util.Objects;
  */
 public class LobbyController {
 
-  public ChoiceBox<String> playerRobotActionList;
-  public ListView<String> playerRobotList;
-  public ListView<String> currentRobotMovesList;
-  public Button addPossibleMovesList;
-  public Button buttonMakeMove;
+  public ArrayList<String> playerRobotList = new ArrayList<>();
+  public ArrayList<String> currentRobotMovesList = new ArrayList<>();
   Client client;
   LobbyInClient lobby;
   @FXML
@@ -63,6 +60,8 @@ public class LobbyController {
   @FXML
   private GridPane mapGridPane;
 
+  @FXML
+  private Pane mapPane;
 
   @FXML
   public AnchorPane anchorPane;
@@ -121,8 +120,7 @@ public class LobbyController {
   private Label labelOreThreshold;
 
   public static final Logger logger = LogManager.getLogger(LobbyController.class);
-  @FXML
-  private Pane mapPane;
+
   @FXML
   private Label turnInfoLabel;
   @FXML
@@ -135,8 +133,6 @@ public class LobbyController {
   private Robot selectedRobot;
 
   private GameMap currentGameMap;
-
-  private Popup cellPreview;
 
   private Color[] colours;
 
@@ -158,11 +154,6 @@ public class LobbyController {
     playerTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
     });
     changeAllRobots(this.client.getLobbyInClient().getServerSettings());
-    // Adds all the possible robot actions to the combobox.
-    for (RobotAction robotAction : RobotAction.values()) {
-      this.playerRobotActionList.getItems().add(robotAction.name());
-    }
-    playerRobotActionList.setValue("Move");
     lobby.gameMapPropertyProperty().addListener((obs, oldVal, newVal) -> {
       updateMap();
     });
@@ -177,6 +168,17 @@ public class LobbyController {
     lobby.turnCounterProperty().addListener((obs, oldVal, newVal) -> {
       turnInfoLabel.setText("Turn number: " + newVal);
     });
+    mapPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+      if (!turnInfoLabel.getText().equals("Turn info")) {
+        updateMap();
+      }
+    });
+    mapPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+      if (!turnInfoLabel.getText().equals("Turn info")) {
+        updateMap();
+      }
+    });
+
     moveSelectionPopup = new Popup();
     moveSelectionPopup.hide();
     moveSelectionPopup.getContent().clear();
@@ -201,7 +203,7 @@ public class LobbyController {
   public void setActionViaPopup(String action, String addition) {
     if (selectedRobot != null) {
       int index = selectedRobot.getId();
-      this.currentRobotMovesList.getItems().set(index, index + ":" + action + ":" + xClicked + ":" + yClicked + addition);
+      this.currentRobotMovesList.set(index, index + ":" + action + ":" + xClicked + ":" + yClicked + addition);
       this.selectedRobot = null;
     }
     moveSelectionPopup.hide();
@@ -211,16 +213,16 @@ public class LobbyController {
   /**
    * this function adds the preview of the robot list and their respective moves
    *
-   * @param serverSettings the lobby server settings so that the correct amount of items are added
+   * @param serverSettings the lobby server settings so that the correct amount of items is added
    */
   private void changeAllRobots(ServerSettings serverSettings) {
-    this.playerRobotList.getItems().clear();
-    this.currentRobotMovesList.getItems().clear();
+    this.playerRobotList.clear();
+    this.currentRobotMovesList.clear();
     // Initialize the list of the robots of the player.
     // Also initializes the default Move of the robots, to wait.
     for (int i = 0; i < serverSettings.getNumberOfRobots(); i++) {
-      this.playerRobotList.getItems().add("Robot " + i);
-      this.currentRobotMovesList.getItems().add(i + ":Wait:0:0");
+      this.playerRobotList.add("Robot " + i);
+      this.currentRobotMovesList.add(i + ":Wait:0:0");
     }
   }
 
@@ -291,8 +293,15 @@ public class LobbyController {
         }
         int xMax = currentGameMap.getGameMapSize()[0];
         int yMax = currentGameMap.getGameMapSize()[1];
-        int mapPixel = 500;
-        int cellSize = Math.min(mapPixel / xMax, mapPixel / yMax);
+        double xPixels = mapPane.getWidth();
+        double yPixels = mapPane.getHeight();
+        double cellSize = (int) Math.min(xPixels / xMax, yPixels / yMax);
+        double xPad = (xPixels - xMax*cellSize)/2;
+        double yPad = (yPixels - yMax*cellSize)/2;
+        mapGridPane.setTranslateX(xPad);
+        mapGridPane.setTranslateY(yPad);
+
+
         for (int x = 0; x < xMax; x++) {
           for (int y = 0; y < yMax; y++) {
             Button button = new Button();
@@ -301,7 +310,6 @@ public class LobbyController {
             ImageView imageView = new ImageView();
             imageView.setFitHeight(cellSize);
             imageView.setFitWidth(cellSize);
-            String type;
             Image image = null;
             Cell currentCell = currentGameMap.getCellArray()[x][y];
             try {
@@ -351,7 +359,7 @@ public class LobbyController {
             });
             for (int i = 0; i < this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal(); i++) {
               Robot curRob = getRobotObjectFromSelection(i);
-              if (((curRob.getPosition()[0] == x && curRob.getPosition()[1] == y) || (!currentRobotMovesList.getItems().get(curRob.getId()).matches(".*Wait:[0-9]+:[0-9]+") && (Integer.parseInt(currentRobotMovesList.getItems().get(curRob.getId()).split(":")[2]) == x && Integer.parseInt(currentRobotMovesList.getItems().get(curRob.getId()).split(":")[3]) == y)))) {
+              if (((curRob.getPosition()[0] == x && curRob.getPosition()[1] == y) || (!currentRobotMovesList.get(curRob.getId()).matches(".*Wait:[0-9]+:[0-9]+") && (Integer.parseInt(currentRobotMovesList.get(curRob.getId()).split(":")[2]) == x && Integer.parseInt(currentRobotMovesList.get(curRob.getId()).split(":")[3]) == y)))) {
                 Color col = colours[curRob.getId()];
                 float[] hsbValues = new float[3];
                 Color.RGBtoHSB(col.getRed(), col.getBlue(), col.getGreen(), hsbValues);
@@ -403,9 +411,6 @@ public class LobbyController {
         }
       }
     } else {
-      if (playerRobotActionList.getSelectionModel().getSelectedItem() == null) {
-        return;
-      }
       try {
         Bounds boundsInScreen = button.localToScreen(button.getBoundsInLocal());
         int xPosition = (int) boundsInScreen.getMaxX();
@@ -418,43 +423,6 @@ public class LobbyController {
         logger.error("Error");
       }
     }
-
-  }
-
-
-  public void onActionRobotMoveTypes(ActionEvent actionEvent) {
-
-  }
-
-  public void onActionAddPossibleMovesList(ActionEvent actionEvent) {
-
-  }
-
-  /**
-   * Once the player is finished with the move they can click the "Finish move" button that sends the given information to the server.
-   * I sadly had to quickly modify the request structure to make this work.
-   * TODO: Revert the request move structure to its original dynamic state.
-   *
-   * @param actionEvent UI Action that triggers this method
-   */
-  public void onActionButtonMakeMove(ActionEvent actionEvent) {
-    String defaultTextMessage = "";
-    if (xClicked == -1 || yClicked == -1) {
-      return;
-    }
-    if (playerRobotActionList.getSelectionModel().getSelectedItem() == null) {
-      return;
-    }
-    if (playerRobotList.getSelectionModel().getSelectedItem() == null) {
-      return;
-    }
-    int index = playerRobotList.getSelectionModel().getSelectedIndex();
-    String addition = "";
-    if (playerRobotActionList.getSelectionModel().getSelectedItem().matches("^Request.*$")) {
-      addition = ":" + playerRobotActionList.getSelectionModel().getSelectedItem().split("Request")[1];
-    }
-    this.currentRobotMovesList.getItems().set(index,
-      index + ":" + playerRobotActionList.getSelectionModel().getSelectedItem() + ":" + xClicked + ":" + yClicked + addition);
 
   }
 
@@ -471,7 +439,7 @@ public class LobbyController {
   }
 
   /**
-   * This method changes the status lable of a lobby, once it's game has started
+   * This method changes the status label of a lobby, once it's game has started
    *
    * @param actionEvent UI Action that triggers this method
    */
@@ -491,7 +459,7 @@ public class LobbyController {
   }
 
   /**
-   * sends the message from the textfield to the Lobby Chat
+   * sends the message from the text field to the Lobby Chat
    *
    * @param actionEvent UI Action that triggers this method
    */
@@ -593,7 +561,7 @@ public class LobbyController {
    * This function is pretty wasteful because it reiterates over everything
    *
    * @param id of the selected Robot
-   * @return the robot object on the gamemap that has this id.
+   * @return the robot object on the game map that has this id.
    */
   public Robot getRobotObjectFromSelection(int id) {
     for (int i = 0; i < currentGameMap.getGameMapSize()[0]; i++) {

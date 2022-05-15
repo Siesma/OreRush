@@ -165,7 +165,7 @@ public class Client {
    * @param lobbyController the currently connected lobby to retrieve the selected moves.
    */
   public void makeMove(LobbyController lobbyController) {
-    (new PacketHandler(this)).pushMessage(outputStream, (new Move()).encodeWithContent(lobbyController.currentRobotMovesList.getItems().toArray(new String[0])));
+    (new PacketHandler(this)).pushMessage(outputStream, (new Move()).encodeWithContent(lobbyController.currentRobotMovesList.toArray(new String[0])));
   }
 
   /**

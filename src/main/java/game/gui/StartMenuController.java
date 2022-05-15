@@ -153,6 +153,7 @@ public class StartMenuController {
       Parent parent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/lobby.fxml")));
       Stage stage = new Stage();
       stage.setScene(new Scene(parent));
+      stage.setFullScreen(true);
       stage.setOnCloseRequest(event -> {
         client.leaveLobby(client.getLobbyInClient().getLobbyName());
         client.setLobbyInClient(null);
@@ -160,10 +161,9 @@ public class StartMenuController {
         joinLobbyButton.setDisable(false);
       });
       stage.show();
-    } catch (IOException io) {
-      logger.error(io.getMessage());
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
+    } catch (IOException | InterruptedException e) {
+      logger.error(e.getMessage());
+      e.printStackTrace();
     }
   }
 
