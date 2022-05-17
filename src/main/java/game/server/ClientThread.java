@@ -273,68 +273,122 @@ public class ClientThread implements Runnable {
 
   // getters and setters
 
+  /**
+   * getter for playerScore
+   * @return playerScore
+   */
 
   public int getPlayerScore() {
     return playerScore;
   }
 
+  /**
+   * setter for playerScore and informs the clients of the lobby
+   * @param playerScore integer of the score of a player
+   */
   public void setPlayerScore(int playerScore) {
     for (ClientThread clientThread: connectedLobby.getListOfClients()) {
       (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Score()).encodeWithContent(playerName,String.valueOf(playerScore)));
     }
     this.playerScore = playerScore;
   }
-
+  /**
+   * getter for pingReceived
+   * @return pingReceived
+   */
   public boolean isPingReceived() {
     return pingReceived;
   }
 
+  /**
+   * Setter for pingReceived
+   * @param pingReceived variable indicating if pingReceived
+   */
   public void setPingReceived(boolean pingReceived) {
     this.pingReceived = pingReceived;
   }
 
+  /**
+   * Setter for connectedToServer
+   * @param connectedToServer indicates if connected to server or not
+   */
   public void setConnectedToServer(boolean connectedToServer) {
     this.connectedToServer = connectedToServer;
   }
 
+  /**
+   * setter for connectedLobby
+   * @param lobby that the client connects to
+   */
   public void setConnectedLobby(Lobby lobby) {
     this.connectedLobby = lobby;
     // connectedLobby.printMapForEveryone();
   }
-
+  /**
+   * getter for outputStream
+   * @return outputStream
+   */
   public OutputStream getOutputStream() {
     return outputStream;
   }
-
+  /**
+   * getter for playerName
+   * @return playerName
+   */
   public String getPlayerName() {
     return playerName;
   }
-
+  /**
+   * getter for server
+   * @return server
+   */
   public Server getServer() {
     return server;
   }
-
+  /**
+   * getter for connectedLobby
+   * @return connectedLobby
+   */
   public Lobby getConnectedLobby() {
     return connectedLobby;
   }
-
+  /**
+   * getter for currentGameMap
+   * @return currentGameMap
+   */
   public GameMap getCurrentGameMap() {
     return currentGameMap;
   }
 
+  /**
+   * setter for currentGameMap
+   * @param currentGameMap current game map
+   */
   public void setCurrentGameMap(GameMap currentGameMap) {
     this.currentGameMap = currentGameMap;
 //        currentGameMap.printMapToConsole();
   }
 
+  /**
+   * setter for robots
+   * @param robots to be set
+   */
   public void setRobots (ArrayList<Robot> robots) {
     this.robots = robots;
   }
 
+  /**
+   * getter for robots
+   * @return an arraylist of robots
+   */
   public ArrayList<Robot> getRobots() {
     return robots;
   }
 
+  /**
+   * sends a packet to all client in lobby to inform of a winner
+   * sends a packet to update the lobby list in the start menus
+   */
   public void informOfWinner() {
     for (ClientThread clientThread : Server.getClientThreads()) {
       (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Winner()).encodeWithContent(connectedLobby.getLobbyName(),getPlayerName(),String.valueOf(playerScore)));

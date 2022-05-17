@@ -18,6 +18,11 @@ public class Main {
     public static String port;
     public static String name;
 
+    /**
+     * Checks the arguments passed on the CLI, then instantiates a server class, or launches a client application
+     *
+     * @param args should be an array of strings containing: client hostAddress:port [username] | server port
+     */
     public static void main(String[] args) {
         if (args.length == 0) {
             logger.info("Error: Missing arguments.");

@@ -331,7 +331,12 @@ public class LobbyController {
     return out;
   }
 
-
+  /**
+   * Returns the string containing object information
+   * @param gameObject
+   * @return a string specifying the owner, type for radar, traps, additionnally the value for ores or what it is
+   * carrying in case of a robot
+   */
   public String getObjectDisplayString(GameObject gameObject) {
     StringBuilder stringBuilder = new StringBuilder();
 
@@ -699,6 +704,11 @@ public class LobbyController {
     return null;
   }
 
+  /**
+   * allows to select a robot with a key stroke if it is formt 1 to 9
+   *
+   * @param keyEvent keyboard key pressed
+   */
   @FXML
   public void onKeyPressedAnchorPane(KeyEvent keyEvent) {
     if (currentGameMap == null) {

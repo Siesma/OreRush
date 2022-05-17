@@ -224,7 +224,7 @@ public class Client {
   }
 
   /**
-   * Sends a new CreateLobby-packet and encodes it with the predetermined content
+   * Sends a new CreateLobby-packet encoded with the predetermined content
    *
    * @param newLobbyName the name of the new lobby
    */
@@ -232,6 +232,9 @@ public class Client {
     (new PacketHandler(this)).pushMessage(outputStream, (new CreateLobby()).encodeWithContent(newLobbyName));
   }
 
+  /**
+   * Sends a new StartGame packet encoded with the name of the lobby that is to start.
+   */
   public void sendStartGame() {
     (new PacketHandler(this)).pushMessage(outputStream, (new StartGame()).encodeWithContent(client.getLobbyInClient().getLobbyName()));
   }

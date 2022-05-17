@@ -30,7 +30,10 @@ public class ServerSettingsPacket extends AbstractPacket {
     out.append((char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE);
     return out.toString();
   }
-
+  /**
+   * Not used.
+   * @return null
+   */
   @Override
   public String encode() {
     return null;
