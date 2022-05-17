@@ -56,7 +56,7 @@ public class InitNickname extends AbstractPacket {
 
         if (parent instanceof InputStreamThread) {
             InputStreamThread obj = (InputStreamThread) parent;
-            String finalMessage = message;
+            String finalMessage = message.replace("_", "");
             Platform.runLater(() -> obj.getClient().nicknameProperty().setValue(finalMessage));
         }
     }

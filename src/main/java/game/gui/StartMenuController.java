@@ -183,6 +183,9 @@ public class StartMenuController {
    * @param actionEvent UI Action that triggers this method
    */
   public void handleJoinLobby(ActionEvent actionEvent) {
+    if(lobbyTableView.getItems().size() == 0 || lobbyTableView.getSelectionModel() == null) {
+      return;
+    }
     try {
       client.joinLobby(lobbyNameColumn.getCellObservableValue(lobbyTableView.getItems().get(lobbyTableView.getSelectionModel().getSelectedCells().get(0).getRow())).getValue());
       changeToLobbyScene();

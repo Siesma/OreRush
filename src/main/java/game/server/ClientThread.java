@@ -208,7 +208,7 @@ public class ClientThread implements Runnable {
     if (Character.isDigit(playerName.charAt(playerName.length() - 1))) {
       playerName = playerName.substring(0, playerName.length() - 1) + (Integer.parseInt(playerName.substring(playerName.length() - 1)) + 1);
     } else {
-      playerName = playerName + "_1";
+      playerName = playerName + "1";
     }
     return playerName;
   }
