@@ -104,7 +104,7 @@ public class MathHelper {
 
 
   /**
-   *
+   * Checks whether the x, y pair is within the bounds
    * @param x the x coordinate that is being evaluated
    * @param y the y coordinate that is being evaluated
    * @param min_x the value that the x value is not allowed to be lower than
@@ -117,15 +117,34 @@ public class MathHelper {
     return x >= min_x && x < max_x && y >= min_y && y < max_y;
   }
 
+  /**
+   * Checks whether the x, y pair is within the bounds
+   * An overloaded function to make accessing it easier when given the arrays of the parameters
+   * @param xy array containing the x (at pos 0) and y (at pos 1) coordinates
+   * @param minDimension array containing the minimum x (at pos 0) and y (at pos 1) dimensions
+   * @param maxDimension array containing the maximum x (at pos 0) and y (at pos 1) dimensions
+   * @return whether the x, y pair is within the bounds
+   */
   public static boolean isInBounds(int[] xy, int[] minDimension, int[] maxDimension) {
     return isInBounds(xy[0], xy[1], minDimension[0], maxDimension[0], minDimension[1], maxDimension[1]);
   }
 
+  /**
+   * Checks whether the x, y pair is within the bounds
+   * An overloaded function to make accessing it easier when given the settings of the game
+   * @param x the x coordinate that is being evaluated
+   * @param y the y coordinate that is being evaluated
+   * @param serverSettings the settings of the game
+   * @return
+   */
   public static boolean isInBounds (int x, int y, ServerSettings serverSettings) {
     return isInBounds(x, y, 0, serverSettings.getMapWidth(), 0,serverSettings.getMapHeight());
   }
 
   /**
+   * Helper function.
+   * Calls the getRandomColours of ColourUtils.
+   * It generates a number of colours, making sure that they are diffrent enough.
    * @param num the amount of colours that are needed.
    * @return a random colour that is different from all the other already used colours.
    */
@@ -143,6 +162,11 @@ public class MathHelper {
     return getRandomNumber((new Random()).nextLong());
   }
 
+  /**
+   * Generates a random Double based on some seed
+   * @param seed seed for the random generation
+   * @return the random double
+   */
   public static double getRandomNumber(long seed) {
     Random random = new Random();
     random.setSeed(seed);
