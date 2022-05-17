@@ -39,6 +39,12 @@ public abstract class AbstractPacket {
     return (AbstractPacket) (new FileHelper()).createNewInstanceFromName(MapType.Packets, replaceIndicatorChars(name));
   }
 
+  /**
+   * Extracts the name of the packet and returns a new instance of a packet class with the specified name in the folder "packet.packets".
+   *
+   * @param message content of the packet, the first part will be the name of the packet
+   * @return returns a new instance of the wanted packet given by the extracted name.
+   */
   public static AbstractPacket getPacketByMessage(String message) {
     return getPacketByName(splitMessageBySpacer(replaceIndicatorChars(message), String.valueOf((char) ServerConstants.DEFAULT_PACKET_SPACER))[0]);
   }
@@ -129,21 +135,34 @@ public abstract class AbstractPacket {
     return out;
   }
 
+  /**
+   * Encodes the packet with the content in a String formatted with Server constants for packet delimitation,
+   * defined in the network protocol
+   * @param content of the packet, strings of the information that is to be sent
+   * @return encoded packet, string correctly formatted
+   */
   public abstract String encodeWithContent(String... content);
 
+  /**
+   * Creates packet with no variable content
+   * @return packet, string formatted according the network protocol
+   */
   public abstract String encode();
 
+  /**
+   * decodes the packet
+   * @param parent can be a clientThread if the packet is sent by a client to the server,
+   *               or a client if the server sent the packet to the client
+   * @param message string containing the content of the packet formatted accordingly to the network protocol
+   */
   public abstract void decode(Object parent, String message);
 
-  public String getHelp() {
-    return help;
-  }
-
+  /**
+   * Splits the packet string in to different parts delimited by the spacer character defined in network protocol
+   * @return array of string containing the parts of the packet
+   */
   public String[] getParts() {
     return parts;
   }
 
-  public String getResponse() {
-    return response;
-  }
 }
