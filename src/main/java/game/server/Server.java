@@ -41,7 +41,7 @@ public class Server {
     logger.info("Now listening on port " + port);
 
 
-    PingThread pT = new PingThread();
+    PingThread pT = new PingThread(this);
     Thread pingThread = new Thread(pT);
     pingThread.start();
     while (true) {
@@ -61,6 +61,14 @@ public class Server {
         System.exit(1);
       }
     }
+  }
+
+  /**
+   * Informs the lobby of a player loosing connection
+   * @param clientThread the player that lost connection
+   */
+  public void informLobby (ClientThread clientThread) {
+    clientThread.getConnectedLobby().informAboutLoss(clientThread);
   }
 
   /**

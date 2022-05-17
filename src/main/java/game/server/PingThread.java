@@ -13,12 +13,24 @@ import java.util.ArrayList;
  */
 
 public class PingThread implements Runnable {
+    /**
+     * The server on which this PingThread is running on
+     */
+    private Server server;
+
+    public PingThread (Server server) {
+        this.server = server;
+    }
+
     public static final Logger logger = LogManager.getLogger(Server.class);
     /**
      * An arraylist of all the clients that have not responded which will be removed in the next cycle
      */
     ArrayList<ClientThread> clientsWithNoResponse = new ArrayList<>();
 
+    /**
+     * Runs the PingThread and sends Awake packets to all the clients.
+     */
     public void run() {
         logger.info("Ping thread started");
         while (true) {
@@ -47,6 +59,7 @@ public class PingThread implements Runnable {
 
             // delete clients with no response
             for (ClientThread clientWithNoResponse : clientsWithNoResponse) {
+                server.informLobby(clientWithNoResponse);
                 Server.getClientThreads().remove(clientWithNoResponse);
             }
             try {

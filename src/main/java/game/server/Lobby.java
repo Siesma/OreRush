@@ -2,6 +2,7 @@ package game.server;
 
 import game.datastructures.GameMap;
 import game.packet.PacketHandler;
+import game.packet.packets.Chat;
 import game.packet.packets.UpdateTurn;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -209,5 +210,17 @@ public class Lobby {
         listOfClients.get(i).addRobot();
       }
     }
+  }
+
+  /**
+   * Handles a player loosing connection
+   * @param clientThread the player that lost connection
+   */
+  public void informAboutLoss(ClientThread clientThread) {
+    if(turnOfPlayer() == listOfClients.indexOf(clientThread)) {
+      updateMove();
+    }
+    listOfClients.get(turnOfPlayer()).pushChatMessageToALobby(this.getLobbyName(), "Its now my turn because \"" + clientThread.getPlayerName() + "\" has lost connection!");
+    this.listOfClients.remove(clientThread);
   }
 }
