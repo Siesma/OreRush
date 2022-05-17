@@ -41,7 +41,7 @@
                <children>
                       <VBox prefHeight="296.0" prefWidth="114.0">
                           <children>
-                        <Pane prefHeight="113.0" prefWidth="271.0">
+                        <Pane prefHeight="162.0" prefWidth="271.0">
                            <children>
                                     <Label fx:id="nickname" layoutX="66.0" layoutY="40.0" prefHeight="34.0" prefWidth="139.0">
                                         <font>
@@ -56,18 +56,20 @@
                                     <Button mnemonicParsing="false" onAction="#handleChangeNickname" text="Change Nickname" />
                            </children>
                         </HBox>
-                        <HBox prefHeight="26.0" prefWidth="289.0">
+                        <Pane prefHeight="66.0" prefWidth="271.0">
                            <children>
-                                    <TextField fx:id="newLobbyName" promptText="new lobby" />
-                                    <Button fx:id="createLobbyButton" mnemonicParsing="false" onAction="#handleCreateLobby" text="Create Lobby" />
+                              <Button layoutX="166.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleHighScore" text="High Scores" />
                            </children>
-                        </HBox>
-                        <Button mnemonicParsing="false" onAction="#handleHighScore" text="High Scores" />
+                        </Pane>
                           </children>
                       </VBox>
                       <VBox prefHeight="296.0" prefWidth="238.0" GridPane.columnIndex="2">
                           <children>
-                              <TextFlow fx:id="chatTextFlow" prefHeight="206.0" prefWidth="228.0" />
+                        <ScrollPane>
+                           <content>
+                                    <TextFlow fx:id="chatTextFlow" prefHeight="206.0" prefWidth="228.0" />
+                           </content>
+                        </ScrollPane>
                               <HBox prefHeight="75.0" prefWidth="277.0">
                                   <children>
                                       <TextField fx:id="newMessageTextField" prefHeight="25.0" prefWidth="210.0" />
@@ -84,6 +86,12 @@
                       </VBox>
                   <VBox GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <children>
+                        <HBox prefHeight="26.0" prefWidth="289.0">
+                           <children>
+                                    <TextField fx:id="newLobbyName" promptText="new lobby" />
+                                    <Button fx:id="createLobbyButton" mnemonicParsing="false" onAction="#handleCreateLobby" text="Create Lobby" />
+                           </children>
+                        </HBox>
                             <TableView fx:id="lobbyTableView" maxWidth="225.0" prefHeight="212.0" prefWidth="225.0">
                                 <columns>
                                     <TableColumn fx:id="lobbyNameColumn" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" text="Lobby" />
