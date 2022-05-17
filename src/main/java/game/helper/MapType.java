@@ -10,6 +10,11 @@ public enum MapType {
     MapType () {
 
     }
+
+    /**
+     * Getter for the HashName
+     * @return the hash name as a String
+     */
     public String getHashName() {
         return this.name().toLowerCase(Locale.ROOT);
     }
