@@ -76,7 +76,7 @@ public class LobbyInClient {
     /**
      * The GameMap the game will be played on
      */
-    private GameMap gameMap = new GameMap(new ServerSettings(""));
+    private GameMap gameMap = new GameMap(new ServerSettings());
 
     /**
      * getter for the Game map
