@@ -219,8 +219,8 @@ public class Lobby {
   public void informAboutLoss(ClientThread clientThread) {
     if(turnOfPlayer() == listOfClients.indexOf(clientThread)) {
       updateMove();
+      listOfClients.get(turnOfPlayer()).pushChatMessageToALobby(this.getLobbyName(), "Its now my turn because \"" + clientThread.getPlayerName() + "\" has lost connection!");
     }
-    listOfClients.get(turnOfPlayer()).pushChatMessageToALobby(this.getLobbyName(), "Its now my turn because \"" + clientThread.getPlayerName() + "\" has lost connection!");
     this.listOfClients.remove(clientThread);
   }
 }
