@@ -68,7 +68,7 @@ public class ClientThread implements Runnable {
           logger.info("1 client is connected to the server.");
         } else {
           logger.info(Server.getClientThreads().size()
-                  + " clients are connected to the server.");
+            + " clients are connected to the server.");
         }
 
         cur = -1;
@@ -96,7 +96,7 @@ public class ClientThread implements Runnable {
             break;
           }
           try {
-          receivedPacket.decode(this, message);
+            receivedPacket.decode(this, message);
           } catch (Exception e) {
             logger.fatal("While decoding the message there was a critical error!", e);
           }
@@ -167,7 +167,6 @@ public class ClientThread implements Runnable {
     }
     return playerName;
   }
-
 
   /**
    * Sends Chat packet to a specific client

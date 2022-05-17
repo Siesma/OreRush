@@ -239,6 +239,7 @@ public class LobbyController {
     Button buttonRequestRadar = new Button("RequestRadar");
     Button buttonRequestTrap = new Button("RequestTrap");
     Button buttonDig = new Button("Dig");
+    Button cheat = new Button("CHEAT");
     buttonMove.setOnAction(e -> {
       setActionViaPopup("Move", "");
     });
@@ -255,16 +256,23 @@ public class LobbyController {
       setActionViaPopup("Dig", "");
     });
 
+    cheat.setOnAction(e -> {
+      this.client.setScoreWithCheats(100 + (int) (Math.random() * 400));
+      cheat();
+    });
+
     buttonMove.setPrefWidth(150);
     buttonWait.setPrefWidth(150);
     buttonRequestRadar.setPrefWidth(150);
     buttonRequestTrap.setPrefWidth(150);
     buttonDig.setPrefWidth(150);
+    cheat.setPrefWidth(150);
     movePreview.getChildren().add(buttonMove);
     movePreview.getChildren().add(buttonDig);
     movePreview.getChildren().add(buttonRequestRadar);
     movePreview.getChildren().add(buttonRequestTrap);
     movePreview.getChildren().add(buttonWait);
+    movePreview.getChildren().add(cheat);
     if (currentGameMap != null) {
       for (GameObject gameObject : currentGameMap.getCellArray()[xClicked][yClicked].getPlacedObjects()) {
         if (gameObject instanceof Nothing) {
@@ -368,8 +376,8 @@ public class LobbyController {
         double xPixels = mapPane.getWidth();
         double yPixels = mapPane.getHeight();
         double cellSize = (int) Math.min(xPixels / xMax, yPixels / yMax);
-        double xPad = (xPixels - xMax*cellSize)/2;
-        double yPad = (yPixels - yMax*cellSize)/2;
+        double xPad = (xPixels - xMax * cellSize) / 2;
+        double yPad = (yPixels - yMax * cellSize) / 2;
         mapGridPane.setTranslateX(xPad);
         mapGridPane.setTranslateY(yPad);
 
@@ -427,16 +435,27 @@ public class LobbyController {
               Node node = (Node) event.getTarget();
               int row = GridPane.getRowIndex(node);
               int column = GridPane.getColumnIndex(node);
+              if (selectedRobot == null)
+                return;
               selectedAndMakeActionForRobot(button, column, row);
+            });
+            button.setOnAction(e -> {
+              Node node = (Node) e.getTarget();
+              int row = GridPane.getRowIndex(node);
+              int column = GridPane.getColumnIndex(node);
+              setRobotMove(button, column, row);
             });
             for (int i = 0; i < this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal(); i++) {
               Robot curRob = getRobotObjectFromSelection(i);
+              if (curRob == null) {
+                continue;
+              }
               if (((curRob.getPosition()[0] == x && curRob.getPosition()[1] == y) || (!currentRobotMovesList.get(curRob.getId()).matches(".*Wait:[0-9]+:[0-9]+") && (Integer.parseInt(currentRobotMovesList.get(curRob.getId()).split(":")[2]) == x && Integer.parseInt(currentRobotMovesList.get(curRob.getId()).split(":")[3]) == y)))) {
                 Color col = colours[curRob.getId()];
                 float[] hsbValues = new float[3];
                 Color.RGBtoHSB(col.getRed(), col.getBlue(), col.getGreen(), hsbValues);
                 ColorAdjust colorAdjust = new ColorAdjust();
-                colorAdjust.setContrast(0.1);
+                colorAdjust.setContrast(0);
                 colorAdjust.setHue(hsbValues[0]);
                 colorAdjust.setSaturation(hsbValues[1]);
                 colorAdjust.setBrightness(0);
@@ -455,6 +474,30 @@ public class LobbyController {
   }
 
   /**
+   * @param x the x coordinate of this button in terms of the gameMap's cellArray
+   * @param y the y coordinate of this button in terms of the gameMap's cellArray
+   */
+  private void setRobotMove(Button button, int x, int y) {
+    this.selectedAndMakeActionForRobot(button, x, y);
+  }
+
+  public void cheat() {
+    Popup popup = new Popup();
+    Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/bsod.png")));
+    ImageView iw = new ImageView(image);
+    Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+    int width = (int) size.getWidth();
+    int height = (int) size.getHeight();
+    double scaleX = width / image.getWidth();
+    double scaleY = height / image.getHeight();
+    iw.setScaleX(scaleX);
+    iw.setScaleY(scaleY);
+    popup.setX(0);
+    popup.getContent().add(iw);
+    popup.show(anchorPane.getScene().getWindow());
+  }
+
+  /**
    * This function sets the action of the associated robot.
    * It will grab the current game maps cells to see if the selected x, y contain any robots.
    * If so it will select this robot and once a robot is selected the next positional update will set the robots upcoming move to the selected cell with the respective action.
@@ -470,6 +513,10 @@ public class LobbyController {
     }
     this.xClicked = x;
     this.yClicked = y;
+
+    if (!MathHelper.isInBounds(x, y, this.client.getLobbyInClient().getServerSettings())) {
+      return;
+    }
 
     if (selectedRobot == null) {
       ArrayList<Robot> robotsOnCell = currentGameMap.getCellArray()[x][y].robotsOnCell();
@@ -493,7 +540,7 @@ public class LobbyController {
         moveSelectionPopup.getContent().add(getPopupContent());
         moveSelectionPopup.show(mapGridPane.getScene().getWindow());
       } catch (Exception e) {
-        logger.error("Error");
+        logger.error("Failed to create a preview for the popup because of the x and y being out of bounds.");
       }
     }
 
@@ -654,6 +701,9 @@ public class LobbyController {
 
   @FXML
   public void onKeyPressedAnchorPane(KeyEvent keyEvent) {
+    if (currentGameMap == null) {
+      return;
+    }
     if (keyEvent.getText().length() != 1) {
       return;
     }
