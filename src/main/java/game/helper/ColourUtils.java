@@ -9,11 +9,17 @@ import java.util.Random;
  * http://en.wikipedia.org/wiki/YUV#Mathematical_derivations_and_formulas
  */
 public class ColourUtils {
+  /**
+   * The seed for the randomizer
+   */
   private static final long RAND_SEED = 0;
+  /**
+   * Randomizer used to generate random floats
+   */
   private static Random rand = new Random();
 
   /**
-   *
+   * generates random colours, making sure that they are diffrent from each other
    * @param amount number of different colours that have to be created
    * @return an Array of visually distinct colours
    */
@@ -49,7 +55,7 @@ public class ColourUtils {
 
 
   /**
-   *
+   * transforms the colours from YUV to RGB
    * @param y "y" channel of the YUV standard
    * @param u "u" channel of the YUV standard
    * @param v "v" channel of the YUV standard
@@ -62,7 +68,7 @@ public class ColourUtils {
   }
 
   /**
-   *
+   * Generates a random colour in RGB space
    * @return a random colour that, if transformed into RGB space, can be used for further processing.
    */
   private static float[] randomColour() {
@@ -80,7 +86,7 @@ public class ColourUtils {
   }
 
   /**
-   *
+   * Checks weather the value of some channel is between 0 and 1
    * @param c the channel value that has to be evaluated
    * @return whether the value c is smaller than 1 and greater than 0
    */
@@ -89,7 +95,7 @@ public class ColourUtils {
   }
 
   /**
-   *
+   * finds the total summed difference of all the colours channels
    * @param a a colour
    * @param b a colour
    * @return the summed difference over all colour channels
