@@ -124,7 +124,7 @@
                                 <TableColumn fx:id="scoreColumn" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Score" />
                             </columns>
                         </TableView>
-                      <VBox minWidth="200.0">
+                      <VBox fx:id="gameVBox" minWidth="200.0">
                           <children>
                               <Button fx:id="startGameButton" mnemonicParsing="false" onAction="#handleStartGame" text="Start Game" />
                         <Label fx:id="turnInfoLabel" text="Turn info" />

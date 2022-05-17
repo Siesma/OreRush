@@ -6,6 +6,7 @@ import game.datastructures.Cell;
 import game.datastructures.Robot;
 import game.datastructures.*;
 import game.helper.MathHelper;
+import game.server.ServerConstants;
 import game.server.ServerSettings;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
@@ -125,6 +127,8 @@ public class LobbyController {
   private Label turnInfoLabel;
   @FXML
   private Label playerTurnLabel;
+  @FXML
+  private VBox gameVBox;
   private int xClicked = -1;
   private int yClicked = -1;
 
@@ -178,6 +182,12 @@ public class LobbyController {
       if (!turnInfoLabel.getText().equals("Turn info")) {
         updateMap();
       }
+    });
+    lobby.winnerProperty().addListener((obs, oldVal, newVal) -> {
+      gameVBox.getChildren().clear();
+      Label winnerLabel = new Label("The winner is: " + newVal);
+      winnerLabel.setFont(new Font(32));
+      gameVBox.getChildren().add(winnerLabel);
     });
 
     moveSelectionPopup = new Popup();
