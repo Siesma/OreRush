@@ -10,7 +10,7 @@ import java.util.Random;
 public class TestHelper {
 
   /**
-   *
+   * Generates a random sting of given length
    * @param len the length of the final string
    * @return a String of the length "len" containing random characters only
    */
@@ -21,7 +21,7 @@ public class TestHelper {
   }
 
   /**
-   *
+   * Generates a random number between 0 and a given int
    * @param high the maximum allowed value for the random number to be
    * @return a random number between 0 and high
    */
@@ -31,7 +31,7 @@ public class TestHelper {
 
 
   /**
-   *
+   * Capitalizes the first character of a given String
    * @param str the String that shall be capitalized
    * @return the same String but the first letter is capitalized
    */
