@@ -27,36 +27,88 @@ import java.util.Objects;
 public class StartMenuController {
 
 
+  /**
+   * reference to the client that created this Controller
+   */
   private Client client;
 
+  /**
+   * A button that can be clicked to create a lobby
+   */
   @FXML
   private Button createLobbyButton;
 
+  /**
+   * A button that can be clicked to join a lobby
+   */
   @FXML
   private Button joinLobbyButton;
+
+  /**
+   * A label that displays your current nickname
+   */
   @FXML
   private Label nickname;
+
+  /**
+   * A textField where you can type a new nickname
+   */
   @FXML
   private TextField newNickname;
+
+  /**
+   * A textField where you can type a new lobby name
+   */
   @FXML
   private TextField newLobbyName;
+
+  /**
+   * A textField where you can type a new message
+   */
   @FXML
   private TextField newMessageTextField;
+
+  /**
+   * A textFlow which stores the current and past chat
+   */
   @FXML
   private TextFlow chatTextFlow;
+
+  /**
+   * A listview that stores a list of all the clients connected to the server
+   */
   @FXML
   private ListView<String> clientListView;
+
+  /**
+   * A listview that stores a list of all the lobbies on the server
+   */
   @FXML
   private TableView<LobbyInClient> lobbyTableView;
+
+  /**
+   * A TableColumn that stores the lobbies and the name of the lobby
+   */
   @FXML
   private TableColumn<LobbyInClient, String> lobbyNameColumn;
+
+  /**
+   * A TableColumn that stores the lobbies and the status of said lobby.
+   */
   @FXML
   private TableColumn<LobbyInClient, String> statusColumn;
+
+  /**
+   * A TableColumn that stores the lobbies and the players inside the lobby
+   */
   @FXML
   private TableColumn<LobbyInClient, String> playerColumn;
 
   public static final Logger logger = LogManager.getLogger(Server.class);
 
+  /**
+   * Initializes all the mandatory components of the startMenuController
+   */
   public void initialize() {
 
     //get model

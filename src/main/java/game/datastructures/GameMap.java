@@ -4,7 +4,6 @@ import game.helper.FileHelper;
 import game.helper.MapType;
 import game.helper.MathHelper;
 import game.packet.AbstractPacket;
-import game.server.Server;
 import game.server.ServerSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,6 +34,7 @@ public class GameMap {
 
   /**
    * Constructor of the GameMap.
+   *
    * @param serverSettings game settings of the game, the Game Map is used in
    */
   public GameMap(ServerSettings serverSettings) {
@@ -170,9 +170,10 @@ public class GameMap {
 
   /**
    * Places an object onto the map and also updates the position of the object to the new position.
+   *
    * @param object the object that is being placed down on the map
-   * @param x the respective x coordinate
-   * @param y the respective y coordinate
+   * @param x      the respective x coordinate
+   * @param y      the respective y coordinate
    */
   public void placeObjectOnMap(GameObject object, int x, int y) {
     object.setPosition(x, y);
@@ -181,8 +182,9 @@ public class GameMap {
 
   /**
    * Places an object on the map
+   *
    * @param gameObject object to be placed
-   * @param xy cell position in which the object should be placed
+   * @param xy         cell position in which the object should be placed
    */
   public void placeObjectOnMap(GameObject gameObject, int[] xy) {
     this.placeObjectOnMap(gameObject, xy[0], xy[1]);
@@ -190,9 +192,10 @@ public class GameMap {
 
   /**
    * removes an object from the map
+   *
    * @param gameObject the object that is being removed
-   * @param x the respective x coordinate
-   * @param y the respective y coordinate
+   * @param x          the respective x coordinate
+   * @param y          the respective y coordinate
    */
   public void removeObjectFromMap(GameObject gameObject, int x, int y) {
     cellArray[x][y].remove(gameObject);
@@ -200,8 +203,9 @@ public class GameMap {
 
   /**
    * removes an object from the map
+   *
    * @param gameObject the object that is being removed
-   * @param xy cell position in which the object should be removed
+   * @param xy         cell position in which the object should be removed
    */
   public void removeObjectFromMap(GameObject gameObject, int[] xy) {
     this.removeObjectFromMap(gameObject, xy[0], xy[1]);
@@ -244,21 +248,21 @@ public class GameMap {
   /**
    * This function fills the new build gameMap with the relevant gameObjects from the complete map.
    *
-   * @param gameMap the current (unfilled) GameMap.
-   * @param xy the position of the Radar.
+   * @param gameMap    the current (unfilled) GameMap.
+   * @param xy         the position of the Radar.
    * @param revealSize the size in which the radar is revealing.
    */
   public void revealAround(GameMap gameMap, int[] xy, int revealSize) {
     for (int xi = -revealSize; xi <= revealSize; xi++) {
       for (int yi = -revealSize; yi <= revealSize; yi++) {
-        int[] nPos = new int[] {xy[0] + xi, xy[1] + yi};
-        if(!MathHelper.isInBounds(nPos[0], nPos[1], serverSettings)) {
+        int[] nPos = new int[]{xy[0] + xi, xy[1] + yi};
+        if (!MathHelper.isInBounds(nPos[0], nPos[1], serverSettings)) {
           continue;
         }
-        if(!(MathHelper.absoluteCellDistance(xy, nPos) <= revealSize)) {
+        if (!(MathHelper.absoluteCellDistance(xy, nPos) <= revealSize)) {
           continue;
         }
-        for(GameObject objectOnCell : this.cellArray[nPos[0]][nPos[1]].getPlacedObjects()) {
+        for (GameObject objectOnCell : this.cellArray[nPos[0]][nPos[1]].getPlacedObjects()) {
           gameMap.placeObjectOnMap(objectOnCell, nPos);
         }
       }
@@ -267,6 +271,7 @@ public class GameMap {
 
   /**
    * Prints the map to the console, this is currently not really used and will most likely be removed in a future commit.
+   *
    * @param gameMap the map that is being printed onto the console.
    */
   public static void printMapToConsole(GameMap gameMap) {
@@ -379,8 +384,8 @@ public class GameMap {
     }
     if (!MathHelper.isInBounds(curPosition, new int[]{0, 0}, gameMapSize)) {
       curPosition = new int[]{
-              MathHelper.clamp(curPosition[0], 0, gameMapSize[0] - 1),
-              MathHelper.clamp(curPosition[1], 0, gameMapSize[1] - 1)
+        MathHelper.clamp(curPosition[0], 0, gameMapSize[0] - 1),
+        MathHelper.clamp(curPosition[1], 0, gameMapSize[1] - 1)
       };
     }
     ArrayList<GameObject> placedObjects = cellArray[curPosition[0]][curPosition[1]].getPlacedObjects();
@@ -390,8 +395,8 @@ public class GameMap {
     }
     if (!MathHelper.isInBounds(newPosition, new int[]{0, 0}, gameMapSize)) {
       newPosition = new int[]{
-              MathHelper.clamp(newPosition[0], 0, gameMapSize[0] - 1),
-              MathHelper.clamp(newPosition[1], 0, gameMapSize[1] - 1)
+        MathHelper.clamp(newPosition[0], 0, gameMapSize[0] - 1),
+        MathHelper.clamp(newPosition[1], 0, gameMapSize[1] - 1)
       };
     }
     removeObjectFromMap(object, curPosition);
@@ -424,6 +429,7 @@ public class GameMap {
 
   /**
    * Getter for the Game Map size
+   *
    * @return the size of the Game Map
    */
   public int[] getGameMapSize() {
@@ -458,6 +464,7 @@ public class GameMap {
 
   /**
    * This function will handle any incoming messages, but it has to follow the regex of the Update packet.
+   *
    * @param message the content in the format of the Update packet's encoding.
    * @return a new gameMap object containing all the information given by the message
    */
@@ -539,7 +546,7 @@ public class GameMap {
             }
           }
           // places the new gameObject on the map
-            newMap.placeObjectOnMap(finalGameObject, cellX, cellY);
+          newMap.placeObjectOnMap(finalGameObject, cellX, cellY);
         }
       }
     }
@@ -549,6 +556,7 @@ public class GameMap {
 
   /**
    * Setter for the Cell array
+   *
    * @param array the new cell array
    */
   public void setCellArray(Cell[][] array) {
@@ -557,6 +565,7 @@ public class GameMap {
 
   /**
    * Getter for the Cell array
+   *
    * @return the cell array
    */
   public Cell[][] getCellArray() {

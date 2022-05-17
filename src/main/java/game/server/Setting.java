@@ -2,8 +2,14 @@ package game.server;
 
 public class Setting<T extends Number> {
 
-
+  /**
+   * The name of the Setting
+   */
   private String name;
+
+  /**
+   * The associated value of the setting
+   */
   private T val;
 
   public Setting (String name, T val) {
@@ -11,22 +17,28 @@ public class Setting<T extends Number> {
       this.val = val;
   }
 
+  /**
+   *
+   * @return the name of the setting
+   */
   public String getName() {
     return name;
   }
 
-  public Setting<T> setName(String name) {
-    this.name = name;
-    return this;
-  }
-
+  /**
+   *
+   * @return the current value of the setting
+   */
   public T getVal() {
     return val;
   }
 
-  public Setting<T> setVal(T val) {
+  /**
+   *
+   * @param val the new value of the setting
+   */
+  public void setVal(T val) {
     this.val = val;
-    return this;
   }
 
 }

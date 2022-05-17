@@ -15,15 +15,39 @@ import java.util.ArrayList;
  */
 public class Lobby {
 
+  /**
+   * The server from which this lobby originates
+   */
   private final Server server;
+  /**
+   * the name of this lobby
+   */
   private final String lobbyName;
+  /**
+   * An arraylist of clients that are in this lobby
+   */
   protected ArrayList<ClientThread> listOfClients = new ArrayList<>();
+  /**
+   * the current game map.
+   */
   protected GameMap gameMap;
+  /**
+   * the settings for this lobby
+   */
   protected ServerSettings serverSettings;
+  /**
+   * the turncounter indicating whoms turn it is
+   */
   protected int turnCounter;
   public static final Logger logger = LogManager.getLogger(Server.class);
 
+  /**
+   * the client that has won
+   */
   ClientThread winnerClientThread;
+  /**
+   * the score of the client that has won
+   */
   int winnerScore = -1;
 
   public Lobby(String lobbyName, Server server) {
@@ -33,14 +57,24 @@ public class Lobby {
     initialize();
   }
 
+  /**
+   *
+   * @return the person who made this lobby
+   */
   public ClientThread getHost() {
     return listOfClients.get(0);
   }
 
+  /**
+   * creates a new game map
+   */
   private void generateGameMap() {
     recreateGameMap();
   }
 
+  /**
+   * sets the gamemap variable to a newly created gamemap
+   */
   public void recreateGameMap () {
     this.gameMap = new GameMap(serverSettings);
     gameMap.spawnOreInMap();
@@ -91,7 +125,7 @@ public class Lobby {
       winnerClientThread.informOfWinner();
     }
   }
-
+  @SuppressWarnings("unused")
   public void printMap() {
     logger.info("---");
     GameMap.printMapToConsole(gameMap);
@@ -102,6 +136,11 @@ public class Lobby {
     return turnCounter;
   }
 
+  /**
+   *
+   * @param clientThread the client from which the id is needed
+   * @return the id of the client in question, returns -1 if the client is not connected to the lobby
+   */
   public int getIDOfClient(ClientThread clientThread) {
     for (int i = 0; i < listOfClients.size(); i++) {
       ClientThread c = listOfClients.get(i);
@@ -112,32 +151,57 @@ public class Lobby {
     return -1;
   }
 
+  /**
+   * prematurely ends the game.
+   */
   public void endGame () {
       this.turnCounter = serverSettings.getNumberOfRounds() * listOfClients.size();
       checkGameEnd();
   }
 
+  /**
+   *
+   * @return the name of this lobby
+   */
   public String getLobbyName() {
     return lobbyName;
   }
 
+  /**
+   *
+   * @return the serversettings of this lobby
+   */
   public ServerSettings getServerSettings() {
     return serverSettings;
   }
 
+  /**
+   *
+   * @return the gamemap of this lobby
+   */
   public GameMap getGameMap() {
     return gameMap;
   }
 
+  /**
+   *
+   * @return the list of all the connected clients of this lobby
+   */
   public ArrayList<ClientThread> getListOfClients() {
     return listOfClients;
   }
 
+  /**
+   * initializes the gamemap and the robots
+   */
   public void initialize() {
     respawnRobots();
     generateGameMap();
   }
 
+  /**
+   * adds the amount of robots for each client connected to the lobby.
+   */
   public void respawnRobots() {
     for (int i = 0; i < listOfClients.size(); i++) {
       listOfClients.get(i).getRobots().clear();

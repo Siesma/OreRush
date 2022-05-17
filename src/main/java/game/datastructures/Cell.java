@@ -3,7 +3,7 @@ package game.datastructures;
 import java.util.ArrayList;
 
 /**
- * This class represents one square of the gameMap. It contains it's position and a list of Objects that are on that cell
+ * This class represents one square of the gameMap. It contains its position and a list of Objects that are on that cell
  */
 public class Cell {
 

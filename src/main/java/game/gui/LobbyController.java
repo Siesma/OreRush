@@ -386,6 +386,7 @@ public class LobbyController {
         if (this.colours.length != this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal()) {
           this.colours = MathHelper.getRandomColours(this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal());
         }
+        // calculates the position and size of the gamemap
         int xMax = currentGameMap.getGameMapSize()[0];
         int yMax = currentGameMap.getGameMapSize()[1];
         double xPixels = mapPane.getWidth();
@@ -397,6 +398,7 @@ public class LobbyController {
         mapGridPane.setTranslateY(yPad);
 
 
+        // goes through all the rows and columns and sets the important background image.
         for (int x = 0; x < xMax; x++) {
           for (int y = 0; y < yMax; y++) {
             Button button = new Button();
@@ -446,6 +448,7 @@ public class LobbyController {
               imageView.setImage(image);
               button.setGraphic(imageView);
             }
+            // adds the listeners to the popup buttons to update the robots.
             button.setOnMouseClicked((MouseEvent event) -> {
               Node node = (Node) event.getTarget();
               int row = GridPane.getRowIndex(node);
@@ -496,6 +499,9 @@ public class LobbyController {
     this.selectedAndMakeActionForRobot(button, x, y);
   }
 
+  /**
+   * A function that displays a popup in case someone was cheating.
+   */
   public void cheat() {
     Popup popup = new Popup();
     Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/bsod.png")));
@@ -529,6 +535,7 @@ public class LobbyController {
     this.xClicked = x;
     this.yClicked = y;
 
+    // ignores this call if the position is out of bounds anyway.
     if (!MathHelper.isInBounds(x, y, this.client.getLobbyInClient().getServerSettings())) {
       return;
     }
@@ -545,6 +552,7 @@ public class LobbyController {
       }
     } else {
       try {
+        // displays the popup at the position of the mouse.
         Bounds boundsInScreen = button.localToScreen(button.getBoundsInLocal());
         int xPosition = (int) boundsInScreen.getMaxX();
         int yPosition = (int) boundsInScreen.getMaxY();
@@ -638,54 +646,82 @@ public class LobbyController {
   }
 
 
+  /**
+   * This function sets the label next to the associated setting to the current value
+   * @param event unused mouseEvent that triggers this function
+   */
   @FXML
   void onMouseReleasedMapHeight(MouseEvent event) {
     this.labelMapHeight.setText("Map Height: " + this.sliderMapHeight.getValue());
     this.client.sendServerSettings("mapHeight:" + (int) this.sliderMapHeight.getValue());
   }
-
+  /**
+   * This function sets the label next to the associated setting to the current value
+   * @param event unused mouseEvent that triggers this function
+   */
   @FXML
   void onMouseReleasedMapWidth(MouseEvent event) {
     this.labelMapWidth.setText("Map Width: " + this.sliderMapWidth.getValue());
     this.client.sendServerSettings("mapWidth:" + (int) this.sliderMapWidth.getValue());
   }
-
+  /**
+   * This function sets the label next to the associated setting to the current value
+   * @param event unused mouseEvent that triggers this function
+   */
   @FXML
   void onMouseReleasedMaxAllowedMoves(MouseEvent event) {
     this.labelMaxAllowedMoves.setText("Max Allowed Moves: " + this.sliderMaxAllowedMoves.getValue());
     this.client.sendServerSettings("maxAllowedMoves:" + (int) this.sliderMaxAllowedMoves.getValue());
   }
-
+  /**
+   * This function sets the label next to the associated setting to the current value
+   * @param event unused mouseEvent that triggers this function
+   */
   @FXML
   void onMouseReleasedMaxClusterSize(MouseEvent event) {
     this.labelMaxClusterSize.setText("Max Cluster Size: " + this.sliderMaxClusterSize.getValue());
     this.client.sendServerSettings("maxClusterSize:" + (int) this.sliderMaxClusterSize.getValue());
   }
-
+  /**
+   * This function sets the label next to the associated setting to the current value
+   * @param event unused mouseEvent that triggers this function
+   */
   @FXML
   void onMouseReleasedNumberOfRobots(MouseEvent event) {
     this.labelNumberOfRobots.setText("Number Of Robots: " + this.sliderNumberOfRobots.getValue());
     this.client.sendServerSettings("numberOfRobots:" + (int) this.sliderNumberOfRobots.getValue());
   }
-
+  /**
+   * This function sets the label next to the associated setting to the current value
+   * @param event unused mouseEvent that triggers this function
+   */
   @FXML
   void onMouseReleasedOreDensity(MouseEvent event) {
     this.labelOreDensity.setText("Ore Density: " + this.sliderOreDensity.getValue());
     this.client.sendServerSettings("oreDensity:" + this.sliderOreDensity.getValue());
   }
-
+  /**
+   * This function sets the label next to the associated setting to the current value
+   * @param event unused mouseEvent that triggers this function
+   */
   @FXML
   void onMouseReleasedOreThreshold(MouseEvent event) {
     this.labelOreThreshold.setText("Ore Threshold: " + this.sliderOreThreshold.getValue());
     this.client.sendServerSettings("oreThreshold:" + this.sliderOreThreshold.getValue());
   }
-
+  /**
+   * This function sets the label next to the associated setting to the current value
+   * @param event unused mouseEvent that triggers this function
+   */
   @FXML
   void onMouseReleasedRadarDistance(MouseEvent event) {
     this.labelRadarDistance.setText("Radar Distance: " + this.sliderRadarDistance.getValue());
     this.client.sendServerSettings("radarDistance:" + (int) this.sliderRadarDistance.getValue());
   }
-
+  /**
+   * This function sets the label next to the associated setting to the current value
+   * @param event unused mouseEvent that triggers this function
+   */
   @FXML
   void onMouseReleasedTurnsPerPlayer(MouseEvent event) {
     this.labelTurnsPerPlayer.setText("Turns Per Player: " + this.sliderTurnsPerPlayer.getValue());

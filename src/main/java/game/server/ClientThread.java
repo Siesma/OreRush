@@ -24,18 +24,57 @@ import org.apache.logging.log4j.Logger;
 
 public class ClientThread implements Runnable {
 
+  /**
+   * The server this clientthread is connected to
+   */
   private final Server server;
+  /**
+   * The socket of this clientthread
+   */
   private final Socket socket;
+  /**
+   * the inputStream of this clientthread
+   */
   private final InputStream inputStream;
+  /**
+   * the outputstream of this clientthread
+   */
   private final OutputStream outputStream;
+  /**
+   * The stringbuilder that is used for incoming data.
+   */
   StringBuilder builder = new StringBuilder();
+  /**
+   * a boolean that represents whether this clientthread is connected to a server or not
+   */
   private boolean connectedToServer;
+  /**
+   * a boolean that represents whether a ping has been received or not
+   */
   private boolean pingReceived;
+  /**
+   * the nickname of this client
+   */
   private String playerName;
+  /**
+   * the lobby this client is connected to
+   */
   private Lobby connectedLobby;
+  /**
+   * the score of this player
+   */
   private int playerScore;
+  /**
+   * the id of this player
+   */
   private int playerID;
+  /**
+   * An arraylist that stores the robots of the player
+   */
   private ArrayList<Robot> robots;
+  /**
+   * the current Map of the lobby in which this clientthread is in
+   */
   private GameMap currentGameMap;
 
   public static final Logger logger = LogManager.getLogger(ClientThread.class);
@@ -51,6 +90,9 @@ public class ClientThread implements Runnable {
     this.robots = new ArrayList<>();
   }
 
+  /**
+   * starts the new thread that runs the clientthread
+   */
   public void run() {
 
     boolean startingToRecordMessage = false;
@@ -121,6 +163,9 @@ public class ClientThread implements Runnable {
     }
   }
 
+  /**
+   * removes this client from the server in case of a disconnect
+   */
   public void removeThreadFromServer() {
     Server.getClientThreads().remove(this);
   }
@@ -229,6 +274,10 @@ public class ClientThread implements Runnable {
     }
   }
 
+  /**
+   * Sends a ServerSettingsPacket to all the users informing them about changes.
+   * @param content the name of the setting that is being changed and the new value of said setting
+   */
   public void updateLobbyAboutSettingChange (String content) {
     for (ClientThread clientThread : this.connectedLobby.getListOfClients()) {
       (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new ServerSettingsPacket()).encodeWithContent(content));
@@ -236,7 +285,7 @@ public class ClientThread implements Runnable {
   }
 
   /**
-   * Sends Chat packet to a all clients
+   * Sends Chat packet to all clients
    *
    * @param msg message that is sent preceded by the name of the sender
    */

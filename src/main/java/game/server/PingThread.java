@@ -14,6 +14,9 @@ import java.util.ArrayList;
 
 public class PingThread implements Runnable {
     public static final Logger logger = LogManager.getLogger(Server.class);
+    /**
+     * An arraylist of all the clients that have not responded which will be removed in the next cycle
+     */
     ArrayList<ClientThread> clientsWithNoResponse = new ArrayList<>();
 
     public void run() {

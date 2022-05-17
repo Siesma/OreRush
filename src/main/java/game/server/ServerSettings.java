@@ -15,15 +15,37 @@ import java.util.Locale;
 public class ServerSettings {
 
   public static final Logger logger = LogManager.getLogger(ServerSettings.class);
+  /**
+   *
+   */
   public Setting<Integer> numberOfRobots;
+  /**
+   *
+   */
   public Setting<Integer> mapWidth, mapHeight;
+  /**
+   *
+   */
   public Setting<Integer> numberOfRounds;
+  /**
+   *
+   */
   public Setting<Float> oreDensity;
+  /**
+   *
+   */
   public Setting<Integer> maxAllowedMoves;
+  /**
+   *
+   */
   public Setting<Integer> radarDistance;
-  public ArrayList<Object> ores;
-
+  /**
+   *
+   */
   public Setting<Integer> maxClusterSize;
+  /**
+   *
+   */
   public Setting<Float> oreThreshold;
 
 
@@ -31,6 +53,9 @@ public class ServerSettings {
     setDefaultValues();
   }
 
+  /**
+   * sets the default values for all the settings
+   */
   private void setDefaultValues() {
     this.numberOfRobots = new Setting<Integer>("numberOfRobots", 2);
     this.mapWidth = new Setting<Integer>("mapWidth", 30);
@@ -43,13 +68,18 @@ public class ServerSettings {
     this.oreThreshold = new Setting<Float>("oreThreshold", 0.75f);
   }
 
+  /**
+   * sets a field to a new value based on the name of the field.
+   * @param variable the name of the variable that has to be changed
+   * @param newValue the Value to which the variable has to be changed to
+   */
   public void setValue(String variable, Number newValue) {
     String variableName = getSimilarNameToVariable(variable, "", this.getClass().getDeclaredFields());
     Object obj;
     try {
       obj = this.getClass().getField(variableName).get(this);
     } catch (Exception e) {
-      logger.error(e.getMessage());
+      logger.error("no field by the name \"" + variable + "\" exists");
       return;
     }
     if (!(obj instanceof Setting)) {
@@ -66,6 +96,13 @@ public class ServerSettings {
 
   }
 
+  /**
+   * matches any case to camelCase for all the fields
+   * @param similarName the variable name in any case matched to camelCase
+   * @param preFix whether the variable has a prefix or not (not used in here)
+   * @param fields all the fields where the variable name should be searched
+   * @return the camelCase of a variableName
+   */
   private String getSimilarNameToVariable(String similarName, String preFix, Field[] fields) {
     for (Field f : fields) {
       if (f.getName().toLowerCase(Locale.ROOT).matches(preFix + similarName.toLowerCase(Locale.ROOT))) {
@@ -75,93 +112,75 @@ public class ServerSettings {
     return "NONE";
   }
 
+  /**
+   *
+   * @return the number of robots for the current game map
+   */
   public int getNumberOfRobots() {
     return numberOfRobots.getVal();
   }
 
-  public ServerSettings setNumberOfRobots(Setting<Integer> numberOfRobots) {
-    this.numberOfRobots = numberOfRobots;
-    return this;
-  }
-
+  /**
+   *
+   * @return the width of the map
+   */
   public int getMapWidth() {
     return mapWidth.getVal();
   }
 
-  public ServerSettings setMapWidth(Setting<Integer> mapWidth) {
-    this.mapWidth = mapWidth;
-    return this;
-  }
-
+  /**
+   *
+   * @return the height of the map
+   */
   public int getMapHeight() {
     return mapHeight.getVal();
   }
 
-  public ServerSettings setMapHeight(Setting<Integer> mapHeight) {
-    this.mapHeight = mapHeight;
-    return this;
-  }
-
+  /**
+   *
+   * @return the number of rounds the game should play
+   */
   public int getNumberOfRounds() {
     return numberOfRounds.getVal();
   }
 
-  public ServerSettings setNumberOfRounds(Setting<Integer> numberOfRounds) {
-    this.numberOfRounds = numberOfRounds;
-    return this;
-  }
-
+  /**
+   *
+   * @return the density of the ores
+   */
   public float getOreDensity() {
     return oreDensity.getVal();
   }
 
-  public ServerSettings setOreDensity(Setting<Float> oreDensity) {
-    this.oreDensity = oreDensity;
-    return this;
-  }
-
+  /**
+   *
+   * @return the maximum amount of moves allowed for each robot for one turn
+   */
   public int getMaxAllowedMoves() {
     return maxAllowedMoves.getVal();
   }
 
-  public ServerSettings setMaxAllowedMoves(Setting<Integer> maxAllowedMoves) {
-    this.maxAllowedMoves = maxAllowedMoves;
-    return this;
-  }
-
+  /**
+   *
+   * @return the distance of the radars reveal area
+   */
   public int getRadarDistance() {
     return radarDistance.getVal();
   }
 
-  public ServerSettings setRadarDistance(Setting<Integer> radarDistance) {
-    this.radarDistance = radarDistance;
-    return this;
-  }
-
-  public ArrayList<Object> getOres() {
-    return ores;
-  }
-
-  public ServerSettings setOres(ArrayList<Object> ores) {
-    this.ores = ores;
-    return this;
-  }
-
+  /**
+   *
+    * @return the maximum size of a cluster
+   */
   public int getMaxClusterSize() {
     return maxClusterSize.getVal();
   }
 
-  public ServerSettings setMaxClusterSize(Setting<Integer> maxClusterSize) {
-    this.maxClusterSize = maxClusterSize;
-    return this;
-  }
-
+  /**
+   *
+   * @return the threshold for generating an ore
+   */
   public float getOreThreshold() {
     return oreThreshold.getVal();
-  }
-
-  public ServerSettings setOreThreshold(Setting<Float> oreThreshold) {
-    this.oreThreshold = oreThreshold;
-    return this;
   }
 }

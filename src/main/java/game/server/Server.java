@@ -22,9 +22,19 @@ import java.util.Scanner;
 public class Server {
 
     public static final Logger logger = LogManager.getLogger(Server.class);
+    /**
+     * A list of all the clients that are connected to the client
+     */
     private static final ArrayList<ClientThread> clientThreads = new ArrayList<>();
+    /**
+     * A list of all the lobbies that have been created on this server
+     */
     private final ArrayList<Lobby> lobbyArrayList = new ArrayList<>();
 
+    /**
+     *
+     * @return the clients that are connected to the server
+     */
     public static ArrayList<ClientThread> getClientThreads() {
         return clientThreads;
     }
@@ -57,10 +67,19 @@ public class Server {
         }
     }
 
+    /**
+     * Adds a lobby to the list of lobbies that are created on this server
+     * @param lobby the lobby that has to be added to the servers list
+     */
     public void addLobby(Lobby lobby) {
         lobbyArrayList.add(lobby);
     }
 
+    /**
+     * Adds a client to a lobby
+     * @param clientThread the client that has to be moved
+     * @param lobbyName the lobby in which the client has to be moved
+     */
     public void addClientToLobby(ClientThread clientThread, String lobbyName) {
         Lobby lobby = getLobbyByName(lobbyName);
         if (lobby == null) {
@@ -96,6 +115,10 @@ public class Server {
         }
     }
 
+    /**
+     *
+     * @return the list of all the lobbies from this server
+     */
     public ArrayList<Lobby> getLobbyArrayList() {
         return lobbyArrayList;
     }
@@ -134,6 +157,10 @@ public class Server {
         }
     }
 
+    /**
+     *
+     * @return a String concatenated with all the highscores of the previous records.
+     */
     public String getHighScore() {
         BufferedReader reader;
         StringBuilder stringBuilder = new StringBuilder();
