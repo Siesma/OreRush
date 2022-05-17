@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -103,6 +104,8 @@ public class StartMenuController {
    */
   @FXML
   private TableColumn<LobbyInClient, String> playerColumn;
+  @FXML
+  private BorderPane basePane;
 
   public static final Logger logger = LogManager.getLogger(Server.class);
 
@@ -113,6 +116,7 @@ public class StartMenuController {
 
     //get model
     this.client = new Client(Main.hostAddress, Integer.parseInt(Main.port), Main.name);
+    //basePane.setBackground();
 
     //link model with view
     nickname.textProperty().bind(client.nicknameProperty());

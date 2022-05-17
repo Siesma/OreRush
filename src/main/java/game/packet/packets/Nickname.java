@@ -87,11 +87,17 @@ public class Nickname extends AbstractPacket {
       InputStreamThread obj = (InputStreamThread) parent;
       if (obj.getClient().getNickname().equals(oldName)) {
         String finalMessage = message;
-        Platform.runLater(() ->obj.getClient().nicknameProperty().setValue(finalMessage));
+        Platform.runLater(() ->
+                obj.getClient().nicknameProperty().setValue(finalMessage)
+        );
       }
       obj.getClient().changeNicknameOfOtherClient(oldName, message);
-      obj.getClient().lastChatMessageProperty().setValue("Server: " + oldName + " has changed their name to "
-              + message + ".\n");
+      String finalMessage1 = message;
+      Platform.runLater(() ->
+              obj.getClient().lastChatMessageProperty().setValue("Server: " + oldName + " has changed their name to "
+                      + finalMessage1 + ".\n")
+      );
+
     }
   }
 }
