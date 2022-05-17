@@ -2,7 +2,33 @@ plugins {
     id 'java-library'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.10'
+    id 'jacoco'
 }
+
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.5
+            }
+        }
+
+        rule {
+            enabled = false
+            element = 'CLASS'
+            includes = ['org.gradle.*']
+
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 0.3
+            }
+        }
+    }
+}
+
+
 
 javafx {
     version = "11.0.2"
@@ -53,6 +79,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
 
 //test {
