@@ -7,7 +7,7 @@ import game.server.ServerConstants;
 
 public class CheatSetScore extends AbstractPacket {
   public CheatSetScore() {
-    super("", new String[]{"[0-9]+"}, "");
+    super("", new String[]{"^[0-9]+$"}, "");
   }
 
   @Override
