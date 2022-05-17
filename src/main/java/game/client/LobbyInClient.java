@@ -28,6 +28,35 @@ public class LobbyInClient {
      * A list of the player names in a string, seperated by a space
      */
     private final StringProperty players;
+
+    /**
+     * getter for the winner information
+     * @return the winner name
+     */
+    public String getWinner() {
+        return winner.get();
+    }
+
+    /**
+     * getter for the winnerProperty
+     * @return winnerProperty
+     */
+    public StringProperty winnerProperty() {
+        return winner;
+    }
+
+    /**
+     * Setter for the winnerProperty
+     * @param winner information about the winner
+     */
+    public void setWinner(String winner) {
+        this.winner.set(winner);
+    }
+
+    /**
+     * property storing the information on the winner
+     */
+    private final StringProperty winner = new SimpleStringProperty();
     /**
      * The name of the player who´s turn it currently is
      */
@@ -50,7 +79,7 @@ public class LobbyInClient {
     private GameMap gameMap = new GameMap(new ServerSettings(""));
 
     /**
-     * TODO: @sebastian
+     * getter for the Game map
      * @return the GameMap´s gameMapProperty
      */
     public int getGameMapProperty() {
@@ -58,7 +87,7 @@ public class LobbyInClient {
     }
 
     /**
-     * TODO: @sebastian
+     * getter for the game map property
      * @return something or another
      */
     public IntegerProperty gameMapPropertyProperty() {
@@ -66,7 +95,7 @@ public class LobbyInClient {
     }
 
     /**
-     * TODO: @Sebastien
+     * Integer property representing the turn counter
      */
     private final IntegerProperty gameMapProperty = new SimpleIntegerProperty(0);
 

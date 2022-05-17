@@ -17,6 +17,9 @@ package game.datastructures;
 public enum RobotAction {
     Move(), Dig(), Wait(), RequestRadar(), RequestTrap();
 
+    /**
+     * Enum of the different robot actions
+     */
     RobotAction() {
 
     }

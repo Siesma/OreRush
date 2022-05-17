@@ -98,7 +98,8 @@ public class GameMap {
     }
   }
 
-  // TODO: figure out a unique name different from every other players name.
+  //TODO: figure out a unique name different from every other players name.
+  //TODO: javadoc
   private String getUniqueServerName() {
     return "Server";
   }
@@ -178,6 +179,11 @@ public class GameMap {
     cellArray[x][y].place(object);
   }
 
+  /**
+   * Places an object on the map
+   * @param gameObject object to be placed
+   * @param xy cell position in which the object should be placed
+   */
   public void placeObjectOnMap(GameObject gameObject, int[] xy) {
     this.placeObjectOnMap(gameObject, xy[0], xy[1]);
   }
@@ -192,6 +198,11 @@ public class GameMap {
     cellArray[x][y].remove(gameObject);
   }
 
+  /**
+   * removes an object from the map
+   * @param gameObject the object that is being removed
+   * @param xy cell position in which the object should be removed
+   */
   public void removeObjectFromMap(GameObject gameObject, int[] xy) {
     this.removeObjectFromMap(gameObject, xy[0], xy[1]);
   }

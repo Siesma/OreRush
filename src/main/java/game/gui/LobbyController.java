@@ -6,6 +6,7 @@ import game.datastructures.Cell;
 import game.datastructures.Robot;
 import game.datastructures.*;
 import game.helper.MathHelper;
+import game.server.ServerConstants;
 import game.server.ServerSettings;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Popup;
@@ -125,6 +127,8 @@ public class LobbyController {
   private Label turnInfoLabel;
   @FXML
   private Label playerTurnLabel;
+  @FXML
+  private VBox gameVBox;
   private int xClicked = -1;
   private int yClicked = -1;
 
@@ -178,6 +182,12 @@ public class LobbyController {
       if (!turnInfoLabel.getText().equals("Turn info")) {
         updateMap();
       }
+    });
+    lobby.winnerProperty().addListener((obs, oldVal, newVal) -> {
+      gameVBox.getChildren().clear();
+      Label winnerLabel = new Label("The winner is: " + newVal);
+      winnerLabel.setFont(new Font(32));
+      gameVBox.getChildren().add(winnerLabel);
     });
 
     moveSelectionPopup = new Popup();
@@ -331,7 +341,12 @@ public class LobbyController {
     return out;
   }
 
-
+  /**
+   * Returns the string containing object information
+   * @param gameObject
+   * @return a string specifying the owner, type for radar, traps, additionnally the value for ores or what it is
+   * carrying in case of a robot
+   */
   public String getObjectDisplayString(GameObject gameObject) {
     StringBuilder stringBuilder = new StringBuilder();
 
@@ -699,6 +714,11 @@ public class LobbyController {
     return null;
   }
 
+  /**
+   * allows to select a robot with a key stroke if it is formt 1 to 9
+   *
+   * @param keyEvent keyboard key pressed
+   */
   @FXML
   public void onKeyPressedAnchorPane(KeyEvent keyEvent) {
     if (currentGameMap == null) {

@@ -35,6 +35,7 @@ public interface GameObject {
 
     /**
      * Getter for the owner of the Game Object.
+     *
      * @return Game Object owner
      */
     String getOwner();

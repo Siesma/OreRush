@@ -40,7 +40,10 @@ public class Move extends AbstractPacket {
     return out.toString();
   }
 
-
+  /**
+   * Not used.
+   * @return packet with no content
+   */
   @Override
   public String encode() {
     return encodeWithContent();

@@ -38,7 +38,10 @@ public class CreateLobby extends AbstractPacket {
                 msg +
                 (char) ServerConstants.DEFAULT_PACKET_ENDING_MESSAGE;
     }
-
+    /**
+     * Not used.
+     * @return null
+     */
     @Override
     public String encode() {
         return null;

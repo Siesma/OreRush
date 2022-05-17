@@ -142,6 +142,10 @@ public class Cell {
     return this.x + ":" + this.y + ":" + out;
   }
 
+  /**
+   * removes a specific game object of the cell
+   * @param gameObject game object that is to be removed
+   */
   public void remove(GameObject gameObject) {
     this.placedObjects.remove(gameObject);
   }

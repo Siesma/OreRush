@@ -69,11 +69,23 @@ public class Winner extends AbstractPacket {
 
         if (parent instanceof InputStreamThread) {
             InputStreamThread obj = (InputStreamThread) parent;
-            for (LobbyInClient lobbyInClient:obj.getClient().getLobbyData()) {
+            for (LobbyInClient lobbyInClient : obj.getClient().getLobbyData()) {
                 if (lobbyInClient.getLobbyName().equals(lobbyName)) {
-                    lobbyInClient.setStatus("finished");
-                    lobbyInClient.setPlayers(winnerName + " (" + score +")");
+                    Platform.runLater(() -> {
+                        lobbyInClient.setStatus("finished");
+                        lobbyInClient.setPlayers(winnerName.toUpperCase() + " (" + score + ")");
+                    });
                 }
+            }
+            try {
+                if (obj.getClient().getLobbyInClient().getLobbyName().equals(lobbyName)){
+                    Platform.runLater(() -> {
+                        obj.getClient().getLobbyInClient().setWinner(winnerName);
+                    });
+
+                }
+            } catch (Exception e) {
+                logger.debug("not in lobby");
             }
         }
     }
