@@ -18,7 +18,7 @@ public class Chat extends AbstractPacket {
 
 
   public Chat() {
-    super("", new String[]{"^.*$"}, "");
+    super("", new String[]{"^(.|\n)*$"}, "");
   }
 
 
