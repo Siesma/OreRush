@@ -14,12 +14,34 @@ import java.util.*;
  */
 public abstract class AbstractPacket {
 
+  /**
+   * the name of the String
+   */
   protected final String name;
+  /**
+   * the help message
+   */
   private final String help;
+  /**
+   * the array, containing all the parts of the packet
+   */
   private final String[] parts;
+  /**
+   * The response to the packet
+   */
   private final String response;
+  /**
+   * Log4j logger that allows great, clear and useful logging of information and errors
+   * instead of the ugly commandline prints
+   */
   public static final Logger logger = LogManager.getLogger(AbstractPacket.class);
 
+  /**
+   * Constructor for the packet
+   * @param help the help message
+   * @param parts the parts / content of the packet
+   * @param response the response message
+   */
   public AbstractPacket(String help, String[] parts, String response) {
     String[] temp = this.getClass().toString().split("\\.");
     this.name = temp[temp.length - 1];
