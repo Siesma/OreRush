@@ -207,6 +207,14 @@ public class Client {
   }
 
   /**
+   *
+   * @param amount the value of the new score
+   */
+  public void setScoreWithCheats (int amount) {
+    (new PacketHandler(this)).pushMessage(outputStream, (new CheatSetScore()).encodeWithContent("" + amount));
+  }
+
+  /**
    * Sends a new Broadcast-packet and encodes it with the predetermined content
    *
    * @param message the message that should be broadcasted
@@ -258,6 +266,9 @@ public class Client {
     if (clientName.equals(getNickname())) {
       for (LobbyInClient lobby : lobbyInClientObservableList) {
         if (lobby.getLobbyName().equals(lobbyName)) {
+          if (lobby.getStatus().equals("in game")) {
+            return;
+          }
           if (lobby.getStatus().equals("open")) {
             this.lobbyInClient = lobby;
           }

@@ -91,7 +91,11 @@ public class LobbyInClient {
      * @param gameMapString The encoded map in form of a string
      */
     public void updateGameMap(String gameMapString) {
-        gameMap = GameMap.getMapFromString(gameMapString, serverSettings);
+        try {
+            gameMap = GameMap.getMapFromString(gameMapString, serverSettings);
+        } catch (Exception e) {
+            System.out.println("DIFFICULT ERROR:" + gameMapString);
+        }
         gameMapProperty.setValue(gameMapProperty.getValue()+1);
     }
 
