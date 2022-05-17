@@ -5,9 +5,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -104,8 +107,27 @@ public class Server {
      */
     public void saveHighScore(ClientThread winnerClientThread) {
         try {
-            FileWriter myWriter = new FileWriter(System.getProperty("user.dir") + "/HighScore.txt",true);
-            myWriter.write(winnerClientThread.getPlayerName() + ":" + winnerClientThread.getPlayerScore() + "\n");
+            String highscore = getHighScore();
+            String newScore = winnerClientThread.getPlayerName() +
+                    (char) ServerConstants.DEFAULT_TEXT_SPACER + winnerClientThread.getPlayerScore();
+
+            ArrayList<String> list = new ArrayList<>(Arrays.asList(highscore.split("\n")));
+            if (highscore.equals("")) {
+                list.set(0, newScore);
+            } else {
+                for (String item:list) {
+                    if (Integer.parseInt(item.split(String.valueOf((char) ServerConstants.DEFAULT_TEXT_SPACER))[1]) < winnerClientThread.getPlayerScore()) {
+                        list.add(list.indexOf(item), newScore);
+                        break;
+                    }
+                }
+                if (!list.contains(newScore)) {
+                    list.add(newScore);
+                }
+            }
+
+            FileWriter myWriter = new FileWriter(System.getProperty("user.dir") + "/HighScore.txt");
+            myWriter.write(String.join("\n",list));
             myWriter.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -124,7 +146,7 @@ public class Server {
             reader = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/HighScore.txt"));
             String s;
             while((s = reader.readLine()) != null) {
-                stringBuilder.append(s).append("; ");
+                stringBuilder.append(s).append("\n");
             }
             reader.close();
         } catch (IOException e) {

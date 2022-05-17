@@ -64,11 +64,8 @@ public class HighScore extends AbstractPacket {
 
         if (parent instanceof ClientThread) {
             ClientThread obj = (ClientThread) parent;
-        String highScoreString = obj.getServer().getHighScore();
-        (new PacketHandler(this)).pushMessage(obj.getOutputStream(), (new Chat()).encodeWithContent(highScoreString));
-
-
+            String highScoreString = "High Scores:\n" + obj.getServer().getHighScore().replace(String.valueOf((char) ServerConstants.DEFAULT_TEXT_SPACER) , " : ");
+            (new PacketHandler(this)).pushMessage(obj.getOutputStream(), (new Chat()).encodeWithContent(highScoreString));
         }
-
     }
 }
