@@ -170,7 +170,7 @@ public class StartMenuController {
   /**
    * checks if the whisper message can be sent and send it
    *
-   * @param actionEvent TODO: Fill this please!
+   * @param actionEvent unused actionEvent that triggers this function
    */
   public void handleWhisperMessage(ActionEvent actionEvent) {
     if (clientListView.getSelectionModel().getSelectedItem() != null &&
@@ -184,7 +184,7 @@ public class StartMenuController {
   /**
    * checks if the textfield is empty and send the message as broadcast
    *
-   * @param actionEvent TODO: Fill this please!
+   * @param actionEvent unused actionEvent that triggers this function
    */
   public void handleBroadcastMessage(ActionEvent actionEvent) {
     if (!newMessageTextField.getText().equals("")) {

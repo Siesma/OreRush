@@ -30,9 +30,9 @@ public class PacketHandler {
      * @return the encoded packet as a string
      */
     public String createPacketMessage() {
+        //TODO: remove this function
         logger.info("Please tell which packet you want to send");
         logger.info("A list of possible packets are:");
-        // TODO: Figure out whether we want to continue having this or not because in its current state it is not working.
         for (String s : (Objects.requireNonNull(new File(System.getProperty("user.dir") + "/src/main/java/game/packet/packets").list()))) {
             logger.info("\t->" + s.split(".java")[0]);
         }

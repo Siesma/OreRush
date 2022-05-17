@@ -48,8 +48,6 @@ public class StartGame extends AbstractPacket {
     return null;
   }
 
-  // TODO: add player turn etc...
-
   /**
    * Decodes the packet
    *
@@ -70,7 +68,6 @@ public class StartGame extends AbstractPacket {
           for (ClientThread clientThread : lobby.getListOfClients()) {
             (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(),
                     (new Update()).encodeWithContent(lobby.getGameMap().cellStrings()));
-            // TODO .getIndividualGameMapForPlayer(clientThread.getPlayerName())));
             (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(),
                     (new UpdateTurn()).encodeWithContent(lobby.getListOfClients().get(lobby.turnOfPlayer()).getPlayerName(), String.valueOf(lobby.getTurnCounter())));
           }

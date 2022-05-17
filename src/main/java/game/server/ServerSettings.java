@@ -14,10 +14,6 @@ import java.util.Locale;
  */
 public class ServerSettings {
 
-  /*
-  TODO: Make a new Datatype called "ServerSettings" which holds information about packet-replacement procedure,
-   the setting and a way to default back to working values in case something gets messed up.
-   */
   public static final Logger logger = LogManager.getLogger(ServerSettings.class);
   public Setting<Integer> numberOfRobots;
   public Setting<Integer> mapWidth, mapHeight;
@@ -33,14 +29,6 @@ public class ServerSettings {
 
   public ServerSettings() {
     setDefaultValues();
-  }
-
-  /**
-   * @param pathToFile Used  to import settings from a ".ore_game_settings" file
-   */
-  public ServerSettings(String pathToFile) {
-    setDefaultValues();
-    // TODO: Make a file system for the settings
   }
 
   private void setDefaultValues() {

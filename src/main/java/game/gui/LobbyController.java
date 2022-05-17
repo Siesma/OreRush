@@ -397,7 +397,7 @@ public class LobbyController {
             } catch (Exception e) {
               logger.error("The file \"Stone Floor.png\" does not exist.");
             }
-            if (currentCell.robotsOnCell() != null) { //TODO: differentiate robot owner
+            if (currentCell.robotsOnCell() != null) {
               try {
                 if (currentCell.robotsOnCell().get(0).getOwner().equals(this.client.getNickname())) {
                   image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Robot.png")));

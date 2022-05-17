@@ -115,10 +115,14 @@ public class Robot implements GameObject {
   }
 
   /**
-   * TODO: What? This funcion calls itself? But why?
-   * @param robotAction TODO
-   * @param xy TODO
-   * @param optionalInventoryChange TODO
+   *
+   * This function is just a subfunction of another setAction function.
+   * The original function takes two individual ints for the position while this takes an array.
+   * This is used so when trying to perform an action the position of a gameObject does not need to be
+   * broken up into the two separate ints.
+   * @param robotAction what Action the robot should take
+   * @param xy position where the robot will go to
+   * @param optionalInventoryChange what changes should be applied to the Inventory of the robot
    */
   public void setAction (RobotAction robotAction, int[] xy, Object optionalInventoryChange) {
     this.setAction(robotAction, xy[0], xy[1], optionalInventoryChange);

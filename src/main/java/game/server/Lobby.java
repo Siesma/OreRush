@@ -19,7 +19,7 @@ public class Lobby {
   private final String lobbyName;
   protected ArrayList<ClientThread> listOfClients = new ArrayList<>();
   protected GameMap gameMap;
-  protected ServerSettings serverSettings; // just basic functionality to set constants, not modifiable yet.
+  protected ServerSettings serverSettings;
   protected int turnCounter;
   public static final Logger logger = LogManager.getLogger(Server.class);
 
@@ -29,7 +29,7 @@ public class Lobby {
   public Lobby(String lobbyName, Server server) {
     this.server = server;
     this.lobbyName = lobbyName;
-    this.serverSettings = new ServerSettings("");
+    this.serverSettings = new ServerSettings();
     initialize();
   }
 
