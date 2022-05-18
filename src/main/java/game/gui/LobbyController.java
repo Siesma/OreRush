@@ -362,8 +362,8 @@ public class LobbyController {
   /**
    * Returns the string containing object information
    *
-   * @param gameObject
-   * @return a string specifying the owner, type for radar, traps, additionnally the value for ores or what it is
+   * @param gameObject that has to be encoded
+   * @return a string specifying the owner, type for radar, traps, additionally the value for ores or what it is
    * carrying in case of a robot
    */
   public String getObjectDisplayString(GameObject gameObject) {
