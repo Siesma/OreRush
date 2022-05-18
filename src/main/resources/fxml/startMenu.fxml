@@ -11,7 +11,7 @@
     <top>
         <Pane prefHeight="85.0" prefWidth="695.0" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="216.0" layoutY="9.0" prefHeight="67.0" prefWidth="264.0" text="Welcome to Ore Rush" textOverrun="CLIP">
+            <Label layoutX="216.0" layoutY="9.0" prefHeight="67.0" prefWidth="300.0" text="Welcome to Ore Rush" textOverrun="CLIP">
                <font>
                   <Font name="System Bold" size="25.0" />
                </font>
