@@ -18,7 +18,7 @@
 * [Authors](#authors)
 
 ## About The Project
-  <img src="[https://media.discordapp.net/attachments/769245445951324261/957088755666276392/Mockup.PNG](https://cdn.discordapp.com/attachments/948535467429752919/976496466107441212/Screenshot_from_2022-05-18_16-47-58.png)" width ="500"  height="300" align="right">
+  <img src="https://cdn.discordapp.com/attachments/948535467429752919/976496466107441212/Screenshot_from_2022-05-18_16-47-58.png" width ="500"  height="300" align="right">
 
 <br/>
 <br/>
