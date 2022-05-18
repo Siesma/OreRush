@@ -29,12 +29,19 @@ public class Server {
   private final ArrayList<Lobby> lobbyArrayList = new ArrayList<>();
 
   /**
+   * Getter for the ClientThread list
    * @return the clients that are connected to the server
    */
   public static ArrayList<ClientThread> getClientThreads() {
     return clientThreads;
   }
 
+  /**
+   * Main function of the server.
+   * Infinite loop to accept new client connections.
+   * @param port port number used by the socket
+   * @throws IOException by the Server socket if an error occurs such as the port already in use
+   */
   public void run(int port) throws IOException {
 
     ServerSocket serverSocket = new ServerSocket(port);

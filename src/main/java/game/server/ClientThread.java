@@ -79,6 +79,12 @@ public class ClientThread implements Runnable {
 
   public static final Logger logger = LogManager.getLogger(ClientThread.class);
 
+  /**
+   * Constructor for the ClientThread class
+   * @param server reference to the server instantiating the ClientThread
+   * @param socket socket the new client uses to establish a connection to the server
+   * @throws IOException thrown by the input and output streams mosly in case of a connection loss
+   */
   public ClientThread(Server server, Socket socket) throws IOException {
     this.server = server;
     this.socket = socket;

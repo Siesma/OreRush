@@ -48,7 +48,10 @@ public class ServerSettings {
    */
   public Setting<Float> oreThreshold;
 
-
+  /**
+   * Constructor for the ServerSettings class
+   * auto sets default values
+   */
   public ServerSettings() {
     setDefaultValues();
   }

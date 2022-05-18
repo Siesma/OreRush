@@ -51,6 +51,11 @@ public class Lobby {
    */
   int winnerScore = -1;
 
+  /**
+   * Constructor for the Lobby class
+   * @param lobbyName name of the lobby
+   * @param server server reference o which the lobby was created
+   */
   public Lobby(String lobbyName, Server server) {
     this.server = server;
     this.lobbyName = lobbyName;
@@ -92,14 +97,25 @@ public class Lobby {
     return turnCounter % listOfClients.size();
   }
 
+  /**
+   * Adds a client to the list of connected clients
+   * @param clientThread new client connected
+   */
   public void addClient(ClientThread clientThread) {
     listOfClients.add(clientThread);
   }
 
+  /**
+   * Removes client from the connected client list
+   * @param clientThread client that deconnected
+   */
   public void removeClient(ClientThread clientThread) {
     listOfClients.remove(clientThread);
   }
 
+  /**
+   * updates the other clients of move made by a player and checks if the game should end
+   */
   public void updateMove() {
     turnCounter++;
 //    printMap();
@@ -126,13 +142,21 @@ public class Lobby {
       winnerClientThread.informOfWinner();
     }
   }
-  @SuppressWarnings("unused")
+
+  /**
+   * Prints the map to the console
+   * deprecated since the GUI map
+   */
   public void printMap() {
     logger.info("---");
     GameMap.printMapToConsole(gameMap);
     logger.info("---");
   }
 
+  /**
+   * Getter for turn counter
+   * @return the number of turns played
+   */
   public int getTurnCounter() {
     return turnCounter;
   }

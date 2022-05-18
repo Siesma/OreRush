@@ -14,6 +14,9 @@ import javafx.application.Platform;
  * This Packet is used by the server to update the players of the current player which turn it is
  */
 public class UpdateTurn extends AbstractPacket {
+    /**
+     * Constructor for the UpdateTurn packet
+     */
     public UpdateTurn() {
         super("", new String[]{
                 "^.*$", // player whose turn it is

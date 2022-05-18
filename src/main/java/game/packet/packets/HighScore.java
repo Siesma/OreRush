@@ -17,6 +17,9 @@ import java.util.Scanner;
  */
 
 public class HighScore extends AbstractPacket {
+    /**
+     * Constructor for the highscore packet
+     */
     public HighScore() {
         super("", new String[]{"^(?i)high$"}, "");
     }

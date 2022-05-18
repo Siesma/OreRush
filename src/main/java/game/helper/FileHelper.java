@@ -18,6 +18,10 @@ public class FileHelper {
 
     private final HashMap<String, HashMap<String, Object>> objectMap;
 
+    /**
+     * Constructor for the FileHelper class
+     * creates a hash map and initializes it with the packet map and gameobject map
+     */
     public FileHelper() {
         objectMap = new HashMap<>();
         initialize();
@@ -91,6 +95,10 @@ public class FileHelper {
         return obj;
     }
 
+    /**
+     * Getter for an objectMap
+     * @return objectMap
+     */
     public HashMap<String, HashMap<String, Object>> getObjectMap() {
         return objectMap;
     }

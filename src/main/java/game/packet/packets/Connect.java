@@ -16,7 +16,9 @@ import game.server.ServerConstants;
  * lobbies that were already created
  */
 public class Connect extends AbstractPacket {
-
+  /**
+   * Constructor for the Connect packet
+   */
   public Connect() {
     super("The init packet consists of one user input part. $\"Name\"", new String[]{
       ".*", //Name

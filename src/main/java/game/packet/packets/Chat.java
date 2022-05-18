@@ -16,7 +16,9 @@ import java.util.Scanner;
  */
 public class Chat extends AbstractPacket {
 
-
+  /**
+   * Constructor for the Chat packet
+   */
   public Chat() {
     super("", new String[]{"^(.|\n)*$"}, "");
   }

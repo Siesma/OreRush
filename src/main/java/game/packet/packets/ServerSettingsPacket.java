@@ -10,14 +10,20 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 
 public class ServerSettingsPacket extends AbstractPacket {
-
-
+  /**
+   * Constructor for the ServerSettings Packet
+   */
   public ServerSettingsPacket() {
     super("help", new String[]{
       "^((numberOfRobots|mapWidth|mapHeight|numberOfRounds|oreDensity|maxAllowedMoves|radarDistance|ores|maxClusterSize|oreThreshold):[0-9]+(.[0-9]+)?)+$"
     }, "response");
   }
 
+  /**
+   * Encodes the serve settings properly accordingly to the network protocol
+   * @param content of the packet, strings of the information that is to be sent
+   * @return a properly formatted string
+   */
   @Override
   public String encodeWithContent(String... content) {
     StringBuilder out = new StringBuilder();
@@ -39,6 +45,15 @@ public class ServerSettingsPacket extends AbstractPacket {
     return null;
   }
 
+  /**
+   * Decodes the server settings packet
+   *
+   * @param parent can be a clientThread if the packet is sent by a client to the server,
+   *               in this case the server applies the settings to the game
+   *               or a client if the server sent the packet to the client,
+   *               in this case the client knows the parameters of the map
+   * @param message string containing the information about a game setting formatted accordingly to the network protocol,
+   */
   @Override
   public void decode(Object parent, String message) {
     if (message.startsWith(this.name + (char) ServerConstants.DEFAULT_PACKET_SPACER)) {
