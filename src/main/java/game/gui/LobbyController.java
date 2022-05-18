@@ -380,6 +380,7 @@ public class LobbyController {
       stringBuilder.append("Type: ").append(ore.getOreType().name()).append(", Value: ").append(ore.getOreType().getValue());
     } else if (gameObject instanceof Robot) {
       Robot robot = (Robot) gameObject;
+      stringBuilder.append("Owner: ").append(robot.getOwner());
       if (robot.getInventory() != null && !(robot.getInventory() instanceof Nothing)) {
         stringBuilder.append(" Carrying: ");
         if (robot.getInventory() instanceof Radar) {
