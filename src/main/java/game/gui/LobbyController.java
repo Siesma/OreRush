@@ -347,7 +347,11 @@ public class LobbyController {
       }
     } else if (gameObject instanceof Robot) {
       try {
-        out.getChildren().add(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Robot.png")))));
+        if(gameObject.getOwner().equals(client.getNickname())) {
+          out.getChildren().add(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Robot.png")))));
+        } else {
+          out.getChildren().add(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/RobotEnemy.png")))));
+        }
       } catch (Exception e) {
         logger.error("The file \"Robot.png\" does not exist.");
       }
