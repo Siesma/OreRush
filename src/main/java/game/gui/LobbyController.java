@@ -6,7 +6,6 @@ import game.datastructures.Cell;
 import game.datastructures.Robot;
 import game.datastructures.*;
 import game.helper.MathHelper;
-import game.server.ServerConstants;
 import game.server.ServerSettings;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -34,6 +33,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -121,6 +121,9 @@ public class LobbyController {
   @FXML
   private Label labelOreThreshold;
 
+  @FXML
+  private Button endTurnButton;
+
   public static final Logger logger = LogManager.getLogger(LobbyController.class);
 
   @FXML
@@ -140,6 +143,12 @@ public class LobbyController {
 
   private Color[] colours;
 
+
+  private Popup tutorialPopup = new Popup();
+
+  private int tutorialRobotID = -1;
+
+  private int tutorialCounter = 0;
 
   /**
    * Initializes the controller class. This method is automatically called
@@ -219,6 +228,10 @@ public class LobbyController {
     }
     moveSelectionPopup.hide();
     updateMap();
+    if(tutorialPopup.isShowing()) {
+      tutorialPopup.hide();
+      updateMap();
+    }
   }
 
   /**
@@ -249,7 +262,7 @@ public class LobbyController {
     Button buttonRequestRadar = new Button("RequestRadar");
     Button buttonRequestTrap = new Button("RequestTrap");
     Button buttonDig = new Button("Dig");
-    Button cheat = new Button("CHEAT");
+//    Button cheat = new Button("CHEAT");
     buttonMove.setOnAction(e -> {
       setActionViaPopup("Move", "");
     });
@@ -266,23 +279,23 @@ public class LobbyController {
       setActionViaPopup("Dig", "");
     });
 
-    cheat.setOnAction(e -> {
-      this.client.setScoreWithCheats(100 + (int) (Math.random() * 400));
-      cheat();
-    });
+//    cheat.setOnAction(e -> {
+//      this.client.setScoreWithCheats(100 + (int) (Math.random() * 400));
+//      cheat();
+//    });
 
     buttonMove.setPrefWidth(150);
     buttonWait.setPrefWidth(150);
     buttonRequestRadar.setPrefWidth(150);
     buttonRequestTrap.setPrefWidth(150);
     buttonDig.setPrefWidth(150);
-    cheat.setPrefWidth(150);
+//    cheat.setPrefWidth(150);
     movePreview.getChildren().add(buttonMove);
     movePreview.getChildren().add(buttonDig);
     movePreview.getChildren().add(buttonRequestRadar);
     movePreview.getChildren().add(buttonRequestTrap);
     movePreview.getChildren().add(buttonWait);
-    movePreview.getChildren().add(cheat);
+//    movePreview.getChildren().add(cheat);
     if (currentGameMap != null) {
       for (GameObject gameObject : currentGameMap.getCellArray()[xClicked][yClicked].getPlacedObjects()) {
         if (gameObject instanceof Nothing) {
@@ -343,6 +356,7 @@ public class LobbyController {
 
   /**
    * Returns the string containing object information
+   *
    * @param gameObject
    * @return a string specifying the owner, type for radar, traps, additionnally the value for ores or what it is
    * carrying in case of a robot
@@ -386,31 +400,23 @@ public class LobbyController {
         if (this.colours.length != this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal()) {
           this.colours = MathHelper.getRandomColours(this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal());
         }
-        // calculates the position and size of the gamemap
-        int xMax = currentGameMap.getGameMapSize()[0];
-        int yMax = currentGameMap.getGameMapSize()[1];
-        double xPixels = mapPane.getWidth();
-        double yPixels = mapPane.getHeight();
-        double cellSize = (int) Math.min(xPixels / xMax, yPixels / yMax);
-        double xPad = (xPixels - xMax * cellSize) / 2;
-        double yPad = (yPixels - yMax * cellSize) / 2;
-        mapGridPane.setTranslateX(xPad);
-        mapGridPane.setTranslateY(yPad);
+        mapGridPane.setTranslateX(getCellSizeAndPosition().get("xPad"));
+        mapGridPane.setTranslateY(getCellSizeAndPosition().get("yPad"));
 
 
         // goes through all the rows and columns and sets the important background image.
-        for (int x = 0; x < xMax; x++) {
-          for (int y = 0; y < yMax; y++) {
+        for (int x = 0; x < getCellSizeAndPosition().get("xMax"); x++) {
+          for (int y = 0; y < getCellSizeAndPosition().get("yMax"); y++) {
             Button button = new Button();
-            button.setPrefSize(cellSize, cellSize);
+            button.setPrefSize(getCellSizeAndPosition().get("cellSize"), getCellSizeAndPosition().get("cellSize"));
             button.setPadding(Insets.EMPTY);
             ImageView imageView = new ImageView();
-            imageView.setFitHeight(cellSize);
-            imageView.setFitWidth(cellSize);
+            imageView.setFitHeight(getCellSizeAndPosition().get("cellSize"));
+            imageView.setFitWidth(getCellSizeAndPosition().get("cellSize"));
             Image image = null;
             Cell currentCell = currentGameMap.getCellArray()[x][y];
             try {
-//              image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Stone Floor.png")));
+              image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Stone Floor.png")));
             } catch (Exception e) {
               logger.error("The file \"Stone Floor.png\" does not exist.");
             }
@@ -648,6 +654,7 @@ public class LobbyController {
 
   /**
    * This function sets the label next to the associated setting to the current value
+   *
    * @param event unused mouseEvent that triggers this function
    */
   @FXML
@@ -655,8 +662,10 @@ public class LobbyController {
     this.labelMapHeight.setText("Map Height: " + this.sliderMapHeight.getValue());
     this.client.sendServerSettings("mapHeight:" + (int) this.sliderMapHeight.getValue());
   }
+
   /**
    * This function sets the label next to the associated setting to the current value
+   *
    * @param event unused mouseEvent that triggers this function
    */
   @FXML
@@ -664,8 +673,10 @@ public class LobbyController {
     this.labelMapWidth.setText("Map Width: " + this.sliderMapWidth.getValue());
     this.client.sendServerSettings("mapWidth:" + (int) this.sliderMapWidth.getValue());
   }
+
   /**
    * This function sets the label next to the associated setting to the current value
+   *
    * @param event unused mouseEvent that triggers this function
    */
   @FXML
@@ -673,8 +684,10 @@ public class LobbyController {
     this.labelMaxAllowedMoves.setText("Max Allowed Moves: " + this.sliderMaxAllowedMoves.getValue());
     this.client.sendServerSettings("maxAllowedMoves:" + (int) this.sliderMaxAllowedMoves.getValue());
   }
+
   /**
    * This function sets the label next to the associated setting to the current value
+   *
    * @param event unused mouseEvent that triggers this function
    */
   @FXML
@@ -682,8 +695,10 @@ public class LobbyController {
     this.labelMaxClusterSize.setText("Max Cluster Size: " + this.sliderMaxClusterSize.getValue());
     this.client.sendServerSettings("maxClusterSize:" + (int) this.sliderMaxClusterSize.getValue());
   }
+
   /**
    * This function sets the label next to the associated setting to the current value
+   *
    * @param event unused mouseEvent that triggers this function
    */
   @FXML
@@ -691,8 +706,10 @@ public class LobbyController {
     this.labelNumberOfRobots.setText("Number Of Robots: " + this.sliderNumberOfRobots.getValue());
     this.client.sendServerSettings("numberOfRobots:" + (int) this.sliderNumberOfRobots.getValue());
   }
+
   /**
    * This function sets the label next to the associated setting to the current value
+   *
    * @param event unused mouseEvent that triggers this function
    */
   @FXML
@@ -700,8 +717,10 @@ public class LobbyController {
     this.labelOreDensity.setText("Ore Density: " + this.sliderOreDensity.getValue());
     this.client.sendServerSettings("oreDensity:" + this.sliderOreDensity.getValue());
   }
+
   /**
    * This function sets the label next to the associated setting to the current value
+   *
    * @param event unused mouseEvent that triggers this function
    */
   @FXML
@@ -709,8 +728,10 @@ public class LobbyController {
     this.labelOreThreshold.setText("Ore Threshold: " + this.sliderOreThreshold.getValue());
     this.client.sendServerSettings("oreThreshold:" + this.sliderOreThreshold.getValue());
   }
+
   /**
    * This function sets the label next to the associated setting to the current value
+   *
    * @param event unused mouseEvent that triggers this function
    */
   @FXML
@@ -718,8 +739,10 @@ public class LobbyController {
     this.labelRadarDistance.setText("Radar Distance: " + this.sliderRadarDistance.getValue());
     this.client.sendServerSettings("radarDistance:" + (int) this.sliderRadarDistance.getValue());
   }
+
   /**
    * This function sets the label next to the associated setting to the current value
+   *
    * @param event unused mouseEvent that triggers this function
    */
   @FXML
@@ -751,6 +774,263 @@ public class LobbyController {
   }
 
   /**
+   * TODO: JavaDoc
+   *
+   * @return
+   */
+  @FXML
+  public void onActionTutorialButton(ActionEvent e) {
+    this.tutorialPopup.getContent().clear();
+    tutorialPopup.hide();
+    switch (tutorialCounter) {
+      case 0:
+        showRobotSelection();
+        break;
+      case 1:
+        showCellSelection();
+        break;
+      case 2:
+        showOptionSelection();
+        break;
+      case 3:
+        showEndTurnSelection();
+        break;
+      case 4:
+        showObjectiveSelection();
+        break;
+    }
+    tutorialCounter++;
+    tutorialCounter = tutorialCounter % 6;
+  }
+
+  /**
+   * TODO: JavaDoc
+   *
+   * @return
+   */
+  private void showRobotSelection() {
+    int randomId = (int) (Math.random() * this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal());
+    this.tutorialRobotID = randomId;
+    Label label = new Label();
+    label.setText("Click this Robot or press the \"" + randomId + "\" key to select.");
+    double x = getCellSizeAndPosition().get("xPad") + getRobotObjectFromSelection(randomId).getPosition()[0] * getCellSizeAndPosition().get("cellSize") + getCellSizeAndPosition().get("cellSize");
+    double y = getCellSizeAndPosition().get("yPad") + getRobotObjectFromSelection(randomId).getPosition()[1] * getCellSizeAndPosition().get("cellSize") + getCellSizeAndPosition().get("cellSize");
+    int arrowX = 20;
+    int arrowY = 20;
+    tutorialPopup.setX(getCellSizeAndPosition().get("boundsMinX") + x + arrowX);
+    tutorialPopup.setY(getCellSizeAndPosition().get("boundsMinY") + y + arrowY);
+    //Arrow arrow = new Arrow(0, 0, -arrowX, -arrowY, 10);
+
+    Button button = new Button("Got it");
+    button.setOnAction(e -> {
+      if (tutorialPopup.isShowing()) {
+        tutorialPopup.getContent().clear();
+        tutorialPopup.hide();
+      }
+    });
+    VBox box = new VBox();
+    box.getChildren().add(button);
+    box.getChildren().add(label);
+    tutorialPopup.getContent().add(box);
+    //tutorialPopup.getContent().add(arrow);
+    tutorialPopup.show(anchorPane.getScene().getWindow());
+    this.selectedRobot = getRobotObjectFromSelection(tutorialRobotID);
+  }
+
+  /**
+   * TODO: JavaDoc
+   *
+   * @return
+   */
+  private void showCellSelection() {
+
+    Label label = new Label();
+    label.setText("Click (this) Cell to show the options you have");
+    xClicked = (int) (Math.random() * this.client.getLobbyInClient().getServerSettings().getMapWidth());
+    yClicked = (int) (Math.random() * this.client.getLobbyInClient().getServerSettings().getMapHeight());
+
+    double x = getCellSizeAndPosition().get("xPad") + xClicked * getCellSizeAndPosition().get("cellSize") + getCellSizeAndPosition().get("cellSize");
+    double y = getCellSizeAndPosition().get("yPad") + yClicked * getCellSizeAndPosition().get("cellSize") + getCellSizeAndPosition().get("cellSize");
+    int arrowX = 20;
+    int arrowY = 20;
+    tutorialPopup.setX(getCellSizeAndPosition().get("boundsMinX") + x + arrowX);
+    tutorialPopup.setY(getCellSizeAndPosition().get("boundsMinY") + y + arrowY);
+    //Arrow arrow = new Arrow(0, 0, -arrowX, -arrowY, 10);
+
+    Button button = new Button("Got it");
+    button.setOnAction(e -> {
+      if (tutorialPopup.isShowing()) {
+        tutorialPopup.getContent().clear();
+        tutorialPopup.hide();
+      }
+    });
+    VBox box = new VBox();
+    box.getChildren().add(button);
+    box.getChildren().add(label);
+    tutorialPopup.getContent().add(box);
+    //tutorialPopup.getContent().add(arrow);
+    tutorialPopup.show(anchorPane.getScene().getWindow());
+  }
+
+  /**
+   * TODO: JavaDoc
+   *
+   * @return
+   */
+  private void showOptionSelection() {
+    Label label = new Label();
+    label.setText("These are all the Options you have");
+    double x = getCellSizeAndPosition().get("xPad") + xClicked * getCellSizeAndPosition().get("cellSize") + getCellSizeAndPosition().get("cellSize");
+    double y = getCellSizeAndPosition().get("yPad") + yClicked * getCellSizeAndPosition().get("cellSize") + getCellSizeAndPosition().get("cellSize");
+    int arrowX = 20;
+    int arrowY = 20;
+    tutorialPopup.setX(getCellSizeAndPosition().get("boundsMinX") + x + arrowX);
+    tutorialPopup.setY(getCellSizeAndPosition().get("boundsMinY") + y + arrowY);
+
+    Button button = new Button("Got it");
+    button.setOnAction(e -> {
+      if (tutorialPopup.isShowing()) {
+        tutorialPopup.getContent().clear();
+        tutorialPopup.hide();
+      }
+    });
+    HBox hBox = new HBox();
+    VBox optionBox = new VBox();
+    optionBox.getChildren().add(getPopupContent());
+    optionBox.getChildren().add(button);
+    optionBox.getChildren().add(label);
+    hBox.getChildren().add(optionBox);
+
+    VBox labelBox = new VBox();
+
+
+    Label labelMove = new Label("Move lets your Robot move to this location");
+    Label labelWait = new Label("Wait lets your Robot move to this location and then wait.");
+    Label labelRequestRadar = new Label("RequestRadar lets your Robot request a Radar. This will only work if your xPosition is 0.");
+    Label labelRequestTrap = new Label("RequestTrap lets your Robot request a Trap. This will only work if your xPosition is 0.");
+    Label labelDig = new Label("Dig lets your Robot move to this location if its not on the cell already, if it is however the Robot will dig up whatever ore there is on this cell and place its Inventory on this cell.");
+
+    labelMove.setMinHeight(25);
+    labelWait.setMinHeight(25);
+    labelRequestRadar.setMinHeight(25);
+    labelRequestTrap.setMinHeight(25);
+    labelDig.setMinHeight(25);
+
+    labelBox.getChildren().add(labelMove);
+    labelBox.getChildren().add(labelDig);
+    labelBox.getChildren().add(labelRequestRadar);
+    labelBox.getChildren().add(labelRequestTrap);
+    labelBox.getChildren().add(labelWait);
+    hBox.getChildren().add(labelBox);
+    tutorialPopup.getContent().add(hBox);
+    tutorialPopup.show(anchorPane.getScene().getWindow());
+
+  }
+
+  /**
+   * TODO: JavaDoc
+   *
+   * @return
+   */
+  private void showEndTurnSelection () {
+    Label label = new Label();
+    label.setText("End your turn over here!");
+    Bounds boundsInScreen = endTurnButton.localToScreen(endTurnButton.getBoundsInLocal());
+    tutorialPopup.setX(boundsInScreen.getMaxX() + 5);
+    tutorialPopup.setY(boundsInScreen.getMaxY() + 5);
+    int arrowX = 20;
+    int arrowY = 20;
+    //Arrow arrow = new Arrow(0, 0, -arrowX, -arrowY, 10);
+
+    Button button = new Button("Got it");
+    button.setOnAction(e -> {
+      if (tutorialPopup.isShowing()) {
+        tutorialPopup.getContent().clear();
+        tutorialPopup.hide();
+      }
+    });
+    VBox box = new VBox();
+    box.getChildren().add(button);
+    box.getChildren().add(label);
+
+    tutorialPopup.getContent().add(box);
+    //tutorialPopup.getContent().add(arrow);
+
+    tutorialPopup.show(anchorPane.getScene().getWindow());
+  }
+
+  /**
+   * TODO: JavaDoc
+   *
+   * @return
+   */
+  private void showObjectiveSelection () {
+    Label label = new Label();
+    label.setText("When this robot has something in its inventory you have to go back to the first colum (x=0) to obtain points!");
+    double x = getCellSizeAndPosition().get("xPad") + getRobotObjectFromSelection(tutorialRobotID).getPosition()[0] * getCellSizeAndPosition().get("cellSize") + getCellSizeAndPosition().get("cellSize");
+    double y = getCellSizeAndPosition().get("yPad") + getRobotObjectFromSelection(tutorialRobotID).getPosition()[1] * getCellSizeAndPosition().get("cellSize") + getCellSizeAndPosition().get("cellSize");
+    int arrowX = 20;
+    int arrowY = 20;
+    tutorialPopup.setX(getCellSizeAndPosition().get("boundsMinX") + x + arrowX);
+    tutorialPopup.setY(getCellSizeAndPosition().get("boundsMinY") + y + arrowY);
+    //Arrow arrow = new Arrow(0, 0, -arrowX, -arrowY, 10);
+
+    Button button = new Button("Got it");
+    button.setOnAction(e -> {
+      if (tutorialPopup.isShowing()) {
+        tutorialPopup.getContent().clear();
+        tutorialPopup.hide();
+      }
+    });
+    VBox box = new VBox();
+    box.getChildren().add(button);
+    box.getChildren().add(label);
+    tutorialPopup.getContent().add(box);
+    //tutorialPopup.getContent().add(arrow);
+    tutorialPopup.show(anchorPane.getScene().getWindow());
+    this.selectedRobot = getRobotObjectFromSelection(tutorialRobotID);
+  }
+
+  /**
+   * TODO: JavaDoc
+   *
+   * @return
+   */
+  private HashMap<String, Double> getCellSizeAndPosition() {
+
+    int xMax = currentGameMap.getGameMapSize()[0];
+    int yMax = currentGameMap.getGameMapSize()[1];
+    double xPixels = mapPane.getWidth();
+    double yPixels = mapPane.getHeight();
+    double cellSize = (int) Math.min(xPixels / xMax, yPixels / yMax);
+    double xPad = (xPixels - xMax * cellSize) / 2;
+    double yPad = (yPixels - yMax * cellSize) / 2;
+    Bounds boundsInScreen = anchorPane.localToScreen(anchorPane.getBoundsInLocal());
+    HashMap<String, Double> map = new HashMap<>();
+    map.put("xMax", (double) xMax);
+    map.put("yMax", (double) yMax);
+    map.put("cellSize", cellSize);
+    map.put("xPad", xPad);
+    map.put("yPad", yPad);
+    map.put("boundsMinX", boundsInScreen.getMinX());
+    map.put("boundsMinY", boundsInScreen.getMinY());
+    map.put("boundsMaxX", boundsInScreen.getMaxX());
+    map.put("boundsMaxY", boundsInScreen.getMaxY());
+
+    return map;
+  }
+
+  /**
+   * TODO: JavaDoc
+   *
+   * @return
+   */
+  @FXML
+  public void onMouseClickedAnchorPane(MouseEvent e) {
+
+  }
+
+  /**
    * allows to select a robot with a key stroke if it is formt 1 to 9
    *
    * @param keyEvent keyboard key pressed
@@ -777,3 +1057,4 @@ public class LobbyController {
     }
   }
 }
+

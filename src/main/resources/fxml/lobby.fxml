@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchorPane" onKeyPressed="#onKeyPressedAnchorPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.gui.LobbyController">
+<AnchorPane fx:id="anchorPane" onKeyPressed="#onKeyPressedAnchorPane" onMouseClicked="#onMouseClickedAnchorPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.gui.LobbyController">
     <children>
       <SplitPane dividerPositions="0.7754010695187166" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -130,6 +130,7 @@
                         <Label fx:id="turnInfoLabel" text="Turn info" />
                         <Label fx:id="playerTurnLabel" text="Player info" />
                               <Button fx:id="endTurnButton" mnemonicParsing="false" onAction="#onActionEndTurnButton" text="End Turn" />
+                              <Button fx:id="tutorialButton" mnemonicParsing="false" onAction="#onActionTutorialButton" text="Tutorial" />
                           </children>
                       </VBox>
       
@@ -161,3 +162,4 @@
       </SplitPane>
     </children>
 </AnchorPane>
+
