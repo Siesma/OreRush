@@ -819,7 +819,7 @@ public class LobbyController {
     int arrowY = 20;
     tutorialPopup.setX(getCellSizeAndPosition().get("boundsMinX") + x + arrowX);
     tutorialPopup.setY(getCellSizeAndPosition().get("boundsMinY") + y + arrowY);
-    //Arrow arrow = new Arrow(0, 0, -arrowX, -arrowY, 10);
+    Arrow arrow = new Arrow(0, 0, -arrowX, -arrowY, 10);
 
     Button button = new Button("Got it");
     button.setOnAction(e -> {
@@ -832,7 +832,7 @@ public class LobbyController {
     box.getChildren().add(button);
     box.getChildren().add(label);
     tutorialPopup.getContent().add(box);
-    //tutorialPopup.getContent().add(arrow);
+    tutorialPopup.getContent().add(arrow);
     tutorialPopup.show(anchorPane.getScene().getWindow());
     this.selectedRobot = getRobotObjectFromSelection(tutorialRobotID);
   }
@@ -855,7 +855,7 @@ public class LobbyController {
     int arrowY = 20;
     tutorialPopup.setX(getCellSizeAndPosition().get("boundsMinX") + x + arrowX);
     tutorialPopup.setY(getCellSizeAndPosition().get("boundsMinY") + y + arrowY);
-    //Arrow arrow = new Arrow(0, 0, -arrowX, -arrowY, 10);
+    Arrow arrow = new Arrow(0, 0, -arrowX, -arrowY, 10);
 
     Button button = new Button("Got it");
     button.setOnAction(e -> {
@@ -868,7 +868,7 @@ public class LobbyController {
     box.getChildren().add(button);
     box.getChildren().add(label);
     tutorialPopup.getContent().add(box);
-    //tutorialPopup.getContent().add(arrow);
+    tutorialPopup.getContent().add(arrow);
     tutorialPopup.show(anchorPane.getScene().getWindow());
   }
 
@@ -940,7 +940,7 @@ public class LobbyController {
     tutorialPopup.setY(boundsInScreen.getMaxY() + 5);
     int arrowX = 20;
     int arrowY = 20;
-    //Arrow arrow = new Arrow(0, 0, -arrowX, -arrowY, 10);
+    Arrow arrow = new Arrow(0, 0, -arrowX, -arrowY, 10);
 
     Button button = new Button("Got it");
     button.setOnAction(e -> {
@@ -954,7 +954,7 @@ public class LobbyController {
     box.getChildren().add(label);
 
     tutorialPopup.getContent().add(box);
-    //tutorialPopup.getContent().add(arrow);
+    tutorialPopup.getContent().add(arrow);
 
     tutorialPopup.show(anchorPane.getScene().getWindow());
   }
@@ -973,7 +973,7 @@ public class LobbyController {
     int arrowY = 20;
     tutorialPopup.setX(getCellSizeAndPosition().get("boundsMinX") + x + arrowX);
     tutorialPopup.setY(getCellSizeAndPosition().get("boundsMinY") + y + arrowY);
-    //Arrow arrow = new Arrow(0, 0, -arrowX, -arrowY, 10);
+    Arrow arrow = new Arrow(0, 0, -arrowX, -arrowY, 10);
 
     Button button = new Button("Got it");
     button.setOnAction(e -> {
@@ -986,7 +986,7 @@ public class LobbyController {
     box.getChildren().add(button);
     box.getChildren().add(label);
     tutorialPopup.getContent().add(box);
-    //tutorialPopup.getContent().add(arrow);
+    tutorialPopup.getContent().add(arrow);
     tutorialPopup.show(anchorPane.getScene().getWindow());
     this.selectedRobot = getRobotObjectFromSelection(tutorialRobotID);
   }
