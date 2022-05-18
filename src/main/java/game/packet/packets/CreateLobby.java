@@ -15,7 +15,9 @@ import game.server.ServerConstants;
  * The server then informs other players of this new lobby
  */
 public class CreateLobby extends AbstractPacket {
-
+    /**
+     * Constructor for the create lobby packet
+     */
     public CreateLobby() {
         super("", new String[]{"^.*$"} // new lobby name
                 , "");

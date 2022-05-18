@@ -20,6 +20,9 @@ import java.util.Scanner;
  */
 
 public class Nickname extends AbstractPacket {
+  /**
+   * Constructor for the Nickname packet
+   */
   public Nickname() {
     super("", new String[]{"^.*$", //old name
             "^.*$" // new name

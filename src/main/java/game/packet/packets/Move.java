@@ -14,8 +14,9 @@ import game.server.ServerConstants;
  * This Packet is used by a client to indicate the robot action he wants to perform during his turn
  */
 public class Move extends AbstractPacket {
-
-
+  /**
+   * Constructor for the Move packet
+   */
   public Move() {
     super("", new String[]{
             "^[0-9]+:(Move|Dig|RequestRadar|RequestTrap|Wait):[0-9]+:[0-9]+((:(Ore|Trap|Radar))?)$"
@@ -49,6 +50,13 @@ public class Move extends AbstractPacket {
     return encodeWithContent();
   }
 
+  /**
+   * Decodes the move packet
+   *
+   * @param parent should be a clientThread since the packet is sent by a client to the server,
+   * @param message string containing the move a player wants to make formatted accordingly to the network protocol,
+   *                Validates the move and updates the map, robot, player accordingly.
+   */
   @Override
   public void decode(Object parent, String message) {
     if (message.startsWith(this.name + (char) ServerConstants.DEFAULT_PACKET_SPACER)) {

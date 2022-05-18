@@ -14,7 +14,9 @@ import java.util.Scanner;
  */
 public class ChatLobby extends AbstractPacket {
 
-
+    /**
+     * Constructor for the ChatLobby class
+     */
     public ChatLobby() {
         super("", new String[]{"^.*$", // lobbyName
                         "^.*$"} // message

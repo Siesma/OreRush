@@ -98,8 +98,10 @@ public class GameMap {
     }
   }
 
-  //TODO: figure out a unique name different from every other players name.
-  //TODO: javadoc
+  /**
+   * Returns an owner name so that players can't have to set the owner of ores
+   * @return "Server"
+   */
   private String getUniqueServerName() {
     return "Server";
   }

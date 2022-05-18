@@ -16,7 +16,9 @@ import game.server.ServerConstants;
  * which in turn informs other players
  */
 public class LeaveLobby extends AbstractPacket {
-
+  /**
+   * Construuctor for the LeaveLobby packet
+   */
   public LeaveLobby() {
     super("", new String[]{"^.*$", // lobby name
                     "^.*$"} // player name

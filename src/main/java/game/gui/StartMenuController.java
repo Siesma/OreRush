@@ -11,7 +11,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -116,7 +117,6 @@ public class StartMenuController {
 
     //get model
     this.client = new Client(Main.hostAddress, Integer.parseInt(Main.port), Main.name);
-    //basePane.setBackground();
 
     //link model with view
     nickname.textProperty().bind(client.nicknameProperty());
@@ -253,6 +253,10 @@ public class StartMenuController {
     actionEvent.consume();
   }
 
+  /**
+   * Handle for the high score button
+   * @param actionEvent click on the high score button
+   */
   public void handleHighScore(ActionEvent actionEvent) {
     client.sendHighScore();
   }

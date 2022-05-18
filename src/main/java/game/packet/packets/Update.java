@@ -12,6 +12,9 @@ import game.server.ServerConstants;
  * This Packet is used by the server to update the players of the current state of the gamemap
  */
 public class Update extends AbstractPacket {
+    /**
+     * Constructor for the update packet
+     */
     public Update() {
         super("", new String[]{
                 "^[0-9]+,[0-9]+_(Nothing|Robot|Trap|Radar|Ore):[0-9]+:.*(:(Nothing|Trap|Radar|Ore):[0-9]+)?$"

@@ -10,10 +10,18 @@ import game.server.ServerConstants;
  * The AddBot paket is used to inform the players that a NPC has been added to the game.
  */
 public class AddBot extends AbstractPacket {
+  /**
+   * Constructor for the Addbot packet
+   */
   public AddBot() {
     super("",  new String[]{"^(?i)addbot$"}, "");
   }
 
+  /**
+   * not used
+   * @param content not used
+   * @return null
+   */
   @Override
   public String encodeWithContent(String... content) {
     return encode();

@@ -14,7 +14,9 @@ import java.util.Scanner;
  * This Packet is used by a client to send a message to a specific client
  */
 public class Whisper extends AbstractPacket{
-
+    /**
+     * Constructor for the whisper packet
+     */
     public Whisper() {
         super("", new String[]{"^.*$", //receiver name
                 "^.*$"// message

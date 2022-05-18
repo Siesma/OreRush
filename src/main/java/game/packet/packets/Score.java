@@ -16,6 +16,9 @@ import java.util.Scanner;
  * This Packet is used by the sever to inform the players in the lobby that a player has changed score
  */
 public class Score extends AbstractPacket {
+    /**
+     * Constructor for the Score packet
+     */
     public Score() {
         super("", new String[]{"^.*$", // playerName
                 "^.*$" //new score

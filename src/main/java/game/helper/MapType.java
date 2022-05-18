@@ -7,6 +7,10 @@ import java.util.Locale;
  */
 public enum MapType {
     GameObjects(), Packets();
+
+    /**
+     * Constructor for the map type enum
+     */
     MapType () {
 
     }

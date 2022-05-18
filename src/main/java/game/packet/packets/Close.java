@@ -15,8 +15,9 @@ import org.apache.logging.log4j.Logger;
  * The Close packet is used to inform the server a client is disconnecting
  */
 public class Close extends AbstractPacket {
-
-
+  /**
+   * Constructor for the close packet
+   */
   public Close() {
     super("", new String[]{"^.*$", // player name
             }, "");

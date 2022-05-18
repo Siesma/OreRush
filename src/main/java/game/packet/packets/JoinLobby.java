@@ -14,7 +14,9 @@ import game.server.ServerConstants;
  * which in turn iforms the other clients
  */
 public class JoinLobby extends AbstractPacket {
-
+    /**
+     * Constructor for the JoinLobby packet
+     */
     public JoinLobby() {
         super("", new String[] { "^.*$", // lobby name
                         "^.*$" } // player name

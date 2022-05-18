@@ -12,6 +12,9 @@ import javafx.application.Platform;
  * informs it of the new one
  */
 public class InitNickname extends AbstractPacket {
+    /**
+     * Constructor for the InitNickName packet
+     */
     public InitNickname() {
         super("", new String[]{"^.*$", //new name
         }, "");

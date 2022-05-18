@@ -18,6 +18,10 @@ public class PacketHandler {
     public static final Logger logger = LogManager.getLogger(PacketHandler.class);
     private final Object parent;
 
+    /**
+     * Constructor for the packet handler
+     * @param parent defines if the packet is sent by the server or client
+     */
     public PacketHandler(Object parent) {
         this.parent = parent;
     }

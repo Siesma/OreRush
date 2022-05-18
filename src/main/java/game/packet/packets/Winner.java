@@ -17,7 +17,9 @@ import java.util.Scanner;
  * This Packet is used by the server to inform all clients of the win of a player and update the GUI accordingly
  */
 public class Winner extends AbstractPacket {
-
+    /**
+     * Constructor for the winner packet
+     */
     public Winner() {
         super("", new String[]{"^.*$", //lobby name
                 "^.*$", // winner name

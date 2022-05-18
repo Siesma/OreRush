@@ -44,7 +44,6 @@ public class Bot extends ClientThread {
   }
 
   public int getAmountOfNewRadarCoverageForCell(Cell cell) {
-
     return 0;
   }
 

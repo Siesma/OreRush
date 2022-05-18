@@ -16,7 +16,9 @@ import game.server.ServerConstants;
  */
 public class Awake extends AbstractPacket {
 
-
+  /**
+   * Constructor for the Awake packet
+   */
   public Awake() {
     super("", new String[]{"^(?i)awake$"}, "Awake?");
   }

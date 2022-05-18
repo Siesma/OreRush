@@ -9,7 +9,9 @@ import game.server.ServerConstants;
  */
 public class Timeout extends AbstractPacket {
 
-
+    /**
+     * Constructor for the timeout packet
+     */
     public Timeout() {
         super("the timeout packet consists of no user input parts.", new String[]{
                 "^.*$", // the server that is sending the timeout

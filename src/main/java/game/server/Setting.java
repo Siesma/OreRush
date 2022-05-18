@@ -12,6 +12,11 @@ public class Setting<T extends Number> {
    */
   private T val;
 
+  /**
+   * Constructor for the Setting class
+   * @param name name of the setting
+   * @param val value of the setting
+   */
   public Setting (String name, T val) {
       this.name = name;
       this.val = val;

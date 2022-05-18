@@ -11,6 +11,9 @@ import game.server.ServerConstants;
  * This Packet is used by the ping and pong threads to confirm that a ping or pong has arrived.
  */
 public class Success extends AbstractPacket {
+  /**
+   * Constructor for the success packet
+   */
   public Success() {
     super("", new String[] {"^(?i)Success$"}, "");
   }

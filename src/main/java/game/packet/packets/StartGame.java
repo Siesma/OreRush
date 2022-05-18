@@ -17,6 +17,9 @@ import game.server.ServerConstants;
  * which in turn informs the other clients in the lobby and sends them the gamemap
  */
 public class StartGame extends AbstractPacket {
+  /**
+   * Constructor for the StartGame packet
+   */
   public StartGame() {
     super("", new String[]{"^.*$", //lobby
     }, "");

@@ -17,7 +17,9 @@ import java.util.Scanner;
  */
 public class Broadcast extends AbstractPacket {
 
-
+    /**
+     * Constructor for the Broadcast packet
+     */
     public Broadcast() {
         super("", new String[]{"^.*$"}, "");
     }

@@ -18,6 +18,10 @@ public class PingThread implements Runnable {
      */
     private Server server;
 
+    /**
+     * Constructor for the pingthread class
+     * @param server reference to the server that launches the ping thread
+     */
     public PingThread (Server server) {
         this.server = server;
     }
