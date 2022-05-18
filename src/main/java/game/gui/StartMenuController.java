@@ -117,7 +117,14 @@ public class StartMenuController {
 
     //get model
     this.client = new Client(Main.hostAddress, Integer.parseInt(Main.port), Main.name);
-
+    Image img = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/background.PNG")));
+    BackgroundImage bImg = new BackgroundImage(img,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundPosition.DEFAULT,
+            BackgroundSize.DEFAULT);
+    Background bGround = new Background(bImg);
+    basePane.setBackground(bGround);
     //link model with view
     nickname.textProperty().bind(client.nicknameProperty());
     client.lastChatMessageProperty().addListener((observable, oldValue, newValue) -> {
