@@ -347,7 +347,11 @@ public class LobbyController {
       }
     } else if (gameObject instanceof Robot) {
       try {
-        out.getChildren().add(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Robot.png")))));
+        if(gameObject.getOwner().equals(client.getNickname())) {
+          out.getChildren().add(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/Robot.png")))));
+        } else {
+          out.getChildren().add(new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/RobotEnemy.png")))));
+        }
       } catch (Exception e) {
         logger.error("The file \"Robot.png\" does not exist.");
       }
@@ -358,8 +362,8 @@ public class LobbyController {
   /**
    * Returns the string containing object information
    *
-   * @param gameObject
-   * @return a string specifying the owner, type for radar, traps, additionnally the value for ores or what it is
+   * @param gameObject that has to be encoded
+   * @return a string specifying the owner, type for radar, traps, additionally the value for ores or what it is
    * carrying in case of a robot
    */
   public String getObjectDisplayString(GameObject gameObject) {
