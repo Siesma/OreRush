@@ -812,7 +812,7 @@ public class LobbyController {
     int randomId = (int) (Math.random() * this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal());
     this.tutorialRobotID = randomId;
     Label label = new Label();
-    label.setText("Click this Robot or press the \"" + randomId + "\" key to select.");
+    label.setText("Click this Robot or press the \"" + (randomId + 1) + "\" key to select.");
     double x = getCellSizeAndPosition().get("xPad") + getRobotObjectFromSelection(randomId).getPosition()[0] * getCellSizeAndPosition().get("cellSize") + getCellSizeAndPosition().get("cellSize");
     double y = getCellSizeAndPosition().get("yPad") + getRobotObjectFromSelection(randomId).getPosition()[1] * getCellSizeAndPosition().get("cellSize") + getCellSizeAndPosition().get("cellSize");
     int arrowX = 20;
