@@ -48,7 +48,7 @@ public class PongThread implements Runnable {
             }
             if (!client.isPongReceived()) {
                 logger.error("No response from the server, The client will shutdown shortly.");
-                client.shutDownClient(); // TODO: try and reconnect to server
+                client.shutDownClient();
             } else {
                 client.setPongReceived(false);
             }

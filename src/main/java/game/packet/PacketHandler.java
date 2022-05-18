@@ -26,30 +26,6 @@ public class PacketHandler {
         this.parent = parent;
     }
 
-    /**
-     * A function that prompts the user to specify which packet is meant to be sent next.
-     * All the possible packets are gathered using the files that are in the respective folder.
-     * This folder is "packet.packets"
-     *
-     * @return the encoded packet as a string
-     */
-    public String createPacketMessage() {
-        //TODO: remove this function
-        logger.info("Please tell which packet you want to send");
-        logger.info("A list of possible packets are:");
-        for (String s : (Objects.requireNonNull(new File(System.getProperty("user.dir") + "/src/main/java/game/packet/packets").list()))) {
-            logger.info("\t->" + s.split(".java")[0]);
-        }
-        Scanner sc = new Scanner(System.in);
-        String entered = AbstractPacket.promptUserForInput(sc);
-        AbstractPacket packet;
-        packet = AbstractPacket.getPacketByName(entered);
-        if (packet == null) {
-            return "";
-        }
-        return packet.encode();
-    }
-
 
     /**
      * A function that pushes a given input string and its according values to the server or client.

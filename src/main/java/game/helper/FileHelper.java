@@ -58,7 +58,6 @@ public class FileHelper {
         packetHashMap.put("winner", new Winner());
         packetHashMap.put("highscore", new HighScore());
         packetHashMap.put("updateturn", new UpdateTurn());
-        packetHashMap.put("addbot", new AddBot());
         packetHashMap.put("serversettingspacket", new ServerSettingsPacket());
         packetHashMap.put("cheatendgame", new CheatEndGame());
         packetHashMap.put("cheatsetscore", new CheatSetScore());

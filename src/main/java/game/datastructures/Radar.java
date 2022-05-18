@@ -89,8 +89,8 @@ public class Radar implements GameObject {
     }
 
     /**
-     * TODO: How is this different than encodeToString? Artefact?
-     * @return
+     * Not used
+     * @return the encoded Radar as a string
      */
     @Override
     public String toString() {

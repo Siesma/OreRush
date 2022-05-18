@@ -270,15 +270,6 @@ public class ClientThread implements Runnable {
       (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new Update()).encodeWithContent(clientThread.getConnectedLobby().gameMap.cellStrings()));
     }
   }
-  /**
-   * Sends an AddBot packet to all the Clients informing them about a new Robot in the lobby.
-   * @param botName the new Robots name.
-   */
-  public void updatePlayerAboutANewBot(String botName) {
-    for (ClientThread clientThread : this.connectedLobby.getListOfClients()) {
-      (new PacketHandler(this)).pushMessage(clientThread.getOutputStream(), (new AddBot()).encodeWithContent(botName));
-    }
-  }
 
   /**
    * Sends a ServerSettingsPacket to all the users informing them about changes.

@@ -90,8 +90,8 @@ public class Trap implements GameObject {
   }
 
   /**
-   * TODO: How is this different than encodeToString? Artefact?
-   * @return
+   * not used
+   * @return the encoded Trap as a string
    */
   @Override
   public String toString() {

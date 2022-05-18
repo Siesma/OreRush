@@ -68,7 +68,7 @@ public class Vector implements Comparable<Vector> {
   /**
    * Compare some other Vector with this one
    * @param o the other Vector
-   * @return TODO: Not sure what exactly happens here @Tom?
+   * @return 1 if the x and y coordinates of the vectors match, else returns 0
    */
   @Override
   public int compareTo(Vector o) {
