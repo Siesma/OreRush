@@ -37,6 +37,8 @@ Awake awake
 Broadcast EINE_NACHRICHT
 Chat EINE_NACHRICHT
 ChatLobby NAME_DER_LOBBY EINE_NACHRICHT
+CheatEndGame cheatendgame
+CheatSetScore NEUER_SCORE
 Close close
 Connect NAME_DES_SPIELERS
 CreateLobby NAME_DER_LOBBY
@@ -73,7 +75,7 @@ NAME_DES_SPIELERS_WELCHER_AM_ZUG_IST    steht für des Spielers Namen welcher ge
 NUMMER_DES_ZUGES                        steht für die Ganzzahl welche beschreibt welche Zugnummer gerade dran ist.
 NAME_DES_SIEGERS                        steht für den Namen des Spielers welcher die Runde gewonnen hat.
 PUNKTESTAND_DES_SIEGERS                 steht für den Punktestand welcher dieser Spieler erreicht hat.
-
+NEUER_SCORE                             steht für den neuen Punktestand zu welchem gecheatet werden soll
 
 Awake wird dafür genutzt um zu überprüfen ob der Client noch verbunden ist.
 Broadcast wird dafür genutzt um eine Nachricht über alle Lobbies zu senden.
