@@ -774,9 +774,8 @@ public class LobbyController {
   }
 
   /**
-   * TODO: JavaDoc
-   *
-   * @return
+   * This function will display a tutorial step at a time when pressing the "Tutorial" Button.
+   * @param e unused ActionEvent that triggers this function
    */
   @FXML
   public void onActionTutorialButton(ActionEvent e) {
@@ -804,9 +803,7 @@ public class LobbyController {
   }
 
   /**
-   * TODO: JavaDoc
-   *
-   * @return
+   * This function displays the first Tutorial stage, the stage at which the robot is selected.
    */
   private void showRobotSelection() {
     int randomId = (int) (Math.random() * this.client.getLobbyInClient().getServerSettings().numberOfRobots.getVal());
@@ -838,9 +835,7 @@ public class LobbyController {
   }
 
   /**
-   * TODO: JavaDoc
-   *
-   * @return
+   * This function displays the second Tutorial stage, the stage at which a cell has to be clicked in order to move the robot.
    */
   private void showCellSelection() {
 
@@ -873,9 +868,8 @@ public class LobbyController {
   }
 
   /**
-   * TODO: JavaDoc
-   *
-   * @return
+   * This function displays the third Tutorial stage, the stage at which a cell has been clicked
+   * and the user is prompted to decide which option to perform.
    */
   private void showOptionSelection() {
     Label label = new Label();
@@ -928,9 +922,7 @@ public class LobbyController {
   }
 
   /**
-   * TODO: JavaDoc
-   *
-   * @return
+   * This function displays the fourth Tutorial stage, the stage at which the user should end their turn to proceed.
    */
   private void showEndTurnSelection () {
     Label label = new Label();
@@ -960,9 +952,8 @@ public class LobbyController {
   }
 
   /**
-   * TODO: JavaDoc
-   *
-   * @return
+   * This function displays the fifth Tutorial stage, the stage at which the robot may has something in their
+   * inventory and should return to the start area to increase their score.
    */
   private void showObjectiveSelection () {
     Label label = new Label();
@@ -992,9 +983,8 @@ public class LobbyController {
   }
 
   /**
-   * TODO: JavaDoc
-   *
-   * @return
+   * This function gets the individual game size and scale and returns it as a hashmap.
+   * @return a hashmap containing the size, scale and padding information of the current display
    */
   private HashMap<String, Double> getCellSizeAndPosition() {
 
@@ -1020,11 +1010,7 @@ public class LobbyController {
     return map;
   }
 
-  /**
-   * TODO: JavaDoc
-   *
-   * @return
-   */
+  @SuppressWarnings("unused")
   @FXML
   public void onMouseClickedAnchorPane(MouseEvent e) {
 
