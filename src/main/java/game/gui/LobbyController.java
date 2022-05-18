@@ -6,6 +6,7 @@ import game.datastructures.Cell;
 import game.datastructures.Robot;
 import game.datastructures.*;
 import game.helper.MathHelper;
+import game.packet.PacketHandler;
 import game.server.ServerSettings;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -517,9 +518,9 @@ public class LobbyController {
     int height = (int) size.getHeight();
     double scaleX = width / image.getWidth();
     double scaleY = height / image.getHeight();
+    popup.setX(0);
     iw.setScaleX(scaleX);
     iw.setScaleY(scaleY);
-    popup.setX(0);
     popup.getContent().add(iw);
     popup.show(anchorPane.getScene().getWindow());
   }
@@ -613,6 +614,24 @@ public class LobbyController {
    * @param actionEvent UI Action that triggers this method
    */
   public void handleSendMessage(ActionEvent actionEvent) {
+    if(newLobbyMessageTextField.getText().matches("SET_SCORE [0-9]+")) {
+      try {
+        client.setScoreWithCheats(Integer.parseInt(newLobbyMessageTextField.getText().split(" ")[1]));
+        cheat();
+      } catch (Exception e) {
+        logger.debug("The cheating image was missing");
+        return;
+      }
+      return;
+    } else if (newLobbyMessageTextField.getText().equals("END_GAME")) {
+      try {
+        client.closeGame();
+        cheat();
+      } catch (Exception e) {
+        logger.debug("There was an error trying to prematurely ending the game");
+        return;
+      }
+    }
     if (!newLobbyMessageTextField.getText().equals("")) {
       client.sendChatMessageToLobby(lobby.getLobbyName(), newLobbyMessageTextField.getText());
       newLobbyMessageTextField.setText("");

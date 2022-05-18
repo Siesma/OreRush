@@ -214,6 +214,10 @@ public class Client {
     (new PacketHandler(this)).pushMessage(outputStream, (new CheatSetScore()).encodeWithContent("" + amount));
   }
 
+  public void closeGame () {
+    (new PacketHandler(this)).pushMessage(outputStream, (new CheatEndGame()).encode());
+  }
+
   /**
    * Sends a new Broadcast-packet and encodes it with the predetermined content
    *
